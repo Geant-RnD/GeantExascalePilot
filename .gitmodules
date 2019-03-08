@@ -1,0 +1,12 @@
+[submodule "source/PTL"]
+	path = source/PTL
+	url = https://github.com/jrmadsen/PTL.git
+[submodule "source/VecCore"]
+	path = source/VecCore
+	url = https://github.com/root-project/VecCore.git
+[submodule "source/VecMath"]
+	path = source/VecMath
+	url = https://github.com/root-project/VecMath.git
+[submodule "source/VecGeom"]
+	path = source/VecGeom
+	url = https://gitlab.cern.ch/VecGeom/VecGeom.git

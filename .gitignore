@@ -30,3 +30,18 @@
 *.exe
 *.out
 *.app
+
+# IDE project configs
+*CMakeLists.txt.user
+*.vscode
+
+# Build folders
+/build*
+/install*
+
+# Edit files
+*~
+*.bak
+
+# OS files
+.DS_Store
