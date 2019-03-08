@@ -3,7 +3,6 @@ include(MacroUtilities)
 
 # header directories
 set(HEADER_DIRS
-    magneticfield
     management
 )
 
