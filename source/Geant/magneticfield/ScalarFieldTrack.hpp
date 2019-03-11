@@ -13,8 +13,7 @@
 // - First version: Dec 9, 2014 John Apostolakis
 // -------------------------------------------------------------------
 
-#ifndef ScalarFieldTrack_HH
-#define ScalarFieldTrack_HH
+#pragma once
 
 #include "base/Vector3D.h" // VecGeom/base/Vector3D.h
 typedef vecgeom::Vector3D<double> ThreeVector;
@@ -302,37 +301,35 @@ inline ScalarFieldTrack &ScalarFieldTrack::operator=(const ScalarFieldTrack &rSt
   return *this;
 }
 
-#if 0   
-inline void 
-ScalarFieldTrack::UpdateFourMomentum( double momentum_mag, 
+#if 0
+inline void
+ScalarFieldTrack::UpdateFourMomentum( double momentum_mag,
                                   const ThreeVector& momentumDirection )
 {
   // double momentum_mag  = std::sqrt(kineticEnergy*kineticEnergy
   //                       +2.0*fRestMass_c2*kineticEnergy);
-  ThreeVector momentumVector= momentum_mag * momentumDirection; 
+  ThreeVector momentumVector= momentum_mag * momentumDirection;
 
-  SetMomentum( momentumVector ); 
-  // SixVector[3] = momentumVector.x(); 
-  // SixVector[4] = momentumVector.y(); 
-  // SixVector[5] = momentumVector.z(); 
+  SetMomentum( momentumVector );
+  // SixVector[3] = momentumVector.x();
+  // SixVector[4] = momentumVector.y();
+  // SixVector[5] = momentumVector.z();
 
   // fMomentumDir=   momentumDirection; // Set directly to avoid inaccuracy.
   // fKineticEnergy= kineticEnergy;
 }
 
-inline void ScalarFieldTrack::UpdateState( const ThreeVector& position, 
+inline void ScalarFieldTrack::UpdateState( const ThreeVector& position,
                                        // double             laboratoryTimeOfFlight,
                                 const ThreeVector& momentumDirection,
                                 double             kineticEnergy
                               )
-{ 
-  // SetCurvePnt( position, momentumVector, s_curve=0.0);     
-  SetPosition( position); 
+{
+  // SetCurvePnt( position, momentumVector, s_curve=0.0);
+  SetPosition( position);
   // fLabTimeOfFlight= laboratoryTimeOfFlight;
   fDistanceAlongCurve= 0.0;
 
-  UpdateFourMomentum( kineticEnergy, momentumDirection); 
+  UpdateFourMomentum( kineticEnergy, momentumDirection);
 }
 #endif
-
-#endif /* End of ifndef ScalarFieldTrack_HH */

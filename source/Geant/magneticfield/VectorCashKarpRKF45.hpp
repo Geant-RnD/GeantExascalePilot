@@ -11,13 +11,13 @@
 //         (derived from G4CashKarpRKF45)
 //
 //
-#ifndef VECTORCASHKARPRKF45_H
-#define VECTORCASHKARPRKF45_H
 
-#include "Geant/geometry/magneticfield/GUVectorLineSection.hpp"
+#pragma once
+
+#include "Geant/magneticfield/GUVectorLineSection.hpp"
 #include "GUVVectorIntegrationStepper.h"
 
-// #include "Geant/geometry/magneticfield/TMagErrorStepper.hpp" //for sake of GUIntegrationNms::NumVars
+// #include "Geant/magneticfield/TMagErrorStepper.hpp" //for sake of GUIntegrationNms::NumVars
 // #include "TemplateTMagErrorStepper.h"
 
 // #include "AlignedBase.h"  // ==> Ensures alignment of storage for Vc objects
@@ -283,4 +283,3 @@ inline geant::Double_v VectorCashKarpRKF45<T_Equation, Nvar>::DistChord() const
   return distChord;
 }
 
-#endif /*GUV Vector CashKARP_RKF45 */

@@ -19,11 +19,11 @@ using geant::units::kTwoPi;
 
 #include <cfloat>
 
-#include "Geant/geometry/magneticfield/GUExactHelixStepper.hpp"
+#include "Geant/magneticfield/GUExactHelixStepper.hpp"
 #include "Geant/core/math_wrappers.hpp"
 // #include "GUPhysicalConstants.h"
 // #include "ThreeVector.h"
-// #include "Geant/geometry/magneticfield/GULineSection.hpp"
+// #include "Geant/magneticfield/GULineSection.hpp"
 
 GUExactHelixStepper::GUExactHelixStepper(VScalarEquationOfMotion *EqRhs) // TMagFieldEquation
     : VScalarHelicalStepper(EqRhs, 1),                                   // "Order" = 1 - not really applicable

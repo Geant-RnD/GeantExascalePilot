@@ -1,5 +1,5 @@
-#ifndef GEANT_MATH
-#define GEANT_MATH
+
+#pragma once
 
 #include "Geant/core/Config.hpp"
 
@@ -179,5 +179,3 @@ inline void RotateToLabFrame(R &u, R &v, R &w, R u1, R u2, R u3)
   }
 }
 } // namespace Math
-
-#endif // GEANT_MATH

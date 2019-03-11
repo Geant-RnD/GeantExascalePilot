@@ -1,6 +1,5 @@
 
-#ifndef ELEMENTPROPERTIES_H
-#define ELEMENTPROPERTIES_H
+#pragma once
 
 #include "Geant/core/Config.hpp"
 
@@ -83,4 +82,3 @@ private:
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantphysics
 
-#endif // ELEMENTPROPERTIES_H

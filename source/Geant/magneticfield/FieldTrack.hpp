@@ -1,5 +1,5 @@
-#ifndef _FIELDTRACK_H_
-#define _FIELDTRACK_H_
+
+#pragma once
 
 /*---------------------
 Data structure in place of GUFieldTrack to be used
@@ -102,4 +102,3 @@ public:
     return os;
   }
 };
-#endif

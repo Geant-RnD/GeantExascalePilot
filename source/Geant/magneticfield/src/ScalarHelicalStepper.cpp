@@ -15,9 +15,9 @@ using geant::units::kTwoPi;
 #include "Geant/core/PhysicalConstants.hpp"
 // using pi;
 
-#include "Geant/geometry/magneticfield/VScalarHelicalStepper.hpp"
+#include "Geant/magneticfield/VScalarHelicalStepper.hpp"
 #include "Geant/core/math_wrappers.hpp"
-// #include "Geant/geometry/magneticfield/GULineSection.hpp"
+// #include "Geant/magneticfield/GULineSection.hpp"
 
 // #include "ScalarFieldEquation.h"
 

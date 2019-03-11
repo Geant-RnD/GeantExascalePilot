@@ -1,7 +1,6 @@
 /// \file Geant/core/Config.hpp
 
-#ifndef GEANT_CONFIG_H
-#define GEANT_CONFIG_H
+#pragma once
 
 #if __cplusplus < 201103L && !defined(__NVCC__)
 #error "GeantV requires C++11"
@@ -122,7 +121,5 @@
 #else
 
 #define GEANT_DEVICE_DECLARE_CONV(NS, classOrStruct, X) class __QuietSemi
-
-#endif
 
 #endif

@@ -5,7 +5,7 @@
 
 // #include <iostream>
 
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
 
 unsigned int VScalarEquationOfMotion::fNumObjectsCreated = 0;
 unsigned int VScalarEquationOfMotion::fNumObjectsDeleted = 0;

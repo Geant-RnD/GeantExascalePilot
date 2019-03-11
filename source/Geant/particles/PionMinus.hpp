@@ -1,5 +1,5 @@
-#ifndef PIONMINUS_H
-#define PIONMINUS_H
+
+#pragma once
 
 #include "Geant/particles/Particle.hpp"
 
@@ -26,5 +26,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // PIONMINUS_H

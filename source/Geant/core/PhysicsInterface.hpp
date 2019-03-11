@@ -10,8 +10,8 @@
  */
 //===----------------------------------------------------------------------===//
 
-#ifndef GEANT_PHYSICSINTERFACE
-#define GEANT_PHYSICSINTERFACE
+#pragma once
+
 #include "Geant/core/Config.hpp"
 #include "Geant/core/Typedefs.hpp"
 
@@ -79,5 +79,3 @@ public:
 
   virtual geant::SimulationStage *CreateAtRestActionStage(geant::Propagator *prop) = 0;
 };
-
-#endif

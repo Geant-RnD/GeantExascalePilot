@@ -10,8 +10,7 @@
 // - Created. J. Apostolakis.
 // --------------------------------------------------------------------
 
-#ifndef GULineSection_hh
-#define GULineSection_hh
+#pragma once
 
 // #include "G4Types.hh"
 // #include "ThreeVector.h"
@@ -95,4 +94,4 @@ inline double GULineSection::Dist(ThreeVector OtherPnt) const
 
   return std::sqrt(dist_sq);
 }
-#endif
+

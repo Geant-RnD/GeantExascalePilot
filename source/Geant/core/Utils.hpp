@@ -10,8 +10,7 @@
  */
 //===----------------------------------------------------------------------===//
 
-#ifndef GEANT_UTILS_H
-#define GEANT_UTILS_H
+#pragma once
 
 #include "Geant/core/Config.hpp"
 #include <string>
@@ -35,5 +34,3 @@ inline std::string GetDataFileLocation(int argc, char **argv, std::string dataFi
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-
-#endif // GEANT_UTILS_H

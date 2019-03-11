@@ -1,5 +1,5 @@
-#ifndef Workspace_For_Field_Propagation_h
-#define Workspace_For_Field_Propagation_h
+
+#pragma once
 
 #include "base/SOA3D.h"
 
@@ -131,4 +131,4 @@ bool WorkspaceForFieldPropagation::CheckSize(size_t numNeeded)
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-#endif
+

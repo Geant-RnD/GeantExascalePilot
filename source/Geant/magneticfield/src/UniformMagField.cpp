@@ -1,5 +1,5 @@
 
-#include "Geant/geometry/magneticfield/UniformMagField.hpp"
+#include "Geant/magneticfield/UniformMagField.hpp"
 // #include "Geant/core/PhysicalConstants.hpp"  //   For pi & twopi - Temporary solution ..
 #include "Geant/core/SystemOfUnits.hpp" //   For pi & twopi - Temporary solution ..
 

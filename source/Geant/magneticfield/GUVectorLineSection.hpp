@@ -10,8 +10,7 @@
 // - Created. J. Apostolakis.
 // --------------------------------------------------------------------
 
-#ifndef GUVectorLineSection_hh
-#define GUVectorLineSection_hh
+#pragma once
 
 #include <base/Vector3D.h>
 #include <Geant/core/VectorTypes.hpp>
@@ -130,4 +129,4 @@ inline geant::Double_v GUVectorLineSection::Dist(ThreeVectorSimd OtherPnt) const
 
   return vecCore::math::Sqrt(dist_sq);
 }
-#endif
+

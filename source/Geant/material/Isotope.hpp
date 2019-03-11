@@ -1,7 +1,5 @@
 
-
-#ifndef ISOTOPE_H
-#define ISOTOPE_H
+#pragma once
 
 #include "Geant/material/Types.hpp"
 
@@ -236,4 +234,3 @@ private:
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantphysics
 
-#endif // ISOTOPE_H

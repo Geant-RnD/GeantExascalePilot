@@ -1,8 +1,8 @@
-#ifndef TCLASSICALRK4_H
-#define TCLASSICALRK4_H
+
+#pragma once
 
 #include "Geant/core/Config.hpp"
-#include "Geant/geometry/magneticfield/TMagErrorStepper.hpp"
+#include "Geant/magneticfield/TMagErrorStepper.hpp"
 
 // #include <algorithm> // for std::max
 
@@ -158,5 +158,3 @@ GEANT_FORCE_INLINE
   //            if ( Nvar == 12 )  { this->NormalisePolarizationVector ( yOut ); }
 
 } // end of DumbStepper ....................................................
-
-#endif

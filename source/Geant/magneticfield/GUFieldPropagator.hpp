@@ -2,14 +2,14 @@
 //  Simple interface class to ScalarIntegrationDriver (with does Runge Kutta integration)
 //   that follows the interface of ConstFieldHelixStepper.h
 //
-#ifndef GUFIELDPROPAGATOR_H
-#define GUFIELDPROPAGATOR_H 1
+
+#pragma once
 
 #include "Geant/core/Config.hpp"
 // #include "ThreeVector.h"
 #include "base/Vector3D.h"
 // typedef vecgeom::Vector3D<double>  ThreeVector;
-// #include "Geant/geometry/magneticfield/ScalarIntegrationDriver.hpp"
+// #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
 
 // namespace geant {
 // inline namespace GEANT_IMPL_NAMESPACE {
@@ -95,5 +95,3 @@ private:
 
 // } // GEANT_IMPL_NAMESPACE
 // } // Geant
-
-#endif

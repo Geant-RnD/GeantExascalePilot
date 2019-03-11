@@ -11,13 +11,12 @@
 // - Created. J.Apostolakis.
 // --------------------------------------------------------------------
 
-#ifndef ScalarIntegrationDriver_Def
-#define ScalarIntegrationDriver_Def
+#pragma once
 
-#include "Geant/geometry/magneticfield/ScalarFieldTrack.hpp"
+#include "Geant/magneticfield/ScalarFieldTrack.hpp"
 
 // class VScalarIntegrationStepper;
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 #include "Geant/core/math_wrappers.hpp"
 
 class ScalarIntegrationDriver {
@@ -282,4 +281,3 @@ inline void ScalarIntegrationDriver::GetDerivatives(const ScalarFieldTrack &y_cu
   y_curr.DumpToArray(tmpValArr);
   fpStepper->RightHandSideVIS(tmpValArr, charge, dydx);
 }
-#endif /* ScalarIntegrationDriver_Def */

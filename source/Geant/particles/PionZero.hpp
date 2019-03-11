@@ -1,5 +1,5 @@
-#ifndef PIONZERO_H
-#define PIONZERO_H
+
+#pragma once
 
 #include "Geant/particles/Particle.hpp"
 
@@ -26,5 +26,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // PIONZERO_H

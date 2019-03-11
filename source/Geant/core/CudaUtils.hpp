@@ -10,8 +10,7 @@
  */
 //===----------------------------------------------------------------------===//
 
-#ifndef GEANT_CUDAUTILS_H
-#define GEANT_CUDAUTILS_H
+#pragma once
 
 #ifndef GEANT_CONFIG_H
 #include "Geant/core/Config.hpp"
@@ -40,4 +39,3 @@ inline void HandleCudaError(cudaError_t err, const char *file, int line)
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
 
-#endif // GEANT_CUDAUTILS_H

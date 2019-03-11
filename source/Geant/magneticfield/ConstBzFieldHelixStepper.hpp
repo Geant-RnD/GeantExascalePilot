@@ -5,8 +5,7 @@
  *      Author: swenzel
  */
 
-#ifndef CONSTBzFIELDHELIXSTEPPER_H_
-#define CONSTBzFIELDHELIXSTEPPER_H_
+#pragma once
 
 #include <Geant/core/Config.hpp>
 #include <Geant/core/VectorTypes.hpp>
@@ -183,5 +182,3 @@ void ConstBzFieldHelixStepper::DoStep_v(
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-
-#endif /* CONSTFIELDHELIXSTEPPER_H_ */

@@ -7,27 +7,26 @@
  */
 //===----------------------------------------------------------------------===//
 
-#ifndef FIELDPROPAGATOR_FACTORY_H
-#define FIELDPROPAGATOR_FACTORY_H 1
+#pragma once
 
 #include <ostream>
 
 // #include "base/inc/Geant/core/Error.hpp"
 // #include "Geant/core/Error.hpp"
 
-#include "Geant/geometry/magneticfield/GUFieldPropagator.hpp"
-#include "Geant/geometry/magneticfield/GUFieldPropagatorPool.hpp"
+#include "Geant/magneticfield/GUFieldPropagator.hpp"
+#include "Geant/magneticfield/GUFieldPropagatorPool.hpp"
 
 // #ifndef FLEXIBLE_FIELD
-#include "Geant/geometry/magneticfield/ScalarMagFieldEquation.hpp"
-#include "Geant/geometry/magneticfield/FieldEquationFactory.hpp"
-#include "Geant/geometry/magneticfield/StepperFactory.hpp"
-#include "Geant/geometry/magneticfield/ScalarIntegrationDriver.hpp"
+#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
+#include "Geant/magneticfield/FieldEquationFactory.hpp"
+#include "Geant/magneticfield/StepperFactory.hpp"
+#include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
 // #else
-#include "Geant/geometry/magneticfield/MagFieldEquation.hpp"
-#include "Geant/geometry/magneticfield/CashKarp.hpp"
-#include "Geant/geometry/magneticfield/FlexIntegrationDriver.hpp"
-#include "Geant/geometry/magneticfield/SimpleIntegrationDriver.hpp"
+#include "Geant/magneticfield/MagFieldEquation.hpp"
+#include "Geant/magneticfield/CashKarp.hpp"
+#include "Geant/magneticfield/FlexIntegrationDriver.hpp"
+#include "Geant/magneticfield/SimpleIntegrationDriver.hpp"
 // #endif
 
 // template<typename Field_t> // , typename Equation_t>
@@ -206,4 +205,3 @@ inline FlexIntegrationDriver *FieldPropagatorFactory::CreateFlexibleDriver(Field
 
 // template<typename Field_t, typename Equation_t>
 
-#endif

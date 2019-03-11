@@ -1,5 +1,5 @@
-#ifndef NEUTRON_H
-#define NEUTRON_H
+
+#pragma once
 
 #include "Geant/particles/Particle.hpp"
 
@@ -26,5 +26,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // NEUTRON_H

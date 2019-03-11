@@ -8,16 +8,15 @@
 // - 16.Oct.15  J.Apostolakis   Adapted
 // --------------------------------------------------------------------
 
-#ifndef GUExactHelixStepper_h
-#define GUExactHelixStepper_h 1
+#pragma once
 
 //  #include "ThreeVector.h"
 #include "base/Vector3D.h"
 typedef vecgeom::Vector3D<double> ThreeVector;
 
-// #include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
-#include "Geant/geometry/magneticfield/VScalarHelicalStepper.hpp"
-#include "Geant/geometry/magneticfield/ScalarMagFieldEquation.hpp"
+// #include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/VScalarHelicalStepper.hpp"
+#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
 
 class GUExactHelixStepper : public VScalarHelicalStepper {
 public:                                                // with description
@@ -51,4 +50,3 @@ private:
   VScalarEquationOfMotion *fPtrMagEqOfMot;
 };
 
-#endif /* GUExactHelixStepper_h */

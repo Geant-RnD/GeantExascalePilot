@@ -1,5 +1,5 @@
-#ifndef GEANT_VECTOR_TYPES_H
-#define GEANT_VECTOR_TYPES_H
+
+#pragma once
 
 #include <base/Global.h>
 #include <base/Vector3D.h>
@@ -74,5 +74,3 @@ void CopyDblToFlt(vecgeom::Vector3D<Double_v> const &dbl1_v, vecgeom::Vector3D<D
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-
-#endif

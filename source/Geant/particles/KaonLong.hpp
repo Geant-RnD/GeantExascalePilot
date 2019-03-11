@@ -1,5 +1,5 @@
-#ifndef KAONLONG_H
-#define KAONLONG_H
+
+#pragma once
 
 #include "Geant/particles/Particle.hpp"
 
@@ -26,5 +26,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // KAONLONG_H

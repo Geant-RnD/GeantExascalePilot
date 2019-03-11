@@ -1,5 +1,5 @@
-#ifndef PHYSICSPARAMETERS_H
-#define PHYSICSPARAMETERS_H
+
+#pragma once
 
 #include <vector>
 #include <iostream>
@@ -170,5 +170,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // PHYSICSPARAMETERS_H

@@ -1,5 +1,5 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
+
+#pragma once
 
 #include <string>
 #include <vector>
@@ -82,5 +82,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // PARTICLE_H

@@ -1,11 +1,11 @@
-#include <fstream>
-#include <cstdlib>
-#include <iomanip>
 
 //  Auxiliary methods - should be encapsulated into a separate helper class
 
-#ifndef FORMATTED_REPORTER_H
-#define FORMATTED_REPORTER_H
+#pragma once
+
+#include <fstream>
+#include <cstdlib>
+#include <iomanip>
 
 namespace FormattedReporter // Was ReportValuesOfVectors
 {
@@ -202,4 +202,3 @@ inline void ReportArray(const char *methodName, const std::string &variableName,
 
 }; // namespace FormattedReporter
 
-#endif // FORMATTED_REPORTER_H

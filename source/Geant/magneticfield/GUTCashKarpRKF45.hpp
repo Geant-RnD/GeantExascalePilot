@@ -6,14 +6,14 @@
 //
 // First version:  John Apostolakis,  4 Nov 2015
 //
-#ifndef TCASHKARPRKF45_H
-#define TCASHKARPRKF45_H
+
+#pragma once
 
 #include <iomanip> // For  C++ style output (debug)
 #include <iostream>
 
-#include "Geant/geometry/magneticfield/GULineSection.hpp"
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/GULineSection.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 #include "base/Vector3D.h"
 
 #define INLINERHS 1
@@ -404,4 +404,4 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintDyDxLong(const char *label,
   std::cout << "                                 "
             << "         p = " << y[3] << " , " << y[4] << " , " << y[5] << " ) " << std::endl;
 }
-#endif /*TCashKARP_RKF45 */
+

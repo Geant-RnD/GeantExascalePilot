@@ -2,8 +2,7 @@
 //
 //   Author: J. Apostolakis, 28 Jan 2016
 
-#ifndef STEPCHECKER_H
-#define STEPCHECKER_H
+#pragma once
 
 #include "base/Vector3D.h"
 
@@ -46,5 +45,3 @@ inline StepChecker::StepChecker(double eps, double maxLengthDiff, bool verbose)
 
 //  } // End inline namespace MagField
 // } // namespace geant
-
-#endif

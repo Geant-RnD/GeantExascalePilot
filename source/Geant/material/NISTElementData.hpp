@@ -1,6 +1,5 @@
 
-#ifndef NISTELEMENTDATA_H
-#define NISTELEMENTDATA_H
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -278,4 +277,3 @@ private:
 
 } // namespace geantphysics
 
-#endif // NISTELEMENTDATA_H

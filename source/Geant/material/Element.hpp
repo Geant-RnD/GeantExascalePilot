@@ -1,6 +1,5 @@
 
-#ifndef ELEMENT_H
-#define ELEMENT_H
+#pragma once
 
 #include "Geant/core/Config.hpp"
 #include "Geant/material/Types.hpp"
@@ -286,5 +285,3 @@ private:
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantphysics
-
-#endif // ELEMENT_H

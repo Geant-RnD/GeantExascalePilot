@@ -1,6 +1,5 @@
 
-#ifndef TYPES_H
-#define TYPES_H
+#pragma once
 
 /**
  * @brief   Generic vector and map containers.
@@ -36,5 +35,3 @@ using Map_t = std::map<KeyT, ValueT>;
 #endif
 
 } // namespace geantphysics
-
-#endif // TYPES_H

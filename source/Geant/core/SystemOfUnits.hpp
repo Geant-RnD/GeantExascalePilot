@@ -30,8 +30,7 @@
  *
  */
 
-#ifndef Geant_SystemOfUnits_h
-#define Geant_SystemOfUnits_h
+#pragma once
 
 namespace geant {
 namespace units {
@@ -302,5 +301,3 @@ static constexpr double perMillion  = 0.000001;
 
 } // namespace units
 } // namespace geant
-
-#endif // Geant_SystemOfUnits_h

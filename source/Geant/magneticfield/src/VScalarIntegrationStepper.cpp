@@ -4,7 +4,7 @@
 //
 // --------------------------------------------------------------------
 
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 // Constructor for stepper abstract base class.
 //

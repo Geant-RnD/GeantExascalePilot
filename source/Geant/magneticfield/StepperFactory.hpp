@@ -6,19 +6,18 @@
  */
 //===----------------------------------------------------------------------===//
 
-#ifndef STEPPER_FACTORY_H
-#define STEPPER_FACTORY_H 1
+#pragma once
 
 #include <ostream>
 
 // Base types
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 // Concrete Types being created
-#include "Geant/geometry/magneticfield/TSimpleRunge.hpp"
-#include "Geant/geometry/magneticfield/TClassicalRK4.hpp"
-#include "Geant/geometry/magneticfield/GUTCashKarpRKF45.hpp"
+#include "Geant/magneticfield/TSimpleRunge.hpp"
+#include "Geant/magneticfield/TClassicalRK4.hpp"
+#include "Geant/magneticfield/GUTCashKarpRKF45.hpp"
 
 // namespace vecFieldPropagation {
 
@@ -88,4 +87,3 @@ VScalarIntegrationStepper *StepperFactory::CreateStepper(EquationType *equation,
 }
 
 // } // end of namespace vecFieldPropagation
-#endif

@@ -1,12 +1,12 @@
 #include <cassert>
 
-#include "Geant/geometry/magneticfield/GUFieldPropagatorPool.hpp"
+#include "Geant/magneticfield/GUFieldPropagatorPool.hpp"
 
 // For implementation
-#include "Geant/geometry/magneticfield/GUFieldPropagator.hpp"
-// #include "Geant/geometry/magneticfield/ScalarIntegrationDriver.hpp"
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
-#include "Geant/geometry/magneticfield/VVectorField.hpp"
+#include "Geant/magneticfield/GUFieldPropagator.hpp"
+// #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/VVectorField.hpp"
 
 #include <iostream>
 
@@ -15,7 +15,7 @@ std::vector<GUFieldPropagator *> // GUFieldPropagation:: // namespace ...
     GUFieldPropagatorPool::fFieldPropagatorVec;
 
 /// --------------  GUFieldPropagatorPool ------------------------------------
-// #include "Geant/geometry/magneticfield/GUFieldPropagatorPool.hpp"   // For now, not a separate file
+// #include "Geant/magneticfield/GUFieldPropagatorPool.hpp"   // For now, not a separate file
 
 // static
 GUFieldPropagatorPool *GUFieldPropagatorPool::Instance()

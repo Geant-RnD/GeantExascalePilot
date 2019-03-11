@@ -2,15 +2,14 @@
 //  First version:      (Josh) - GSoC 2014 project
 //  Current version:  J. Apostolakis
 
-#ifndef UniformMagField_H
-#define UniformMagField_H
+#pragma once
 
 #include <iostream>
 
 #include <base/Vector3D.h>
 #include <Geant/core/VectorTypes.hpp>
 
-#include "Geant/geometry/magneticfield/VVectorField.hpp"
+#include "Geant/magneticfield/VVectorField.hpp"
 
 class UniformMagField : public VVectorField {
 public:
@@ -81,4 +80,3 @@ private:
   vecgeom::Vector3D<float> fFieldComponents;
 };
 
-#endif

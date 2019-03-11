@@ -1,4 +1,4 @@
-#include "Geant/geometry/magneticfield/FieldPropagatorFactory.hpp"
+#include "Geant/magneticfield/FieldPropagatorFactory.hpp"
 
 // #include "Geant/core/Error.hpp"
 bool FieldPropagatorFactory::fVerboseConstruct = false;

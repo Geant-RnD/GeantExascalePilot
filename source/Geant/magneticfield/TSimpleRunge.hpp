@@ -1,7 +1,7 @@
-#ifndef TSimpleRunge_HH
-#define TSimpleRunge_HH
 
-#include "Geant/geometry/magneticfield/TMagErrorStepper.hpp"
+#pragma once
+
+#include "Geant/magneticfield/TMagErrorStepper.hpp"
 // #include "ThreeVector.h"
 
 // #define  INTEGRATOR_CORRECTION   (1./((1<<2)-1))
@@ -102,4 +102,4 @@ inline __attribute__((always_inline)) void TSimpleRunge<T_Equation, Nvar>::StepW
     yOut[i] = yIn[i] + h * (dydxTemp[i]);
   }
 }
-#endif /* TSimpleRunge_HH */
+

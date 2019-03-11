@@ -1,5 +1,5 @@
-#ifndef PROTON_H
-#define PROTON_H
+
+#pragma once
 
 #include "Geant/particles/Particle.hpp"
 
@@ -26,5 +26,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // PROTON_H

@@ -2,10 +2,9 @@
 //  First version:      (Josh) - GSoC 2014 project
 //  Current version:  J. Apostolakis
 
-#ifndef ScalarUniformMagField_H
-#define ScalarUniformMagField_H
+#pragma once
 
-#include "Geant/geometry/magneticfield/VVectorField.hpp"
+#include "Geant/magneticfield/VVectorField.hpp"
 #include <iostream>
 
 #include "base/Vector3D.h"
@@ -106,4 +105,4 @@ ScalarUniformMagField::ScalarUniformMagField(double vField, double vTheta, doubl
   fFieldComponents.Set(vField * Math::Sin(vTheta) * Math::Cos(vPhi), vField * Math::Sin(vTheta) * Math::Sin(vPhi),
                        vField * Math::Cos(vTheta));
 }
-#endif
+

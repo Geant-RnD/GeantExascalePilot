@@ -1,13 +1,13 @@
-#ifndef FIELDEQUATIONFACTORY_H
-#define FIELDEQUATIONFACTORY_H 1
+
+#pragma once
 
 // Base types
-// #include "Geant/geometry/magneticfield/VVectorField.hpp"
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
+// #include "Geant/magneticfield/VVectorField.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
 
 // Concrete Types
-// #include "Geant/geometry/magneticfield/ScalarUniformMagField.hpp"
-#include "Geant/geometry/magneticfield/ScalarMagFieldEquation.hpp"
+// #include "Geant/magneticfield/ScalarUniformMagField.hpp"
+#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
 
 class FieldEquationFactory {
 public:
@@ -36,4 +36,4 @@ FieldEquationFactory::CreateMagEquation(FieldType &field)
 {
   return new ScalarMagFieldEquation<FieldType, Nposmom>(&field);
 }
-#endif
+

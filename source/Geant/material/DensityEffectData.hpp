@@ -1,6 +1,5 @@
 
-#ifndef DENSITYEFFECTDATA_H
-#define DENSITYEFFECTDATA_H
+#pragma once
 
 #include "Geant/material/Types.hpp"
 
@@ -216,4 +215,3 @@ private:
 
 } // namespace geantphysics
 
-#endif // DENSITYEFFECTDATA_H

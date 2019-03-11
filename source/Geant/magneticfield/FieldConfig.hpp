@@ -11,11 +11,10 @@
  */
 //===----------------------------------------------------------------------===//
 
-#ifndef FIELD_CONFIG_H
-#define FIELD_CONFIG_H
+#pragma once
 
 #include "Geant/core/Typedefs.hpp"
-#include "Geant/geometry/magneticfield/VVectorField.hpp"
+#include "Geant/magneticfield/VVectorField.hpp"
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
@@ -132,5 +131,3 @@ inline void FieldConfig::SetUniformField(VVectorField *fldUnif)
 }
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-
-#endif

@@ -4,19 +4,19 @@
 //
 #include <iostream> // for  cout / cerr
 
-#include "Geant/geometry/magneticfield/GUFieldPropagator.hpp"
+#include "Geant/magneticfield/GUFieldPropagator.hpp"
 
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
-#include "Geant/geometry/magneticfield/ScalarMagFieldEquation.hpp"
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
-#include "Geant/geometry/magneticfield/ScalarIntegrationDriver.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
 
-#include "Geant/geometry/magneticfield/GUTCashKarpRKF45.hpp" //  ie ScalarCashKarp
+#include "Geant/magneticfield/GUTCashKarpRKF45.hpp" //  ie ScalarCashKarp
 
-#include "Geant/geometry/magneticfield/MagFieldEquation.hpp"
-#include "Geant/geometry/magneticfield/CashKarp.hpp"
-#include "Geant/geometry/magneticfield/FlexIntegrationDriver.hpp"
-#include "Geant/geometry/magneticfield/SimpleIntegrationDriver.hpp"
+#include "Geant/magneticfield/MagFieldEquation.hpp"
+#include "Geant/magneticfield/CashKarp.hpp"
+#include "Geant/magneticfield/FlexIntegrationDriver.hpp"
+#include "Geant/magneticfield/SimpleIntegrationDriver.hpp"
 
 // template <class Equation, unsigned int> using ScalarCashKarp= GUTCashKarpRKF45;
 

@@ -14,8 +14,8 @@
 // #include "globals.hh"
 // #include "G4SystemOfUnits.hh"
 // #include "G4GeometryTolerance.hh"
-#include "Geant/geometry/magneticfield/ScalarFieldTrack.hpp"
-#include "Geant/geometry/magneticfield/ScalarIntegrationDriver.hpp"
+#include "Geant/magneticfield/ScalarFieldTrack.hpp"
+#include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
 
 //  The (default) maximum number of steps is Base
 //  divided by the order of Stepper

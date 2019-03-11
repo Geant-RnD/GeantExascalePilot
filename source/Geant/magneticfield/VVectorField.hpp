@@ -30,8 +30,7 @@
 // same convention for the order of field components in the array "fieldArr"
 // -------------------------------------------------------------------
 
-#ifndef VVectorField_HH
-#define VVectorField_HH
+#pragma once
 
 #include <vector>
 #include "base/Vector3D.h"
@@ -113,5 +112,3 @@ private:
                            //       E+B -> N=6
   bool fChangesEnergy;     // Electric: true, Magnetic: false
 };
-
-#endif /* VVectorField_HH */

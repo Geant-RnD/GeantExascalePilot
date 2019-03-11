@@ -24,8 +24,7 @@
 // - Contributors: Ananya, J.Apostolakis                    2015-2017
 // -----------------------------------------------------------------------
 
-#ifndef TemplateFieldTrack_HH
-#define TemplateFieldTrack_HH
+#pragma once
 
 #include "base/Vector3D.h" // VecGeom/base/Vector3D.h
 
@@ -436,5 +435,3 @@ std::ostream &operator<<(std::ostream &os, const TemplateFieldTrack<Real_v> &Six
   os << " ) ";
   return os;
 }
-
-#endif /* End of ifndef GUFieldTrack_HH */

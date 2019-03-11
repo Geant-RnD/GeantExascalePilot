@@ -11,22 +11,21 @@
 // - Created. J.Apostolakis.
 // --------------------------------------------------------------------
 
-#ifndef TemplateGUIntegrationDriver_Def
-#define TemplateGUIntegrationDriver_Def
+#pragma once
 
 #include "TemplateGUFieldTrack.h"
 #include "AlignedBase.h"
-#include "Geant/geometry/magneticfield/FieldTrack.hpp"
+#include "Geant/magneticfield/FieldTrack.hpp"
 
 #include "TemplateVScalarIntegrationStepper.h"
 
 #include "base/Vector.h"
 
 // Adding because adding scalar stepper for new constructor (KeepStepping)
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 // Adding to send in scalar driver to deal with 1/2 remaining lanes
-#include "Geant/geometry/magneticfield/TemplateGUIntegrationDriver.hpp"
+#include "Geant/magneticfield/TemplateGUIntegrationDriver.hpp"
 #include "GUFieldTrack.h"
 
 #define NEWACCURATEADVANCE
@@ -2349,4 +2348,3 @@ void TemplateGUIntegrationDriver<Backend>::SetSteppingMethod(bool steppingMethod
   oneStep = steppingMethod;
 }
 
-#endif /* TemplateGUIntegrationDriver_Def */

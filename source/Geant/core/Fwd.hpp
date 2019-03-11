@@ -1,5 +1,5 @@
-#ifndef GEANTFWD_H
-#define GEANTFWD_H
+
+#pragma once
 
 #include "Geant/core/Config.hpp"
 
@@ -12,5 +12,3 @@ class GeantBasket;
 class GeantBasketMgr;
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-
-#endif // GEANTFWD_H

@@ -1,7 +1,5 @@
 
-
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#pragma once
 
 #include "Geant/material/Types.hpp"
 
@@ -346,4 +344,3 @@ private:
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantphysics
 
-#endif // MATERIAL_H

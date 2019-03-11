@@ -1,5 +1,5 @@
-#ifndef GAMMA_H
-#define GAMMA_H
+
+#pragma once
 
 #include "Geant/particles/Particle.hpp"
 
@@ -26,5 +26,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // GAMMA_H

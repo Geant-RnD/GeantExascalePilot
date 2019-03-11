@@ -1,9 +1,9 @@
-#include "Geant/geometry/magneticfield/StepChecker.hpp"
+#include "Geant/magneticfield/StepChecker.hpp"
 
 // For geant::Print,  Printf
 #include "Geant/core/Error.hpp"
-#include "Geant/geometry/magneticfield/ConstFieldHelixStepper.hpp"
-#include "Geant/geometry/magneticfield/ConstBzFieldHelixStepper.hpp"
+#include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
+#include "Geant/magneticfield/ConstBzFieldHelixStepper.hpp"
 
 VECCORE_ATT_HOST_DEVICE
 bool StepChecker::CompareStep(vecgeom::Vector3D<double> const &Position, vecgeom::Vector3D<double> const &Direction,

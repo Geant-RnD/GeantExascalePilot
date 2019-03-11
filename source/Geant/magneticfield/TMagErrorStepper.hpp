@@ -1,16 +1,16 @@
-#ifndef TMAGERRORSTEPPER_HH
-#define TMAGERRORSTEPPER_HH
+
+#pragma once
 
 #include <algorithm> // for std::max
 
 // #include "G4Types.hh"
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 // #include "ThreeVector.h"
 #include <base/Vector3D.h>
 // typedef vecgeom::Vector3D<double>  ThreeVector;
 
-#include "Geant/geometry/magneticfield/GULineSection.hpp"
+#include "Geant/magneticfield/GULineSection.hpp"
 
 namespace GUIntegrationNms {
 constexpr unsigned int NumVarBase = 8; //
@@ -254,5 +254,3 @@ double TMagErrorStepper<T_Stepper, T_Equation, Nvar>::DistChord(double /*charge*
   return distChord;
 }
 //#endif
-
-#endif /* TMagErrorStepper_HH */

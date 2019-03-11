@@ -32,7 +32,13 @@ if(NOT GEANT_USE_SUBMODULES)
     find_package(VecMath)
     find_package(VecGeom)
     list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
-        ${VecCore_INCLUDE_DIRS} ${VecMath_INCLUDE_DIRS} ${VecGeom_INCLUDE_DIR})
+        ${VecCore_INCLUDE_DIRS} ${VecMath_INCLUDE_DIRS} ${VecGeom_INCLUDE_DIRS})
+else()
+    list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
+        ${CMAKE_CURRENT_LIST_DIR}/VecCore/include
+        ${CMAKE_CURRENT_LIST_DIR}/VecMath/include
+        ${CMAKE_CURRENT_LIST_DIR}/VecGeom
+        ${CMAKE_CURRENT_BINARY_DIR}/VecCore/include)
 endif()
 
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
@@ -84,11 +90,8 @@ list(APPEND EXTERNAL_LIBRARIES
 
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/PTL/source
-    ${CMAKE_CURRENT_LIST_DIR}/VecCore/include
-    ${CMAKE_CURRENT_LIST_DIR}/VecMath/include
-    ${CMAKE_CURRENT_LIST_DIR}/VecGeom
-    ${CMAKE_CURRENT_BINARY_DIR}/VecCore/include)
+    ${CMAKE_BINARY_DIR} # hack until we fix Config.h
+    ${CMAKE_CURRENT_LIST_DIR}/PTL/source)
 
 # finally, add Geant
 add_subdirectory(Geant)

@@ -1,5 +1,5 @@
-#ifndef GEANT_TYPEDEFS_H
-#define GEANT_TYPEDEFS_H
+
+#pragma once
 
 #include "Geant/core/Config.hpp"
 #include "Geant/core/VectorTypes.hpp"
@@ -38,4 +38,3 @@ typedef geantphysics::Material Material_t;
 typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
 #include "volumes/PlacedVolume.h"
 typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
-#endif

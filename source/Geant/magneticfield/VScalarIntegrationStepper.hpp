@@ -19,11 +19,10 @@
 //                Derived from my G4MagIntegrationStepper class
 // --------------------------------------------------------------------
 
-#ifndef VScalarIntegrationStepper_h
-#define VScalarIntegrationStepper_h
+#pragma once
 
 // #include "GUVTypes.h"
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
 // class VScalarEquationOfMotion;
 
 class VScalarIntegrationStepper {
@@ -124,4 +123,3 @@ inline unsigned int VScalarIntegrationStepper::GetNumberOfStateVariables() const
   return fNoStateVariables;
 }
 
-#endif /* VScalarIntegrationStepper */

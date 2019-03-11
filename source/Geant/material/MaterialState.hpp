@@ -1,6 +1,5 @@
 
-#ifndef MATERIALSTATE_H
-#define MATERIALSTATE_H
+#pragma once
 
 namespace geantphysics {
 /**
@@ -19,4 +18,3 @@ enum class MaterialState {
 
 } // namespace geantphysics
 
-#endif // MATERIALSTATE_H

@@ -10,8 +10,7 @@
 // - Created. J.Apostolakis     Dec 2014/Jan 2015
 // -------------------------------------------------------------------
 
-#ifndef GUV_EquationOfMotion_H
-#define GUV_EquationOfMotion_H
+#pragma once
 
 #include <cassert>
 #include <iostream>
@@ -21,7 +20,7 @@
 #include <Geant/core/Config.hpp> // To define GEANT_FORCE_INLINE
 
 // #include "GUVTypes.hh"      // "globals.hh"
-#include "Geant/geometry/magneticfield/VVectorField.hpp" // required in inline method implementations
+#include "Geant/magneticfield/VVectorField.hpp" // required in inline method implementations
 
 class VScalarEquationOfMotion {
 public: // with description
@@ -132,5 +131,3 @@ void VScalarEquationOfMotion::EvaluateRhsReturnB(const double y[], double dydx[]
   GetFieldValue(ThreeVector(y[0], y[1], y[2]), field);
   EvaluateRhsGivenB(y, field, charge, dydx);
 }
-
-#endif /* GUV_EquationOfMotion_DEF */

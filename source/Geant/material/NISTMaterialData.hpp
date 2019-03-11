@@ -1,6 +1,5 @@
 
-#ifndef NISTMATERIALDATA_H
-#define NISTMATERIALDATA_H
+#pragma once
 
 #include "Geant/material/Types.hpp"
 
@@ -174,5 +173,3 @@ private:
 };
 
 } // namespace geantphysics
-
-#endif // NISTMATERIALDATA_H

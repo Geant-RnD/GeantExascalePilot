@@ -23,8 +23,7 @@
  *
  */
 
-#ifndef GEANT_PHYSICALCONSTANTS_H
-#define GEANT_PHYSICALCONSTANTS_H
+#pragma once
 
 #include "Geant/core/SystemOfUnits.hpp"
 
@@ -111,5 +110,3 @@ static constexpr double kUniverseMeanDensity = 1.e-25 * g / cm3;
 
 } // namespace units
 } // namespace geant
-
-#endif // PHYSICALCONSTANTS_H

@@ -1,6 +1,5 @@
 
-#ifndef MATERIALPROPERTIES_H
-#define MATERIALPROPERTIES_H
+#pragma once
 
 #include <iostream>
 
@@ -324,4 +323,3 @@ private:
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantphysics
 
-#endif // MATERIALPROPERTIES_H

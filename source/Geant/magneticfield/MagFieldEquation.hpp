@@ -1,11 +1,10 @@
 // Approach is derived from the Geant4 class G4MagFieldEquation
 //
 
+#pragma once
+
 #include <cmath>
 #include <iostream>
-
-#ifndef MagFieldEquation_H
-#define MagFieldEquation_H 1
 
 #include "base/Vector3D.h"
 #include <Geant/core/Config.hpp>
@@ -142,5 +141,3 @@ MagFieldEquation<Field>::RightHandSide(const Real_v y[], Real_v charge, Real_v d
 #endif
 
 #undef OUTSIDE_MagFieldEquation
-
-#endif // MagFieldEquation_H

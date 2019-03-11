@@ -19,8 +19,7 @@
 //   - a mixture of the two approaches.
 //  Current status: to be investigated, once classes are more stable.
 
-#ifndef GUFIELD_PROPAGATOR_POOL_H
-#define GUFIELD_PROPAGATOR_POOL_H 1
+#pragma once
 
 #include <cstddef>
 #include <vector>
@@ -30,7 +29,7 @@
 
 // class GUFieldPropagator;
 class VVectorField;
-#include "Geant/geometry/magneticfield/GUFieldPropagator.hpp"
+#include "Geant/magneticfield/GUFieldPropagator.hpp"
 
 class GUFieldPropagatorPool {
 public:
@@ -91,4 +90,3 @@ private:
 
 // }
 // }
-#endif

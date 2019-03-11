@@ -5,8 +5,7 @@
 //  Created by japost on 15.12.17.
 //
 
-#ifndef FlexIntegrationDriver_h
-#define FlexIntegrationDriver_h
+#pragma once
 
 class ScalarFieldTrack;
 struct FieldTrack;
@@ -41,5 +40,3 @@ public:
                                FieldTrack &yOutput, bool succeeded) const = 0;
 #endif
 };
-
-#endif /* FlexIntegrationDriver_h */

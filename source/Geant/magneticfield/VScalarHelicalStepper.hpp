@@ -13,15 +13,14 @@
 // - 16.10.15  J.Apostolakis   Created for testing other steppers
 // --------------------------------------------------------------------
 
-#ifndef VScalarHelicalStepper_h
-#define VScalarHelicalStepper_h 1
+#pragma once
 
 // #include <CLHEP/Units/PhysicalConstants.h>
 
 // #include "G4Types.hh"
 
-#include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
 // #include "ScalarFieldEquation.h"
 
 // #include "ThreeVector.h"
@@ -156,5 +155,3 @@ inline double VScalarHelicalStepper::GetRadHelix() const
 {
   return frHelix;
 }
-
-#endif /* VScalarHelicalStepper_h */

@@ -1,12 +1,11 @@
 // Approach is derived from the Geant4 class G4MagFieldEquation
 //
 
+#pragma once
+
 #include <cmath>
 
-#include "Geant/geometry/magneticfield/VScalarEquationOfMotion.hpp"
-
-#ifndef SCALAR_MAG_FIELD_EQUATION_H
-#define SCALAR_MAG_FIELD_EQUATION_H 1
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
 
 // #include <vector>
 #include "base/Vector3D.h"
@@ -270,4 +269,4 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::PrintInputFieldAndD
   std::cout << " dy/dx [3-5] (=dP/ds) = " << dydx[3] << " " << dydx[4] << " " << dydx[5] << std::endl;
   std::cout.unsetf(std::ios_base::fixed);
 }
-#endif // SCALAR_MAG_FIELD_EQUATION_H
+

@@ -7,8 +7,7 @@
  *  Started from ConstBzFieldHelixStepper by S. Wenzel
  */
 
-#ifndef CONSTVECFIELDHELIXSTEPPER_H_
-#define CONSTVECFIELDHELIXSTEPPER_H_
+#pragma once
 
 #include <base/Vector3D.h>
 #include <base/SOA3D.h>
@@ -436,5 +435,3 @@ GEANT_FORCE_INLINE void ConstFieldHelixStepper::PrintStep(vecgeom::Vector3D<Real
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-
-#endif /* CONSTVECFIELDHELIXSTEPPER_H_ */

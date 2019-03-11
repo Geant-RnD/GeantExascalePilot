@@ -3,7 +3,7 @@
 //
 // -------------------------------------------------------------------
 
-#include "Geant/geometry/magneticfield/ScalarFieldTrack.hpp"
+#include "Geant/magneticfield/ScalarFieldTrack.hpp"
 
 ScalarFieldTrack::ScalarFieldTrack(const ThreeVector &pPosition, const ThreeVector &pMomentum,
                                    // double       restMass_c2,

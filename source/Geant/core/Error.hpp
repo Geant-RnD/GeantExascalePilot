@@ -10,8 +10,7 @@
  */
 //===----------------------------------------------------------------------===//
 
-#ifndef GEANT_ERROR_H
-#define GEANT_ERROR_H
+#pragma once
 
 #include "Geant/core/Config.hpp"
 
@@ -137,4 +136,3 @@ VECCORE_ATT_HOST_DEVICE void Fatal(const char *location, const char *msgfmt, Arg
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
 
-#endif // GEANT_ERROR_H

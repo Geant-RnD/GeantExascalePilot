@@ -11,10 +11,10 @@
 //         (derived from G4CashKarpRKF45)
 //
 //
-#ifndef CASHKARPRKF45_H
-#define CASHKARPRKF45_H
 
-#include "Geant/geometry/magneticfield/GUVectorLineSection.hpp"
+#pragma once
+
+#include "Geant/magneticfield/GUVectorLineSection.hpp"
 // #include "VVectorIntegrationStepper.h"
 
 // #include "AlignedBase.h"  // ==> Ensures alignment of storage for Vector objects
@@ -370,5 +370,3 @@ inline geant::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
 #ifdef Outside_CashKarp
 #undef Outside_CashKarp
 #endif
-
-#endif /*GUV Vector CashKARP_RKF45 */

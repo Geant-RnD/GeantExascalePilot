@@ -19,12 +19,11 @@
 // - Contributors: Ananya, J.Apostolakis                    2015-2017
 // --------------------------------------------------------------------
 
-#ifndef SimpleIntegrationDriver_Def
-#define SimpleIntegrationDriver_Def
+#pragma once
 
-// #include "Geant/geometry/magneticfield/TemplateFieldTrack.hpp"
+// #include "Geant/magneticfield/TemplateFieldTrack.hpp"
 #include "base/AlignedBase.h"
-#include "Geant/geometry/magneticfield/FieldTrack.hpp"
+#include "Geant/magneticfield/FieldTrack.hpp"
 
 // #include "TemplateVScalarIntegrationStepper.h"
 // #include "IntegrationStepper.h"
@@ -32,14 +31,14 @@
 #include "base/Vector.h"
 
 // Adding because adding scalar stepper for new constructor (KeepStepping)
-// #include "Geant/geometry/magneticfield/VScalarIntegrationStepper.hpp"
+// #include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 // Adding to send in scalar driver to deal with 1/2 remaining lanes
-// #include "Geant/geometry/magneticfield/ScalarIntegrationDriver.hpp"
-// #include "Geant/geometry/magneticfield/ScalarFieldTrack.hpp"
+// #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
+// #include "Geant/magneticfield/ScalarFieldTrack.hpp"
 
-#include "Geant/geometry/magneticfield/FlexIntegrationDriver.hpp"
-#include "Geant/geometry/magneticfield/FormattedReporter.hpp"
+#include "Geant/magneticfield/FlexIntegrationDriver.hpp"
+#include "Geant/magneticfield/FormattedReporter.hpp"
 
 #include "Geant/core/VectorTypes.hpp" //  Defines geant::Double_v
 #include "Geant/core/math_wrappers.hpp"
@@ -296,7 +295,7 @@ private:
 
 }; // End of class definition -- SimpleIntegrationDriver
 
-// #include "Geant/geometry/magneticfield/FormattedReporter.hpp"
+// #include "Geant/magneticfield/FormattedReporter.hpp"
 
 template <class T_Stepper, unsigned int Nvar>
 template <class Real_v>
@@ -2020,4 +2019,4 @@ void SimpleIntegrationDriver<T_Stepper, Nvar>::AccurateAdvance(const FieldTrack 
 }
 #endif
 
-#endif /* SimpleIntegrationDriver_Def */
+
