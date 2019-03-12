@@ -17,4 +17,3 @@ enum class MaterialState {
 };
 
 } // namespace geantphysics
-

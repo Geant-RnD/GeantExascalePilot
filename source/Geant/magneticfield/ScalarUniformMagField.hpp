@@ -105,4 +105,3 @@ ScalarUniformMagField::ScalarUniformMagField(double vField, double vTheta, doubl
   fFieldComponents.Set(vField * Math::Sin(vTheta) * Math::Cos(vPhi), vField * Math::Sin(vTheta) * Math::Sin(vPhi),
                        vField * Math::Cos(vTheta));
 }
-

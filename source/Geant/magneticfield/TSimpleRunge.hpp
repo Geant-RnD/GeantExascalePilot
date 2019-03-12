@@ -102,4 +102,3 @@ inline __attribute__((always_inline)) void TSimpleRunge<T_Equation, Nvar>::StepW
     yOut[i] = yIn[i] + h * (dydxTemp[i]);
   }
 }
-

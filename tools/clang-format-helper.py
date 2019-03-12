@@ -7,7 +7,7 @@ from pathlib import Path
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 FILE_ROOT = os.path.dirname(os.path.realpath(__file__))
 CLANG_FORMAT_EXE = shutil.which('clang-format')
-DEFAULT_PATHS = [ 'source' ]
+DEFAULT_PATHS = [ os.path.join('source', 'Geant') ]
 FORMAT_MODE_OPTIONS = ['local', 'geant', 'custom', 'global']
 
 

@@ -131,4 +131,3 @@ bool WorkspaceForFieldPropagation::CheckSize(size_t numNeeded)
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-

@@ -129,4 +129,3 @@ inline geant::Double_v GUVectorLineSection::Dist(ThreeVectorSimd OtherPnt) const
 
   return vecCore::math::Sqrt(dist_sq);
 }
-

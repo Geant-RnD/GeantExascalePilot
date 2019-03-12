@@ -201,4 +201,3 @@ inline void ReportArray(const char *methodName, const std::string &variableName,
 }
 
 }; // namespace FormattedReporter
-

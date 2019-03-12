@@ -49,4 +49,3 @@ private:
   // ScalarMagFieldEquation*
   VScalarEquationOfMotion *fPtrMagEqOfMot;
 };
-

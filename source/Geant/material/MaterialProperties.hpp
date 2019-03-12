@@ -322,4 +322,3 @@ private:
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantphysics
-

@@ -269,4 +269,3 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::PrintInputFieldAndD
   std::cout << " dy/dx [3-5] (=dP/ds) = " << dydx[3] << " " << dydx[4] << " " << dydx[5] << std::endl;
   std::cout.unsetf(std::ios_base::fixed);
 }
-

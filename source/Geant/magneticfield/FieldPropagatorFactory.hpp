@@ -204,4 +204,3 @@ inline FlexIntegrationDriver *FieldPropagatorFactory::CreateFlexibleDriver(Field
 }
 
 // template<typename Field_t, typename Equation_t>
-

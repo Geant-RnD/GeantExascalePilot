@@ -135,4 +135,3 @@ VECCORE_ATT_HOST_DEVICE void Fatal(const char *location, const char *msgfmt, Arg
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
-

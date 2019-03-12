@@ -2347,4 +2347,3 @@ void TemplateGUIntegrationDriver<Backend>::SetSteppingMethod(bool steppingMethod
 {
   oneStep = steppingMethod;
 }
-

@@ -122,4 +122,3 @@ inline unsigned int VScalarIntegrationStepper::GetNumberOfStateVariables() const
 {
   return fNoStateVariables;
 }
-

@@ -15,11 +15,9 @@
 #include "PTL/ThreadPool.hh"
 #include "PTL/Threading.hh"
 
-namespace geant
-{
+namespace geant {
 
-inline namespace tasking
-{
+inline namespace tasking {
 
 inline void init_thread_data(ThreadPool *tp)
 {
@@ -63,21 +61,18 @@ inline void init_run_manager(TaskRunManager *run_man,
   static int verbose = GetEnv<int>("TASKING_VERBOSE", 0);
 
   {
-      // instance should be thread-local but just in-case
+    // instance should be thread-local but just in-case
     AutoLock l(TypeMutex<TaskRunManager>());
     if (!run_man->IsInitialized()) {
-        if(verbose > 0)
-        {
-          AutoLock l(TypeMutex<decltype(std::cout)>());
-          std::cout << "\n"
-                    << "[" << tid << "] Initializing tasking run manager with " << nthreads << " threads..."
-                    << std::endl;
-        }
+      if (verbose > 0) {
+        AutoLock l(TypeMutex<decltype(std::cout)>());
+        std::cout << "\n"
+                  << "[" << tid << "] Initializing tasking run manager with " << nthreads << " threads..." << std::endl;
+      }
       run_man->Initialize(nthreads);
     }
   }
   init_thread_data(run_man->GetThreadPool());
-
 }
 
 } // namespace tasking

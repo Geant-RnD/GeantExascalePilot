@@ -282,4 +282,3 @@ inline geant::Double_v VectorCashKarpRKF45<T_Equation, Nvar>::DistChord() const
 #endif
   return distChord;
 }
-

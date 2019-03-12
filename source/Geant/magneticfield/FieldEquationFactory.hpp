@@ -36,4 +36,3 @@ FieldEquationFactory::CreateMagEquation(FieldType &field)
 {
   return new ScalarMagFieldEquation<FieldType, Nposmom>(&field);
 }
-

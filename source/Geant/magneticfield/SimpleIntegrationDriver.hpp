@@ -2018,5 +2018,3 @@ void SimpleIntegrationDriver<T_Stepper, Nvar>::AccurateAdvance(const FieldTrack 
                           &yOutput, &succeeded, 1);
 }
 #endif
-
-

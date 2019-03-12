@@ -404,4 +404,3 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintDyDxLong(const char *label,
   std::cout << "                                 "
             << "         p = " << y[3] << " , " << y[4] << " , " << y[5] << " ) " << std::endl;
 }
-

@@ -94,4 +94,3 @@ inline double GULineSection::Dist(ThreeVector OtherPnt) const
 
   return std::sqrt(dist_sq);
 }
-

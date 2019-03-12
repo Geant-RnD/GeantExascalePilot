@@ -79,4 +79,3 @@ public:
 private:
   vecgeom::Vector3D<float> fFieldComponents;
 };
-
