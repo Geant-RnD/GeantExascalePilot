@@ -6,7 +6,6 @@
 
 namespace geant {
 inline namespace cxx {
-
 void ErrorHandlerImpl(EMsgLevel level, const char *location, const char *msgfmt, ...)
 {
   va_list args;

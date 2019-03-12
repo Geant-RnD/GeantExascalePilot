@@ -19,8 +19,8 @@ using geant::units::kTwoPi;
 
 #include <cfloat>
 
-#include "Geant/magneticfield/GUExactHelixStepper.hpp"
 #include "Geant/core/math_wrappers.hpp"
+#include "Geant/magneticfield/GUExactHelixStepper.hpp"
 // #include "GUPhysicalConstants.h"
 // #include "ThreeVector.h"
 // #include "Geant/magneticfield/GULineSection.hpp"

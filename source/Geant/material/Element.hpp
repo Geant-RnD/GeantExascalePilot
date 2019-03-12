@@ -2,8 +2,8 @@
 #pragma once
 
 #include "Geant/core/Config.hpp"
-#include "Geant/material/Types.hpp"
 #include "Geant/material/Isotope.hpp"
+#include "Geant/material/Types.hpp"
 
 #include <string>
 
@@ -11,7 +11,6 @@ GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Element);
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 class Isotope;
 class ElementProperties;
 

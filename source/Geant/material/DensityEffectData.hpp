@@ -53,7 +53,6 @@ namespace geantphysics {
 enum class MaterialState;
 
 class DensityEffectData {
-
 public:
   /** @brief Public method to access the singletone database instance. */
   static DensityEffectData &Instance();
@@ -111,13 +110,11 @@ public:
 
   /** @brief Get density parameter \f$ -C \f$ of the material.
    *
-   *  Important to note, that density parameter \f$ -C=2\ln(I/(h\nu_{p})) +1 \f$ where \f$ I \f$ is the mean excitation
-   * energy
-   *  of the material, \f$ h\nu_{p} \f$ is the plasma energy. The plasma energy depends on the material density and
-   * molar mass.
-   *  Therefore, this density parameter will be corret only in the case if the mean excitation energy, density and molar
-   * mass
-   *  of the material are exactly the same as in the corresponding NIST material.
+   *  Important to note, that density parameter \f$ -C=2\ln(I/(h\nu_{p})) +1 \f$ where \f$ I \f$ is the mean
+   * excitation energy of the material, \f$ h\nu_{p} \f$ is the plasma energy. The plasma energy depends on the
+   * material density and molar mass. Therefore, this density parameter will be corret only in the case if the mean
+   * excitation energy, density and molar mass of the material are exactly the same as in the corresponding NIST
+   * material.
    */
   double GetParameterC(const int indx) const { return fDensityEffectDataTable[indx].fParameterC; }
 

@@ -30,7 +30,6 @@ enum class EMsgLevel {
 };
 
 inline namespace GEANT_IMPL_NAMESPACE {
-
 #ifndef VECCORE_CUDA
 void ErrorHandlerImpl(EMsgLevel level, const char *location, const char *msgfmt, ...);
 #endif

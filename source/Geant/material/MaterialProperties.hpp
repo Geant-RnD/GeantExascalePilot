@@ -7,7 +7,6 @@
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 /**
  * @brief   Class to represent derived material properties.
  * @class   MaterialProperties
@@ -217,7 +216,8 @@ public:
   double GetEffectiveZ() const { return fZeff; }
 
   /** @brief Public method to get the number of atoms per volume for each elements this material is built up.
-   *  @return Number of atoms per volume for each elements this material is built up [Material::GetNumberOfElements()].
+   *  @return Number of atoms per volume for each elements this material is built up
+   * [Material::GetNumberOfElements()].
    */
   const double *GetNumOfAtomsPerVolumeVect() const { return fNumOfAtomsPerVolVect; }
   //@}

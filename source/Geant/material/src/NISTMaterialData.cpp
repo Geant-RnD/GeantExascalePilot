@@ -4,7 +4,6 @@
 #include "Geant/material/MaterialState.hpp"
 
 namespace geantphysics {
-
 NISTMaterialData &NISTMaterialData::Instance()
 {
   static NISTMaterialData instance;

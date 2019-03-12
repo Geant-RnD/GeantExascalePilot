@@ -1,9 +1,9 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 namespace geantphysics {
 // forward declarations
@@ -67,9 +67,9 @@ private:
   double fPDGMass;
   double fPDGCharge;
 
-  std::vector<PhysicsProcess *> fPhysicsProcessVector; // only one and used only as temporary storage
-  std::vector<PhysicsManagerPerParticle *>
-      fPMPParticle; // as many as regions but those having no any active processes will be nullptr
+  std::vector<PhysicsProcess *> fPhysicsProcessVector;   // only one and used only as temporary storage
+  std::vector<PhysicsManagerPerParticle *> fPMPParticle; // as many as regions but those having no any active
+                                                         // processes will be nullptr
 
   // the particle table
   static std::vector<Particle *> gTheParticleTable;

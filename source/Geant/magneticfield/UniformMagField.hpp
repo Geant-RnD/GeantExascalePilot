@@ -6,8 +6,8 @@
 
 #include <iostream>
 
-#include <base/Vector3D.h>
 #include <Geant/core/VectorTypes.hpp>
+#include <base/Vector3D.h>
 
 #include "Geant/magneticfield/VVectorField.hpp"
 

@@ -10,8 +10,8 @@
 // #include <vector>
 #include "base/Vector3D.h"
 
-#include "Geant/core/SystemOfUnits.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/core/SystemOfUnits.hpp"
 
 template <class Field, unsigned int Size>
 class ScalarMagFieldEquation : public VScalarEquationOfMotion {
@@ -201,7 +201,6 @@ template <class Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::RightHandSide(const double y[], double charge,
                                                                            double dydx[]) const
 {
-
   vecgeom::Vector3D<double> BfieldVec;
 
   FieldFromY(y, BfieldVec);

@@ -2,17 +2,16 @@
 #include "Geant/material/Element.hpp"
 
 #include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/material/ElementProperties.hpp"
 #include "Geant/material/Isotope.hpp"
 #include "Geant/material/NISTElementData.hpp"
-#include "Geant/material/ElementProperties.hpp"
 
-#include <iostream>
-#include <iomanip>
 #include <cmath>
+#include <iomanip>
+#include <iostream>
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 // static data member init
 Vector_t<Element *> Element::gTheElementTable; // the global element table
 
@@ -309,7 +308,6 @@ void Element::AddNaturalIsotopes()
               << "\"natural\" abudance = 1.0 in order to avoid having an element without any isotopes.\n"
               << "Note, that elements can be built up by specifying their isotopes. We strongly recommend\n"
               << "to use this later possibility in case of element Z = " << Z << " !" << std::endl;
-
   } else {
     // set container size
     fIsotopeVector.resize(fCurNumOfIsotopes, 0);

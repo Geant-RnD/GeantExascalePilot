@@ -3,13 +3,12 @@
 
 #include "Geant/core/SystemOfUnits.hpp"
 
-#include <iostream>
-#include <iomanip>
-#include <cmath>
 #include "Geant/core/math_wrappers.hpp"
+#include <cmath>
+#include <iomanip>
+#include <iostream>
 
 namespace geantphysics {
-
 std::vector<PhysicsParameters *> PhysicsParameters::gThePhysicsParametersTable;
 
 // set to default values

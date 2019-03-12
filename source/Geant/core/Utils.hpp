@@ -13,12 +13,11 @@
 #pragma once
 
 #include "Geant/core/Config.hpp"
-#include <string>
 #include <libgen.h>
+#include <string>
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 inline std::string GetDataFileLocation(int argc, char **argv, const char *dataFilename)
 {
   const char *dir = argc > 0 ? dirname(argv[0]) : ".";

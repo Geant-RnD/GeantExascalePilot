@@ -32,10 +32,10 @@
 
 #pragma once
 
-#include <vector>
-#include "base/Vector3D.h"
 #include "base/Global.h"
+#include "base/Vector3D.h"
 #include <Geant/core/VectorTypes.hpp>
+#include <vector>
 
 // #include "GUVTypes.hh"
 // #include "globals.hh"
@@ -45,7 +45,6 @@
  */
 
 class VVectorField {
-
 public: // with description
   using Double_v = geant::Double_v;
   using Float_v  = geant::Float_v;

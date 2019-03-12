@@ -16,9 +16,7 @@
 #include "PTL/Threading.hh"
 
 namespace geant {
-
 inline namespace tasking {
-
 inline void init_thread_data(ThreadPool *tp)
 {
   ThreadData *&thread_data = ThreadData::GetInstance();

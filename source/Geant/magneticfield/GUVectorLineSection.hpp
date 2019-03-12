@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include <base/Vector3D.h>
 #include <Geant/core/VectorTypes.hpp>
+#include <base/Vector3D.h>
 
 class GUVectorLineSection {
   using Double_v = geant::Double_v;
@@ -86,9 +86,9 @@ inline geant::Double_v GUVectorLineSection::Dist(ThreeVectorSimd OtherPnt) const
   // vecCore::MaskedAssign( dist_sq, negativeProj, sq_VecAZ );
   vecCore::MaskedAssign(dist_sq, unit_projection < 0.0, sq_VecAZ);
 
-  // vecCore::MaskedAssign( (fABdistanceSq != 0.0) && (unit_projection > 1.0), (OtherPnt -(EndpointA + VecAtoB)).Mag2(),
-  // &dist_sq);
-  // Mask<geant::Double_v> condDistProj=  (fABdistanceSq != 0.0) && (unit_projection > 1.0),;
+  // vecCore::MaskedAssign( (fABdistanceSq != 0.0) && (unit_projection > 1.0), (OtherPnt -(EndpointA +
+  // VecAtoB)).Mag2(), &dist_sq); Mask<geant::Double_v> condDistProj=  (fABdistanceSq != 0.0) && (unit_projection
+  // > 1.0),;
   vecCore::MaskedAssign(dist_sq,
                         // condDistProj,
                         (fABdistanceSq != 0.0) && (unit_projection > 1.0), (OtherPnt - (EndpointA + VecAtoB)).Mag2());

@@ -22,7 +22,6 @@ namespace geantphysics {
 enum class MaterialState;
 
 class NISTMaterialData {
-
 public:
   /** @brief Public method to access the singletone database instance. */
   static NISTMaterialData &Instance();

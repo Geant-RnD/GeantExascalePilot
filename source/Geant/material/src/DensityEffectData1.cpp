@@ -1,10 +1,9 @@
 
-#include "Geant/material/DensityEffectData.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/material/DensityEffectData.hpp"
 #include "Geant/material/MaterialState.hpp"
 
 namespace geantphysics {
-
 void DensityEffectData::BuildTable()
 {
   using geant::units::eV;

@@ -3,11 +3,10 @@
 
 #include "Geant/core/PhysicalConstants.hpp"
 
-#include <cmath>
 #include <Geant/core/math_wrappers.hpp>
+#include <cmath>
 
 namespace geantphysics {
-
 void NISTElementData::BuildTable()
 {
   using geant::units::eV;

@@ -4,11 +4,10 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/material/Element.hpp"
 
-#include <cmath>
 #include "Geant/core/math_wrappers.hpp"
+#include <cmath>
 
 namespace geantphysics {
-
 ElementProperties::ElementProperties(Element *elem) : fElement(elem)
 {
   InitialiseMembers();

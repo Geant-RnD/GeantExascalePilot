@@ -6,7 +6,6 @@
 #include <iostream>
 
 namespace geantphysics {
-
 DensityEffectData &DensityEffectData::Instance()
 {
   static DensityEffectData instance;

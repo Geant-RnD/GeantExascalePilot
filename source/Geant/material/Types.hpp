@@ -13,15 +13,14 @@
 #include "Geant/core/Config.hpp"
 
 #ifdef USE_VECGEOM_CONTAINERS
-#include "base/Vector.h"
 #include "base/Map.h"
+#include "base/Vector.h"
 #else
-#include <vector>
 #include <map>
+#include <vector>
 #endif
 
 namespace geantphysics {
-
 #ifdef USE_VECGEOM_CONTAINERS
 template <class T>
 using Vector_t = vecgeom::Vector<T>;

@@ -28,7 +28,6 @@
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 inline void HandleCudaError(cudaError_t err, const char *file, int line)
 {
   if (err != cudaSuccess) {

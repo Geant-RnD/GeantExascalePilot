@@ -1,11 +1,10 @@
 #include "Geant/material/NISTElementData.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 namespace geantphysics {
-
 NISTElementData &NISTElementData::Instance()
 {
   static NISTElementData instance;

@@ -15,8 +15,8 @@
 #include "Geant/core/Config.hpp"
 #include "Geant/core/Typedefs.hpp"
 
-#include "base/Global.h"
 #include "Geant/core/Fwd.hpp"
+#include "base/Global.h"
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
@@ -30,7 +30,6 @@ class TrackDataMgr;
  * @brief Class describing physics interface
  */
 class PhysicsInterface {
-
 public:
   using TaskData     = geant::TaskData;
   using TrackDataMgr = geant::TrackDataMgr;

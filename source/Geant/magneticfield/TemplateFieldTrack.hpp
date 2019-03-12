@@ -136,7 +136,6 @@ inline TemplateFieldTrack<Real_v>::TemplateFieldTrack(const TemplateFieldTrack<R
 // fMomentumDir( rStVec.fMomentumDir ),
 // fCharge( rStVec.fCharge )
 {
-
   // try auto-vectorization
   for (int i = 0; i < 6; ++i) {
     fPositionMomentum[i] = rStVec.fPositionMomentum[i];
@@ -273,7 +272,6 @@ inline vecgeom::Vector3D<Real_v> TemplateFieldTrack<Real_v>::GetMomentum() const
 template <class Real_v>
 inline void TemplateFieldTrack<Real_v>::DumpToArray(Real_v valArr[ncompSVEC]) const
 {
-
   // try auto-vectorization
   for (int i = 0; i < 6; ++i) {
     valArr[i] = fPositionMomentum[i];
@@ -343,9 +341,9 @@ TemplateFieldTrack<Real_v>::TemplateFieldTrack(const vecgeom::Vector3D<Real_v> &
 template <class Real_v>
 TemplateFieldTrack<Real_v>::TemplateFieldTrack(char) //  Nothing is set !!
     :                                                // fKineticEnergy(0.),
-      // fRestMass_c2(0.),
-      fLabTimeOfFlight(0.), fProperTimeOfFlight(0.) // ,
-                                                    // fCharge(  DBL_MAX )
+                                                     // fRestMass_c2(0.),
+      fLabTimeOfFlight(0.), fProperTimeOfFlight(0.)  // ,
+                                                     // fCharge(  DBL_MAX )
 {
   vecgeom::Vector3D<Real_v> Zero(0.0, 0.0, 0.0);
 

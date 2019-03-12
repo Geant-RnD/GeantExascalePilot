@@ -5,19 +5,18 @@
 
 #include "Geant/core/PhysicalConstants.hpp"
 
-#include "Geant/material/Material.hpp"
-#include "Geant/material/Element.hpp"
-#include "Geant/material/NISTMaterialData.hpp"
 #include "Geant/material/DensityEffectData.hpp"
+#include "Geant/material/Element.hpp"
+#include "Geant/material/Material.hpp"
+#include "Geant/material/NISTMaterialData.hpp"
 
-#include <cmath>
-#include <limits>
-#include <iomanip>
 #include "Geant/core/math_wrappers.hpp"
+#include <cmath>
+#include <iomanip>
+#include <limits>
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 //
 // CTR
 MaterialProperties::MaterialProperties(Material *mat) : fMaterial(mat)
@@ -144,8 +143,9 @@ void MaterialProperties::ComputeDensityEffectParameters()
   int numElems = fMaterial->GetNumberOfElements();
   if (indx < 0 && numElems == 1) {
     int z0 = std::lrint(fMaterial->GetElementVector()[0]->GetZ());
-    indx   = DensityEffectData::Instance().GetElementalIndex(
-        z0, fMaterial->GetMaterialState()); // elements trat with index=1 in DensityeffectData
+    indx   = DensityEffectData::Instance().GetElementalIndex(z0, fMaterial->GetMaterialState()); // elements trat
+                                                                                                 // with index=1 in
+                                                                                                 // DensityeffectData
     // indx will be -1 if there is no macth
     // set corrector factor if the material was found with the correct state
     if (indx > 0) { // simple NIST material DenistyEffectData was found with the correct state

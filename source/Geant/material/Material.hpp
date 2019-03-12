@@ -4,8 +4,8 @@
 #include "Geant/material/Types.hpp"
 
 #include "Geant/core/PhysicalConstants.hpp"
-#include "Geant/material/MaterialState.hpp"
 #include "Geant/material/Element.hpp"
+#include "Geant/material/MaterialState.hpp"
 
 #include <string>
 
@@ -13,7 +13,6 @@ GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Material);
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 class MaterialProperties;
 class Element;
 

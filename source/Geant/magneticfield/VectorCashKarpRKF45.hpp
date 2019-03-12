@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include "Geant/magneticfield/GUVectorLineSection.hpp"
 #include "GUVVectorIntegrationStepper.h"
+#include "Geant/magneticfield/GUVectorLineSection.hpp"
 
 // #include "Geant/magneticfield/TMagErrorStepper.hpp" //for sake of GUIntegrationNms::NumVars
 // #include "TemplateTMagErrorStepper.h"

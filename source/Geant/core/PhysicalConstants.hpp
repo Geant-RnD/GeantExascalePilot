@@ -29,7 +29,6 @@
 
 namespace geant {
 namespace units {
-
 //
 //
 //

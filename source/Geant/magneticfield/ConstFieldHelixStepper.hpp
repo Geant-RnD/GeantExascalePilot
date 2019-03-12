@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include <base/Vector3D.h>
-#include <base/SOA3D.h>
 #include <Geant/core/Config.hpp>
 #include <Geant/core/VectorTypes.hpp>
+#include <base/SOA3D.h>
+#include <base/Vector3D.h>
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {

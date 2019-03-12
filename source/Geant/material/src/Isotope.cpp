@@ -1,15 +1,14 @@
 
 #include "Geant/material/Isotope.hpp"
 
-#include "Geant/material/NISTElementData.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/material/NISTElementData.hpp"
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 // static data member init
 Vector_t<Isotope *> Isotope::gTheIsotopeTable; // global isotope table
 Map_t<int, int> Isotope::gTheIsotopeMap;       // map to get iso. the index (used only internaly)

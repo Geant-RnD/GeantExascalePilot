@@ -2,17 +2,16 @@
 #include "Geant/material/Material.hpp"
 
 #include "Geant/material/Element.hpp"
+#include "Geant/material/MaterialProperties.hpp"
 #include "Geant/material/NISTElementData.hpp"
 #include "Geant/material/NISTMaterialData.hpp"
-#include "Geant/material/MaterialProperties.hpp"
 
-#include <iostream>
-#include <iomanip>
 #include <cmath>
+#include <iomanip>
+#include <iostream>
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 Vector_t<Material *> Material::gTheMaterialTable;
 Map_t<std::string, int> Material::gMapMaterialNameToIndex;
 

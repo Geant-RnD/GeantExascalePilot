@@ -5,7 +5,6 @@
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 struct WorkspaceForFieldPropagation {
 public:
   WorkspaceForFieldPropagation(size_t bufferSize);

@@ -19,8 +19,8 @@
 
 // #include "G4Types.hh"
 
-#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 #include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 // #include "ScalarFieldEquation.h"
 
 // #include "ThreeVector.h"

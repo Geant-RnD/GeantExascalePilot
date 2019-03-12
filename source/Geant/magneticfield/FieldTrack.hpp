@@ -10,11 +10,10 @@ Functions DumpToArray and LoadFromArray can be removed
           if this is changed into a struct - i.e. PosMomVector is made public data member.
 Same goes for SetCurveLength and GetCurveLength functions.
 ----------------*/
-#include <vector>
 #include <iostream>
+#include <vector>
 
 struct FieldTrack {
-
 public:
   static constexpr int NumCompFT = 6; // Number of components
 

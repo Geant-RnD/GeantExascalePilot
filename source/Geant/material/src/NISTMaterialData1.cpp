@@ -1,10 +1,9 @@
 
-#include "Geant/material/NISTMaterialData.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/material/MaterialState.hpp"
+#include "Geant/material/NISTMaterialData.hpp"
 
 namespace geantphysics {
-
 void NISTMaterialData::BuildTable()
 {
   //

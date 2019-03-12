@@ -18,14 +18,14 @@
 #include "Geant/magneticfield/GUFieldPropagatorPool.hpp"
 
 // #ifndef FLEXIBLE_FIELD
-#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
 #include "Geant/magneticfield/FieldEquationFactory.hpp"
-#include "Geant/tracking/StepperFactory.hpp"
 #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
+#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
+#include "Geant/tracking/StepperFactory.hpp"
 // #else
-#include "Geant/magneticfield/MagFieldEquation.hpp"
 #include "Geant/magneticfield/CashKarp.hpp"
 #include "Geant/magneticfield/FlexIntegrationDriver.hpp"
+#include "Geant/magneticfield/MagFieldEquation.hpp"
 #include "Geant/magneticfield/SimpleIntegrationDriver.hpp"
 // #endif
 
@@ -107,7 +107,8 @@ inline GUFieldPropagator *FieldPropagatorFactory::CreatePropagator( // Field_t& 
     std::cout << methodName << "  scalarDriver = " << &integrDriver << std::endl;
     std::cout << methodName << "  vectorDriver = " << flexDriver << std::endl;
     // geant::Printf("FieldPropagatorFactory::CreatePropagator",
-    //             "Parameters for RK integration in magnetic field: \n - Integration constraint:  eps_tol=  %8.3g\n",
+    //             "Parameters for RK integration in magnetic field: \n - Integration constraint:  eps_tol=
+    //             %8.3g\n",
     //              relEpsilonTolerance);
   }
 

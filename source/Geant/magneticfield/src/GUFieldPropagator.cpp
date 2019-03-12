@@ -6,16 +6,16 @@
 
 #include "Geant/magneticfield/GUFieldPropagator.hpp"
 
-#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
-#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
-#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
+#include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 #include "Geant/magneticfield/GUTCashKarpRKF45.hpp" //  ie ScalarCashKarp
 
-#include "Geant/magneticfield/MagFieldEquation.hpp"
 #include "Geant/magneticfield/CashKarp.hpp"
 #include "Geant/magneticfield/FlexIntegrationDriver.hpp"
+#include "Geant/magneticfield/MagFieldEquation.hpp"
 #include "Geant/magneticfield/SimpleIntegrationDriver.hpp"
 
 // template <class Equation, unsigned int> using ScalarCashKarp= GUTCashKarpRKF45;
@@ -87,7 +87,6 @@ void GUFieldPropagator::SetFlexIntegrationDriver(FlexIntegrationDriver *flexDriv
     fVectorDriver = flexDriver;
 
     if (fVerboseConstruct) std::cout << "Replacing Vector/Flexible Driver" << std::endl;
-
   } else if (fVectorDriver && flexDriver) {
     std::cout << methodName << "> Not overwriting with Vector/Flexible Driver: already set!" << std::endl;
   }

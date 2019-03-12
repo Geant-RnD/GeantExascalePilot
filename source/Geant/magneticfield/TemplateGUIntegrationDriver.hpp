@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include "TemplateGUFieldTrack.h"
 #include "AlignedBase.h"
 #include "Geant/magneticfield/FieldTrack.hpp"
+#include "TemplateGUFieldTrack.h"
 
 #include "TemplateVScalarIntegrationStepper.h"
 
@@ -25,8 +25,8 @@
 #include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 // Adding to send in scalar driver to deal with 1/2 remaining lanes
-#include "Geant/magneticfield/TemplateGUIntegrationDriver.hpp"
 #include "GUFieldTrack.h"
+#include "Geant/magneticfield/TemplateGUIntegrationDriver.hpp"
 
 #define NEWACCURATEADVANCE
 
@@ -179,8 +179,8 @@ public: // with description
 
   Double_v ComputeNewStepSize_WithinLimits(Double_v errMaxNorm,    // normalised error
                                            Double_v hstepCurrent); // current step size
-                                                                   // Taking the last step's normalised error, calculate
-                                                                   // a step size for the next step.
+                                                                   // Taking the last step's normalised error,
+                                                                   // calculate a step size for the next step.
   // Limit the next step's size within a range around the current one.
 
   inline int GetMaxNoSteps() const;
@@ -374,10 +374,10 @@ inline void TemplateGUIntegrationDriver<Backend>::SetMaxNoSteps(int val)
 }
 
 template <class Backend>
-inline void TemplateGUIntegrationDriver<Backend>::GetDerivatives(
-    const TemplateGUFieldTrack<Backend> &y_curr, // const, INput
-    typename Backend::precision_v charge,
-    typename Backend::precision_v dydx[]) // OUTput
+inline void TemplateGUIntegrationDriver<Backend>::GetDerivatives(const TemplateGUFieldTrack<Backend> &y_curr, // const,
+                                                                                                              // INput
+                                                                 typename Backend::precision_v charge,
+                                                                 typename Backend::precision_v dydx[]) // OUTput
 {
   typename Backend::precision_v tmpValArr[TemplateGUFieldTrack<Backend>::ncompSVEC];
   y_curr.DumpToArray(tmpValArr);
@@ -1467,7 +1467,6 @@ bool TemplateGUIntegrationDriver<vecgeom::kVc>::InsertNewTrack(/*const*/ FieldTr
 
   bool done = true; // to get the while loop starting
   while (trackNextInput < fNTracks && done == true) {
-
     // Ensure that hstep > 0
     double hStepNext = hstep[trackNextInput];
     if (hStepNext <= 0) {
@@ -1831,7 +1830,6 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::KeepStepping(typename vecgeom::k
         for (int i = 0; i < kVectorSize; ++i) {
           // Probably could use several MaskedAssigns as well
           if (errMaxLessThanOneLocal[i] == 1 && htryExhausted[i] == false) {
-
             //----- StoreFinalValues() ----
             finished[i]          = -1;
             errMaxLessThanOne[i] = 1;
@@ -1892,7 +1890,6 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::KeepStepping(typename vecgeom::k
         for (int i = 0; i < kVectorSize; ++i) {
           // Probably could use several MaskedAssigns as well
           if (hIsZeroCondLocal[i] == 1 && htryExhausted[i] == false) {
-
             /* StoreFinalValues() */
             finished[i]    = -1;
             hIsZeroCond[i] = 1;
@@ -2244,9 +2241,9 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(/*const*/ FieldT
             nstp[i]     = 1;            // logically part of InsertNewTrack, not done so to reduce
             lastStep[i] = false;        // number of parameters to be passed to the function
             x[i]        = x1[i];        // ?? Needed? Find something to set x<x2
-            h[i]        = hStepLane[i]; // Can absorb in InsertNewTrack as well, leads to too many variables though
-                                        // Maybe ask John interpretation of this h and then put in InsertNewTrack
-                                        // with appropriate name
+            h[i]        = hStepLane[i]; // Can absorb in InsertNewTrack as well, leads to too many variables
+                                        // though Maybe ask John interpretation of this h and then put in
+                                        // InsertNewTrack with appropriate name
             x2[i] = x[i] + hStepLane[i];
 
             hTotalDoneSoFar[i] = 0.; // Setting to 0 for every new track inserted.
@@ -2296,8 +2293,8 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(/*const*/ FieldT
           GUFieldTrack y_input(Pos, Mom);
           GUFieldTrack y_output(Pos, Mom);
           // y_input.SetCurveLength( hTotalDoneSoFar[indLastLane] ) ;
-          fpScalarDriver->AccurateAdvance(y_input, hstep[ fIndex[indLastLane] ] - hTotalDoneSoFar[indLastLane], epsilon,
-       y_output );
+          fpScalarDriver->AccurateAdvance(y_input, hstep[ fIndex[indLastLane] ] - hTotalDoneSoFar[indLastLane],
+       epsilon, y_output );
 
           isDoneLane[indLastLane] == true;
           // Store Output

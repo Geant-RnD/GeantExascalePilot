@@ -15,8 +15,8 @@
 typedef vecgeom::Vector3D<double> ThreeVector;
 
 // #include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
-#include "Geant/magneticfield/VScalarHelicalStepper.hpp"
 #include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
+#include "Geant/magneticfield/VScalarHelicalStepper.hpp"
 
 class GUExactHelixStepper : public VScalarHelicalStepper {
 public:                                                // with description

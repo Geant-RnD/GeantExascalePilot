@@ -4,7 +4,6 @@
 #include "Geant/core/SystemOfUnits.hpp"
 
 namespace geantphysics {
-
 PionMinus *PionMinus::Definition()
 {
   static PionMinus instance("pi-", -211, 11, 0.13957 * geant::units::GeV,

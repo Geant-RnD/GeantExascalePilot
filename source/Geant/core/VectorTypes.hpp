@@ -1,13 +1,12 @@
 
 #pragma once
 
+#include <Geant/core/Config.hpp>
 #include <base/Global.h>
 #include <base/Vector3D.h>
-#include <Geant/core/Config.hpp>
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 using VectorBackend = vecgeom::VectorBackend;
 typedef VectorBackend::Float_v Float_v;
 typedef VectorBackend::Double_v Double_v;

@@ -4,7 +4,6 @@
 //#include "Geant/core/PhysicalConstants.hpp"
 
 namespace geantphysics {
-
 std::vector<Particle *> Particle::gTheParticleTable;
 std::vector<Particle *> Particle::gInternalParticleCodes;
 std::map<unsigned int, unsigned int> Particle::gPDGtoInternalCode;

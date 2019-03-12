@@ -4,7 +4,6 @@
 #include "Geant/core/SystemOfUnits.hpp"
 
 namespace geantphysics {
-
 Neutron *Neutron::Definition()
 {
   static Neutron instance("neutron", 2112, 3, geant::units::kNeutronMassC2, 0);

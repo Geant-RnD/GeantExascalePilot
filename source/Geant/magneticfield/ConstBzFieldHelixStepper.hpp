@@ -12,7 +12,6 @@
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 /**
  * A very simple stepper treating the propagation of particles in a constant Bz magnetic field
  * ( neglecting energy loss of particle )

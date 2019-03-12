@@ -3,13 +3,12 @@
 
 #pragma once
 
-#include <fstream>
 #include <cstdlib>
+#include <fstream>
 #include <iomanip>
 
 namespace FormattedReporter // Was ReportValuesOfVectors
 {
-
 const int sDefaultNameLength = 14;
 const int sDefaultVarSize    = 12;
 
@@ -181,7 +180,6 @@ inline void ReportArray(const char *methodName, const std::string &variableName,
   const int charWidth    = precisionVal + 2;
 
   if (banner) {
-
     cout << " **** Method " << std::setw(wdName) << methodName << " values of arrays: " << endl;
     cout << std::setw(wdName) << "Variable Name"
          << " :";

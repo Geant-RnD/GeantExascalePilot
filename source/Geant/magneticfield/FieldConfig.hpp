@@ -18,7 +18,6 @@
 
 namespace geant {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 // This class owns the field Object which it is passed.
 
 class FieldConfig {

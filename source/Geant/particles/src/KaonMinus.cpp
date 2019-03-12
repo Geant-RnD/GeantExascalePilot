@@ -4,7 +4,6 @@
 #include "Geant/core/SystemOfUnits.hpp"
 
 namespace geantphysics {
-
 KaonMinus *KaonMinus::Definition()
 {
   static KaonMinus instance("K-", -321, 14, 0.493677 * geant::units::GeV,

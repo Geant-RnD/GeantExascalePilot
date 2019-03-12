@@ -16,8 +16,8 @@
 #include "Geant/magneticfield/ScalarFieldTrack.hpp"
 
 // class VScalarIntegrationStepper;
-#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 #include "Geant/core/math_wrappers.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 class ScalarIntegrationDriver {
 public:                                    // with description

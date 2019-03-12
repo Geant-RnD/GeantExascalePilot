@@ -10,8 +10,8 @@
 #include <Geant/core/Config.hpp>
 #include <Geant/core/VectorTypes.hpp>
 
-#include "Geant/core/SystemOfUnits.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/core/SystemOfUnits.hpp"
 
 // #define OUTSIDE_MagFieldEquation 1
 

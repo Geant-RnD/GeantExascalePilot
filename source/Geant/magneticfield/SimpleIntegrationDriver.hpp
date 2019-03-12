@@ -22,8 +22,8 @@
 #pragma once
 
 // #include "Geant/magneticfield/TemplateFieldTrack.hpp"
-#include "base/AlignedBase.h"
 #include "Geant/magneticfield/FieldTrack.hpp"
+#include "base/AlignedBase.h"
 
 // #include "TemplateVScalarIntegrationStepper.h"
 // #include "IntegrationStepper.h"
@@ -1479,7 +1479,8 @@ void SimpleIntegrationDriver<T_Stepper, Nvar>::AccurateAdvance(const FieldTrack 
           // 1. Store the Results (Output)
           stillOK[indexArr[i]] = vecCore::Get(succeededLane, i); // succeededLane[i];
           if (partDebug) std::cout << "----Storing Output at position: " << i << std::endl;
-          StoreOutput(yNext, x, i, yOutput, indexArr[i], hstep, stillOK, nTracks); // Second - can change 'succeeded'
+          StoreOutput(yNext, x, i, yOutput, indexArr[i], hstep, stillOK,
+                      nTracks); // Second - can change 'succeeded'
           //*********----------------------------------------------
           // Ananya: Do not pass succeededLane to StoreOutput (preference?), so
           //         'stillOK' should *not* be absorbed in StoreOutput.
@@ -1732,9 +1733,10 @@ typename Mask<Real_v> SimpleIntegrationDriver<Real_v, T_Stepper, Nvar>::QuickAdv
 //
 template <class T_Stepper, unsigned int Nvar>
 template <class Real_v>
-Real_v SimpleIntegrationDriver</*Real_v,*/ T_Stepper, Nvar>::ComputeNewStepSize(
-    Real_v errMaxNorm,   // max error  (normalised)
-    Real_v hStepCurrent) // current step size
+Real_v SimpleIntegrationDriver</*Real_v,*/ T_Stepper, Nvar>::ComputeNewStepSize(Real_v errMaxNorm,   // max error
+                                                                                                     // (normalised)
+                                                                                Real_v hStepCurrent) // current step
+                                                                                                     // size
 {
   using Bool_v = vecCore::Mask_v<Real_v>;
 
@@ -1754,9 +1756,10 @@ Real_v SimpleIntegrationDriver</*Real_v,*/ T_Stepper, Nvar>::ComputeNewStepSize(
 //
 template <class T_Stepper, unsigned int Nvar>
 template <class Real_v>
-Real_v SimpleIntegrationDriver<T_Stepper, Nvar>::ComputeNewStepSize_WithinLimits(
-    Real_v errMaxNorm,   // max error  (normalised)
-    Real_v hStepCurrent) // current step size
+Real_v SimpleIntegrationDriver<T_Stepper, Nvar>::ComputeNewStepSize_WithinLimits(Real_v errMaxNorm,   // max error
+                                                                                                      // (normalised)
+                                                                                 Real_v hStepCurrent) // current step
+                                                                                                      // size
 {
   using Bool_v = vecCore::Mask_v<Real_v>;
 
