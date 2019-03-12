@@ -11,8 +11,9 @@ DEFAULT_PATHS = [ os.path.join('source', 'Geant') ]
 FORMAT_MODE_OPTIONS = ['local', 'geant', 'custom', 'global']
 CUSTOM_FORMAT_FILE = 'local-clang-format'
 GLOBAL_FORMAT_FILE = 'geant-clang-format'
-VERBOSE = 0
 EXTENSIONS = ['.hh', '.cc', '.icc', '.hpp', '.cpp', '.tcc']
+TMP_DIR = os.path.join('/tmp', 'geant-format-test')
+VERBOSE = 0
 
 
 class FormatMode(Enum):
@@ -150,9 +151,74 @@ def apply_clang_format(target_file, inplace=False):
     return out.decode("utf-8")
 
 
+def commit_check(files, paths, extensions):
+    """
+    This function is used to validate that a local '.clang-format' that is introduced will not cause formatting changes
+    """
+    global_format = {}
+    actual_format = {}
+    bad_format = []
+
+    cxx_files = []
+    cxx_files += files
+    if len(paths) > 0 or len(files) == 0:
+        cxx_files += get_cxx_files(paths, extensions)
+
+    tmpfiles = []
+    for fname in cxx_files:
+        if os.path.isdir(fname):
+            continue
+        fsrc = '{}'.format(fname)
+        ftmp = fsrc.replace(REPO_ROOT, TMP_DIR)
+        fdir = os.path.dirname(ftmp)
+        if not os.path.exists(fdir):
+            if VERBOSE > 0:
+                print('Making directory: {}'.format(fdir))
+            os.makedirs(fdir, exist_ok=True)
+        shutil.copy2(fname, ftmp)
+        tmpfiles += [ftmp]
+    cxx_files = tmpfiles
+
+    format_dict = {}
+    # create a dictionary of folder and their files
+    for fname in cxx_files:
+        dname = os.path.dirname(fname)
+        if not dname in format_dict.keys():
+            format_dict[dname] = [fname]
+        else:
+            format_dict[dname] += [fname]
+
+    for dict_dir, dict_files in format_dict.items():
+        # avoid multiple operations
+        dict_files = list(set(dict_files))
+
+        # remove custom format in directory
+        remove_format(get_worker_format_files([dict_dir]))
+
+        # format with global
+        #   for reference against reverted format after custom is applied
+        copy_format([dict_dir], FormatMode.GLOBAL)
+        for f in dict_files:
+            actual_format[f] = open(f, 'r')
+            global_format[f] = apply_clang_format(f)
+
+        # check to see if the formatting was successfully reverted
+        for f in dict_files:
+            if actual_format[f] != global_format[f]:
+                bad_format.append(f.replace(TMP_DIR, REPO_ROOT))
+
+        # remove custom format in directory
+        remove_format(get_worker_format_files([dict_dir]))
+
+    # Uh-oh
+    if len(bad_format) > 0:
+        raise RuntimeError('Failure to apply formatting on files: {}'.format(bad_format))
+
+
 def verify(files, paths, extensions):
     """
     This function is used to validate that a local '.clang-format' that is introduced will not cause formatting changes
+    that cannot be reverted later (i.e. introduce noise to commits)
     """
     global_format = {}
     custom_format = {}
@@ -170,10 +236,11 @@ def verify(files, paths, extensions):
         if os.path.isdir(fname):
             continue
         fsrc = '{}'.format(fname)
-        ftmp = fsrc.replace(REPO_ROOT, '/tmp')
+        ftmp = fsrc.replace(REPO_ROOT, TMP_DIR)
         fdir = os.path.dirname(ftmp)
         if not os.path.exists(fdir):
-            print('Making directory: {}'.format(fdir))
+            if VERBOSE > 0:
+                print('Making directory: {}'.format(fdir))
             os.makedirs(fdir, exist_ok=True)
         shutil.copy2(fname, ftmp)
         tmpfiles += [ftmp]
@@ -228,7 +295,8 @@ def verify(files, paths, extensions):
             counter += 1
             if revert_format[f] != global_format[f]:
                 sys.stdout.write("!") # warn there was an error
-                msg += '  - Warning! File: "{}" had formatting changes after applying custom format and then global format\n'.format(f.replace('/tmp', REPO_ROOT))
+                msg += '  - Warning! File: "{}" had formatting changes after applying custom format and then global format\n'.format(
+                    f.replace(TMP_DIR, REPO_ROOT))
                 good_format[f] = global_format[f]
                 bad_format[f] = revert_format[f]
             else:
@@ -278,6 +346,8 @@ if __name__ == "__main__":
                         action='store_true')
     parser.add_argument('-v', '--verify', help="Verify custom/local format does not cause persistent changes",
                         action='store_true')
+    parser.add_argument('-c', '--commit', help="Verify files for commit are formatted",
+                        action='store_true')
     parser.add_argument('-e', '--format-exe', help="Path to clang-format",
                         type=str, default=CLANG_FORMAT_EXE)
     parser.add_argument('-i', '--inplace', help="When applying clang-format, write formatting changes to file",
@@ -303,7 +373,8 @@ if __name__ == "__main__":
         raise FileNotFoundError('Error! No "clang-format" executable was found or specified!')
 
     CLANG_FORMAT_EXE = os.path.realpath(args.format_exe)
-    print("Using '{}'...".format(CLANG_FORMAT_EXE))
+    if VERBOSE > 0:
+        print("Using '{}'...".format(CLANG_FORMAT_EXE))
 
     files = []
     dpaths = []
@@ -317,8 +388,11 @@ if __name__ == "__main__":
 
         if os.path.isfile(var):
             # if file, add to file list and append to path
-            files.append(var)
-            fpaths.append(os.path.dirname(var))
+            for ext in args.extensions:
+                if var.endswith(ext):
+                    files.append(var)
+                    fpaths.append(os.path.dirname(var))
+                    break
         elif os.path.isdir(var):
             # if does not exist, skip
             if not os.path.exists(var):
@@ -334,12 +408,17 @@ if __name__ == "__main__":
     dpaths = list(set(dpaths))
     fpaths = list(set(fpaths))
 
-    print('Files: {}')
-    print('Paths: {}'.format(dpaths))
-    print('')
+    if VERBOSE > 0:
+        print('Files: {}')
+        print('Paths: {}'.format(dpaths))
+        print('')
 
     ret = 0
     try:
+        # none of files matched extensions to apply clang-format to
+        if args.commit and len(files) == 0:
+            sys.exit(0)
+
         # remove first
         if args.delete:
             remove_format(get_worker_format_files(dpaths + fpaths))
@@ -348,10 +427,14 @@ if __name__ == "__main__":
         if not args.no_copy:
             copy_format(dpaths + fpaths, format_mode)
 
+        # commit
+        if args.commit:
+            commit_check(files, dpaths, args.extensions)
         # do verification
-        if args.verify:
+        elif args.verify:
             verify(files, dpaths, args.extensions)
-        else: # apply clang-formatting
+        # apply clang-formatting
+        else:
             def apply_clang_format_to_file(f, inplace):
                 msg = apply_clang_format(f, inplace)
                 print('##### {} #####{}{}'.format(f, '\n' if msg else '', msg))
