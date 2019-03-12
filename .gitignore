@@ -49,3 +49,5 @@
 # custom clang-format
 source/**/*.clang-format
 /tools/local-clang-format
+/format-original.txt
+/format-modified.txt
