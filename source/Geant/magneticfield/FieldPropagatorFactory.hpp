@@ -20,7 +20,7 @@
 // #ifndef FLEXIBLE_FIELD
 #include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
 #include "Geant/magneticfield/FieldEquationFactory.hpp"
-#include "Geant/magneticfield/StepperFactory.hpp"
+#include "Geant/tracking/StepperFactory.hpp"
 #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
 // #else
 #include "Geant/magneticfield/MagFieldEquation.hpp"

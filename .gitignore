@@ -45,3 +45,7 @@
 
 # OS files
 .DS_Store
+
+# custom clang-format
+source/**/*.clang-format
+/tools/local-clang-format

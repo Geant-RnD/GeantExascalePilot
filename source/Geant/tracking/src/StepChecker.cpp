@@ -1,9 +1,9 @@
-#include "Geant/magneticfield/StepChecker.hpp"
+#include "Geant/tracking/StepChecker.hpp"
 
 // For geant::Print,  Printf
 #include "Geant/core/Error.hpp"
-#include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
 #include "Geant/magneticfield/ConstBzFieldHelixStepper.hpp"
+#include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
 
 VECCORE_ATT_HOST_DEVICE
 bool StepChecker::CompareStep(vecgeom::Vector3D<double> const &Position, vecgeom::Vector3D<double> const &Direction,
@@ -16,16 +16,17 @@ bool StepChecker::CompareStep(vecgeom::Vector3D<double> const &Position, vecgeom
   using ThreeVector = vecgeom::Vector3D<double>;
 
   if (fVerbose) {
-    printf(
-        "Particle with charge %g  momentum = %8.4g Position= %10.6f %10.6f %10.6f  Momentum= %10.6f %10.6f %10.6f \n",
-        charge, momentum, Position[0], Position[1], Position[2], Direction[0], Direction[1], Direction[2]);
-    /* Printf("                  End    Position= %10.6f  %10.6f  %10.6f  Momentum= %10.6f %10.6f %10.6f \n",
-        PositionNew[0], PositionNew[1], PositionNew[2],
+    printf("Particle with charge %g  momentum = %8.4g Position= %10.6f %10.6f %10.6f "
+           " Momentum= %10.6f %10.6f %10.6f \n",
+           charge, momentum, Position[0], Position[1], Position[2], Direction[0], Direction[1], Direction[2]);
+    /* Printf("                  End    Position= %10.6f  %10.6f  %10.6f  Momentum=
+       %10.6f %10.6f %10.6f \n", PositionNew[0], PositionNew[1], PositionNew[2],
         DirectionNew[0],  DirectionNew[1], DirectionNew[2] ); */
     ThreeVector PositionShift  = endPosition - Position;
     ThreeVector DirectionShift = endDirection - Direction;
-    printf(" Step=%8f  Move/RK4:  Pos/shift= %10.6f  %10.6f  %10.6f  Mom/shft= %10.3g %10.3g %10.3g \n", step,
-           PositionShift[0], PositionShift[1], PositionShift[2], DirectionShift[0], DirectionShift[1],
+    printf(" Step=%8f  Move/RK4:  Pos/shift= %10.6f  %10.6f  %10.6f  Mom/shft= "
+           "%10.3g %10.3g %10.3g \n",
+           step, PositionShift[0], PositionShift[1], PositionShift[2], DirectionShift[0], DirectionShift[1],
            DirectionShift[2]);
   }
 
@@ -38,13 +39,16 @@ bool StepChecker::CompareStep(vecgeom::Vector3D<double> const &Position, vecgeom
   ThreeVector DirectionDiff = endDirectionRef - endDirection;
   bool differ               = PositionDiff.Mag() > triggerLen || DirectionDiff.Mag() > triggerDir;
   if (differ) {
-    printf(" Step=%8f    DIFFERS   Pos/diff= %10.6f  %10.6f  %10.6f  Mom/diff= %10.3g %10.3g %10.3g \n", step,
-           PositionDiff[0], PositionDiff[1], PositionDiff[2], DirectionDiff[0], DirectionDiff[1], DirectionDiff[2]);
+    printf(" Step=%8f    DIFFERS   Pos/diff= %10.6f  %10.6f  %10.6f  Mom/diff= "
+           "%10.3g %10.3g %10.3g \n",
+           step, PositionDiff[0], PositionDiff[1], PositionDiff[2], DirectionDiff[0], DirectionDiff[1],
+           DirectionDiff[2]);
 
     ThreeVector PositionShiftH  = endPositionRef - Position;
     ThreeVector DirectionShiftH = endDirectionRef - Direction;
-    printf(" Step=%8f  Helix/Mv:  Pos/shift= %10.6f  %10.6f  %10.6f  Mom/shft= %10.3g %10.3g %10.3g \n", step,
-           PositionShiftH[0], PositionShiftH[1], PositionShiftH[2], DirectionShiftH[0], DirectionShiftH[1],
+    printf(" Step=%8f  Helix/Mv:  Pos/shift= %10.6f  %10.6f  %10.6f  Mom/shft= "
+           "%10.3g %10.3g %10.3g \n",
+           step, PositionShiftH[0], PositionShiftH[1], PositionShiftH[2], DirectionShiftH[0], DirectionShiftH[1],
            DirectionShiftH[2]);
   }
   return differ;

@@ -15,9 +15,9 @@
 #include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
 
 // Concrete Types being created
-#include "Geant/magneticfield/TSimpleRunge.hpp"
-#include "Geant/magneticfield/TClassicalRK4.hpp"
 #include "Geant/magneticfield/GUTCashKarpRKF45.hpp"
+#include "Geant/magneticfield/TClassicalRK4.hpp"
+#include "Geant/magneticfield/TSimpleRunge.hpp"
 
 // namespace vecFieldPropagation {
 
