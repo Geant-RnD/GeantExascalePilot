@@ -1,0 +1,119 @@
+#------------------------------------------------------------------------------#
+#
+#
+get_filename_component(@PROJECT_NAME@_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@ConfigVersion.cmake)
+include(CMakeFindDependencyMacro)
+
+set(_@PROJECT_NAME@_AVAILABLE_COMPONENTS @@PROJECT_NAME@_COMPONENTS@)
+set(_@PROJECT_NAME@_AVAILABLE_SHARED_COMPONENTS @@PROJECT_NAME@_SHARED_COMPONENTS@)
+set(_@PROJECT_NAME@_AVAILABLE_STATIC_COMPONENTS @@PROJECT_NAME@_STATIC_COMPONENTS@)
+
+
+@PACKAGE_INIT@
+
+
+#------------------------------------------------------------------------------#
+#   install or build tree
+#
+if("${CMAKE_SOURCE_DIR}" STREQUAL "@CMAKE_SOURCE_DIR@")
+    set(_@PROJECT_NAME@_BUILD_TREE ON)
+else("${CMAKE_SOURCE_DIR}" STREQUAL "@CMAKE_SOURCE_DIR@")
+    set(_@PROJECT_NAME@_INSTALL_TREE ON)
+endif("${CMAKE_SOURCE_DIR}" STREQUAL "@CMAKE_SOURCE_DIR@")
+
+
+#------------------------------------------------------------------------------#
+#   configure lib and include
+#
+if(_@PROJECT_NAME@_INSTALL_TREE)
+
+    set_and_check(@PROJECT_NAME@_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+    set_and_check(@PROJECT_NAME@_LIB_DIR "@PACKAGE_LIB_INSTALL_DIR@")
+
+    include(${@PROJECT_NAME@_CMAKE_DIR}/@PROJECT_NAME@LibraryDepends.cmake)
+    check_required_components(@PROJECT_NAME@)
+
+    # get imported location
+    string(TOUPPER "${CMAKE_BUILD_TYPE}" _BUILD_TYPE)
+    if("${CMAKE_BUILD_TYPE}" MATCHES "${CMAKE_CONFIGURATION_TYPES}")
+        set(IMPORTED_LOCATION_BUILD IMPORTED_LOCATION_${_BUILD_TYPE})
+    else("${CMAKE_BUILD_TYPE}" MATCHES "${CMAKE_CONFIGURATION_TYPES}")
+        set(IMPORTED_LOCATION_BUILD )
+    endif("${CMAKE_BUILD_TYPE}" MATCHES "${CMAKE_CONFIGURATION_TYPES}")
+
+    # set places to look
+    set(LOCATIONS IMPORTED_LOCATION ${IMPORTED_LOCATION_BUILD}
+        IMPORTED_LOCATION_RELEASE IMPORTED_LOCATION_RELWITHDEBINFO
+        IMPORTED_LOCATION_DEBUG IMPORTED_LOCATION_MINSIZEREL)
+
+    # get target
+    foreach(_LOC ${LOCATIONS})
+        foreach(_COMPONENT ${_@PROJECT_NAME@_AVAILABLE_COMPONENTS})
+            # get location
+            if(NOT _${_COMPONENT}_LOCATION)
+                get_target_property(_${_COMPONENT}_LOCATION ${_COMPONENT} ${_LOC})
+            endif(NOT _${_COMPONENT}_LOCATION)
+            # add the library
+            list(APPEND @PROJECT_NAME@_LIBRARIES ${_${_COMPONENT}_LOCATION})
+        endforeach()
+    endforeach()
+
+else()
+
+    set(@PROJECT_NAME@_INCLUDE_DIR "@PROJECT_SOURCE_DIR@/source")
+    set(@PROJECT_NAME@_INCLUDE_DIRS "@PROJECT_SOURCE_DIR@/source")
+    include_directories(@@PROJECT_NAME@_INCLUDE_DIRECTORIES@)
+
+    foreach(_COMPONENT ${_@PROJECT_NAME@_AVAILABLE_COMPONENTS})
+        # add the library
+        list(APPEND @PROJECT_NAME@_LIBRARIES ${_COMPONENT})
+        set_property(TARGET ${_COMPONENT} PROPERTY
+            IMPORTED_LOCATION "@CMAKE_BINARY_DIR@/exports/${_COMPONENT}.cmake")
+        #target_include_directories(${_COMPONENT} PUBLIC "@PROJECT_SOURCE_DIR@/source")
+    endforeach()
+    #
+    #set(PROJECT_DEPENDS ${@PROJECT_NAME@_LIBRARY})
+
+endif()
+
+if(NOT TARGET Geant-shared)
+    add_library(Geant-shared INTERFACE)
+    target_link_libraries(Geant-shared ${_@PROJECT_NAME@_AVAILABLE_SHARED_COMPONENTS})
+endif()
+
+if(NOT TARGET Geant-static)
+    add_library(Geant-static INTERFACE)
+    target_link_libraries(Geant-static ${_@PROJECT_NAME@_AVAILABLE_STATIC_COMPONENTS})
+endif()
+
+if(NOT TARGET Geant)
+    if(@BUILD_SHARED_LIBS@)
+        add_library(Geant INTERFACE)
+        target_link_libraries(Geant ${_@PROJECT_NAME@_AVAILABLE_SHARED_COMPONENTS})
+    else()
+        add_library(Geant INTERFACE)
+        target_link_libraries(Geant ${_@PROJECT_NAME@_AVAILABLE_STATIC_COMPONENTS})
+    endif()
+endif()
+
+list(APPEND @PROJECT_NAME@_LIBRARIES Geant)
+
+#------------------------------------------------------------------------------#
+#   find_package variables
+#
+include(FindPackageHandleStandardArgs)
+# handle the QUIETLY and REQUIRED arguments and set UnitTest++_FOUND to TRUE
+# if all listed variables are TRUE
+find_package_handle_standard_args(@PROJECT_NAME@ DEFAULT_MSG
+    @PROJECT_NAME@_CMAKE_DIR
+    @PROJECT_NAME@_LIBRARIES)
+
+if(@PROJECT_NAME@_FOUND)
+    get_property(__@PROJECT_NAME@_config_notified GLOBAL PROPERTY __@PROJECT_NAME@_config_notified)
+    if(NOT __@PROJECT_NAME@_config_notified)
+        message(STATUS "@PROJECT_NAME@ found: ${@PROJECT_NAME@_CMAKE_DIR}")
+    endif()
+    set_property(GLOBAL PROPERTY __@PROJECT_NAME@_config_notified ON)
+endif()

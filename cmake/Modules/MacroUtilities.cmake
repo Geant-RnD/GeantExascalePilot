@@ -130,7 +130,7 @@ FUNCTION(CREATE_LIBRARY)
 
     # list of arguments taking multiple values
     set(multival_args
-        SOURCES PROPERTIES DEFINITIONS
+        HEADERS SOURCES PROPERTIES DEFINITIONS
         INCLUDE_DIRECTORIES LINK_LIBRARIES
         CFLAGS CXXFLAGS CUDAFLAGS INSTALL_DESTINATION)
 
@@ -162,20 +162,20 @@ FUNCTION(CREATE_LIBRARY)
     if(NOT TARGET ${LIB_FORMAT_TARGET})
         geant_format_target(
             NAME ${LIB_FORMAT_TARGET}
-            SOURCES ${LIB_SOURCES})
+            SOURCES ${LIB_HEADERS} ${LIB_SOURCES})
     endif()
 
     # create library
-    add_library(${LIB_TARGET_NAME} ${LIB_TYPE} ${LIB_SOURCES})
+    add_library(${LIB_TARGET_NAME} ${LIB_TYPE} ${LIB_SOURCES} ${LIB_HEADERS})
 
     # link library
     target_link_libraries(${LIB_TARGET_NAME}
         ${LIB_LINK_LIBRARIES} ${${PROJECT_NAME}_LINK_LIBRARIES})
 
     # include dirs
-    target_include_directories(${LIB_TARGET_NAME}
-        PRIVATE ${LIB_INCLUDE_DIRECTORIES}
-        PUBLIC ${${PROJECT_NAME}_INCLUDE_DIRECTORIES})
+    target_include_directories(${LIB_TARGET_NAME} PRIVATE
+        ${LIB_INCLUDE_DIRECTORIES} ${${PROJECT_NAME}_INCLUDE_DIRECTORIES}
+        INTERFACE ${CMAKE_INSTALL_PREFIX}/include)
 
     # link options
     if(CMAKE_VERSION VERSION_GREATER 3.13)
@@ -190,17 +190,107 @@ FUNCTION(CREATE_LIBRARY)
         ${LIB_PROPERTIES}
         ${${PROJECT_NAME}_PROPERTIES})
 
+    # compile defs
     target_compile_definitions(${LIB_TARGET_NAME} PUBLIC
         ${${PROJECT_NAME}_DEFINITIONS}
         ${LIB_DEFINITIONS})
 
+    # compile flags
     target_compile_options(${LIB_TARGET_NAME} PUBLIC
         $<$<COMPILE_LANGUAGE:C>:${${PROJECT_NAME}_C_FLAGS} ${LIB_CFLAGS}>
         $<$<COMPILE_LANGUAGE:CXX>:${${PROJECT_NAME}_CXX_FLAGS} ${LIB_CXXFLAGS}>
         $<$<COMPILE_LANGUAGE:CUDA>:${${PROJECT_NAME}_CUDA_FLAGS} ${LIB_CUDAFLAGS}>)
 
+    # install headers
+    foreach(_HEADER ${LIB_HEADERS})
+        get_filename_component(HEADER_RELATIVE ${_HEADER} DIRECTORY)
+        string(REPLACE "${PROJECT_SOURCE_DIR}/source/" "" HEADER_RELATIVE "${HEADER_RELATIVE}")
+        install(FILES ${_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${HEADER_RELATIVE})
+        #message("INSTALL: ${_HEADER} ==> ${CMAKE_INSTALL_INCLUDEDIR}/${HEADER_RELATIVE}")
+    endforeach()
+
     # Install the compiled library
-    install(TARGETS ${LIB_TARGET_NAME} DESTINATION ${LIB_INSTALL_DESTINATION})
+    install(TARGETS ${LIB_TARGET_NAME} DESTINATION ${LIB_INSTALL_DESTINATION}
+        EXPORT ${LIB_TARGET_NAME})
+
+    # install export
+    install(EXPORT ${LIB_TARGET_NAME}
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/${PROJECT_NAME})
+
+    # generate export for build tree
+    export(TARGETS ${LIB_TARGET_NAME}
+        FILE ${CMAKE_BINARY_DIR}/exports/${LIB_TARGET_NAME}.cmake)
+
+    set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}_COMPONENTS ${LIB_TARGET_NAME})
+    set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}_${LIB_TYPE}_COMPONENTS ${LIB_TARGET_NAME})
+
+ENDFUNCTION()
+
+
+#------------------------------------------------------------------------------#
+# macro for creating a library target
+#
+FUNCTION(CREATE_EXECUTABLE)
+
+    # list of arguments taking multiple values
+    set(multival_args
+        HEADERS SOURCES PROPERTIES DEFINITIONS
+        INCLUDE_DIRECTORIES LINK_LIBRARIES
+        CFLAGS CXXFLAGS CUDAFLAGS INSTALL_DESTINATION)
+
+    # parse args
+    cmake_parse_arguments(EXE
+        ""                                      # options
+        "TARGET_NAME;OUTPUT_NAME"               # single value args
+        "${multival_args}"                      # multiple value args
+        ${ARGN})
+
+    set(EXE_FORMAT_TARGET ${EXE_OUTPUT_NAME}-format)
+    if(NOT TARGET ${EXE_FORMAT_TARGET})
+        geant_format_target(
+            NAME ${EXE_FORMAT_TARGET}
+            SOURCES ${EXE_HEADERS} ${EXE_SOURCES})
+    endif()
+
+    # create library
+    add_executable(${EXE_TARGET_NAME} ${EXE_SOURCES} ${EXE_HEADERS})
+
+    # link library
+    target_link_libraries(${EXE_TARGET_NAME}
+        ${EXE_LINK_LIBRARIES} ${${PROJECT_NAME}_LINK_LIBRARIES})
+
+    # include dirs
+    target_include_directories(${EXE_TARGET_NAME} PRIVATE
+        ${EXE_INCLUDE_DIRECTORIES} ${${PROJECT_NAME}_INCLUDE_DIRECTORIES}
+        INTERFACE ${CMAKE_INSTALL_PREFIX}/include)
+
+    # link options
+    if(CMAKE_VERSION VERSION_GREATER 3.13)
+        target_link_options(${EXE_TARGET_NAME} PUBLIC
+            ${EXE_LINK_OPTIONS} ${${PROJECT_NAME}_LINK_OPTIONS})
+    endif()
+
+    # target properties
+    set(_PROPERTIES ${EXE_PROPERTIES} ${${PROJECT_NAME}_PROPERTIES})
+    if(NOT "${_PROPERTIES}" STREQUAL "")
+        set_target_properties(${EXE_TARGET_NAME} PROPERTIES ${_PROPERTIES})
+    endif()
+
+    # compile defs
+    target_compile_definitions(${EXE_TARGET_NAME} PUBLIC
+        ${${PROJECT_NAME}_DEFINITIONS}
+        ${EXE_DEFINITIONS})
+
+    # compile flags
+    target_compile_options(${EXE_TARGET_NAME} PUBLIC
+        $<$<COMPILE_LANGUAGE:C>:${${PROJECT_NAME}_C_FLAGS} ${EXE_CFLAGS}>
+        $<$<COMPILE_LANGUAGE:CXX>:${${PROJECT_NAME}_CXX_FLAGS} ${EXE_CXXFLAGS}>
+        $<$<COMPILE_LANGUAGE:CUDA>:${${PROJECT_NAME}_CUDA_FLAGS} ${EXE_CUDAFLAGS}>)
+
+    if(EXE_INSTALL_DESTINATION)
+        # Install the exe
+        install(TARGETS ${EXE_TARGET_NAME} DESTINATION ${EXE_INSTALL_DESTINATION})
+    endif()
 
 ENDFUNCTION()
 

@@ -32,7 +32,7 @@ if(NOT GEANT_USE_SUBMODULES)
     find_package(VecMath)
     find_package(VecGeom)
     list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
-        ${VecCore_INCLUDE_DIRS} ${VecMath_INCLUDE_DIRS} ${VecGeom_INCLUDE_DIRS})
+        ${VECCORE_INCLUDE_DIRS} ${VECMATH_INCLUDE_DIRS} ${VECGEOM_INCLUDE_DIRS})
 else()
     list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
         ${CMAKE_CURRENT_LIST_DIR}/VecCore/include
@@ -82,11 +82,11 @@ endif()
 # append submodule configs
 list(APPEND ${PROJECT_NAME}_LINK_LIBRARIES
     ptl${GEANT_LIBTARGET_EXT}
-    vecgeom vecgeomcuda)
+    vecgeom vecgeomcuda ${VECGEOM_LIBRARIES})
 
 list(APPEND EXTERNAL_LIBRARIES
     ptl${GEANT_LIBTARGET_EXT}
-    vecgeom vecgeomcuda)
+    vecgeom vecgeomcuda ${VECGEOM_LIBRARIES})
 
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}
@@ -95,3 +95,61 @@ list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
 
 # finally, add Geant
 add_subdirectory(Geant)
+
+# get global properties
+get_property(${PROJECT_NAME}_SHARED_COMPONENTS GLOBAL PROPERTY ${PROJECT_NAME}_SHARED_COMPONENTS)
+get_property(${PROJECT_NAME}_STATIC_COMPONENTS GLOBAL PROPERTY ${PROJECT_NAME}_STATIC_COMPONENTS)
+set(${PROJECT_NAME}_COMPONENTS ${${PROJECT_NAME}_SHARED_COMPONENTS} ${${PROJECT_NAME}_STATIC_COMPONENTS})
+
+# configure
+configure_package_config_file(
+    ${PROJECT_SOURCE_DIR}/cmake/Templates/GeantConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake.in
+    INSTALL_DESTINATION share/cmake/${PROJECT_NAME}
+    INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+
+# configure twice
+configure_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake.in
+    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}Config.cmake @ONLY)
+
+write_basic_package_version_file(
+    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion)
+
+if(BUILD_SHARED_LIBS)
+    # create interface library
+    add_library(Geant-shared INTERFACE)
+    # link to components
+    target_link_libraries(Geant-shared INTERFACE ${${PROJECT_NAME}_SHARED_COMPONENTS})
+    # install libs
+    list(APPEND INSTALL_LIBS Geant-shared)
+
+    # create interface library
+    add_library(Geant INTERFACE)
+    # link to components
+    target_link_libraries(Geant INTERFACE ${${PROJECT_NAME}_SHARED_COMPONENTS})
+    # install libs
+    list(APPEND INSTALL_LIBS Geant)
+endif()
+
+if(BUILD_STATIC_LIBS)
+    # create interface library
+    add_library(Geant-static INTERFACE)
+    # link to components
+    target_link_libraries(Geant-static INTERFACE ${${PROJECT_NAME}_STATIC_COMPONENTS})
+    # install libs
+    list(APPEND INSTALL_LIBS Geant-static)
+endif()
+
+# Install the interface library
+install(TARGETS ${INSTALL_LIBS} DESTINATION ${LIB_INSTALL_DESTINATION}
+    EXPORT ${PROJECT_NAME}LibraryDepends)
+
+# install export
+install(EXPORT ${PROJECT_NAME}LibraryDepends
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/${PROJECT_NAME})
+
+# generate export for build tree
+#export(TARGETS ${INSTALL_LIBS}
+#    FILE ${CMAKE_BINARY_DIR}/exports/${PROJECT_NAME}LibraryDepends.cmake)

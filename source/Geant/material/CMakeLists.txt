@@ -14,7 +14,8 @@ if(BUILD_STATIC_LIBS)
         TARGET_NAME             ${LIBNAME}-static
         OUTPUT_NAME             ${LIBNAME}
         TYPE                    STATIC
-        SOURCES                 ${headers} ${sources}
+        HEADERS                 ${headers}
+        SOURCES                 ${sources}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
     )
     set(LINK_TARGET ${LIBNAME}-static)
@@ -26,7 +27,8 @@ if(BUILD_SHARED_LIBS)
         TARGET_NAME             ${LIBNAME}-shared
         OUTPUT_NAME             ${LIBNAME}
         TYPE                    SHARED
-        SOURCES                 ${headers} ${sources}
+        HEADERS                 ${headers}
+        SOURCES                 ${sources}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
         PROPERTIES              VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}
     )
