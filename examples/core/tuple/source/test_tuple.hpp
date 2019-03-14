@@ -111,7 +111,7 @@ struct Sub : public Printer<_Tp>
 
 //======================================================================================//
 
-template <typename BaseType, typename DerivedType>
+template <typename _Tp>
 class ObjectAccessor;
 
 //======================================================================================//
@@ -122,7 +122,7 @@ public:
     virtual void operator()()
     {
         std::stringstream ss;
-        ss << "+ I am the " << m_class_id << " class\n";
+        ss << "+ I am the " << m_class_id << "\n";
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << ss.str() << std::flush;
     }
@@ -130,10 +130,10 @@ public:
     virtual ~BaseObject() {}
 
 private:
-    std::string m_class_id = "base";
+    std::string m_class_id = "base class";
 
 private:
-    template <typename T, typename U>
+    template <typename _Tp>
     friend class ObjectAccessor;
 };
 
@@ -145,52 +145,42 @@ public:
     virtual void operator()()
     {
         std::stringstream ss;
-        ss << "+ I am the " << m_class_id << " class\n";
+        ss << "+ I am the " << m_class_id << "\n";
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << ss.str() << std::flush;
     }
 
 private:
-    std::string m_class_id = "derived";
+    std::string m_class_id = "derived class";
 
 private:
-    template <typename T, typename U>
+    template <typename _Tp>
     friend class ObjectAccessor;
 };
 
 //======================================================================================//
 
-template <typename BaseType, typename DerivedType>
+template <typename _Tp>
 class ObjectAccessor
 {
 public:
-    ObjectAccessor(BaseType* obj)
-    : m_base_obj(obj)
-    , m_virt_obj(static_cast<DerivedType*>(obj))
-    {
-    }
-
-    ObjectAccessor(DerivedType* obj)
-    : m_base_obj(static_cast<BaseType*>(obj))
-    , m_virt_obj(obj)
+    ObjectAccessor(_Tp* obj)
+    : m_obj(obj)
     {
     }
 
     void operator()()
     {
-        m_base_obj->BaseType::operator()();
-        m_virt_obj->          operator()();
-        m_base_obj->m_class_id = "modified (via accessor) base";
-        m_virt_obj->m_class_id = "modified (via accessor) derived";
-        m_base_obj->BaseType::operator()();
-        m_virt_obj->          operator()();
-        AutoLock              l(TypeMutex<decltype(std::cout)>());
+        m_obj->operator()();
+        m_obj->m_class_id += " (modified via accessor)";
+        m_obj->operator()();
+
+        AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << std::endl;
     }
 
 private:
-    BaseType*    m_base_obj;
-    DerivedType* m_virt_obj;
+    _Tp* m_obj;
 };
 
 //======================================================================================//

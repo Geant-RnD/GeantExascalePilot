@@ -49,20 +49,20 @@ int main(int argc, char** argv)
     };
 
     auto _exec_object = []() {
-        using T = BaseObject;
-        using U = DerivedObject;
-        // refer to object via derived
-        DerivedObject* virt_obj = new DerivedObject();
-        // refer to object via base class
-        BaseObject* base_obj = new DerivedObject();
+        using B = BaseObject;
+        using D = DerivedObject;
+        // derived object (with access to base class)
+        DerivedObject* derived_obj = new DerivedObject();
+        // base class object (not derived)
+        BaseObject* base_obj = new BaseObject();
         // create tuple
-        Tuple<ObjectAccessor<T, U>, ObjectAccessor<T, U>> access_array =
-            MakeTuple(ObjectAccessor<T, U>(virt_obj), ObjectAccessor<T, U>(base_obj));
+        Tuple<ObjectAccessor<D>, ObjectAccessor<B>> access_array =
+            MakeTuple(ObjectAccessor<D>(derived_obj), ObjectAccessor<B>(base_obj));
         // apply operator() to all tuple objects (e.g. loop over objects)
         Apply<void>::apply_n(access_array);
         // cleanup
-        delete virt_obj;
         delete base_obj;
+        delete derived_obj;
     };
 
     // create task-group that uses thread-pool
