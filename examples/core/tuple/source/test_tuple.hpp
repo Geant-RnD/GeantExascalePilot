@@ -33,33 +33,17 @@ struct Printer
 {
     std::string m_name;
     _Tp         m_value;
+
     Printer(std::string name, const _Tp& value)
     : m_name(name)
     , m_value(_Tp(value))
     {
     }
     Printer(const Printer& rhs) = default;
-    /*
-    : m_name(rhs.m_name)
-    , m_value(new _Tp(*rhs.m_value))
-    {
-    }*/
     Printer& operator=(const Printer& rhs) = default;
-    /*
-    {
-        if(this != &rhs)
-        {
-            m_name   = rhs.m_name;
-            *m_value = *rhs.m_value;
-        }
-        return *this;
-    }*/
     Printer& operator=(Printer&&) noexcept = default;
     Printer(Printer&& rhs)                 = default;
-    ~Printer()
-    {
-        // delete m_value;
-    }
+    ~Printer()                             = default;
 
     friend std::ostream& operator<<(std::ostream& os, const Printer& obj)
     {
@@ -127,10 +111,86 @@ struct Sub : public Printer<_Tp>
 
 //======================================================================================//
 
-typedef Add<double>                           dAdd;
-typedef Sub<double>                           dSub;
-typedef Mult<double>                          dMult;
-typedef Tuple<dAdd, dMult, dSub, dMult, dAdd> HeterogeneousArray;
-typedef void (*print_func_t)(double, double, double);
+template <typename BaseType, typename DerivedType>
+class ObjectAccessor;
+
+//======================================================================================//
+
+class BaseObject
+{
+public:
+    virtual void operator()()
+    {
+        std::stringstream ss;
+        ss << "+ I am the " << m_class_id << " class\n";
+        AutoLock l(TypeMutex<decltype(std::cout)>());
+        std::cout << ss.str() << std::flush;
+    }
+
+    virtual ~BaseObject() {}
+
+private:
+    std::string m_class_id = "base";
+
+private:
+    template <typename T, typename U>
+    friend class ObjectAccessor;
+};
+
+//======================================================================================//
+
+class DerivedObject : public BaseObject
+{
+public:
+    virtual void operator()()
+    {
+        std::stringstream ss;
+        ss << "+ I am the " << m_class_id << " class\n";
+        AutoLock l(TypeMutex<decltype(std::cout)>());
+        std::cout << ss.str() << std::flush;
+    }
+
+private:
+    std::string m_class_id = "derived";
+
+private:
+    template <typename T, typename U>
+    friend class ObjectAccessor;
+};
+
+//======================================================================================//
+
+template <typename BaseType, typename DerivedType>
+class ObjectAccessor
+{
+public:
+    ObjectAccessor(BaseType* obj)
+    : m_base_obj(obj)
+    , m_virt_obj(static_cast<DerivedType*>(obj))
+    {
+    }
+
+    ObjectAccessor(DerivedType* obj)
+    : m_base_obj(static_cast<BaseType*>(obj))
+    , m_virt_obj(obj)
+    {
+    }
+
+    void operator()()
+    {
+        m_base_obj->BaseType::operator()();
+        m_virt_obj->          operator()();
+        m_base_obj->m_class_id = "modified (via accessor) base";
+        m_virt_obj->m_class_id = "modified (via accessor) derived";
+        m_base_obj->BaseType::operator()();
+        m_virt_obj->          operator()();
+        AutoLock              l(TypeMutex<decltype(std::cout)>());
+        std::cout << std::endl;
+    }
+
+private:
+    BaseType*    m_base_obj;
+    DerivedType* m_virt_obj;
+};
 
 //======================================================================================//

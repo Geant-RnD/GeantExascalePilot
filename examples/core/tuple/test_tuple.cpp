@@ -1,6 +1,16 @@
 
 #include "test_tuple.hpp"
 
+//======================================================================================//
+
+typedef Add<double>                           dAdd;
+typedef Sub<double>                           dSub;
+typedef Mult<double>                          dMult;
+typedef Tuple<dAdd, dMult, dSub, dMult, dAdd> HeterogeneousArray;
+typedef void (*print_func_t)(double, double, double);
+
+//======================================================================================//
+
 int main(int argc, char** argv)
 {
     // create thread-pool with two threads
@@ -32,10 +42,27 @@ int main(int argc, char** argv)
     // this executes the heterogenous structs
     auto _exec_hetero = [_print_info](const double& start, HeterogeneousArray ops) {
         auto copy_ops = ops;
-        Apply<void>::apply_n(start, ops);
+        Apply<void>::apply_n(ops, start);
         _print_info(start, copy_ops, ops);
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << std::endl;
+    };
+
+    auto _exec_object = []() {
+        using T = BaseObject;
+        using U = DerivedObject;
+        // refer to object via derived
+        DerivedObject* virt_obj = new DerivedObject();
+        // refer to object via base class
+        BaseObject* base_obj = new DerivedObject();
+        // create tuple
+        Tuple<ObjectAccessor<T, U>, ObjectAccessor<T, U>> access_array =
+            MakeTuple(ObjectAccessor<T, U>(virt_obj), ObjectAccessor<T, U>(base_obj));
+        // apply operator() to all tuple objects (e.g. loop over objects)
+        Apply<void>::apply_n(access_array);
+        // cleanup
+        delete virt_obj;
+        delete base_obj;
     };
 
     // create task-group that uses thread-pool
@@ -55,7 +82,15 @@ int main(int argc, char** argv)
     // wait for tasks to finish
     tg.join();
 
+    // run the accessor task
+    tg.run(_exec_object);
+
+    // wait for tasks to finish
+    tg.join();
+
     // this failed
     // typedef void (*var_print_t)(dAdd, dSub, dMult, dAdd, dSub);
     // Apply<void>::apply_all<var_print_t>(&variadic_print, ops);
 }
+
+//======================================================================================//

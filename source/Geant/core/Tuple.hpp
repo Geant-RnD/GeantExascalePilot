@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <cstring>
 #include <functional>
+#include <iostream>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -1655,133 +1656,6 @@ constexpr _Swallow_assign ignore{};
 template <typename _Tp>
 using TupleSize_v = typename TupleSize<_Tp>::value;
 
-//======================================================================================//
-
-template <typename T, typename... Ts>
-auto head(Tuple<T, Ts...> t)
-{
-  return std::get<0>(t);
-}
-
-template <std::size_t... Ns, typename... Ts>
-auto tail_impl(std::index_sequence<Ns...>, Tuple<Ts...> t)
-{
-  return MakeTuple(Get<Ns + 1>(t)...);
-}
-
-template <typename... Ts>
-auto tail(Tuple<Ts...> t)
-{
-  return tail_impl(std::make_index_sequence<sizeof...(Ts) - 1u>(), std::forward<Tuple<Ts...>>(t));
-}
-
-//======================================================================================//
-
-template <typename List>
-class PopFrontT;
-
-template <typename Head, typename... Tail>
-class PopFrontT<Tuple<Head, Tail...>> {
-public:
-  using Type = Tuple<Tail...>;
-};
-
-template <typename List>
-using PopFront = typename PopFrontT<List>::Type;
-
-template <typename _Ret>
-struct _ApplyImpl {
-  template <typename _Fn, typename _Tuple, size_t... _Idx>
-  static _Ret apply_all(_Fn &&__f, _Tuple &&__t, std::index_sequence<_Idx...>)
-  {
-    return __f(Get<_Idx>(std::forward<_Tuple>(__t))...);
-  }
-};
-
-#include <iostream>
-
-template <>
-struct _ApplyImpl<void> {
-  template <typename _Fn, typename _Tuple, size_t... _Idx>
-  static void apply_all(_Fn &&__f, _Tuple &&__t, std::index_sequence<_Idx...>)
-  {
-    __f(Get<_Idx>(std::forward<_Tuple>(__t))...);
-  }
-
-  template <typename _Obj, typename _Tuple, typename _Next = PopFront<_Tuple>, std::size_t _N = TupleSize<_Next>::value,
-            typename _Indices               = std::make_index_sequence<_N>, size_t Idx, size_t... _Idx,
-            std::enable_if_t<(_N < 1), int> = 0>
-  static void apply_once(_Obj &&__o, _Tuple &&__t, std::index_sequence<Idx, _Idx...>)
-  {
-    Get<Idx>(__t)(__o);
-    // printf("%s:'%s'@%i  : n = %lu, idx = %lu\n", __FUNCTION__, __FILE__, __LINE__, _N, Idx);
-    // std::cout << Get<Idx>(__t) << std::endl;
-  }
-
-  template <typename _Obj, typename _Tuple, typename _Next = PopFront<std::decay_t<_Tuple>>,
-            std::size_t _N = TupleSize<_Next>::value, typename _Indices = std::make_index_sequence<_N>, size_t Idx,
-            size_t... _Idx, std::enable_if_t<(_N > 0), int>             = 0>
-  static void apply_once(_Obj &&__o, _Tuple &&__t, std::index_sequence<Idx, _Idx...>)
-  {
-    Get<Idx>(__t)(__o);
-    // printf("%s:'%s'@%i  : n = %lu, idx = %lu\n", __FUNCTION__, __FILE__, __LINE__, _N, Idx);
-    // std::cout << Get<Idx>(__t) << std::endl;
-    apply_once<_Obj, _Next>(std::forward<_Obj>(__o), std::forward<_Next>(_Next(Get<_Idx>(__t)...)), _Indices{});
-  }
-
-  template <typename _Obj, typename _Tuple, std::size_t _N, std::enable_if_t<(_N == 0), int> = 0>
-  static void apply_n(_Obj &&__o, _Tuple &&__t)
-  {
-    Get<_N>(__t)(__o);
-    // printf("%s:'%s'@%i  : n = %lu\n", __FUNCTION__, __FILE__, __LINE__, _N);
-    // std::cout << Get<_N>(__t) << std::endl;
-  }
-
-  template <typename _Obj, typename _Tuple, std::size_t _N, std::enable_if_t<(_N > 0), int> = 0>
-  static void apply_n(_Obj &&__o, _Tuple &&__t)
-  {
-    Get<_N>(__t)(__o);
-    // printf("%s:'%s'@%i  : n = %lu\n", __FUNCTION__, __FILE__, __LINE__, _N);
-    // std::cout << Get<_N>(__t) << std::endl;
-    apply_n<_Obj, _Tuple, _N - 1>(std::forward<_Obj>(__o), std::forward<_Tuple>(__t));
-  }
-};
-
-template <typename _Ret>
-struct Apply {
-  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<typename std::decay<_Tuple>::type>::value,
-            typename _Indices = std::make_index_sequence<_N>>
-  static _Ret apply_all(_Fn &&__f, _Tuple &&__t)
-  {
-    return _ApplyImpl<_Ret>::template apply_all<_Fn, _Tuple>(std::forward<_Fn>(__f), std::forward<_Tuple>(__t),
-                                                             _Indices{});
-  }
-};
-
-template <>
-struct Apply<void> {
-  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<typename std::decay<_Tuple>::type>::value,
-            typename _Indices = std::make_index_sequence<_N>>
-  static void apply_all(_Fn &&__f, _Tuple &&__t)
-  {
-    _ApplyImpl<void>::template apply_all<_Fn, _Tuple>(std::forward<_Fn>(__f), std::forward<_Tuple>(__t), _Indices{});
-  }
-
-  template <typename _Obj, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
-            typename _Indices = std::make_index_sequence<_N>>
-  static void apply_once(_Obj &&__o, _Tuple &&__t)
-  {
-    _ApplyImpl<void>::template apply_once<_Obj, _Tuple>(std::forward<_Obj>(__o), std::forward<_Tuple>(__t), _Indices{});
-  }
-
-  template <typename _Obj, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
-            typename _Indices = std::make_index_sequence<_N>>
-  static void apply_n(_Obj &&__o, _Tuple &&__t)
-  {
-    _ApplyImpl<void>::template apply_n<_Obj, _Tuple, _N - 1>(std::forward<_Obj>(__o), std::forward<_Tuple>(__t));
-  }
-};
-
 /*
 /// Partial specialization for Tuples
 template <typename... _Types, typename _Alloc>
@@ -1839,3 +1713,170 @@ constexpr _Tp make_from_Tuple(_Tuple&& __t)
 }
 #endif  // C++17
 */
+
+//======================================================================================//
+
+template <typename T, typename... Ts>
+auto head(Tuple<T, Ts...> t)
+{
+  return std::get<0>(t);
+}
+
+template <std::size_t... Ns, typename... Ts>
+auto tail_impl(std::index_sequence<Ns...>, Tuple<Ts...> t)
+{
+  return MakeTuple(Get<Ns + 1>(t)...);
+}
+
+template <typename... Ts>
+auto tail(Tuple<Ts...> t)
+{
+  return tail_impl(std::make_index_sequence<sizeof...(Ts) - 1u>(), std::forward<Tuple<Ts...>>(t));
+}
+
+//======================================================================================//
+
+template <typename List>
+class PopFrontT;
+
+template <typename Head, typename... Tail>
+class PopFrontT<Tuple<Head, Tail...>> {
+public:
+  using Type = Tuple<Tail...>;
+};
+
+template <typename List>
+using PopFront = typename PopFrontT<List>::Type;
+
+//================================================================================================//
+
+template <typename _Ret>
+struct _ApplyImpl {
+  template <typename _Fn, typename _Tuple, size_t... _Idx>
+  static _Ret apply_all(_Fn &&__f, _Tuple &&__t, std::index_sequence<_Idx...>)
+  {
+    return __f(Get<_Idx>(std::forward<_Tuple>(__t))...);
+  }
+};
+
+//================================================================================================//
+
+template <>
+struct _ApplyImpl<void> {
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Fn, typename _Tuple, size_t... _Idx>
+  static void apply_all(_Fn &&__f, _Tuple &&__t, std::index_sequence<_Idx...>)
+  {
+    __f(Get<_Idx>(std::forward<_Tuple>(__t))...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Tuple, typename _Obj, typename _Next = PopFront<_Tuple>, std::size_t _N = TupleSize<_Next>::value,
+            typename _Indices               = std::make_index_sequence<_N>, size_t Idx, size_t... _Idx,
+            std::enable_if_t<(_N < 1), int> = 0>
+  static void apply_once(_Tuple &&__t, _Obj &&__o, std::index_sequence<Idx, _Idx...>)
+  {
+    Get<Idx>(__t)(__o);
+  }
+
+  template <typename _Tuple, typename _Obj, typename _Next = PopFront<std::decay_t<_Tuple>>,
+            std::size_t _N = TupleSize<_Next>::value, typename _Indices = std::make_index_sequence<_N>, size_t Idx,
+            size_t... _Idx, std::enable_if_t<(_N > 0), int>             = 0>
+  static void apply_once(_Tuple &&__t, _Obj &&__o, std::index_sequence<Idx, _Idx...>)
+  {
+    Get<Idx>(__t)(__o);
+    apply_once<_Obj, _Next>(std::forward<_Next>(_Next(Get<_Idx>(__t)...)), std::forward<_Obj>(__o), _Indices{});
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Tuple, typename _Obj, std::size_t _N, std::enable_if_t<(_N == 0), int> = 0>
+  static void apply_n(_Tuple &&__t, _Obj &&__o)
+  {
+    Get<_N>(__t)(__o);
+  }
+
+  template <typename _Tuple, typename _Obj, std::size_t _N, std::enable_if_t<(_N > 0), int> = 0>
+  static void apply_n(_Tuple &&__t, _Obj &&__o)
+  {
+    Get<_N>(__t)(__o);
+    apply_n<_Tuple, _Obj, _N - 1>(std::forward<_Tuple>(__t), std::forward<_Obj>(__o));
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Tuple, std::size_t _N, std::enable_if_t<(_N == 0), int> = 0>
+  static void apply_n(_Tuple &&__t)
+  {
+    Get<_N>(__t)();
+  }
+
+  template <typename _Tuple, std::size_t _N, std::enable_if_t<(_N > 0), int> = 0>
+  static void apply_n(_Tuple &&__t)
+  {
+    Get<_N>(__t)();
+    apply_n<_Tuple, _N - 1>(std::forward<_Tuple>(__t));
+  }
+
+  //--------------------------------------------------------------------------------------------//
+};
+
+//================================================================================================//
+
+template <typename _Ret>
+struct Apply {
+  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<typename std::decay<_Tuple>::type>::value,
+            typename _Indices = std::make_index_sequence<_N>>
+  static _Ret apply_all(_Fn &&__f, _Tuple &&__t)
+  {
+    return _ApplyImpl<_Ret>::template apply_all<_Fn, _Tuple>(std::forward<_Fn>(__f), std::forward<_Tuple>(__t),
+                                                             _Indices{});
+  }
+};
+
+//================================================================================================//
+
+template <>
+struct Apply<void> {
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<typename std::decay<_Tuple>::type>::value,
+            typename _Indices = std::make_index_sequence<_N>>
+  static void apply_all(_Fn &&__f, _Tuple &&__t)
+  {
+    _ApplyImpl<void>::template apply_all<_Fn, _Tuple>(std::forward<_Fn>(__f), std::forward<_Tuple>(__t), _Indices{});
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Tuple, typename _Obj, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
+            typename _Indices = std::make_index_sequence<_N>>
+  static void apply_once(_Tuple &&__t, _Obj &&__o)
+  {
+    _ApplyImpl<void>::template apply_once<_Tuple, _Obj>(std::forward<_Tuple>(__t), std::forward<_Obj>(__o), _Indices{});
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Tuple, typename _Obj, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
+            typename _Indices = std::make_index_sequence<_N>>
+  static void apply_n(_Tuple &&__t, _Obj &&__o)
+  {
+    _ApplyImpl<void>::template apply_n<_Tuple, _Obj, _N - 1>(std::forward<_Tuple>(__t), std::forward<_Obj>(__o));
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
+            typename _Indices = std::make_index_sequence<_N>>
+  static void apply_n(_Tuple &&__t)
+  {
+    _ApplyImpl<void>::template apply_n<_Tuple, _N - 1>(std::forward<_Tuple>(__t));
+  }
+
+  //--------------------------------------------------------------------------------------------//
+};
+
+//================================================================================================//
