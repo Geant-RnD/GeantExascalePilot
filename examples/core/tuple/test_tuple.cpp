@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     // this executes the heterogenous structs
     auto _exec_hetero = [_print_info](const double& start, HeterogeneousArray ops) {
         auto copy_ops = ops;
-        Apply<void>::apply_n(ops, start);
+        Apply<void>::apply_loop(ops, start);
         _print_info(start, copy_ops, ops);
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << std::endl;
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
         Tuple<ObjectAccessor<D>, ObjectAccessor<B>> access_array =
             MakeTuple(ObjectAccessor<D>(derived_obj), ObjectAccessor<B>(base_obj));
         // apply operator() to all tuple objects (e.g. loop over objects)
-        Apply<void>::apply_n(access_array);
+        Apply<void>::apply_loop(access_array);
         // cleanup
         delete base_obj;
         delete derived_obj;

@@ -1792,32 +1792,17 @@ struct _ApplyImpl<void> {
 
   //--------------------------------------------------------------------------------------------//
 
-  template <typename _Tuple, typename _Obj, std::size_t _N, std::enable_if_t<(_N == 0), int> = 0>
-  static void apply_n(_Tuple &&__t, _Obj &&__o)
+  template <std::size_t _N, typename _Tuple, typename... _Args, std::enable_if_t<(_N == 0), int> = 0>
+  static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
-    Get<_N>(__t)(__o);
+    Get<_N>(__t)(std::forward<_Args>(__args)...);
   }
 
-  template <typename _Tuple, typename _Obj, std::size_t _N, std::enable_if_t<(_N > 0), int> = 0>
-  static void apply_n(_Tuple &&__t, _Obj &&__o)
+  template <std::size_t _N, typename _Tuple, typename... _Args, std::enable_if_t<(_N > 0), int> = 0>
+  static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
-    Get<_N>(__t)(__o);
-    apply_n<_Tuple, _Obj, _N - 1>(std::forward<_Tuple>(__t), std::forward<_Obj>(__o));
-  }
-
-  //--------------------------------------------------------------------------------------------//
-
-  template <typename _Tuple, std::size_t _N, std::enable_if_t<(_N == 0), int> = 0>
-  static void apply_n(_Tuple &&__t)
-  {
-    Get<_N>(__t)();
-  }
-
-  template <typename _Tuple, std::size_t _N, std::enable_if_t<(_N > 0), int> = 0>
-  static void apply_n(_Tuple &&__t)
-  {
-    Get<_N>(__t)();
-    apply_n<_Tuple, _N - 1>(std::forward<_Tuple>(__t));
+    Get<_N>(__t)(std::forward<_Args>(__args)...);
+    apply_loop<_N - 1, _Tuple, _Args...>(std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
@@ -1860,20 +1845,11 @@ struct Apply<void> {
 
   //--------------------------------------------------------------------------------------------//
 
-  template <typename _Tuple, typename _Obj, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
-            typename _Indices = std::make_index_sequence<_N>>
-  static void apply_n(_Tuple &&__t, _Obj &&__o)
+  template <typename _Tuple, typename... _Args, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+  static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
-    _ApplyImpl<void>::template apply_n<_Tuple, _Obj, _N - 1>(std::forward<_Tuple>(__t), std::forward<_Obj>(__o));
-  }
-
-  //--------------------------------------------------------------------------------------------//
-
-  template <typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
-            typename _Indices = std::make_index_sequence<_N>>
-  static void apply_n(_Tuple &&__t)
-  {
-    _ApplyImpl<void>::template apply_n<_Tuple, _N - 1>(std::forward<_Tuple>(__t));
+    _ApplyImpl<void>::template apply_loop<_N - 1, _Tuple, _Args...>(std::forward<_Tuple>(__t),
+                                                                    std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
