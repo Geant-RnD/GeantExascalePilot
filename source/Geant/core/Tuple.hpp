@@ -1845,6 +1845,24 @@ struct _ApplyImpl<void> {
   }
 
   //--------------------------------------------------------------------------------------------//
+
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
+            std::enable_if_t<(_N == _Nt), int> = 0>
+  static void unroll_members(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
+  {
+    (Get<_N>(__t)).*(Get<_N>(__f))(std::forward<_Args>(__args)...);
+  }
+
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
+            std::enable_if_t<(_N < _Nt), int> = 0>
+  static void unroll_members(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
+  {
+    (Get<_N>(__t)).*(Get<_N>(__f))(std::forward<_Args>(__args)...);
+    unroll_members<_N + 1, _Nt, _Tuple, _Funct, _Args...>(std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
+                                                          std::forward<_Args>(__args)...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
 };
 
 //================================================================================================//
@@ -1908,6 +1926,15 @@ struct Apply<void> {
   {
     _ApplyImpl<void>::template unroll<0, _N - 1, _Func, _Args...>(std::forward<_Func>(__f),
                                                                   std::forward<_Args>(__args)...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <std::size_t _N, typename _Tuple, typename _Func, typename... _Args>
+  static void unroll_members(_Tuple &&__t, _Func &&__f, _Args &&... __args)
+  {
+    _ApplyImpl<void>::template unroll_members<0, _N - 1, _Tuple, _Func, _Args...>(
+        std::forward<_Tuple>(__t), std::forward<_Func>(__f), std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
