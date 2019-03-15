@@ -81,10 +81,10 @@ void run(uintmax_t nloop, uintmax_t nitr)
     //              Functional polymorphism section
     //==================================================================================//
     // functional operators
-    auto                               b_funct      = [&]() { base_obj.generate(f_generator); };
-    auto                               d_funct      = [&]() { derived_obj.generate(f_generator); };
+    auto                                         b_funct      = [&]() { base_obj.generate(f_generator); };
+    auto                                         d_funct      = [&]() { derived_obj.generate(f_generator); };
     std::initializer_list<std::function<void()>> funct_array  = { b_funct, d_funct };
-    auto                               funct_vector = [&]() {
+    auto                                         funct_vector = [&]() {
         for(const auto& itr : funct_array)
             itr();
     };
@@ -140,8 +140,8 @@ void run(uintmax_t nloop, uintmax_t nitr)
 
     GET_TIMER(unroll_s);
     constexpr std::size_t unroll_length = 50;
-    uintmax_t _nitr = nitr / unroll_length;
-    uintmax_t _nmod = nloop % nitr;
+    uintmax_t             _nitr         = nitr / unroll_length;
+    uintmax_t             _nmod         = nloop % nitr;
     for(uintmax_t i = 0; i < _nitr; ++i)
         Apply<void>::unroll<unroll_length>(funct_tuple);
     for(uintmax_t i = 0; i < _nmod; ++i)
