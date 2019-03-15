@@ -204,15 +204,14 @@ double VScalarHelicalStepper::DistChord(double /*charge*/) const
   // Check whether h/R >  pi  !!
   // Method DistLine is good only for <  pi
 
-    // NOLINT
+  // NOLINT
   double Ang = GetAngCurve();
   if (Ang <= kPi) {
     return GetRadHelix() * (1 - Math::Cos(0.5 * Ang));
-  } else {  // NOLINT
-      if(Ang < kTwoPi)
-      {
-          return GetRadHelix() * (1 + Math::Cos(0.5 * (kTwoPi - Ang)));
-      } else // NOLINT return Diameter of projected circle
+  } else { // NOLINT
+    if (Ang < kTwoPi) {
+      return GetRadHelix() * (1 + Math::Cos(0.5 * (kTwoPi - Ang)));
+    } else // NOLINT return Diameter of projected circle
     {
       return 2 * GetRadHelix();
     }

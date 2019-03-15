@@ -54,24 +54,21 @@ PhysicsParameters::PhysicsParameters()
 const PhysicsParameters *PhysicsParameters::GetPhysicsParametersForRegion(int regionindx)
 {
   PhysicsParameters *physPar = nullptr;
-  for(auto& itr : gThePhysicsParametersTable)
-  {
-      if(itr->IsActiveRegion(regionindx))
-      {
-          physPar = itr;
-          break;
-      }
+  for (auto &itr : gThePhysicsParametersTable) {
+    if (itr->IsActiveRegion(regionindx)) {
+      physPar = itr;
+      break;
+    }
   }
   return physPar;
 }
 
 void PhysicsParameters::Clear()
 {
-    for(auto& itr : gThePhysicsParametersTable)
-    {
-        delete itr;
-    }
-    gThePhysicsParametersTable.clear();
+  for (auto &itr : gThePhysicsParametersTable) {
+    delete itr;
+  }
+  gThePhysicsParametersTable.clear();
 }
 
 void PhysicsParameters::SetMinLossTableEnergy(double val)
