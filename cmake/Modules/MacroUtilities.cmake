@@ -100,7 +100,7 @@ FUNCTION(GLOB_FILES)
     # parse args
     cmake_parse_arguments(M
         # options
-        ""
+        "EXCLUDE_CURRENT_DIR"
         # single value args
         "OUTPUT_VAR"
         # multiple value args
@@ -113,8 +113,10 @@ FUNCTION(GLOB_FILES)
             file(GLOB TMP "${CMAKE_CURRENT_LIST_DIR}/${DIR}/*.${EXT}")
             list(APPEND _FILES ${TMP})
         endforeach()
-        file(GLOB TMP "${CMAKE_CURRENT_LIST_DIR}/*.${EXT}")
-        list(APPEND _FILES ${TMP})
+        if(NOT M_EXCLUDE_CURRENT_DIR)
+            file(GLOB TMP "${CMAKE_CURRENT_LIST_DIR}/*.${EXT}")
+            list(APPEND _FILES ${TMP})
+        endif()
     endforeach()
 
     safe_remove_duplicates(_FILES)

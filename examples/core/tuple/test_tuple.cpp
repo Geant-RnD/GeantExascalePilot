@@ -9,6 +9,9 @@ typedef Mult<double>                          dMult;
 typedef Tuple<dAdd, dMult, dSub, dMult, dAdd> HeterogeneousArray;
 typedef void (*print_func_t)(double, double, double);
 
+const std::string breaker  = "=============================================";
+const std::string notifier = "#" + breaker + " joined tasks " + breaker + "#\n";
+
 //======================================================================================//
 
 int main(int argc, char** argv)
@@ -48,21 +51,29 @@ int main(int argc, char** argv)
         std::cout << std::endl;
     };
 
-    auto _exec_object = []() {
-        using B = BaseObject;
-        using D = DerivedObject;
-        // derived object (with access to base class)
-        DerivedObject* derived_obj = new DerivedObject();
-        // base class object (not derived)
-        BaseObject* base_obj = new BaseObject();
-        // create tuple
-        Tuple<ObjectAccessor<D>, ObjectAccessor<B>> access_array =
-            MakeTuple(ObjectAccessor<D>(derived_obj), ObjectAccessor<B>(base_obj));
-        // apply operator() to all tuple objects (e.g. loop over objects)
-        Apply<void>::apply_loop(access_array);
-        // cleanup
-        delete base_obj;
-        delete derived_obj;
+    // some short hand definitions
+    using B       = BaseObject;
+    using D       = DerivedObject;
+    using AccessB = ObjectAccessor<B>;
+    using AccessD = ObjectAccessor<D>;
+
+    // derived object (with access to base class)
+    DerivedObject derived_obj;
+    // base class object (not derived)
+    BaseObject base_obj;
+
+    // create tuple of accessors
+    auto access_array = MakeTuple(AccessB(base_obj), AccessD(derived_obj));
+
+    // create tuple of member functions
+    auto funct_array = MakeTuple(&AccessB::doSomething, &AccessD::doSomething);
+
+    // apply operator() to all tuple objects (e.g. loop over objects calling operator)
+    auto _exec_operator = [&access_array]() { Apply<void>::apply_loop(access_array); };
+
+    // apply doSomething(std::string) to all tuple objects (e.g. loop over objects calling doSomething)
+    auto _exec_member_function = [&access_array, &funct_array](const std::string& msg) {
+        Apply<void>::apply_functions(access_array, funct_array, msg);
     };
 
     // create task-group that uses thread-pool
@@ -81,16 +92,22 @@ int main(int argc, char** argv)
 
     // wait for tasks to finish
     tg.join();
+    std::cout << notifier << std::endl;
 
-    // run the accessor task
-    tg.run(_exec_object);
+    // run the task that calls operator() on each accessor
+    tg.run(_exec_operator);
+    // run the task that calls doSomething(std::string) on each accessor
+    tg.run(_exec_member_function, std::string("member function task worked!"));
 
     // wait for tasks to finish
     tg.join();
+    std::cout << notifier << std::endl;
 
-    // this failed
-    // typedef void (*var_print_t)(dAdd, dSub, dMult, dAdd, dSub);
-    // Apply<void>::apply_all<var_print_t>(&variadic_print, ops);
+    tg.run(_exec_operator);
+
+    // wait for tasks to finish
+    tg.join();
+    std::cout << notifier << std::endl;
 }
 
 //======================================================================================//

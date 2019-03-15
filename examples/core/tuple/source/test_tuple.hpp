@@ -5,7 +5,15 @@
 #include <Geant/core/Tuple.hpp>
 #include <PTL/AutoLock.hh>
 #include <PTL/ThreadPool.hh>
+
+#include <atomic>
+#include <chrono>
+#include <functional>
 #include <iomanip>
+#include <iostream>
+#include <random>
+#include <sstream>
+#include <thread>
 
 //======================================================================================//
 
@@ -122,12 +130,32 @@ public:
     virtual void operator()()
     {
         std::stringstream ss;
-        ss << "+ I am the " << m_class_id << "\n";
+        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << "\n";
+        AutoLock l(TypeMutex<decltype(std::cout)>());
+        std::cout << ss.str() << std::flush;
+    }
+
+    virtual void doSomething(const std::string& msg)
+    {
+        std::stringstream ss;
+        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << ". Message = \"" << msg << "\"\n";
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << ss.str() << std::flush;
     }
 
     virtual ~BaseObject() {}
+
+    template <typename Generator>
+    void generate(Generator& gen)
+    {
+        random_value += std::generate_canonical<double, 12>(gen) - 0.5;
+    };
+
+    double GetRandomValue() const { return random_value; }
+    void   Reset() { random_value = 0.0; }
+
+protected:
+    double random_value = 0.0;
 
 private:
     std::string m_class_id = "base class";
@@ -145,10 +173,24 @@ public:
     virtual void operator()()
     {
         std::stringstream ss;
-        ss << "+ I am the " << m_class_id << "\n";
+        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << "\n";
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << ss.str() << std::flush;
     }
+
+    virtual void doSomething(const std::string& msg)
+    {
+        std::stringstream ss;
+        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << ". Message = \"" << msg << "\"\n";
+        AutoLock l(TypeMutex<decltype(std::cout)>());
+        std::cout << ss.str() << std::flush;
+    }
+
+    template <typename Generator>
+    void generate(Generator& gen)
+    {
+        random_value += std::generate_canonical<double, 24>(gen) - 0.5;
+    };
 
 private:
     std::string m_class_id = "derived class";
@@ -165,22 +207,40 @@ class ObjectAccessor
 {
 public:
     ObjectAccessor(_Tp* obj)
+    : m_obj(*obj)
+    {
+    }
+
+    ObjectAccessor(_Tp& obj)
     : m_obj(obj)
     {
     }
 
     void operator()()
     {
-        m_obj->operator()();
-        m_obj->m_class_id += " (modified via accessor)";
-        m_obj->operator()();
+        m_obj();
+        m_obj.m_class_id += " (modified via accessor)";
+        m_obj();
 
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << std::endl;
     }
 
-private:
-    _Tp* m_obj;
+    void doSomething(const std::string& msg)
+    {
+        m_obj.doSomething(msg);
+        AutoLock l(TypeMutex<decltype(std::cout)>());
+        std::cout << std::endl;
+    }
+
+    template <typename Generator>
+    void generate(Generator& gen)
+    {
+        m_obj.generate(gen);
+    };
+
+protected:
+    _Tp& m_obj;
 };
 
 //======================================================================================//

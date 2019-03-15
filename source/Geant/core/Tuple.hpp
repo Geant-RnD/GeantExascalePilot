@@ -1792,17 +1792,56 @@ struct _ApplyImpl<void> {
 
   //--------------------------------------------------------------------------------------------//
 
-  template <std::size_t _N, typename _Tuple, typename... _Args, std::enable_if_t<(_N == 0), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
   static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
+    // call operator()
     Get<_N>(__t)(std::forward<_Args>(__args)...);
   }
 
-  template <std::size_t _N, typename _Tuple, typename... _Args, std::enable_if_t<(_N > 0), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename... _Args, std::enable_if_t<(_N < _Nt), int> = 0>
   static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
+    // call operator()
     Get<_N>(__t)(std::forward<_Args>(__args)...);
-    apply_loop<_N - 1, _Tuple, _Args...>(std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
+    // recursive call
+    apply_loop<_N + 1, _Nt, _Tuple, _Args...>(std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
+            std::enable_if_t<(_N == _Nt), int> = 0>
+  static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
+  {
+    // call member function at index _N
+    ((Get<_N>(__t)).*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
+  }
+
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
+            std::enable_if_t<(_N < _Nt), int> = 0>
+  static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
+  {
+    // call member function at index _N
+    ((Get<_N>(__t)).*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
+    // recursive call
+    apply_functions<_N + 1, _Nt, _Tuple, _Funct, _Args...>(std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
+                                                           std::forward<_Args>(__args)...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <std::size_t _N, std::size_t _Nt, typename _Funct, typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
+  static void unroll(_Funct &&__f, _Args &&... __args)
+  {
+    (__f)(std::forward<_Args>(__args)...);
+  }
+
+  template <std::size_t _N, std::size_t _Nt, typename _Funct, typename... _Args, std::enable_if_t<(_N < _Nt), int> = 0>
+  static void unroll(_Funct &&__f, _Args &&... __args)
+  {
+    (__f)(std::forward<_Args>(__args)...);
+    unroll<_N + 1, _Nt, _Funct, _Args...>(std::forward<_Funct>(__f), std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
@@ -1812,7 +1851,7 @@ struct _ApplyImpl<void> {
 
 template <typename _Ret>
 struct Apply {
-  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<typename std::decay<_Tuple>::type>::value,
+  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
             typename _Indices = std::make_index_sequence<_N>>
   static _Ret apply_all(_Fn &&__f, _Tuple &&__t)
   {
@@ -1827,7 +1866,7 @@ template <>
 struct Apply<void> {
   //--------------------------------------------------------------------------------------------//
 
-  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<typename std::decay<_Tuple>::type>::value,
+  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
             typename _Indices = std::make_index_sequence<_N>>
   static void apply_all(_Fn &&__f, _Tuple &&__t)
   {
@@ -1848,8 +1887,27 @@ struct Apply<void> {
   template <typename _Tuple, typename... _Args, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
   static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
-    _ApplyImpl<void>::template apply_loop<_N - 1, _Tuple, _Args...>(std::forward<_Tuple>(__t),
-                                                                    std::forward<_Args>(__args)...);
+    _ApplyImpl<void>::template apply_loop<0, _N - 1, _Tuple, _Args...>(std::forward<_Tuple>(__t),
+                                                                       std::forward<_Args>(__args)...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <typename _Tuple, typename _Funct, typename... _Args,
+            std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+  static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
+  {
+    _ApplyImpl<void>::template apply_functions<0, _N - 1, _Tuple, _Funct, _Args...>(
+        std::forward<_Tuple>(__t), std::forward<_Funct>(__f), std::forward<_Args>(__args)...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <std::size_t _N, typename _Func, typename... _Args>
+  static void unroll(_Func &&__f, _Args &&... __args)
+  {
+    _ApplyImpl<void>::template unroll<0, _N - 1, _Func, _Args...>(std::forward<_Func>(__f),
+                                                                  std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
