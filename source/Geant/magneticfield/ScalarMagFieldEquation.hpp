@@ -5,13 +5,11 @@
 
 #include <cmath>
 
-#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
-
-// #include <vector>
-#include "base/Vector3D.h"
-
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
+#include "Geant/core/Typedefs.hpp"
+#include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
+#include <base/Vector3D.h>
 
 template <class Field, unsigned int Size>
 class ScalarMagFieldEquation : public VScalarEquationOfMotion {
@@ -231,8 +229,6 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::TEvaluateRhsReturnB
                                                                                  double charge,
                                                                                  vecgeom::Vector3D<double> &field) const
 {
-  using ThreeVector = vecgeom::Vector3D<double>;
-
   GetFieldValue(ThreeVector(y[0], y[1], y[2]), field);
   EvaluateRhsGivenB(y, field, charge, dydx);
 }

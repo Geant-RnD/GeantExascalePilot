@@ -15,10 +15,8 @@
 
 #pragma once
 
-#include "base/Vector3D.h" // VecGeom/base/Vector3D.h
-typedef vecgeom::Vector3D<double> ThreeVector;
-
-// #include "G4ChargeState.hh"
+#include "Geant/core/Typedefs.hpp"
+#include <base/Vector3D.h>
 
 class ScalarFieldTrack {
 public: // with description

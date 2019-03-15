@@ -801,9 +801,9 @@ void SimpleIntegrationDriver<T_Stepper, Nvar>::OneGoodStep(const Real_v yStart[]
     if (!vecCore::MaskEmpty(problemLanes)) {
       std::cerr << "GVIntegratorDriver::OneStep:" << std::endl
                 << "  Stepsize underflow in Stepper ( Report 1 - in loop )" << std::endl;
-      Bool_v problemLanes = stepSizeUnderflow && !finished;
+      Bool_v _problemLanes = stepSizeUnderflow && !finished;
 
-      ReportConditionLanes(problemLanes, x, xnew, h, htry);
+      ReportConditionLanes(_problemLanes, x, xnew, h, htry);
     }
 
   } while (itersLeft > 0 && (!vecCore::MaskFull(finished)) //  was MaskFull( stepSizeUnderflow || goodStep ) )

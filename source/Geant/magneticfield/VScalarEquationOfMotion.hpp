@@ -16,8 +16,9 @@
 #include <iostream>
 
 // #include <vector>
-#include "base/Vector3D.h"
-#include <Geant/core/Config.hpp> // To define GEANT_FORCE_INLINE
+#include "Geant/core/Config.hpp" // To define GEANT_FORCE_INLINE
+#include "Geant/core/Typedefs.hpp"
+#include <base/Vector3D.h>
 
 // #include "GUVTypes.hh"      // "globals.hh"
 #include "Geant/magneticfield/VVectorField.hpp" // required in inline method implementations
@@ -126,8 +127,6 @@ GEANT_FORCE_INLINE
 void VScalarEquationOfMotion::EvaluateRhsReturnB(const double y[], double dydx[], double charge,
                                                  vecgeom::Vector3D<double> &field) const
 {
-  using ThreeVector = vecgeom::Vector3D<double>;
-
   GetFieldValue(ThreeVector(y[0], y[1], y[2]), field);
   EvaluateRhsGivenB(y, field, charge, dydx);
 }

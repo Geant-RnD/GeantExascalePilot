@@ -3,14 +3,10 @@
 
 #include <algorithm> // for std::max
 
-// #include "G4Types.hh"
-#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
-
-// #include "ThreeVector.h"
-#include <base/Vector3D.h>
-// typedef vecgeom::Vector3D<double>  ThreeVector;
-
+#include "Geant/core/Typedefs.hpp"
 #include "Geant/magneticfield/GULineSection.hpp"
+#include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
+#include <base/Vector3D.h>
 
 namespace GUIntegrationNms {
 constexpr unsigned int NumVarBase = 8; //
@@ -181,7 +177,6 @@ void TMagErrorStepper<T_Stepper, T_Equation, Nvar>::StepWithErrorEstimate(const 
   // double  correction = 1. / ( (1 <<
   //          static_cast<T_Stepper*>(this)->T_Stepper::IntegratorOrder()) -1 );
   //  Saving yInput because yInput and yOutput can be aliases for same array
-  using ThreeVector = vecgeom::Vector3D<double>;
 
   for (unsigned int i = 0; i < NumVarStore; i++) {
     yInitial[i] = yInput[i];

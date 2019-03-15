@@ -420,8 +420,8 @@ Material *Material::NISTMaterial(const std::string &name)
   indx = NISTMaterialData::Instance().FindNISTMaterialDataIndex(name);
   if (indx > -1) { // we have NISTMaterialData for this material name so buil the material
     // get NISTMaterialData from the corresponding data structure
-    const std::string name = NISTMaterialData::Instance().GetName(indx);
-    double density         = NISTMaterialData::Instance().GetDensity(indx);
+    const std::string _name = NISTMaterialData::Instance().GetName(indx);
+    double density          = NISTMaterialData::Instance().GetDensity(indx);
     // will be set in the corresponding MaterialProperties
     //    double        meanExcEnergy   = NISTMaterialData::Instance().GetMeanExcitationEnergy(indx);
     double temperature  = NISTMaterialData::Instance().GetTemperature(indx);
@@ -433,7 +433,7 @@ Material *Material::NISTMaterial(const std::string &name)
     bool isByAtomCount  = NISTMaterialData::Instance().IsToBuildByAtomCount(indx);
 
     // 1. create the Material
-    mat = new Material(name, density, numComp, state, temperature, pressure);
+    mat = new Material(_name, density, numComp, state, temperature, pressure);
     // 2. add numComp NIST elements to the material
     for (int i = 0; i < numComp; ++i) {
       Element *elem = Element::NISTElement(listZ[i]);

@@ -24,9 +24,6 @@ public:
 
   static constexpr double gCof = geant::units::kCLight; //   / fieldUnits::meter ;
 
-  template <typename T>
-  using Vector3D = vecgeom::Vector3D<T>;
-
   // Expected constant value:
   // static constexpr double gCof    = Constants::c_light * fieldUnits::second /
   //     ( 1.0e9 * fieldUnits::meter * fieldUnits::meter );
@@ -106,7 +103,6 @@ public:
   template <typename Real_v>
   void PrintAll(Real_v const y[], const Vector3D<Real_v> &B, Real_v charge, Real_v cof, Real_v const dydx[]) const
   {
-    using ThreeVector = Vector3D<Real_v>;
     using geant::units::kilogauss;
 
     std::cout.precision(8);
@@ -117,7 +113,7 @@ public:
     std::cout << "            dp/ds  = " << dydx[3] << " " << dydx[4] << " " << dydx[5]
               << " - mag= " << std::sqrt(dydx[3] * dydx[3] + dydx[4] * dydx[4] + dydx[5] * dydx[5]) << std::endl;
 
-    Real_v Bmag = ThreeVector(B[0], B[1], B[2]).Mag();
+    Real_v Bmag = Vector3D<Real_v>(B[0], B[1], B[2]).Mag();
     std::cout << "            B-field= " << B[0] / kilogauss << " " << B[1] / kilogauss << " " << B[2] / kilogauss
               << "  ( KGaus ) mag= " << Bmag << std::endl;
     std::cout << "               P  = " << y[3] << " " << y[4] << " " << y[5]

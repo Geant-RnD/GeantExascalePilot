@@ -10,13 +10,10 @@
 
 #pragma once
 
-//  #include "ThreeVector.h"
-#include "base/Vector3D.h"
-typedef vecgeom::Vector3D<double> ThreeVector;
-
-// #include "Geant/magneticfield/VScalarIntegrationStepper.hpp"
+#include "Geant/core/Typedefs.hpp"
 #include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
 #include "Geant/magneticfield/VScalarHelicalStepper.hpp"
+#include <base/Vector3D.h>
 
 class GUExactHelixStepper : public VScalarHelicalStepper {
 public:                                                // with description

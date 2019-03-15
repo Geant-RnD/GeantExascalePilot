@@ -78,7 +78,7 @@ void run(uintmax_t nloop, uintmax_t nitr)
     };
 
     //==================================================================================//
-    //              Functional polymorphism section
+    //              Functional section
     //==================================================================================//
     // functional operators
     auto                                         b_funct      = [&]() { base_obj.generate(f_generator); };
@@ -123,19 +123,19 @@ void run(uintmax_t nloop, uintmax_t nitr)
     GET_TIMER(funct_s);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_vector();
-    REPORT_TIMER(funct_s, "       Functional polymorphism", nloop, nitr, ref_timer);
+    REPORT_TIMER(funct_s, "       Functional", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(tuple_s);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_tuple();
-    REPORT_TIMER(tuple_s, "            Tuple polymorphism", nloop, nitr, ref_timer);
+    REPORT_TIMER(tuple_s, "            Tuple", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(lambda_s);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_lamda();
-    REPORT_TIMER(lambda_s, "           Lambda polymorphism", nloop, nitr, ref_timer);
+    REPORT_TIMER(lambda_s, "           Lambda", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(unroll_s);
@@ -147,7 +147,7 @@ void run(uintmax_t nloop, uintmax_t nitr)
     for(uintmax_t i = 0; i < _nmod; ++i)
         funct_tuple();
     // for(uintmax_t i = 0; i < nitr; ++i) funct_lamda();
-    REPORT_TIMER(unroll_s, "           Unroll polymorphism", nloop, nitr, ref_timer);
+    REPORT_TIMER(unroll_s, "           Unroll", nloop, nitr, ref_timer);
     record();
 
     //==================================================================================//
@@ -163,19 +163,19 @@ void run(uintmax_t nloop, uintmax_t nitr)
     GET_TIMER(funct_p);
     tg.parallel_for(nitr, nchunk, funct_vector);
     tg.join();
-    REPORT_TIMER(funct_p, "Parallel Function polymorphism", nloop, nitr, ref_timer);
+    REPORT_TIMER(funct_p, "Parallel Function", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(tuple_p);
     tg.parallel_for(nitr, nchunk, funct_tuple);
     tg.join();
-    REPORT_TIMER(tuple_p, "   Parallel Tuple polymorphism", nloop, nitr, ref_timer);
+    REPORT_TIMER(tuple_p, "   Parallel Tuple", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(lambda_p);
     tg.parallel_for(nitr, nchunk, funct_lamda);
     tg.join();
-    REPORT_TIMER(lambda_p, "  Parallel Lambda polymorphism", nloop, nitr, ref_timer);
+    REPORT_TIMER(lambda_p, "  Parallel Lambda", nloop, nitr, ref_timer);
     record();
     */
     //==================================================================================//

@@ -20,6 +20,11 @@ using vector_t = std::vector<T>;
 #endif
 #endif
 
+// three vector types
+using ThreeVector = vecgeom::Vector3D<double>;
+template <typename T>
+using Vector3D = vecgeom::Vector3D<T>;
+
 namespace geantphysics {
 class Particle;
 
