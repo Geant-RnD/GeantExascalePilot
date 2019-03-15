@@ -28,7 +28,7 @@ void NISTElementData::BuildTable()
   // D.Lunney, J.M.Pearson,C .Thibault,
   // Rev.Mod.Phys. 75 (2003) 1021 (APPENDIX A. Eq. (A4))
   for (int i = 0; i < gNumberOfNISTElements; ++i) {
-    double Z            = (double)(i + 1);
+    double Z            = static_cast<double>(i + 1);
     fBindingEnergies[i] = (14.4381 * Math::Pow(Z, 2.39) + 1.55468e-6 * Math::Pow(Z, 5.35)) * eV;
   }
 

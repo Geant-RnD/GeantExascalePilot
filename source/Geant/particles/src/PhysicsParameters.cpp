@@ -12,20 +12,20 @@ namespace geantphysics {
 std::vector<PhysicsParameters *> PhysicsParameters::gThePhysicsParametersTable;
 
 // set to default values
-double PhysicsParameters::fMinAllowedGammaCutEnergy    = 990.0 * geant::units::eV;
-double PhysicsParameters::fMaxAllowedGammaCutEnergy    = 10.0 * geant::units::GeV;
-double PhysicsParameters::fMinAllowedElectronCutEnergy = 990.0 * geant::units::eV;
-double PhysicsParameters::fMaxAllowedElectronCutEnergy = 10.0 * geant::units::GeV;
-double PhysicsParameters::fMinAllowedPositronCutEnergy = 990.0 * geant::units::eV;
-double PhysicsParameters::fMaxAllowedPositronCutEnergy = 10.0 * geant::units::GeV;
+double PhysicsParameters::gMinAllowedGammaCutEnergy    = 990.0 * geant::units::eV;
+double PhysicsParameters::gMaxAllowedGammaCutEnergy    = 10.0 * geant::units::GeV;
+double PhysicsParameters::gMinAllowedElectronCutEnergy = 990.0 * geant::units::eV;
+double PhysicsParameters::gMaxAllowedElectronCutEnergy = 10.0 * geant::units::GeV;
+double PhysicsParameters::gMinAllowedPositronCutEnergy = 990.0 * geant::units::eV;
+double PhysicsParameters::gMaxAllowedPositronCutEnergy = 10.0 * geant::units::GeV;
 
-double PhysicsParameters::fDefaultGammaCutInLength    = 1.0 * geant::units::mm;
-double PhysicsParameters::fDefaultElectronCutInLength = 1.0 * geant::units::mm;
-double PhysicsParameters::fDefaultPositronCutInLength = 1.0 * geant::units::mm;
+double PhysicsParameters::gDefaultGammaCutInLength    = 1.0 * geant::units::mm;
+double PhysicsParameters::gDefaultElectronCutInLength = 1.0 * geant::units::mm;
+double PhysicsParameters::gDefaultPositronCutInLength = 1.0 * geant::units::mm;
 
-double PhysicsParameters::fDefaultGammaCutInEnergy    = 100.0 * geant::units::keV;
-double PhysicsParameters::fDefaultElectronCutInEnergy = 100.0 * geant::units::keV;
-double PhysicsParameters::fDefaultPositronCutInEnergy = 100.0 * geant::units::keV;
+double PhysicsParameters::gDefaultGammaCutInEnergy    = 100.0 * geant::units::keV;
+double PhysicsParameters::gDefaultElectronCutInEnergy = 100.0 * geant::units::keV;
+double PhysicsParameters::gDefaultPositronCutInEnergy = 100.0 * geant::units::keV;
 
 PhysicsParameters::PhysicsParameters()
 {
@@ -54,21 +54,24 @@ PhysicsParameters::PhysicsParameters()
 const PhysicsParameters *PhysicsParameters::GetPhysicsParametersForRegion(int regionindx)
 {
   PhysicsParameters *physPar = nullptr;
-  for (unsigned i = 0; i < gThePhysicsParametersTable.size(); ++i) {
-    if (gThePhysicsParametersTable[i]->IsActiveRegion(regionindx)) {
-      physPar = gThePhysicsParametersTable[i];
-      break;
-    }
+  for(auto& itr : gThePhysicsParametersTable)
+  {
+      if(itr->IsActiveRegion(regionindx))
+      {
+          physPar = itr;
+          break;
+      }
   }
   return physPar;
 }
 
 void PhysicsParameters::Clear()
 {
-  for (unsigned i = 0; i < gThePhysicsParametersTable.size(); ++i) {
-    delete gThePhysicsParametersTable[i];
-  }
-  gThePhysicsParametersTable.clear();
+    for(auto& itr : gThePhysicsParametersTable)
+    {
+        delete itr;
+    }
+    gThePhysicsParametersTable.clear();
 }
 
 void PhysicsParameters::SetMinLossTableEnergy(double val)
@@ -231,30 +234,30 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
 
   // parameters that are the same in each region
   flux << "    **** (Static)Parameters that must have the same value in each region: \n"
-       << "     - fMinAllowedGammaCutEnergy    =   " << std::setw(10) << physpar.GetMinAllowedGammaCutEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fMaxAllowedGammaCutEnergy    =   " << std::setw(10) << physpar.GetMaxAllowedGammaCutEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fMinAllowedElectronCutEnergy =   " << std::setw(10) << physpar.GetMinAllowedElectronCutEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fMaxAllowedElectronCutEnergy =   " << std::setw(10) << physpar.GetMaxAllowedElectronCutEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fMinAllowedPositronCutEnergy =   " << std::setw(10) << physpar.GetMinAllowedPositronCutEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fMaxAllowedPositronCutEnergy =   " << std::setw(10) << physpar.GetMaxAllowedPositronCutEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fDefaultGammaCutInLength     =   " << std::setw(10) << physpar.GetDefaultGammaCutInLength() / cm
-       << "  [cm]\n"
-       << "     - fDefaultElectronCutInLength  =   " << std::setw(10) << physpar.GetDefaultElectronCutInLength() / cm
-       << "  [cm]\n"
-       << "     - fDefaultPositronCutInLength  =   " << std::setw(10) << physpar.GetDefaultPositronCutInLength() / cm
-       << "  [cm]\n"
-       << "     - fDefaultGammaCutInEnergy     =   " << std::setw(10) << physpar.GetDefaultGammaCutInEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fDefaultElectronCutInEnergy  =   " << std::setw(10) << physpar.GetDefaultElectronCutInEnergy() / GeV
-       << " [GeV]\n"
-       << "     - fDefaultPositronCutInEnergy  =   " << std::setw(10) << physpar.GetDefaultPositronCutInEnergy() / GeV
-       << " [GeV]\n\n";
+       << "     - fMinAllowedGammaCutEnergy    =   " << std::setw(10)
+       << PhysicsParameters::GetMinAllowedGammaCutEnergy() / GeV << " [GeV]\n"
+       << "     - fMaxAllowedGammaCutEnergy    =   " << std::setw(10)
+       << PhysicsParameters::GetMaxAllowedGammaCutEnergy() / GeV << " [GeV]\n"
+       << "     - fMinAllowedElectronCutEnergy =   " << std::setw(10)
+       << PhysicsParameters::GetMinAllowedElectronCutEnergy() / GeV << " [GeV]\n"
+       << "     - fMaxAllowedElectronCutEnergy =   " << std::setw(10)
+       << PhysicsParameters::GetMaxAllowedElectronCutEnergy() / GeV << " [GeV]\n"
+       << "     - fMinAllowedPositronCutEnergy =   " << std::setw(10)
+       << PhysicsParameters::GetMinAllowedPositronCutEnergy() / GeV << " [GeV]\n"
+       << "     - fMaxAllowedPositronCutEnergy =   " << std::setw(10)
+       << PhysicsParameters::GetMaxAllowedPositronCutEnergy() / GeV << " [GeV]\n"
+       << "     - fDefaultGammaCutInLength     =   " << std::setw(10)
+       << PhysicsParameters::GetDefaultGammaCutInLength() / cm << "  [cm]\n"
+       << "     - fDefaultElectronCutInLength  =   " << std::setw(10)
+       << PhysicsParameters::GetDefaultElectronCutInLength() / cm << "  [cm]\n"
+       << "     - fDefaultPositronCutInLength  =   " << std::setw(10)
+       << PhysicsParameters::GetDefaultPositronCutInLength() / cm << "  [cm]\n"
+       << "     - fDefaultGammaCutInEnergy     =   " << std::setw(10)
+       << PhysicsParameters::GetDefaultGammaCutInEnergy() / GeV << " [GeV]\n"
+       << "     - fDefaultElectronCutInEnergy  =   " << std::setw(10)
+       << PhysicsParameters::GetDefaultElectronCutInEnergy() / GeV << " [GeV]\n"
+       << "     - fDefaultPositronCutInEnergy  =   " << std::setw(10)
+       << PhysicsParameters::GetDefaultPositronCutInEnergy() / GeV << " [GeV]\n\n";
 
   flux << "    **** Active in regions: ";
   for (unsigned i = 0; i < physpar.GetListActiveRegions().size(); ++i) {

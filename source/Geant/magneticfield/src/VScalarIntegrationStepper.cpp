@@ -26,7 +26,7 @@ VScalarIntegrationStepper::~VScalarIntegrationStepper() {}
 
 void VScalarIntegrationStepper::SetEquationOfMotion(VScalarEquationOfMotion *newEquation)
 {
-  if (newEquation != 0) {
+  if (newEquation != nullptr) {
     fAbstrEquation = newEquation;
   }
 }

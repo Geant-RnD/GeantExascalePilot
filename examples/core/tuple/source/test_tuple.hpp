@@ -5,6 +5,7 @@
 #include <Geant/core/Tuple.hpp>
 #include <PTL/AutoLock.hh>
 #include <PTL/ThreadPool.hh>
+#include <PTL/Utility.hh>
 
 #include <atomic>
 #include <chrono>

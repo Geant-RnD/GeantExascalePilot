@@ -33,35 +33,35 @@ public:
   static const PhysicsParameters *GetPhysicsParametersForRegion(int regionindx);
 
   // secondary production kinetic energy threshold related minimum/maximum values
-  static void SetMinAllowedGammaCutEnergy(double val) { fMinAllowedGammaCutEnergy = val; }
-  static void SetMinAllowedElectronCutEnergy(double val) { fMinAllowedElectronCutEnergy = val; }
-  static void SetMinAllowedPositronCutEnergy(double val) { fMinAllowedPositronCutEnergy = val; }
-  static void SetMaxAllowedGammaCutEnergy(double val) { fMaxAllowedGammaCutEnergy = val; }
-  static void SetMaxAllowedElectronCutEnergy(double val) { fMaxAllowedElectronCutEnergy = val; }
-  static void SetMaxAllowedPositronCutEnergy(double val) { fMaxAllowedPositronCutEnergy = val; }
+  static void SetMinAllowedGammaCutEnergy(double val) { gMinAllowedGammaCutEnergy = val; }
+  static void SetMinAllowedElectronCutEnergy(double val) { gMinAllowedElectronCutEnergy = val; }
+  static void SetMinAllowedPositronCutEnergy(double val) { gMinAllowedPositronCutEnergy = val; }
+  static void SetMaxAllowedGammaCutEnergy(double val) { gMaxAllowedGammaCutEnergy = val; }
+  static void SetMaxAllowedElectronCutEnergy(double val) { gMaxAllowedElectronCutEnergy = val; }
+  static void SetMaxAllowedPositronCutEnergy(double val) { gMaxAllowedPositronCutEnergy = val; }
 
-  static double GetMinAllowedGammaCutEnergy() { return fMinAllowedGammaCutEnergy; }
-  static double GetMinAllowedElectronCutEnergy() { return fMinAllowedElectronCutEnergy; }
-  static double GetMinAllowedPositronCutEnergy() { return fMinAllowedPositronCutEnergy; }
-  static double GetMaxAllowedGammaCutEnergy() { return fMaxAllowedGammaCutEnergy; }
-  static double GetMaxAllowedElectronCutEnergy() { return fMaxAllowedElectronCutEnergy; }
-  static double GetMaxAllowedPositronCutEnergy() { return fMaxAllowedPositronCutEnergy; }
+  static double GetMinAllowedGammaCutEnergy() { return gMinAllowedGammaCutEnergy; }
+  static double GetMinAllowedElectronCutEnergy() { return gMinAllowedElectronCutEnergy; }
+  static double GetMinAllowedPositronCutEnergy() { return gMinAllowedPositronCutEnergy; }
+  static double GetMaxAllowedGammaCutEnergy() { return gMaxAllowedGammaCutEnergy; }
+  static double GetMaxAllowedElectronCutEnergy() { return gMaxAllowedElectronCutEnergy; }
+  static double GetMaxAllowedPositronCutEnergy() { return gMaxAllowedPositronCutEnergy; }
 
-  static void SetDefaultGammaCutInLength(double val) { fDefaultGammaCutInLength = val; }
-  static void SetDefaultElectronCutInLength(double val) { fDefaultElectronCutInLength = val; }
-  static void SetDefaultPositronCutInLength(double val) { fDefaultPositronCutInLength = val; }
+  static void SetDefaultGammaCutInLength(double val) { gDefaultGammaCutInLength = val; }
+  static void SetDefaultElectronCutInLength(double val) { gDefaultElectronCutInLength = val; }
+  static void SetDefaultPositronCutInLength(double val) { gDefaultPositronCutInLength = val; }
 
-  static double GetDefaultGammaCutInLength() { return fDefaultGammaCutInLength; }
-  static double GetDefaultElectronCutInLength() { return fDefaultElectronCutInLength; }
-  static double GetDefaultPositronCutInLength() { return fDefaultPositronCutInLength; }
+  static double GetDefaultGammaCutInLength() { return gDefaultGammaCutInLength; }
+  static double GetDefaultElectronCutInLength() { return gDefaultElectronCutInLength; }
+  static double GetDefaultPositronCutInLength() { return gDefaultPositronCutInLength; }
 
-  static void SetDefaultGammaCutInEnergy(double val) { fDefaultGammaCutInEnergy = val; }
-  static void SetDefaultElectronCutInEnergy(double val) { fDefaultElectronCutInEnergy = val; }
-  static void SetDefaultPositronCutInEnergy(double val) { fDefaultPositronCutInEnergy = val; }
+  static void SetDefaultGammaCutInEnergy(double val) { gDefaultGammaCutInEnergy = val; }
+  static void SetDefaultElectronCutInEnergy(double val) { gDefaultElectronCutInEnergy = val; }
+  static void SetDefaultPositronCutInEnergy(double val) { gDefaultPositronCutInEnergy = val; }
 
-  static double GetDefaultGammaCutInEnergy() { return fDefaultGammaCutInEnergy; }
-  static double GetDefaultElectronCutInEnergy() { return fDefaultElectronCutInEnergy; }
-  static double GetDefaultPositronCutInEnergy() { return fDefaultPositronCutInEnergy; }
+  static double GetDefaultGammaCutInEnergy() { return gDefaultGammaCutInEnergy; }
+  static double GetDefaultElectronCutInEnergy() { return gDefaultElectronCutInEnergy; }
+  static double GetDefaultPositronCutInEnergy() { return gDefaultPositronCutInEnergy; }
 
   //
   // EM loss table related variables
@@ -112,19 +112,19 @@ public:
 private:
   // secondary production kinetic energy threshold related minimum/maximum values
   // These must be the same in each reagion
-  static double fDefaultGammaCutInLength;
-  static double fDefaultElectronCutInLength;
-  static double fDefaultPositronCutInLength;
-  static double fDefaultGammaCutInEnergy;
-  static double fDefaultElectronCutInEnergy;
-  static double fDefaultPositronCutInEnergy;
+  static double gDefaultGammaCutInLength;
+  static double gDefaultElectronCutInLength;
+  static double gDefaultPositronCutInLength;
+  static double gDefaultGammaCutInEnergy;
+  static double gDefaultElectronCutInEnergy;
+  static double gDefaultPositronCutInEnergy;
 
-  static double fMinAllowedGammaCutEnergy;
-  static double fMaxAllowedGammaCutEnergy;
-  static double fMinAllowedElectronCutEnergy;
-  static double fMaxAllowedElectronCutEnergy;
-  static double fMinAllowedPositronCutEnergy;
-  static double fMaxAllowedPositronCutEnergy;
+  static double gMinAllowedGammaCutEnergy;
+  static double gMaxAllowedGammaCutEnergy;
+  static double gMinAllowedElectronCutEnergy;
+  static double gMaxAllowedElectronCutEnergy;
+  static double gMinAllowedPositronCutEnergy;
+  static double gMaxAllowedPositronCutEnergy;
 
   //
   // EM energy loss table related variables

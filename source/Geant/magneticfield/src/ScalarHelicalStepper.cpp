@@ -197,8 +197,6 @@ void VScalarHelicalStepper::StepWithErrorEstimate(const double yInput[],
   for (unsigned int i = 0; i < nvar; ++i) {
     yErr[i] = yOut[i] - yTemp[i];
   }
-
-  return;
 }
 
 double VScalarHelicalStepper::DistChord(double /*charge*/) const
@@ -206,13 +204,15 @@ double VScalarHelicalStepper::DistChord(double /*charge*/) const
   // Check whether h/R >  pi  !!
   // Method DistLine is good only for <  pi
 
+    // NOLINT
   double Ang = GetAngCurve();
   if (Ang <= kPi) {
     return GetRadHelix() * (1 - Math::Cos(0.5 * Ang));
-  } else {
-    if (Ang < kTwoPi) {
-      return GetRadHelix() * (1 + Math::Cos(0.5 * (kTwoPi - Ang)));
-    } else // return Diameter of projected circle
+  } else {  // NOLINT
+      if(Ang < kTwoPi)
+      {
+          return GetRadHelix() * (1 + Math::Cos(0.5 * (kTwoPi - Ang)));
+      } else // NOLINT return Diameter of projected circle
     {
       return 2 * GetRadHelix();
     }

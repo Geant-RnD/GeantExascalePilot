@@ -14,10 +14,10 @@ const std::string notifier = "#" + breaker + " joined tasks " + breaker + "#\n";
 
 //======================================================================================//
 
-int main(int argc, char** argv)
+int main()
 {
     // create thread-pool with two threads
-    uintmax_t  num_threads = 2;
+    uintmax_t  num_threads = GetEnv<uintmax_t>("NUM_THREADS", 2);
     ThreadPool tp(num_threads);
 
     // here I make a tuple of doubles
