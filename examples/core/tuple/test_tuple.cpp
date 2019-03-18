@@ -14,8 +14,44 @@ const std::string notifier = "#" + breaker + " joined tasks " + breaker + "#\n";
 
 //======================================================================================//
 
+// some short hand definitions
+using Generator = std::mt19937_64;
+using A         = ObjectA;
+using B         = ObjectB;
+using AccessA   = ObjectAccessor<A, Generator&>;
+using AccessB   = ObjectAccessor<B, Generator&>;
+using Aaccess   = BaseAccessor<>;
+using Baccess   = DerivedAccessor<>;
+
+//======================================================================================//
+
 int main()
 {
+    // reference timer
+    std::random_device                     rd;
+    std::shared_ptr<duration_t>            ref_timer;
+    auto                                   seed = rd();
+    Generator                              r_generator(seed);
+    Generator                              f_generator(seed);
+    std::vector<std::pair<double, double>> results;
+
+    auto record = [&](ObjectA* obj_a, ObjectB* obj_b) {
+        results.push_back(std::make_pair(obj_a->GetRandomValue(), obj_b->GetRandomValue()));
+        obj_a->Reset();
+        obj_b->Reset();
+        r_generator = Generator(seed);
+        f_generator = Generator(seed);
+    };
+    std::cout << "\n+ Random seed = " << seed << std::endl;
+    auto report = [&]() {
+        for(auto& itr : results)
+        {
+            std::cout << "      " << std::fixed << std::setw(8) << std::setprecision(2) << itr.first << ", "
+                      << std::setw(8) << std::setprecision(2) << itr.second << std::endl;
+        }
+        std::cout << std::endl;
+    };
+
     // create thread-pool with two threads
     uintmax_t  num_threads = GetEnv<uintmax_t>("NUM_THREADS", 2);
     ThreadPool tp(num_threads);
@@ -51,31 +87,49 @@ int main()
         std::cout << std::endl;
     };
 
-    // some short hand definitions
-    using B       = BaseObject;
-    using D       = DerivedObject;
-    using AccessB = ObjectAccessor<B>;
-    using AccessD = ObjectAccessor<D>;
-
     // derived object (with access to base class)
-    DerivedObject derived_obj;
+    ObjectB obj_b;
     // base class object (not derived)
-    BaseObject base_obj;
+    ObjectA obj_a;
+
+    std::function<void(ObjectA&, Generator&)> op_a = [&](ObjectA& m_obj, Generator& gen) { m_obj.generate(gen); };
+    std::function<void(ObjectB&, Generator&)> op_b = [&](ObjectB& m_obj, Generator& gen) { m_obj.generate(gen); };
+
+    auto access_a = AccessA(obj_a, op_a);
+    auto access_b = AccessB(obj_b, op_b);
+    auto a_access = Aaccess(obj_a);
+    auto b_access = Baccess(obj_b);
 
     // create tuple of accessors
-    auto access_array = MakeTuple(AccessB(base_obj), AccessD(derived_obj));
+    auto access_array = MakeTuple(&access_a, &access_b);
 
     // create tuple of member functions
-    auto funct_array = MakeTuple(&AccessB::doSomething, &AccessD::doSomething);
+    auto funct_array = MakeTuple(&AccessA::doSomething, &AccessB::doSomething);
 
     // apply operator() to all tuple objects (e.g. loop over objects calling operator)
-    auto _exec_operator = [&access_array]() { Apply<void>::apply_loop(access_array); };
+    auto _exec_operator = [&](Generator& gen) {
+        for(uint32_t i = 0; i < 50; ++i)
+        {
+            access_a(std::ref(gen));
+            access_b(std::ref(gen));
+        }
+        record(&(access_a.object()), &(access_b.object()));
+        for(uint32_t i = 0; i < 50; ++i)
+        {
+            Apply<void>::apply_loop(MakeTuple(access_a, access_b), std::ref(gen));
+        }
+        record(&(access_a.object()), &(access_b.object()));
+    };
 
     // apply doSomething(std::string) to all tuple objects (e.g. loop over objects calling doSomething)
-    auto _exec_member_function = [&access_array, &funct_array](const std::string& msg) {
+    auto _exec_member_function = [&](const std::string& msg) {
         Apply<void>::apply_functions(access_array, funct_array, msg);
     };
 
+    auto _exec_custom_operator = [&]() {
+        a_access();
+        b_access();
+    };
     // create task-group that uses thread-pool
     TaskGroup<void> tg(&tp);
 
@@ -94,20 +148,26 @@ int main()
     tg.join();
     std::cout << notifier << std::endl;
 
-    // run the task that calls operator() on each accessor
-    tg.run(_exec_operator);
     // run the task that calls doSomething(std::string) on each accessor
     tg.run(_exec_member_function, std::string("member function task worked!"));
+    tg.run(_exec_custom_operator);
+
+    tg.join();
+
+    // run the task that calls operator() on each accessor
+    tg.run(_exec_operator, std::ref(r_generator));
 
     // wait for tasks to finish
     tg.join();
     std::cout << notifier << std::endl;
+    report();
 
-    tg.run(_exec_operator);
+    tg.run(_exec_operator, std::ref(r_generator));
 
     // wait for tasks to finish
     tg.join();
     std::cout << notifier << std::endl;
+    report();
 }
 
 //======================================================================================//

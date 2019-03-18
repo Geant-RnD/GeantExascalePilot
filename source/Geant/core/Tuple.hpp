@@ -1815,7 +1815,7 @@ struct _ApplyImpl<void> {
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     // call member function at index _N
-    ((Get<_N>(__t)).*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
+    ((Get<_N>(__t))->*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
   }
 
   template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
@@ -1823,7 +1823,7 @@ struct _ApplyImpl<void> {
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     // call member function at index _N
-    ((Get<_N>(__t)).*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
+    ((Get<_N>(__t))->*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
     // recursive call
     apply_functions<_N + 1, _Nt, _Tuple, _Funct, _Args...>(std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
                                                            std::forward<_Args>(__args)...);
@@ -1912,10 +1912,12 @@ struct Apply<void> {
   //--------------------------------------------------------------------------------------------//
 
   template <typename _Tuple, typename _Funct, typename... _Args,
-            std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+            std::size_t _Nt = TupleSize<std::decay_t<_Tuple>>::value,
+            std::size_t _Nf = TupleSize<std::decay_t<_Funct>>::value>
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
-    _ApplyImpl<void>::template apply_functions<0, _N - 1, _Tuple, _Funct, _Args...>(
+    static_assert(_Nt == _Nf);
+    _ApplyImpl<void>::template apply_functions<0, _Nt - 1, _Tuple, _Funct, _Args...>(
         std::forward<_Tuple>(__t), std::forward<_Funct>(__f), std::forward<_Args>(__args)...);
   }
 

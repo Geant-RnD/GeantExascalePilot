@@ -84,3 +84,10 @@ if(GEANT_USE_CLANG_TIDY)
 endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/.clang-tidy ${PROJECT_SOURCE_DIR}/.clang-tidy COPYONLY)
+
+if(GEANT_USE_GPERF)
+    configure_file(${PROJECT_SOURCE_DIR}/tools/gperf-cpu-profile.sh
+        ${PROJECT_BINARY_DIR}/gperf-cpu-profile.sh COPYONLY)
+    configure_file(${PROJECT_SOURCE_DIR}/tools/gperf-heap-profile.sh
+        ${PROJECT_BINARY_DIR}/gperf-heap-profile.sh COPYONLY)
+endif()

@@ -1,40 +1,17 @@
 
-#include "PTL/Utility.hh"
 #include "test_tuple.hpp"
-
-typedef std::chrono::duration<double> duration_t;
-
-//======================================================================================//
-// macro for recording a time point
-#if !defined(GET_TIMER)
-#    define GET_TIMER(var) auto var = std::chrono::high_resolution_clock::now()
-#endif
-
-//======================================================================================//
-// macro for reporting the duration between a previous time point and the current time
-#if !defined(REPORT_TIMER)
-#    define REPORT_TIMER(start_time, note, counter, total_count, ref)                                                  \
-        {                                                                                                              \
-            auto       end_time        = std::chrono::high_resolution_clock::now();                                    \
-            duration_t elapsed_seconds = end_time - start_time;                                                        \
-            if(!ref)                                                                                                   \
-            {                                                                                                          \
-                ref.reset(new duration_t(elapsed_seconds));                                                            \
-            }                                                                                                          \
-            auto speed_up = ref->count() / elapsed_seconds.count();                                                    \
-            printf("> %-20s :: loop #%lu with %3lu iterations... %10.6f seconds. Speed-up: %5.3f\n", note, counter,    \
-                   total_count, elapsed_seconds.count(), speed_up);                                                    \
-        }
-#endif
 
 //======================================================================================//
 
 // some short hand definitions
-using B         = BaseObject;
-using D         = DerivedObject;
-using AccessB   = ObjectAccessor<B>;
-using AccessD   = ObjectAccessor<D>;
-using Generator = std::mt19937_64;
+using Generator     = std::mt19937_64;
+using A             = ObjectA;
+using B             = ObjectB;
+using AccessA       = ObjectAccessor<A>;
+using AccessB       = ObjectAccessor<B>;
+using Aaccess       = ObjectAccessor<A, Generator&>;
+using Baccess       = ObjectAccessor<B, Generator&>;
+using GeneratorFunc = std::function<void(Generator&)>;
 
 //======================================================================================//
 
@@ -56,57 +33,103 @@ void run(uintmax_t nloop, uintmax_t nitr)
     std::random_device                     rd;
     std::shared_ptr<duration_t>            ref_timer;
     auto                                   seed = rd();
-    std::mt19937_64                        r_generator(seed);
-    std::mt19937_64                        f_generator(seed);
-    std::mt19937_64                        t_generator(seed);
-    std::mt19937_64                        l_generator(seed);
+    Generator                              r_generator(seed);
+    Generator                              f_generator(seed);
+    Generator                              t_generator(seed);
+    Generator                              l_generator(seed);
+    Generator                              a_generator(seed);
     std::vector<std::pair<double, double>> results;
 
     // base class object (not derived)
-    BaseObject base_obj;
+    ObjectA* obj_a = new ObjectA();
     // derived object (with access to base class)
-    DerivedObject derived_obj;
+    ObjectB* obj_b    = new ObjectB();
+    AccessA* a_access = new AccessA(obj_a);
+    AccessB* b_access = new AccessB(obj_b);
 
     auto record = [&]() {
-        results.push_back(std::make_pair(base_obj.GetRandomValue(), derived_obj.GetRandomValue()));
-        base_obj.Reset();
-        derived_obj.Reset();
-        r_generator = std::mt19937_64(seed);
-        f_generator = std::mt19937_64(seed);
-        t_generator = std::mt19937_64(seed);
-        l_generator = std::mt19937_64(seed);
+        results.push_back(std::make_pair(obj_a->GetRandomValue(), obj_b->GetRandomValue()));
+        obj_a->Reset();
+        obj_b->Reset();
+        r_generator = Generator(seed);
+        f_generator = Generator(seed);
+        t_generator = Generator(seed);
+        l_generator = Generator(seed);
+        a_generator = Generator(seed);
     };
 
     //==================================================================================//
     //              Functional section
     //==================================================================================//
     // functional operators
-    auto                                         b_funct      = [&]() { base_obj.generate(f_generator); };
-    auto                                         d_funct      = [&]() { derived_obj.generate(f_generator); };
-    std::initializer_list<std::function<void()>> funct_array  = { b_funct, d_funct };
-    auto                                         funct_vector = [&]() {
-        for(const auto& itr : funct_array)
-            itr();
+    auto                          b_funct      = [&](Generator& gen) { a_access->generate(gen); };
+    auto                          d_funct      = [&](Generator& gen) { b_access->generate(gen); };
+    std::array<GeneratorFunc, 10> funct_funct  = { b_funct, d_funct, b_funct, d_funct, b_funct,
+                                                  d_funct, b_funct, d_funct, b_funct, d_funct };
+    auto                          funct_vector = [&](Generator& gen) {
+        for(const auto& itr : funct_funct)
+            itr(gen);
     };
 
     //==================================================================================//
     //          Tuple Accessor section
     //==================================================================================//
     // create tuple of member functions
-    auto b_tuple     = [&]() { base_obj.generate(t_generator); };
-    auto d_tuple     = [&]() { derived_obj.generate(t_generator); };
-    auto funct_tuple = [&]() { Apply<void>::apply_loop(MakeTuple(b_tuple, d_tuple)); };
+    auto a_tuple     = [&](Generator& gen) { a_access->generate(gen); };
+    auto b_tuple     = [&](Generator& gen) { b_access->generate(gen); };
+    auto funct_tuple = [&](Generator& gen) {
+        Apply<void>::apply_loop(MakeTuple(a_tuple, b_tuple, a_tuple, b_tuple, a_tuple, b_tuple, a_tuple, b_tuple,
+                                          a_tuple, b_tuple),
+                                std::ref(gen));
+    };
 
     //==================================================================================//
     //          Lambda Construct section
     //==================================================================================//
     // create tuple of member functions
-    auto b_lambda    = [&]() { base_obj.generate(l_generator); };
-    auto d_lambda    = [&]() { derived_obj.generate(l_generator); };
-    auto funct_lamda = [&]() {
-        b_lambda();
-        d_lambda();
+    auto a_lambda    = [&](Generator& gen) { a_access->generate(l_generator); };
+    auto b_lambda    = [&](Generator& gen) { b_access->generate(l_generator); };
+    auto funct_lamda = [&](Generator& gen) {
+        a_lambda(gen);
+        b_lambda(gen);
+        a_lambda(gen);
+        b_lambda(gen);
+        a_lambda(gen);
+        b_lambda(gen);
+        a_lambda(gen);
+        b_lambda(gen);
+        a_lambda(gen);
+        b_lambda(gen);
     };
+
+    //==================================================================================//
+    //              Lambda Accessor section
+    //==================================================================================//
+    // accessor
+    std::function<void(ObjectA&, Generator&)> op_a     = [](ObjectA& m_obj, Generator& gen) { m_obj.generate(gen); };
+    std::function<void(ObjectB&, Generator&)> op_b     = [](ObjectB& m_obj, Generator& gen) { m_obj.generate(gen); };
+    auto                                      access_a = Aaccess(obj_a, op_a);
+    auto                                      access_b = Baccess(obj_b, op_b);
+    // create tuple of accessors
+    auto funct_access = [&](Generator& gen) {
+        Apply<void>::apply_loop(MakeTuple(access_a, access_b, access_a, access_b, access_a, access_b, access_a,
+                                          access_b, access_a, access_b),
+                                std::ref(gen));
+    };
+
+    //==================================================================================//
+    //              Function Accessor section
+    //==================================================================================//
+    // create tuple of accessors
+    auto array_access =
+        MakeTuple(a_access, b_access, a_access, b_access, a_access, b_access, a_access, b_access, a_access, b_access);
+    auto array_funct = MakeTuple(&AccessA::template generate<Generator, A>, &AccessB::template generate<Generator, B>,
+                                 &AccessA::template generate<Generator, A>, &AccessB::template generate<Generator, B>,
+                                 &AccessA::template generate<Generator, A>, &AccessB::template generate<Generator, B>,
+                                 &AccessA::template generate<Generator, A>, &AccessB::template generate<Generator, B>,
+                                 &AccessA::template generate<Generator, A>, &AccessB::template generate<Generator, B>);
+
+    auto funct_array = [&](Generator& gen) { Apply<void>::apply_functions(array_access, array_funct, std::ref(gen)); };
 
     //==================================================================================//
     //          Serial execution section
@@ -114,95 +137,83 @@ void run(uintmax_t nloop, uintmax_t nitr)
     GET_TIMER(ref_s);
     for(uintmax_t i = 0; i < nitr; ++i)
     {
-        base_obj.generate(r_generator);
-        derived_obj.generate(r_generator);
+        obj_a->generate(r_generator);
+        obj_b->generate(r_generator);
+        obj_a->generate(r_generator);
+        obj_b->generate(r_generator);
+        obj_a->generate(r_generator);
+        obj_b->generate(r_generator);
+        obj_a->generate(r_generator);
+        obj_b->generate(r_generator);
+        obj_a->generate(r_generator);
+        obj_b->generate(r_generator);
     }
-    REPORT_TIMER(ref_s, "            Reference solution", nloop, nitr, ref_timer);
+    REPORT_TIMER(ref_s, "Reference", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(funct_s);
     for(uintmax_t i = 0; i < nitr; ++i)
-        funct_vector();
-    REPORT_TIMER(funct_s, "       Functional", nloop, nitr, ref_timer);
+        funct_vector(f_generator);
+    REPORT_TIMER(funct_s, "Functional", nloop, nitr, ref_timer);
+    record();
+
+    GET_TIMER(array_a);
+    for(uintmax_t i = 0; i < nitr; ++i)
+        funct_array(a_generator);
+    REPORT_TIMER(array_a, "Funct Access", nloop, nitr, ref_timer);
+    record();
+
+    GET_TIMER(tuple_a);
+    for(uintmax_t i = 0; i < nitr; ++i)
+        funct_access(a_generator);
+    REPORT_TIMER(tuple_a, "Lambda Access", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(tuple_s);
     for(uintmax_t i = 0; i < nitr; ++i)
-        funct_tuple();
-    REPORT_TIMER(tuple_s, "            Tuple", nloop, nitr, ref_timer);
+        funct_tuple(t_generator);
+    REPORT_TIMER(tuple_s, "Tuple", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(lambda_s);
     for(uintmax_t i = 0; i < nitr; ++i)
-        funct_lamda();
-    REPORT_TIMER(lambda_s, "           Lambda", nloop, nitr, ref_timer);
+        funct_lamda(l_generator);
+    REPORT_TIMER(lambda_s, "Lambda", nloop, nitr, ref_timer);
     record();
 
-    GET_TIMER(unroll_s);
-    constexpr std::size_t unroll_length = 50;
-    uintmax_t             _nitr         = nitr / unroll_length;
-    uintmax_t             _nmod         = nloop % nitr;
-    for(uintmax_t i = 0; i < _nitr; ++i)
-        Apply<void>::unroll<unroll_length>(funct_tuple);
-    for(uintmax_t i = 0; i < _nmod; ++i)
-        funct_tuple();
-    // for(uintmax_t i = 0; i < nitr; ++i) funct_lamda();
-    REPORT_TIMER(unroll_s, "           Unroll", nloop, nitr, ref_timer);
-    record();
-
-    //==================================================================================//
-    //          Parallel section
-    //==================================================================================//
-    /*
-    // create thread-pool with two threads
-    static uintmax_t  num_threads = GetEnv<uintmax_t>("NUM_THREADS", 4);
-    static ThreadPool tp(num_threads);
-    TaskGroup<void>   tg(&tp);
-    auto              nchunk = GetEnv<uintmax_t>("NUM_CHUNKS", 8 * num_threads);
-
-    GET_TIMER(funct_p);
-    tg.parallel_for(nitr, nchunk, funct_vector);
-    tg.join();
-    REPORT_TIMER(funct_p, "Parallel Function", nloop, nitr, ref_timer);
-    record();
-
-    GET_TIMER(tuple_p);
-    tg.parallel_for(nitr, nchunk, funct_tuple);
-    tg.join();
-    REPORT_TIMER(tuple_p, "   Parallel Tuple", nloop, nitr, ref_timer);
-    record();
-
-    GET_TIMER(lambda_p);
-    tg.parallel_for(nitr, nchunk, funct_lamda);
-    tg.join();
-    REPORT_TIMER(lambda_p, "  Parallel Lambda", nloop, nitr, ref_timer);
-    record();
-    */
     //==================================================================================//
     //          Report section
     //==================================================================================//
     std::cout << "\n+ Random seed = " << seed << std::endl;
     for(auto& itr : results)
+    {
         std::cout << "      " << std::fixed << std::setw(8) << std::setprecision(2) << itr.first << ", " << std::setw(8)
                   << std::setprecision(2) << itr.second << std::endl;
+    }
+
+    delete obj_a;
+    delete obj_b;
 }
 
 //======================================================================================//
 
 int main(int argc, char** argv)
 {
-    uintmax_t nloop = 20;
-    uintmax_t nitr  = 10000000;
+    uintmax_t nloop = 11;
+    uintmax_t nitr  = 1000000;
+    uintmax_t nfac  = 2;
 
     if(argc > 1)
         nloop = static_cast<uintmax_t>(atol(argv[1]));
     if(argc > 2)
-        nitr = static_cast<uintmax_t>(atol(argv[2]));
+        nfac = static_cast<uintmax_t>(atol(argv[2]));
+    if(argc > 3)
+        nitr = static_cast<uintmax_t>(atol(argv[3]));
 
     for(uintmax_t i = 0; i < nloop; ++i)
     {
         std::cerr << std::endl;
-        run(i + 1, (i + 1) * nitr);
+        run(i, nitr * ((i > 0) ? i * nfac : 1));
     }
     std::cerr << std::endl;
 }
