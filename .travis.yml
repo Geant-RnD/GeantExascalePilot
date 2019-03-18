@@ -1,4 +1,4 @@
-# Madthreading Travis CI file
+# GeantExascalePilot Travis CI file
 
 language: python
 
@@ -14,6 +14,8 @@ before_install:
 
 install:
   - env
+  - mkdir -p ~/.tokens
+  - echo "${CTEST_TOKEN}" > ~/.tokens/nersc-cdash
   - export ARGS="--arch --gperf -S -F --pyctest-model=Continuous --pyctest-site=Travis"
   - if [ -z "${NOTBB}" ]; then ARGS="${ARGS} --tbb"; fi
   - if [ -n "${COVERAGE}" ]; then
@@ -22,7 +24,7 @@ install:
       ARGS="${ARGS} --num-tasks=2048 --pyctest-build-type=RelWithDebInfo";
     fi
   - CMD="python ./pyctest-runner.py ${ARGS}"
-  - docker run -it -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
+  - docker run -it -v ~/.tokens:/root/.tokens -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
 
 script:
     - eval "${MATRIX_EVAL}"
