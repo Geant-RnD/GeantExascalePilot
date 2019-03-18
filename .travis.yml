@@ -21,7 +21,7 @@ install:
     else
       ARGS="${ARGS} --num-tasks=2048 --pyctest-build-type=RelWithDebInfo";
     fi
-  - CMD="python ./pyctest-runner.py -cc ${CC} -cxx ${CXX} ${ARGS}"
+  - CMD="python ./pyctest-runner.py ${ARGS}"
   - docker run -it -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
 
 script:
