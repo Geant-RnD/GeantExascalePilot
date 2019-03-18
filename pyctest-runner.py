@@ -35,8 +35,6 @@ def configure():
                         default=False, action='store_true')
     parser.add_argument("--coverage", help="GEANT_USE_COVERAGE=ON",
                         default=False, action='store_true')
-    parser.add_argument("--profile", help="GEANT_USE_PROFILE=ON",
-                        default=False, action='store_true')
     parser.add_argument("--num-tasks", help="Set the number of tasks",
                         default=16384, type=int)
 
@@ -110,7 +108,6 @@ def run_pyctest():
         "GEANT_USE_SANITIZER": "OFF",
         "GEANT_USE_CLANG_TIDY": "ON",
         "GEANT_USE_COVERAGE" : "OFF",
-        "GEANT_USE_PROFILE": "OFF",
         "PTL_USE_TBB": "OFF",
         "GEANT_BUILD_EXAMPLES": "ON",
         "PTL_BUILD_EXAMPLES": "ON"
@@ -141,8 +138,6 @@ def run_pyctest():
             warnings.warn(
                 "Forcing build type to 'Debug' when coverage is enabled")
             pyctest.BUILD_TYPE = "Debug"
-    if args.profile:
-        build_opts["GEANT_USE_PROFILE"] = "ON"
 
     # split and join with dashes
     pyctest.BUILD_NAME = '-'.join(pyctest.BUILD_NAME.replace('/', '-').split())
