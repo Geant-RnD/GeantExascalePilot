@@ -31,7 +31,7 @@ def configure():
                         default=False, action='store_true')
     parser.add_argument("--sanitizer", help="GEANT_USE_SANITIZER=ON",
                         default=False, action='store_true')
-    parser.add_argument("--static-analysis", help="GEANT_USE_CLANG_TIDY=ON",
+    parser.add_argument("--no-static-analysis", help="GEANT_USE_CLANG_TIDY=OFF",
                         default=False, action='store_true')
     parser.add_argument("--coverage", help="GEANT_USE_COVERAGE=ON",
                         default=False, action='store_true')
@@ -108,7 +108,7 @@ def run_pyctest():
         "GEANT_USE_ARCH": "OFF",
         "GEANT_USE_GPERF": "OFF",
         "GEANT_USE_SANITIZER": "OFF",
-        "GEANT_USE_CLANG_TIDY": "OFF",
+        "GEANT_USE_CLANG_TIDY": "ON",
         "GEANT_USE_COVERAGE" : "OFF",
         "GEANT_USE_PROFILE": "OFF",
         "PTL_USE_TBB": "OFF",
@@ -131,8 +131,8 @@ def run_pyctest():
     if args.sanitizer:
         pyctest.BUILD_NAME = "{} asan".format(pyctest.BUILD_NAME)
         build_opts["GEANT_USE_SANITIZER"] = "ON"
-    if args.static_analysis:
-        build_opts["GEANT_USE_CLANG_TIDY"] = "ON"
+    if args.no_static_analysis:
+        build_opts["GEANT_USE_CLANG_TIDY"] = "OFF"
     if args.coverage:
         gcov_exe = helpers.FindExePath("gcov")
         if gcov_exe is not None:
@@ -171,12 +171,11 @@ def run_pyctest():
     #--------------------------------------------------------------------------#
     # parallel build
     #
-    if not args.static_analysis:
-        if platform.system() != "Windows":
-            pyctest.BUILD_COMMAND = "{} -- -j{} VERBOSE=1".format(
-                pyctest.BUILD_COMMAND, mp.cpu_count())
-        else:
-            pyctest.BUILD_COMMAND = "{} -- /MP -A x64".format(pyctest.BUILD_COMMAND)
+    if platform.system() != "Windows":
+        pyctest.BUILD_COMMAND = "{} -- -j{} VERBOSE=1".format(
+            pyctest.BUILD_COMMAND, mp.cpu_count())
+    else:
+        pyctest.BUILD_COMMAND = "{} -- /MP -A x64".format(pyctest.BUILD_COMMAND)
 
 
     #--------------------------------------------------------------------------#

@@ -1,0 +1,28 @@
+# Madthreading Travis CI file
+
+language: python
+
+python:
+  - "3.6"
+
+services:
+  - docker
+
+before_install:
+  - docker pull geantx/geantx-dev
+  - docker ps -a
+
+install:
+  - env
+  - export ARGS="--arch --gperf -S -F --pyctest-model=Continuous --pyctest-site=Travis"
+  - if [ -z "${NOTBB}" ]; then ARGS="${ARGS} --tbb"; fi
+  - if [ -n "${COVERAGE}" ]; then
+      ARGS="${ARGS} --coverage --num-tasks=64";
+    else
+      ARGS="${ARGS} --num-tasks=2048 --pyctest-build-type=RelWithDebInfo";
+    fi
+  - CMD="python ./pyctest-runner.py -cc ${CC} -cxx ${CXX} ${ARGS}"
+  - docker run -it -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
+
+script:
+    - eval "${MATRIX_EVAL}"

@@ -1,26 +1,28 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -o errexit
 
 : ${N:=0}
-: ${CPUPROFILE:=""}
+: ${CPU_PROFILE:=""}
 : ${CPUPROFBASE:=gperf.cpu.prof}
 : ${PPROF_ARGS:=""}
 : ${MALLOCSTATS:=1}
 : ${CPUPROFILE_FREQUENCY:=500}
 : ${INTERACTIVE:=0}
 
-while [ -z "${CPUPROFILE}" ]
+while [ -z "${CPU_PROFILE}" ]
 do
     TEST_FILE=${CPUPROFBASE}.${N}
     if [ ! -f "${TEST_FILE}" ]; then
-        CPUPROFILE=${TEST_FILE}
+        CPU_PROFILE=${TEST_FILE}
     fi
     N=$((${N}+1))
 done
 
-echo -e "\n\t--> Outputting profile to '${CPUPROFILE}'...\n"
+echo -e "\n\t--> Outputting profile to '${CPU_PROFILE}'...\n"
 
 # remove profile file if unsucessful execution
-cleanup-failure() { set +v ; rm -f ${CPUPROFILE}; }
+cleanup-failure() { set +v ; rm -f ${CPU_PROFILE}; }
 trap cleanup-failure SIGHUP SIGINT SIGQUIT SIGILL SIGABRT SIGKILL
 
 # configure pre-loading of profiler library
@@ -58,12 +60,16 @@ fi
 export MALLOCSTATS
 export CPUPROFILE_FREQUENCY
 # run the application
-eval CPUPROFILE=${CPUPROFILE} $@ | tee ${CPUPROFILE}.log
+eval CPUPROFILE=${CPU_PROFILE} $@ | tee ${CPU_PROFILE}.log
+
+# failures below should not cause "test" to fail
+set +e
+set -v
 
 # generate the results
 EXT=so
 if [ "$(uname)" = "Darwin" ]; then EXT=dylib; fi
-if [ -f "${CPUPROFILE}" ]; then
+if [ -f "${CPU_PROFILE}" ]; then
     : ${PPROF:=$(which google-pprof)}
     : ${PPROF:=$(which pprof)}
     ADD_LIBS=""
@@ -72,10 +78,10 @@ if [ -f "${CPUPROFILE}" ]; then
         ADD_LIBS="${ADD_LIBS} --add_lib=${i}"
     done
     if [ -n "${PPROF}" ]; then
-        eval ${PPROF} --text ${ADD_LIBS} ${PPROF_ARGS} ${1} ${CPUPROFILE} | egrep -v ' 0x[0-9]' &> ${CPUPROFILE}.txt
-        eval ${PPROF} --text --cum ${ADD_LIBS} ${PPROF_ARGS} ${1} ${CPUPROFILE} | egrep -v ' 0x[0-9]' &> ${CPUPROFILE}.cum.txt
+        eval ${PPROF} --text ${ADD_LIBS} ${PPROF_ARGS} ${1} ${CPU_PROFILE} | egrep -v ' 0x[0-9]' &> ${CPU_PROFILE}.txt
+        eval ${PPROF} --text --cum ${ADD_LIBS} ${PPROF_ARGS} ${1} ${CPU_PROFILE} | egrep -v ' 0x[0-9]' &> ${CPU_PROFILE}.cum.txt
         if [ "${INTERACTIVE}" -gt 0 ]; then
-            eval ${PPROF} ${ADD_LIBS} ${PPROF_ARGS} ${1} ${CPUPROFILE}
+            eval ${PPROF} ${ADD_LIBS} ${PPROF_ARGS} ${1} ${CPU_PROFILE}
         fi
     fi
 fi
