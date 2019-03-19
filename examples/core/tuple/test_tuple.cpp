@@ -116,6 +116,7 @@ int main()
         record(&(access_a.object()), &(access_b.object()));
         for(uint32_t i = 0; i < 50; ++i)
         {
+            // defined in source/Geant/core/Tuple.hpp (towards end of file)
             Apply<void>::apply_loop(MakeTuple(access_a, access_b), std::ref(gen));
         }
         record(&(access_a.object()), &(access_b.object()));
@@ -123,6 +124,7 @@ int main()
 
     // apply doSomething(std::string) to all tuple objects (e.g. loop over objects calling doSomething)
     auto _exec_member_function = [&](const std::string& msg) {
+        // defined in source/Geant/core/Tuple.hpp (towards end of file)
         Apply<void>::apply_functions(access_array, funct_array, msg);
     };
 
@@ -152,6 +154,7 @@ int main()
     tg.run(_exec_member_function, std::string("member function task worked!"));
     tg.run(_exec_custom_operator);
 
+    // wait for tasks to finish
     tg.join();
 
     // run the task that calls operator() on each accessor
@@ -162,6 +165,7 @@ int main()
     std::cout << notifier << std::endl;
     report();
 
+    // add a task
     tg.run(_exec_operator, std::ref(r_generator));
 
     // wait for tasks to finish

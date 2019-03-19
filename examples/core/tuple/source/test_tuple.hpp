@@ -62,7 +62,10 @@ void variadic_print(std::ostream& out, Arg&& arg, Args&&... args)
 }
 
 //======================================================================================//
-
+//  this class is used to demonstrate how we can use tuples + template expansion
+//  or lambdas to provide an interface that can be overridden, e.g. implementing a
+//  custom set of SensitiveDetectors without the need for polymorphism
+//
 template <typename _Tp>
 struct Printer
 {
@@ -103,7 +106,10 @@ struct Printer
 };
 
 //======================================================================================//
-
+//  this class is used to demonstrate how we can use tuples + template expansion
+//  or lambdas to provide an interface that can be overridden, e.g. implementing a
+//  custom set of SensitiveDetectors without the need for polymorphism
+//
 template <typename _Tp>
 struct Add : public Printer<_Tp>
 {
@@ -113,11 +119,15 @@ struct Add : public Printer<_Tp>
     : base_type("add", val)
     {
     }
+    // imagine this operator takes a G4Step and records a G4Hit
     void operator()(const _Tp& val) { m_value += val; }
 };
 
 //======================================================================================//
-
+//  this class is used to demonstrate how we can use tuples + template expansion
+//  or lambdas to provide an interface that can be overridden, e.g. implementing a
+//  custom set of SensitiveDetectors without the need for polymorphism
+//
 template <typename _Tp>
 struct Mult : public Printer<_Tp>
 {
@@ -127,11 +137,15 @@ struct Mult : public Printer<_Tp>
     : base_type("mul", val)
     {
     }
+    // imagine this operator takes a G4Step and records a G4Hit
     void operator()(const _Tp& val) { m_value *= val; }
 };
 
 //======================================================================================//
-
+//  this class is used to demonstrate how we can use tuples + template expansion
+//  or lambdas to provide an interface that can be overridden, e.g. implementing a
+//  custom set of SensitiveDetectors without the need for polymorphism
+//
 template <typename _Tp>
 struct Sub : public Printer<_Tp>
 {
@@ -141,6 +155,7 @@ struct Sub : public Printer<_Tp>
     : base_type("sub", val)
     {
     }
+    // imagine this operator takes a G4Step and records a G4Hit
     void operator()(const _Tp& val) { m_value -= val; }
 };
 
@@ -150,7 +165,8 @@ template <typename _Tp, typename... _Args>
 class ObjectAccessor;
 
 //======================================================================================//
-
+//  this class is sort of dummy demonstration class for the accessor
+//
 class ObjectA
 {
 public:
@@ -196,7 +212,8 @@ private:
 };
 
 //======================================================================================//
-
+//  this class is sort of dummy demonstration class for the accessor
+//
 class ObjectB : public ObjectA
 {
 public:
@@ -241,7 +258,15 @@ template <typename... _Args>
 class DerivedAccessor;
 
 //======================================================================================//
-
+// this accessor simulates static polymorphism without the explicit need for functional
+// polymorphism or static casting. By adding
+//
+//      template <typename _Tp, typename... _Args>
+//      friend class ObjectAccessor;
+//
+// to the classes to be customized, one can modify the behavior and/or create an
+// object that is more compact for data transfers to the GPU
+//
 template <typename _Tp, typename... _Args>
 class ObjectAccessor
 {
@@ -267,6 +292,7 @@ public:
 
     void operator()(_Args&&... args) { m_func(std::forward<_Tp&>(m_obj), std::forward<_Args>(args)...); }
 
+    // this demonstrates a way to customize
     void doSomething(const std::string& msg)
     {
         m_obj.doSomething(msg);
@@ -274,6 +300,7 @@ public:
         std::cout << std::endl;
     }
 
+    // when generate(...) is called by ObjectAccessor<ObjectA>, this function is called
     template <typename Generator, typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectA>::value), int> = 0>
     void generate(Generator& gen)
     {
@@ -282,6 +309,7 @@ public:
             m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
     };
 
+    // when generate(...) is called by ObjectAccessor<ObjectB>, this function is called
     template <typename Generator, typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectB>::value), int> = 0>
     void generate(Generator& gen)
     {
@@ -294,12 +322,17 @@ public:
     const _Tp& object() const { return m_obj; }
 
 protected:
+    // the base object being accessed
     _Tp&          m_obj;
+    // reference to a private member of m_obj
     std::string&  m_class_id;
+    // reference to a protected member of m_obj
     double&       m_random_value;
+    // a function that can be passed in to customize behavior
     const Func_t& m_func;
 
 private:
+    // we enable access to more customized instances
     template <typename... _OtherArgs>
     friend class BaseAccessor;
 
