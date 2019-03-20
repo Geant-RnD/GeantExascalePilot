@@ -78,27 +78,27 @@ else()
 
 endif()
 
-if(NOT TARGET Geant-shared)
-    add_library(Geant-shared INTERFACE)
-    target_link_libraries(Geant-shared ${_@PROJECT_NAME@_AVAILABLE_SHARED_COMPONENTS})
+if(NOT TARGET @PROJECT_NAME@-shared)
+    add_library(@PROJECT_NAME@-shared INTERFACE)
+    target_link_libraries(@PROJECT_NAME@-shared INTERFACE ${_@PROJECT_NAME@_AVAILABLE_SHARED_COMPONENTS})
 endif()
 
-if(NOT TARGET Geant-static)
-    add_library(Geant-static INTERFACE)
-    target_link_libraries(Geant-static ${_@PROJECT_NAME@_AVAILABLE_STATIC_COMPONENTS})
+if(NOT TARGET @PROJECT_NAME@-static)
+    add_library(@PROJECT_NAME@-static INTERFACE)
+    target_link_libraries(@PROJECT_NAME@-static INTERFACE ${_@PROJECT_NAME@_AVAILABLE_STATIC_COMPONENTS})
 endif()
 
-if(NOT TARGET Geant)
+if(NOT TARGET @PROJECT_NAME@)
     if(@BUILD_SHARED_LIBS@)
-        add_library(Geant INTERFACE)
-        target_link_libraries(Geant ${_@PROJECT_NAME@_AVAILABLE_SHARED_COMPONENTS})
+        add_library(@PROJECT_NAME@ INTERFACE)
+        target_link_libraries(@PROJECT_NAME@ INTERFACE ${_@PROJECT_NAME@_AVAILABLE_SHARED_COMPONENTS})
     else()
-        add_library(Geant INTERFACE)
-        target_link_libraries(Geant ${_@PROJECT_NAME@_AVAILABLE_STATIC_COMPONENTS})
+        add_library(@PROJECT_NAME@ INTERFACE)
+        target_link_libraries(@PROJECT_NAME@ INTERFACE ${_@PROJECT_NAME@_AVAILABLE_STATIC_COMPONENTS})
     endif()
 endif()
 
-list(APPEND @PROJECT_NAME@_LIBRARIES Geant)
+list(APPEND @PROJECT_NAME@_LIBRARIES @PROJECT_NAME@)
 
 #------------------------------------------------------------------------------#
 #   find_package variables

@@ -148,37 +148,37 @@ void run(uintmax_t nloop, uintmax_t nitr)
         obj_a->generate(r_generator);
         obj_b->generate(r_generator);
     }
-    REPORT_TIMER(ref_s, "Reference", nloop, nitr, ref_timer);
+    REPORT_TEST_TIMER(ref_s, "Reference", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(funct_s);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_vector(f_generator);
-    REPORT_TIMER(funct_s, "Functional", nloop, nitr, ref_timer);
+    REPORT_TEST_TIMER(funct_s, "Functional", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(array_a);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_array(a_generator);
-    REPORT_TIMER(array_a, "Funct Access", nloop, nitr, ref_timer);
+    REPORT_TEST_TIMER(array_a, "Funct Access", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(tuple_a);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_access(a_generator);
-    REPORT_TIMER(tuple_a, "Lambda Access", nloop, nitr, ref_timer);
+    REPORT_TEST_TIMER(tuple_a, "Lambda Access", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(tuple_s);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_tuple(t_generator);
-    REPORT_TIMER(tuple_s, "Tuple", nloop, nitr, ref_timer);
+    REPORT_TEST_TIMER(tuple_s, "Tuple", nloop, nitr, ref_timer);
     record();
 
     GET_TIMER(lambda_s);
     for(uintmax_t i = 0; i < nitr; ++i)
         funct_lamda(l_generator);
-    REPORT_TIMER(lambda_s, "Lambda", nloop, nitr, ref_timer);
+    REPORT_TEST_TIMER(lambda_s, "Lambda", nloop, nitr, ref_timer);
     record();
 
     //==================================================================================//

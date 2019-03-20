@@ -10,18 +10,36 @@ glob_files(EXCLUDE_CURRENT_DIR OUTPUT_VAR headers
 glob_files(EXCLUDE_CURRENT_DIR OUTPUT_VAR sources
     DIRECTORIES source EXTENSIONS c cc cxx cpp cu)
 
+CREATE_LIBRARY(
+    TARGET_NAME             example_core_tuple
+    HEADERS                 ${headers}
+    SOURCES                 ${sources}
+    INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
+    LINK_LIBRARIES          GeantExascalePilot
+)
+
 CREATE_EXECUTABLE(
     TARGET_NAME             test_tuple
     HEADERS                 ${headers}
-    SOURCES                 test_tuple.cpp ${sources}
+    SOURCES                 test_tuple.cpp
     INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
-    LINK_LIBRARIES          ${GeantExascalePilot_LIBRARIES}
+    LINK_LIBRARIES          example_core_tuple
 )
 
 CREATE_EXECUTABLE(
     TARGET_NAME             bench_tuple
     HEADERS                 ${headers}
-    SOURCES                 bench_tuple.cpp ${sources}
+    SOURCES                 bench_tuple.cpp
     INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
-    LINK_LIBRARIES          ${GeantExascalePilot_LIBRARIES}
+    LINK_LIBRARIES          example_core_tuple
+)
+
+set_source_files_properties(bench_nvstd.cpp PROPERTIES LANGUAGE CUDA)
+
+CREATE_EXECUTABLE(
+    TARGET_NAME             bench_nvstd
+    HEADERS                 ${headers}
+    SOURCES                 bench_nvstd.cpp
+    INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
+    LINK_LIBRARIES          example_core_tuple
 )

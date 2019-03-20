@@ -3,6 +3,7 @@
 
 #include "Geant/core/Config.hpp"
 #include "Geant/core/VectorTypes.hpp"
+#include "Geant/core/Macros.hpp"
 
 #ifdef VECCORE_CUDA
 #include "base/Vector.h"
@@ -43,3 +44,11 @@ typedef geantphysics::Material Material_t;
 typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
 #include "volumes/PlacedVolume.h"
 typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
+
+namespace geant {
+inline namespace cuda {
+template <typename _Tp>
+using device_info = std::unordered_map<int, _Tp>;
+
+}
+} // namespace geant

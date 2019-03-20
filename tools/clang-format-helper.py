@@ -11,7 +11,7 @@ DEFAULT_PATHS = [ os.path.join('source', 'Geant') ]
 FORMAT_MODE_OPTIONS = ['local', 'geant', 'custom', 'global']
 CUSTOM_FORMAT_FILE = 'local-clang-format'
 GLOBAL_FORMAT_FILE = 'geant-clang-format'
-EXTENSIONS = ['.hh', '.cc', '.icc', '.hpp', '.cpp', '.tcc']
+EXTENSIONS = ['.hh', '.cc', '.icc', '.hpp', '.cpp', '.tcc', '.cu', '.cuh']
 TMP_DIR = os.path.join('/tmp', 'geant-format-test')
 VERBOSE = 0
 

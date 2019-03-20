@@ -138,14 +138,14 @@ FUNCTION(CREATE_LIBRARY)
 
     # parse args
     cmake_parse_arguments(LIB
-        ""                                      # options
+        "INSTALL"                               # options
         "TARGET_NAME;OUTPUT_NAME;TYPE;PREFIX"   # single value args
         "${multival_args}"                      # multiple value args
         ${ARGN})
 
     # defaults
-    if(NOT LIB_INSTALL_DESTINATION)
-        set(LIB_INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    if(NOT LIB_OUTPUT_NAME)
+        string(REPLACE "::" "_" LIB_OUTPUT_NAME "${LIB_TARGET_NAME}")
     endif()
 
     if(NOT LIB_PREFIX)
@@ -203,28 +203,34 @@ FUNCTION(CREATE_LIBRARY)
         $<$<COMPILE_LANGUAGE:CXX>:${${PROJECT_NAME}_CXX_FLAGS} ${LIB_CXXFLAGS}>
         $<$<COMPILE_LANGUAGE:CUDA>:${${PROJECT_NAME}_CUDA_FLAGS} ${LIB_CUDAFLAGS}>)
 
-    # install headers
-    foreach(_HEADER ${LIB_HEADERS})
-        get_filename_component(HEADER_RELATIVE ${_HEADER} DIRECTORY)
-        string(REPLACE "${PROJECT_SOURCE_DIR}/source/" "" HEADER_RELATIVE "${HEADER_RELATIVE}")
-        install(FILES ${_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${HEADER_RELATIVE})
-        #message("INSTALL: ${_HEADER} ==> ${CMAKE_INSTALL_INCLUDEDIR}/${HEADER_RELATIVE}")
-    endforeach()
+    if(LIB_INSTALL AND NOT LIB_INSTALL_DESTINATION)
+        set(LIB_INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    endif()
 
-    # Install the compiled library
-    install(TARGETS ${LIB_TARGET_NAME} DESTINATION ${LIB_INSTALL_DESTINATION}
-        EXPORT ${LIB_TARGET_NAME})
+    if(LIB_INSTALL_DESTINATION)
+        # install headers
+        foreach(_HEADER ${LIB_HEADERS})
+            get_filename_component(HEADER_RELATIVE ${_HEADER} DIRECTORY)
+            string(REPLACE "${PROJECT_SOURCE_DIR}/source/" "" HEADER_RELATIVE "${HEADER_RELATIVE}")
+            install(FILES ${_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${HEADER_RELATIVE})
+            #message("INSTALL: ${_HEADER} ==> ${CMAKE_INSTALL_INCLUDEDIR}/${HEADER_RELATIVE}")
+        endforeach()
 
-    # install export
-    install(EXPORT ${LIB_TARGET_NAME}
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/${PROJECT_NAME})
+        # Install the compiled library
+        install(TARGETS ${LIB_TARGET_NAME} DESTINATION ${LIB_INSTALL_DESTINATION}
+            EXPORT ${LIB_TARGET_NAME})
 
-    # generate export for build tree
-    export(TARGETS ${LIB_TARGET_NAME}
-        FILE ${CMAKE_BINARY_DIR}/exports/${LIB_TARGET_NAME}.cmake)
+        # install export
+        install(EXPORT ${LIB_TARGET_NAME}
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/${PROJECT_NAME})
 
-    set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}_COMPONENTS ${LIB_TARGET_NAME})
-    set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}_${LIB_TYPE}_COMPONENTS ${LIB_TARGET_NAME})
+        # generate export for build tree
+        export(TARGETS ${LIB_TARGET_NAME}
+            FILE ${CMAKE_BINARY_DIR}/exports/${LIB_TARGET_NAME}.cmake)
+
+        set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}_COMPONENTS ${LIB_TARGET_NAME})
+        set_property(GLOBAL APPEND PROPERTY ${PROJECT_NAME}_${LIB_TYPE}_COMPONENTS ${LIB_TARGET_NAME})
+    endif()
 
 ENDFUNCTION()
 
@@ -242,7 +248,7 @@ FUNCTION(CREATE_EXECUTABLE)
 
     # parse args
     cmake_parse_arguments(EXE
-        ""                                      # options
+        "INSTALL"                               # options
         "TARGET_NAME;OUTPUT_NAME"               # single value args
         "${multival_args}"                      # multiple value args
         ${ARGN})
@@ -288,6 +294,10 @@ FUNCTION(CREATE_EXECUTABLE)
         $<$<COMPILE_LANGUAGE:C>:${${PROJECT_NAME}_C_FLAGS} ${EXE_CFLAGS}>
         $<$<COMPILE_LANGUAGE:CXX>:${${PROJECT_NAME}_CXX_FLAGS} ${EXE_CXXFLAGS}>
         $<$<COMPILE_LANGUAGE:CUDA>:${${PROJECT_NAME}_CUDA_FLAGS} ${EXE_CUDAFLAGS}>)
+
+    if(EXE_INSTALL AND NOT EXE_INSTALL_DESTINATION)
+        set(EXE_INSTALL_DESTINATION ${CMAKE_INSTALL_BINDIR})
+    endif()
 
     if(EXE_INSTALL_DESTINATION)
         # Install the exe

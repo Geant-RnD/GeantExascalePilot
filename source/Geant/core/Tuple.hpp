@@ -18,23 +18,7 @@
 
 #pragma once
 
-#include <cstdint>
-#include <cstring>
-#include <functional>
-#include <iostream>
-#include <tuple>
-#include <type_traits>
-#include <utility>
-
-#if defined(__NVCC__)
-#define GEANT_HOST __host__
-#define GEANT_HOST_DEVICE __host__ __device__
-#define GEANT_GLOBAL __global__
-#else
-#define GEANT_HOST
-#define GEANT_HOST_DEVICE
-#define GEANT_GLOBAL
-#endif
+#include "Geant/core/Macros.hpp"
 
 //======================================================================================//
 

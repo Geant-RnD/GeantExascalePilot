@@ -20,15 +20,9 @@
 typedef std::chrono::duration<double> duration_t;
 
 //======================================================================================//
-// macro for recording a time point
-#if !defined(GET_TIMER)
-#    define GET_TIMER(var) auto var = std::chrono::high_resolution_clock::now()
-#endif
-
-//======================================================================================//
 // macro for reporting the duration between a previous time point and the current time
-#if !defined(REPORT_TIMER)
-#    define REPORT_TIMER(start_time, note, counter, total_count, ref)                                                  \
+#if !defined(REPORT_TEST_TIMER)
+#    define REPORT_TEST_TIMER(start_time, note, counter, total_count, ref)                                             \
         {                                                                                                              \
             auto       end_time        = std::chrono::high_resolution_clock::now();                                    \
             duration_t elapsed_seconds = end_time - start_time;                                                        \
@@ -323,11 +317,11 @@ public:
 
 protected:
     // the base object being accessed
-    _Tp&          m_obj;
+    _Tp& m_obj;
     // reference to a private member of m_obj
-    std::string&  m_class_id;
+    std::string& m_class_id;
     // reference to a protected member of m_obj
-    double&       m_random_value;
+    double& m_random_value;
     // a function that can be passed in to customize behavior
     const Func_t& m_func;
 
