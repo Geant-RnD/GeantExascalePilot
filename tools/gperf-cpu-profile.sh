@@ -4,7 +4,7 @@ set -o errexit
 
 : ${N:=0}
 : ${CPU_PROFILE:=""}
-: ${CPUPROFBASE:=gperf.cpu.prof}
+: ${CPUPROFBASE:=gperf.cpu.prof.$(basename ${1})}
 : ${PPROF_ARGS:=""}
 : ${MALLOCSTATS:=1}
 : ${CPUPROFILE_FREQUENCY:=500}

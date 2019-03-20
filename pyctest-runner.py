@@ -195,11 +195,19 @@ def run_pyctest():
     #--------------------------------------------------------------------------#
     # construct a command
     #
-    def construct_command(cmd, args):
+    def construct_command(cmd, args, clobber=False):
         _cmd = []
         if args.gperf:
             _cmd.append(os.path.join(pyctest.BINARY_DIRECTORY,
                                      "gperf-cpu-profile.sh"))
+            pyctest.add_note(pyctest.BINARY_DIRECTORY,
+                             "gperf.cpu.prof.{}.0.txt".format(
+                                 os.path.basename(cmd[0])),
+                             clobber=clobber)
+            pyctest.add_note(pyctest.BINARY_DIRECTORY,
+                             "gperf.cpu.prof.{}.0.cum.txt".format(
+                                 os.path.basename(cmd[0])),
+                             clobber=False)
         _cmd.extend(cmd)
         return _cmd
 
@@ -207,15 +215,8 @@ def run_pyctest():
     # standard environment settings for tests, adds profile to notes
     #
     def test_env_settings(prof_fname, clobber=False, extra=""):
-        if args.gperf:
-            pyctest.add_note(pyctest.BINARY_DIRECTORY,
-                             "{}.txt".format(prof_fname),
-                             clobber=clobber)
-            pyctest.add_note(pyctest.BINARY_DIRECTORY,
-                             "{}.cum.txt".format(prof_fname),
-                             clobber=False)
-        return "PTL_NUM_THREADS={};CPUPROFILE={};{}".format(
-            mp.cpu_count(), prof_fname, extra)
+        return "PTL_NUM_THREADS={};{}".format(
+            mp.cpu_count(), extra)
 
     #pyctest.set("ENV{GCOV_PREFIX}", pyctest.BINARY_DIRECTORY)
     #pyctest.set("ENV{GCOV_PREFIX_STRIP}", "4")
@@ -223,7 +224,7 @@ def run_pyctest():
     #--------------------------------------------------------------------------#
     # create tests
     #
-    pyctest.test("test_tuple", construct_command(["./test_tuple"], args),
+    pyctest.test("test_tuple", construct_command(["./test_tuple"], args, clobber=True),
                  {"WORKING_DIRECTORY" : pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("bench_tuple", construct_command(["./bench_tuple"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
