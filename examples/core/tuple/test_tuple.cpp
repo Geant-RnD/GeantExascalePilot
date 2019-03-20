@@ -9,7 +9,7 @@ typedef Mult<double>                          dMult;
 typedef Tuple<dAdd, dMult, dSub, dMult, dAdd> HeterogeneousArray;
 typedef void (*print_func_t)(double, double, double);
 
-const std::string breaker  = "=============================================";
+const std::string breaker  = "-------------------------------------";
 const std::string notifier = "#" + breaker + " joined tasks " + breaker + "#\n";
 
 //======================================================================================//
@@ -25,8 +25,10 @@ using Baccess   = DerivedAccessor<>;
 
 //======================================================================================//
 
-int main()
+int main(int argc, char** argv)
 {
+    write_app_info(argc, argv);
+
     // reference timer
     std::random_device                     rd;
     std::shared_ptr<duration_t>            ref_timer;

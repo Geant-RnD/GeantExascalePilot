@@ -2,8 +2,10 @@
 #include "test_tuple.cuh"
 #include "test_tuple.hpp"
 
-int main()
+int main(int argc, char** argv)
 {
+    write_app_info(argc, argv);
+
     // create thread-pool with two threads
     uintmax_t  num_threads = GetEnv<uintmax_t>("NUM_THREADS", 2);
     ThreadPool tp(num_threads);

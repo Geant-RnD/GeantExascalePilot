@@ -20,6 +20,23 @@
 typedef std::chrono::duration<double> duration_t;
 
 //======================================================================================//
+
+void write_app_info(int argc, char** argv)
+{
+    std::stringstream ss;
+    std::stringstream tmpss;
+    tmpss.fill('=');
+    tmpss << "\n#" << std::setw(88) << "" << "#\n";
+    ss << tmpss.str() << "#\n# > Running \"";
+    for(int i = 0; i < argc; ++i)
+    {
+        ss << argv[i] << " ";
+    }
+    ss << "\"...\n#" << tmpss.str();
+    std::cout << ss.str() << std::flush;
+}
+
+//======================================================================================//
 // macro for reporting the duration between a previous time point and the current time
 #if !defined(REPORT_TEST_TIMER)
 #    define REPORT_TEST_TIMER(start_time, note, counter, total_count, ref)                                             \

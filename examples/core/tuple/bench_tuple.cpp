@@ -199,6 +199,8 @@ void run(uintmax_t nloop, uintmax_t nitr)
 
 int main(int argc, char** argv)
 {
+    write_app_info(argc, argv);
+
     uintmax_t nloop = 11;
     uintmax_t nitr  = 1000000;
     uintmax_t nfac  = 2;
