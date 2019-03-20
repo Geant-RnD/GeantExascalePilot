@@ -26,7 +26,8 @@ void write_app_info(int argc, char** argv)
     std::stringstream ss;
     std::stringstream tmpss;
     tmpss.fill('=');
-    tmpss << "\n#" << std::setw(88) << "" << "#\n";
+    tmpss << "\n#" << std::setw(88) << ""
+          << "#\n";
     ss << tmpss.str() << "#\n# > Running \"";
     for(int i = 0; i < argc; ++i)
     {

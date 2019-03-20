@@ -13,8 +13,13 @@ int main(int argc, char** argv)
     auto            join = []() { cudaStreamSynchronize(0); };
     TaskGroup<void> tg(join, &tp);
 
+    geant::cuda::device_query();
+
     // launches task that runs on GPU
-    launch(tg);
+    if(geant::cuda::device_count() > 0)
+    {
+        launch(tg);
+    }
     // task that runs on CPU
     auto _s = []() { invoker([]() { printf("third\n"); }); };
     // task that runs on CPU

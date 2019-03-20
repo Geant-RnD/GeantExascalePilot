@@ -227,6 +227,8 @@ def run_pyctest():
                  {"WORKING_DIRECTORY" : pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("bench_tuple", construct_command(["./bench_tuple"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
+    pyctest.test("bench_nvstd", construct_command(["./bench_nvstd"], args),
+                 {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
 
     tasking_suffix = ""
     if args.num_tasks != 16384:
