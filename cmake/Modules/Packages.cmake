@@ -86,9 +86,8 @@ endif()
 ################################################################################
 
 add_feature(${PROJECT_NAME}_CUDA_FLAGS "CUDA NVCC compiler flags")
-add_feature(CUDA_ARCH "CUDA architecture (e.g. sm_35)")
-
-set(CUDA_ARCH "sm_35" CACHE STRING "CUDA architecture flag")
+add_feature(CUDA_ARCH "CUDA architecture (e.g. '35' means '-arch=sm_35')")
+set(CUDA_ARCH "62" CACHE STRING "CUDA architecture flag")
 
 if(GEANT_USE_NVTX)
     find_library(NVTX_LIBRARY
@@ -106,7 +105,7 @@ if(NVTX_LIBRARY)
 endif()
 
 list(APPEND ${PROJECT_NAME}_CUDA_FLAGS
-    -arch=${CUDA_ARCH}
+    -arch=sm_${CUDA_ARCH}
     --default-stream per-thread
     --compiler-bindir=${CMAKE_CXX_COMPILER})
 

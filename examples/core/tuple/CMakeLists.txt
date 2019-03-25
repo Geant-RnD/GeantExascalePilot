@@ -3,6 +3,14 @@ cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(Tuple LANGUAGES C CXX CUDA)
 
 find_package(GeantExascalePilot REQUIRED)
+find_package(TiMemory)
+
+if(TiMemory_FOUND)
+    find_package(MPI REQUIRED)
+    include_directories(${TiMemory_INCLUDE_DIRS} ${MPI_C_HEADER_DIR} ${MPI_CXX_HEADER_DIR} ${MPI_CXX_ADDITIONAL_INCLUDE_DIRS})
+    add_definitions(-DGEANT_USE_TIMEMORY)
+endif()
+
 include(MacroUtilities)
 
 glob_files(EXCLUDE_CURRENT_DIR OUTPUT_VAR headers
@@ -15,7 +23,7 @@ CREATE_LIBRARY(
     HEADERS                 ${headers}
     SOURCES                 ${sources}
     INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
-    LINK_LIBRARIES          GeantExascalePilot
+    LINK_LIBRARIES          GeantExascalePilot ${TiMemory_LIBRARIES}
 )
 
 CREATE_EXECUTABLE(

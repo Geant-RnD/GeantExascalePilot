@@ -1703,7 +1703,7 @@ constexpr _Tp make_from_Tuple(_Tuple&& __t)
 template <typename T, typename... Ts>
 auto head(Tuple<T, Ts...> t)
 {
-  return std::get<0>(t);
+  return Get<0>(t);
 }
 
 template <std::size_t... Ns, typename... Ts>
@@ -1732,6 +1732,20 @@ public:
 template <typename List>
 using PopFront = typename PopFrontT<List>::Type;
 
+//======================================================================================//
+
+template <typename List, typename NewElement>
+class PushBackT;
+
+template <typename... Elements, typename NewElement>
+class PushBackT<Tuple<Elements...>, NewElement> {
+public:
+  using Type = Tuple<Elements..., NewElement>;
+};
+
+template <typename List, typename NewElement>
+using PushBack = typename PushBackT<List, NewElement>::Type;
+
 //================================================================================================//
 
 template <typename _Ret>
@@ -1741,6 +1755,25 @@ struct _ApplyImpl {
   {
     return __f(Get<_Idx>(std::forward<_Tuple>(__t))...);
   }
+};
+
+//======================================================================================//
+
+template <typename _Tp, typename _Tuple>
+struct IndexOf;
+
+//--------------------------------------------------------------------------------------//
+
+template <typename _Tp, typename... Types>
+struct IndexOf<_Tp, Tuple<_Tp, Types...>> {
+  static constexpr std::size_t value = 0;
+};
+
+//--------------------------------------------------------------------------------------//
+
+template <typename _Tp, typename Head, typename... Tail>
+struct IndexOf<_Tp, Tuple<Head, Tail...>> {
+  static constexpr std::size_t value = 1 + IndexOf<_Tp, Tuple<Tail...>>::value;
 };
 
 //================================================================================================//
@@ -1774,6 +1807,30 @@ struct _ApplyImpl<void> {
     apply_once<_Obj, _Next>(std::forward<_Next>(_Next(Get<_Idx>(__t)...)), std::forward<_Obj>(__o), _Indices{});
   }
 
+  //----------------------------------------------------------------------------------//
+
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename _Tuple, typename... _Args,
+            std::enable_if_t<(_N == _Nt), int> = 0>
+  static void apply_access(_Tuple &&__t, _Args &&... __args)
+  {
+    // call constructor
+    using Type       = decltype(Get<_N>(__t));
+    using AccessType = typename TupleElement<_N, _Access>::type;
+    AccessType(std::forward<Type>(Get<_N>(__t)), std::forward<_Args>(__args)...);
+  }
+
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename _Tuple, typename... _Args,
+            std::enable_if_t<(_N < _Nt), int> = 0>
+  static void apply_access(_Tuple &&__t, _Args &&... __args)
+  {
+    // call constructor
+    using Type       = decltype(Get<_N>(__t));
+    using AccessType = typename TupleElement<_N, _Access>::type;
+    AccessType(std::forward<Type>(Get<_N>(__t)), std::forward<_Args>(__args)...);
+    // recursive call
+    apply_access<_N + 1, _Nt, _Access, _Tuple, _Args...>(std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
+  }
+
   //--------------------------------------------------------------------------------------------//
 
   template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
@@ -1792,6 +1849,22 @@ struct _ApplyImpl<void> {
     apply_loop<_N + 1, _Nt, _Tuple, _Args...>(std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
   }
 
+  //----------------------------------------------------------------------------------//
+
+  template <typename _Tp, typename _Funct, typename... _Args, std::enable_if_t<std::is_pointer<_Tp>::value, int> = 0>
+  static void apply_function(_Tp &&__t, _Funct &&__f, _Args &&... __args)
+  {
+    (__t->*__f)(std::forward<_Args>(__args)...);
+  }
+
+  //----------------------------------------------------------------------------------//
+
+  template <typename _Tp, typename _Funct, typename... _Args, std::enable_if_t<!std::is_pointer<_Tp>::value, int> = 0>
+  static void apply_function(_Tp &&__t, _Funct &&__f, _Args &&... __args)
+  {
+    (__t.*__f)(std::forward<_Args>(__args)...);
+  }
+
   //--------------------------------------------------------------------------------------------//
 
   template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
@@ -1799,7 +1872,9 @@ struct _ApplyImpl<void> {
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     // call member function at index _N
-    ((Get<_N>(__t))->*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
+    using __T = decltype(Get<_N>(__t));
+    using __F = decltype(Get<_N>(__f));
+    apply_function(std::forward<__T>(Get<_N>(__t)), std::forward<__F>(Get<_N>(__f)), std::forward<_Args>(__args)...);
   }
 
   template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
@@ -1807,7 +1882,9 @@ struct _ApplyImpl<void> {
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     // call member function at index _N
-    ((Get<_N>(__t))->*(Get<_N>(__f)))(std::forward<_Args>(__args)...);
+    using __T = decltype(Get<_N>(__t));
+    using __F = decltype(Get<_N>(__f));
+    apply_function(std::forward<__T>(Get<_N>(__t)), std::forward<__F>(Get<_N>(__f)), std::forward<_Args>(__args)...);
     // recursive call
     apply_functions<_N + 1, _Nt, _Tuple, _Funct, _Args...>(std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
                                                            std::forward<_Args>(__args)...);
@@ -1884,6 +1961,34 @@ struct Apply<void> {
     _ApplyImpl<void>::template apply_once<_Tuple, _Obj>(std::forward<_Tuple>(__t), std::forward<_Obj>(__o), _Indices{});
   }
 
+  //----------------------------------------------------------------------------------//
+
+  template <typename _Access, typename _Tuple, typename... _Args,
+            std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+  static void apply_access(_Tuple &__t, _Args &&... __args)
+  {
+    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple, _Args...>(std::forward<_Tuple>(__t),
+                                                                                  std::forward<_Args>(__args)...);
+  }
+
+  //----------------------------------------------------------------------------------//
+
+  template <typename _Access, typename _Tuple, typename... _Args,
+            std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+  static void apply_access(_Tuple &&__t, _Args &&... __args)
+  {
+    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple, _Args...>(std::forward<_Tuple>(__t),
+                                                                                  std::forward<_Args>(__args)...);
+  }
+
+  //----------------------------------------------------------------------------------//
+
+  template <typename _Access, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+  static void apply_access(_Tuple &&__t)
+  {
+    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple>(std::forward<_Tuple>(__t));
+  }
+
   //--------------------------------------------------------------------------------------------//
 
   template <typename _Tuple, typename... _Args, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
@@ -1900,7 +2005,7 @@ struct Apply<void> {
             std::size_t _Nf = TupleSize<std::decay_t<_Funct>>::value>
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
-    static_assert(_Nt == _Nf);
+    static_assert(_Nt == _Nf, "tuple_size of objects must match tuple_size of functions");
     _ApplyImpl<void>::template apply_functions<0, _Nt - 1, _Tuple, _Funct, _Args...>(
         std::forward<_Tuple>(__t), std::forward<_Funct>(__f), std::forward<_Args>(__args)...);
   }

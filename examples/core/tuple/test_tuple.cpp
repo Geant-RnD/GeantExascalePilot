@@ -20,8 +20,8 @@ using A         = ObjectA;
 using B         = ObjectB;
 using AccessA   = ObjectAccessor<A, Generator&>;
 using AccessB   = ObjectAccessor<B, Generator&>;
-using Aaccess   = BaseAccessor<>;
-using Baccess   = DerivedAccessor<>;
+using Aaccess   = ObjectAccessor<A>;
+using Baccess   = ObjectAccessor<B>;
 
 //======================================================================================//
 
@@ -103,8 +103,7 @@ int main(int argc, char** argv)
     auto b_access = Baccess(obj_b);
 
     // create tuple of accessors
-    auto access_array = MakeTuple(&access_a, &access_b);
-
+    auto access_array = MakeTuple(access_a, access_b);
     // create tuple of member functions
     auto funct_array = MakeTuple(&AccessA::doSomething, &AccessB::doSomething);
 

@@ -13,10 +13,17 @@
 #include "Geant/core/Utils.hpp"
 #include "PTL/TaskGroup.hh"
 
+template <typename _Tp>
+using result_of_t = typename std::result_of<_Tp>::type;
+
+template <typename _Tp>
+using decay_t = typename std::decay<_Tp>::type;
+
 template <typename _Func, typename... _Args>
-GEANT_HOST_DEVICE void invoker(const _Func& func, _Args&&... args)
+GEANT_HOST_DEVICE void invoker(_Func&& func, _Args&&... args)
 {
-    func(std::forward<_Args>(args)...);
+    auto f = nvstd::function<void(_Args...)>(std::forward<_Func>(func), std::forward<_Args>(args)...);
+    f();
 }
 
 GEANT_DEVICE inline void device_printer() { printf("second\n"); }

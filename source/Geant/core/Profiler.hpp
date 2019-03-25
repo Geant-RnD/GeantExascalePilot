@@ -29,6 +29,8 @@
 #else
 #include <cstddef>
 #include <cstring>
+
+#ifndef TIMEMORY_AUTO_TIMER
 #define TIMEMORY_AUTO_TIMER(c_str) \
   {                                \
   }
@@ -40,5 +42,6 @@ namespace tim {
 inline void enable_signal_detection() {}
 inline void disable_signal_detection() {}
 } // namespace tim
+#endif
 
 #endif

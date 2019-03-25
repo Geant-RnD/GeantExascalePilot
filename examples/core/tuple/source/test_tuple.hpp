@@ -1,6 +1,12 @@
 
 #pragma once
 
+#if defined(GEANT_USE_TIMEMORY)
+#    include "timemory/timemory.hpp"
+#else
+#    include <Geant/core/Profiler.hpp>
+#endif
+
 #include <Geant/core/Tasking.hpp>
 #include <Geant/core/Tuple.hpp>
 #include <PTL/AutoLock.hh>
@@ -17,7 +23,19 @@
 #include <thread>
 #include <type_traits>
 
+#include "rusage.hpp"
+
 typedef std::chrono::duration<double> duration_t;
+using Generator = std::mt19937_64;
+
+//======================================================================================//
+
+std::shared_ptr<duration_t>& ref_timer()
+{
+    typedef std::shared_ptr<duration_t> pointer;
+    static pointer                      ptr = pointer(nullptr);
+    return ptr;
+}
 
 //======================================================================================//
 
@@ -175,6 +193,9 @@ struct Sub : public Printer<_Tp>
 
 template <typename _Tp, typename... _Args>
 class ObjectAccessor;
+class ConstructAccessor;
+class ConstructAccessorA;
+class ConstructAccessorB;
 
 //======================================================================================//
 //  this class is sort of dummy demonstration class for the accessor
@@ -200,13 +221,12 @@ public:
 
     virtual ~ObjectA() {}
 
-    template <typename Generator>
-    void generate(Generator& gen)
+    virtual void generate(Generator& gen)
     {
         int _nquery = (nquery++) % 10;
         if(_nquery == 9)
             m_random_value += 0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
-    };
+    }
 
     double GetRandomValue() const { return m_random_value; }
     void   Reset() { m_random_value = 0.0; }
@@ -221,6 +241,29 @@ private:
 private:
     template <typename _Tp, typename... _Args>
     friend class ObjectAccessor;
+
+    friend class ConstructAccessor;
+    friend class ConstructAccessorA;
+};
+
+//======================================================================================//
+//  this class is sort of dummy demonstration class for the accessor
+//
+class VirtualA : public ObjectA
+{
+public:
+    virtual void generate(Generator& gen)
+    {
+        int _nquery = (nquery++) % 10;
+        if(_nquery == 9)
+            m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+    }
+
+private:
+    friend class ConstructAccessor;
+    friend class ConstructAccessorA;
+    uintmax_t   nquery     = 0;
+    std::string m_class_id = "virtual base class";
 };
 
 //======================================================================================//
@@ -245,29 +288,110 @@ public:
         std::cout << ss.str() << std::flush;
     }
 
-    template <typename Generator>
-    void generate(Generator& gen)
+    virtual void generate(Generator& gen)
     {
         int _nquery = (nquery++) % 10;
         if(_nquery == 0)
             m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
-    };
+    }
 
-private:
+protected:
     uintmax_t   nquery     = 0;
     std::string m_class_id = "derived class";
 
 private:
     template <typename _Tp, typename... _Args>
     friend class ObjectAccessor;
+    friend class ConstructAccessor;
+    friend class ConstructAccessorB;
+};
+
+//======================================================================================//
+//  this class is sort of dummy demonstration class for the accessor
+//
+class VirtualB : public ObjectB
+{
+public:
+    virtual void generate(Generator& gen)
+    {
+        int _nquery = (nquery++) % 10;
+        if(_nquery == 0)
+            m_random_value += 0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+    }
+
+private:
+    friend class ConstructAccessor;
+    friend class ConstructAccessorB;
+    uintmax_t   nquery     = 0;
+    std::string m_class_id = "virtual derived class";
 };
 
 //======================================================================================//
 
-template <typename... _Args>
-class BaseAccessor;
-template <typename... _Args>
-class DerivedAccessor;
+struct ConstructAccessor
+{
+    ConstructAccessor(ObjectA* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 9)
+            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+    }
+
+    ConstructAccessor(VirtualA* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 9)
+            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+    }
+
+    ConstructAccessor(ObjectB* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 0)
+            obj->m_random_value += 0.5 * (std::generate_canonical<double, 24>(gen) - 0.5);
+    }
+
+    ConstructAccessor(VirtualB* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 0)
+            obj->m_random_value += 0.5 * (std::generate_canonical<double, 24>(gen) - 0.5);
+    }
+};
+
+struct ConstructAccessorA
+{
+    ConstructAccessorA(ObjectA* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 9)
+            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+    }
+
+    ConstructAccessorA(VirtualA* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 9)
+            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+    }
+};
+
+struct ConstructAccessorB
+{
+    ConstructAccessorB(ObjectB* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 0)
+            obj->m_random_value += 0.5 * (std::generate_canonical<double, 24>(gen) - 0.5);
+    }
+
+    ConstructAccessorB(VirtualB* obj, Generator& gen)
+    {
+        int _nquery = (obj->nquery++) % 10;
+        if(_nquery == 0)
+            obj->m_random_value += 0.5 * (std::generate_canonical<double, 24>(gen) - 0.5);
+    }
+};
 
 //======================================================================================//
 // this accessor simulates static polymorphism without the explicit need for functional
@@ -313,22 +437,22 @@ public:
     }
 
     // when generate(...) is called by ObjectAccessor<ObjectA>, this function is called
-    template <typename Generator, typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectA>::value), int> = 0>
+    template <typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectA>::value), int> = 0>
     void generate(Generator& gen)
     {
         int _nquery = (m_obj.nquery++) % 10;
         if(_nquery == 9)
             m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
-    };
+    }
 
     // when generate(...) is called by ObjectAccessor<ObjectB>, this function is called
-    template <typename Generator, typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectB>::value), int> = 0>
+    template <typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectB>::value), int> = 0>
     void generate(Generator& gen)
     {
         int _nquery = (m_obj.nquery++) % 10;
         if(_nquery == 0)
             m_random_value += 0.5 * (std::generate_canonical<double, 24>(gen) - 0.5);
-    };
+    }
 
     _Tp&       object() { return m_obj; }
     const _Tp& object() const { return m_obj; }
@@ -342,70 +466,6 @@ protected:
     double& m_random_value;
     // a function that can be passed in to customize behavior
     const Func_t& m_func;
-
-private:
-    // we enable access to more customized instances
-    template <typename... _OtherArgs>
-    friend class BaseAccessor;
-
-    template <typename... _OtherArgs>
-    friend class DerivedAccessor;
-};
-
-//======================================================================================//
-
-template <typename... _Args>
-class BaseAccessor : protected ObjectAccessor<ObjectA, _Args...>
-{
-public:
-    typedef ObjectA Object_t;
-
-public:
-    BaseAccessor(Object_t& obj, const std::function<void(Object_t&, _Args...)>& func = [](Object_t&, _Args...) {})
-    : ObjectAccessor<Object_t, _Args...>(obj, func)
-    {
-    }
-
-    void operator()(_Args&&... args)
-    {
-        m_obj();
-        m_class_id += " (modified via accessor)";
-        m_obj();
-        AutoLock l(TypeMutex<decltype(std::cout)>());
-        std::cout << std::endl;
-    }
-
-protected:
-    using ObjectAccessor<Object_t, _Args...>::m_obj;
-    using ObjectAccessor<Object_t, _Args...>::m_class_id;
-};
-
-//======================================================================================//
-
-template <typename... _Args>
-class DerivedAccessor : protected ObjectAccessor<ObjectB, _Args...>
-{
-public:
-    typedef ObjectB Object_t;
-
-public:
-    DerivedAccessor(Object_t& obj, const std::function<void(Object_t&, _Args...)>& func = [](Object_t&, _Args...) {})
-    : ObjectAccessor<Object_t, _Args...>(obj, func)
-    {
-    }
-
-    void operator()(_Args&&... args)
-    {
-        m_obj();
-        m_class_id += " (modified via accessor)";
-        m_obj();
-        AutoLock l(TypeMutex<decltype(std::cout)>());
-        std::cout << std::endl;
-    }
-
-protected:
-    using ObjectAccessor<Object_t, _Args...>::m_obj;
-    using ObjectAccessor<Object_t, _Args...>::m_class_id;
 };
 
 //======================================================================================//
