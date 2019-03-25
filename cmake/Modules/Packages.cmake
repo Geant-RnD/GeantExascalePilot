@@ -87,7 +87,14 @@ endif()
 
 add_feature(${PROJECT_NAME}_CUDA_FLAGS "CUDA NVCC compiler flags")
 add_feature(CUDA_ARCH "CUDA architecture (e.g. '35' means '-arch=sm_35')")
-set(CUDA_ARCH "62" CACHE STRING "CUDA architecture flag")
+#   30, 32      + Kepler support
+#               + Unified memory programming
+#   35          + Dynamic parallelism support
+#   50, 52, 53  + Maxwell support
+#   60, 61, 62  + Pascal support
+#   70, 72      + Volta support
+#   75          + Turing support
+set(CUDA_ARCH "60" CACHE STRING "CUDA architecture flag")
 
 if(GEANT_USE_NVTX)
     find_library(NVTX_LIBRARY
