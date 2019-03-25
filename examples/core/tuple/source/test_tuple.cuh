@@ -22,12 +22,12 @@ using decay_t = typename std::decay<_Tp>::type;
 template <typename _Func, typename... _Args>
 GEANT_HOST_DEVICE void invoker(_Func&& func, _Args&&... args)
 {
-    auto f = nvstd::function<void(_Args...)>(std::forward<_Func>(func), std::forward<_Args>(args)...);
-    f();
+    (nvstd::function<void(_Args...)>(std::forward<_Func>(func), std::forward<_Args>(args)...))();
+    //f();
 }
 
-GEANT_DEVICE inline void device_printer() { printf("second\n"); }
-inline void              host_printer() { printf("fourth\n"); }
+GEANT_DEVICE inline void device_printer() { printf("[device: %s] second\n", __FUNCTION__); }
+inline void              host_printer() { printf("[host: %s] fourth\n", __FUNCTION__); }
 
 void              launch(TaskGroup<void>&);
 GEANT_GLOBAL void kernel();

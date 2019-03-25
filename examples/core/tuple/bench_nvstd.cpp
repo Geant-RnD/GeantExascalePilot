@@ -21,7 +21,7 @@ int main(int argc, char** argv)
         launch(tg);
     }
     // task that runs on CPU
-    auto _s = []() { invoker([]() { printf("third\n"); }); };
+    auto _s = []() { invoker([]() { printf("[host: %s] third\n", __FUNCTION__); }); };
     // task that runs on CPU
     auto _t = []() { invoker(host_printer); };
     // add tasks

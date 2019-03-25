@@ -3,7 +3,7 @@
 
 __global__ void kernel()
 {
-    invoker([] { printf("first\n"); });
+    invoker([] { printf("[kernel: %s] first\n", __FUNCTION__); });
     invoker(device_printer);
 }
 
