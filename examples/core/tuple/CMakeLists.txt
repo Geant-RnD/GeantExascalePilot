@@ -51,3 +51,10 @@ CREATE_EXECUTABLE(
     INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
     LINK_LIBRARIES          example_core_tuple
 )
+
+CREATE_EXECUTABLE(
+    TARGET_NAME             track_manager_tuple
+    HEADERS                 ${headers}
+    SOURCES                 track_manager_tuple.cpp
+    INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
+)
