@@ -93,7 +93,7 @@ struct TrackManager
 };
 ```
 
-The standard accommadation tends to be the following:
+The standard accommodation tends to be the following:
 
 ```c++
 template <typename Type>
@@ -129,7 +129,10 @@ template <typename Type>
 struct TrackCaster : public Track
 {
     Type*  GetParticleDefinition() const { return static_cast<Type*>(m_pdef); }
-    std::string GetParticleName() const { return static_cast<Type*>(m_pdef)->GetName(); }
+    std::string GetParticleName() const
+    {
+        return static_cast<Type*>(m_pdef)->GetName() + "_casted";
+    }
     // no need to reimplement GetTrackId()
 };
 
@@ -143,8 +146,21 @@ struct VariadicTrackManager
     // array of particle-specific track-managers + a generic at the end
     using TrackManagerArray = std::array<TrackManager*, num_types + 1>;
 
-    // array of track managers
     TrackManagerArray m_tracks;
+
+    VariadicTrackManager()
+    {
+        // the pointer to last instance (generic) could actually be assigned
+        // to standard track manager
+        for(auto& itr : m_tracks)
+            itr = new TrackManager();
+    }
+
+    ~VariadicTrackManager() { }
+    {
+        for(auto& itr : m_tracks)
+            delete itr;
+    }
 
     // without template params, we push to generic at end
     void PushTrack(Track* track) { m_tracks[num_types]->PushTrack(track); }
@@ -200,7 +216,7 @@ struct index_of<_Tp, std::tuple<Head, Tail...>>
 On it's surface, this may not appear to provide much but consider the following:
 
 - The base types were not modified beyond a friend statement
-  - Any the friend statement isn't _necessary_
+  - The friend statement is not _necessary_
   - Thus only when we want to do something type-specific, such as transport
   electrons on GPU, is there a need to start embedding types
 - Invoking `VariadicTrackManager::PushTrack<ParticleType>(track)` required specifying `ParticleType`
