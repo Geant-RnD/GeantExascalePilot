@@ -792,7 +792,7 @@ struct PhysicsProcessesAvailable<Photon>
 template <intmax_t N, typename ParticleType, typename... Processes>
 __global__
 void ComputePIL(TrackCaster<ParticleType> tracks[N],
-                PhysicsData<ParticleType, Processes...> physics[N],
+                PhysicsList<ParticleType, Processes...> physics[N],
                 Geometry* geom)
 {
     using Track_t = TrackCaster<ParticleType>;
@@ -801,7 +801,7 @@ void ComputePIL(TrackCaster<ParticleType> tracks[N],
     int i0      = blockIdx.x * blockDim.x + threadIdx.x;
     int istride = blockDim.x * gridDim.x;
 
-    for(int i = i0; i < tracks->size(); i += istride)
+    for(int i = i0; i < N; i += istride)
     {
         Track_t* track = tracks[i];
         PhysicsList* phys = physics[i];
@@ -822,7 +822,7 @@ template <intmax_t N, typename ParticleType,
           typename... Processes, typename SecondaryTypes...>
 __global__
 void ApplyProcess(TrackCaster<ParticleType> tracks[N],
-                  PhysicsData<ParticleType, Processes...> physics[N],
+                  PhysicsList<ParticleType, Processes...> physics[N],
                   Geometry* geom,
                   TrackList<SecondaryTypes...>[N] secondaries)
 {
@@ -832,7 +832,7 @@ void ApplyProcess(TrackCaster<ParticleType> tracks[N],
     int i0      = blockIdx.x * blockDim.x + threadIdx.x;
     int istride = blockDim.x * gridDim.x;
 
-    for(int i = i0; i < tracks->size(); i += istride)
+    for(int i = i0; i < N; i += istride)
     {
         Track_t* track = tracks[i];
         PhysicsList* phys = physics[i];
@@ -852,7 +852,7 @@ void ApplyProcess(TrackCaster<ParticleType> tracks[N],
 //
 template <intmax_t N, typename ParticleType, typename... ParticleTypes>
 auto DoStep(VariadicTrackManager<ParticleTypes...>* track_manager,
-            Geometry* geom, int ngrid, int nblock, CudaStream_t stream)
+            Geometry* geom, CudaStream_t stream)
 {
     // process types is a tuple
     using ProcessTypes = PhysicsProcessesAvailable<ParticleType>::type;
@@ -865,18 +865,24 @@ auto DoStep(VariadicTrackManager<ParticleTypes...>* track_manager,
 
     // assume these are filled/allocated/mem-copied
     TrackCaster<ParticleType> tracks[N];
-    PhysicsData<ParticleType, Processes...> physics[N];
+    PhysicsList<ParticleType, Processes...> physics[N];
 
     // track_manager has member function returning array of pointers
     // to secondary queue
     //   when pushing back a particle transported on GPU, it does not copy memory
     //   when pushing back a particle transported on CPU, it handles memcpy
     TrackList<SecondaryTypes...>[N] secondaries =
-        track_manager->GetSecondaryQueues<SecondaryTypes>();
+        track_manager->GetSecondaryQueues<SecondaryTypes...>();
 
-    // assume copy max of N tracks from
-    ComputePIL<N><<<ngrid, nblock, 0, stream>>>(tracks, physics, geom);
-    ApplyProcess<N><<ngrid, nblock, 0, stream>>(tracks, physics, geom, secondaries);
+    // assume copy max of N tracks
+
+    // launch maybe N blocks and and 1 threads or maybe 1 block and 32 threads
+    // or maybe do some calculation based on N. Separating into different blocks
+    // with 1 thread theoretically has the benefit that we don't have to be concerned
+    // about thread divergence in a warp but would be very inefficient within a block
+    // ... will be evaluated and considered later
+    ComputePIL<N><<<1, N, 0, stream>>>(tracks, physics, geom);
+    ApplyProcess<N><<1, N, 0, stream>>(tracks, physics, geom, secondaries);
 }
 
 //--------------------------------------------------------------------------------------//
@@ -885,19 +891,19 @@ auto DoStep(VariadicTrackManager<ParticleTypes...>* track_manager,
 //
 template <typename ParticleType, typename... ParticleTypes>
 auto DoStep(VariadicTrackManager<ParticleTypes...>* track_manager,
-            Geometry* geom, int ngrid, int nblock, CudaStream_t stream)
+            Geometry* geom, CudaStream_t stream)
 {
-    constexpr intmax_t max_block = 32;
+    constexpr intmax_t max_launch = 32;
     while(track_manager->GetReadyQueue<ParticleType>().size() > 0)
     {
         intmax_t nready = track_manager->GetReadyQueue<ParticleType>().size();
-        intmax_t n = std::min(max_block, nready);
+        intmax_t n = std::min(max_launch, nready);
 
         // could probably achieve this with template unrolling and function forwarding
         switch (n)
         {
-            case max_block:
-                DoStep<max_block>(track_manager, geom, ngrid, nblock, stream);
+            case max_launch:
+                DoStep<max_launch>(track_manager, geom, ngrid, nblock, stream);
                 break;
             // ...
             // ...
