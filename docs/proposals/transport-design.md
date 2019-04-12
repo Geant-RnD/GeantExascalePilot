@@ -888,9 +888,9 @@ auto DoStep(VariadicTrackManager<ParticleTypes...>* track_manager,
             Geometry* geom, int ngrid, int nblock, CudaStream_t stream)
 {
     constexpr intmax_t max_block = 32;
-    while(track_manager->ready_queue<ParticleType>().size() > 0)
+    while(track_manager->GetReadyQueue<ParticleType>().size() > 0)
     {
-        intmax_t nready = track_manager->ready_queue<ParticleType>().size();
+        intmax_t nready = track_manager->GetReadyQueue<ParticleType>().size();
         intmax_t n = std::min(max_block, nready);
 
         // could probably achieve this with template unrolling and function forwarding
