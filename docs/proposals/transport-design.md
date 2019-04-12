@@ -625,7 +625,7 @@ struct plus
     {
         obj += rhs;
     }
-    // definition for a specific type
+
     plus(Type& obj, const intmax_t& rhs) { obj += rhs; }
 };
 
@@ -639,13 +639,12 @@ Instead of type traits, we can explicitly customize the entire operator for a sp
 template <>
 struct plus<record_max>
 {
-    // when marked with "record_max"
-    plus(Type& obj, const Type& rhs)
+    plus(record_max& obj, const record_max& rhs)
     {
         obj = std::max(obj, rhs);
     }
-    // definition for a specific type
-    plus(Type& obj, const intmax_t& rhs) { obj += rhs; }
+
+    plus(record_max& obj, const intmax_t& rhs) { obj += rhs; }
 };
 ```
 
