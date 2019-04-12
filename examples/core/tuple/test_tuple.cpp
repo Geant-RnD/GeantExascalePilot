@@ -99,8 +99,8 @@ int main(int argc, char** argv)
 
     auto access_a = AccessA(obj_a, op_a);
     auto access_b = AccessB(obj_b, op_b);
-    auto a_access = Aaccess(obj_a);
-    auto b_access = Baccess(obj_b);
+    //auto a_access = Aaccess(obj_a);
+    //auto b_access = Baccess(obj_b);
 
     // create tuple of accessors
     auto access_array = MakeTuple(access_a, access_b);
@@ -129,10 +129,6 @@ int main(int argc, char** argv)
         Apply<void>::apply_functions(access_array, funct_array, msg);
     };
 
-    auto _exec_custom_operator = [&]() {
-        a_access();
-        b_access();
-    };
     // create task-group that uses thread-pool
     TaskGroup<void> tg(&tp);
 
@@ -153,7 +149,6 @@ int main(int argc, char** argv)
 
     // run the task that calls doSomething(std::string) on each accessor
     tg.run(_exec_member_function, std::string("member function task worked!"));
-    tg.run(_exec_custom_operator);
 
     // wait for tasks to finish
     tg.join();
