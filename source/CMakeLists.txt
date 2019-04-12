@@ -80,13 +80,15 @@ if(NOT VecGeom_FOUND)
 endif()
 
 # append submodule configs
+if(GEANT_USE_SUBMODULES)
+    set(VECGEOM_LIBRARIES vecgeom vecgeomcuda)
+endif()
+
 list(APPEND ${PROJECT_NAME}_LINK_LIBRARIES
-    ptl${GEANT_LIBTARGET_EXT}
-    vecgeom vecgeomcuda ${VECGEOM_LIBRARIES})
+    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES})
 
 list(APPEND EXTERNAL_LIBRARIES
-    ptl${GEANT_LIBTARGET_EXT}
-    vecgeom vecgeomcuda ${VECGEOM_LIBRARIES})
+    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES})
 
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}
