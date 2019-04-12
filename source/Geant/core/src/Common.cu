@@ -42,6 +42,8 @@
 #include "Geant/core/Common.hpp"
 #include "Geant/core/Typedefs.hpp"
 
+#include <array>
+
 //======================================================================================//
 
 #if defined(GEANT_USE_NVTX)
