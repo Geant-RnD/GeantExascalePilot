@@ -80,7 +80,7 @@ struct TrackCaster : public Track
     Type*  GetParticleDefinition() const { return static_cast<Type*>(m_pdef); }
     std::string GetParticleName() const
     {
-        return static_cast<Type*>(m_pdef)->GetName() + "_casted";
+        return static_cast<Type*>(m_pdef)->Type::GetName() + "_casted";
     }
     // no need to reimplement GetTrackId()
 };
@@ -114,7 +114,10 @@ struct VariadicTrackManager
     }
 
     // without template params, we push to generic at end
-    void PushTrack(Track* track) { m_tracks[num_types]->PushTrack(track); }
+    void PushTrack(Track* track)
+    {
+        m_tracks[num_types]->PushTrack(track);
+    }
 
     // with template params, we push to particle-specific queue
     template <typename ParticleType>
