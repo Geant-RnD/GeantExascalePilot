@@ -32,7 +32,7 @@ template <typename Type>
 struct ParticleDefinition
 {
     ParticleDefinition() {}
-    string GetName() const { return static_cast<Type*>(this)->GetName(); }
+    string GetName() const { return static_cast<Type*>(this)->Type::GetName(); }
 };
 
 struct Electron : public ParticleDefinition<Electron>
@@ -71,7 +71,7 @@ struct Track
     PDef_t* m_pdef;
 
     PDef_t* GetParticleDefinition() const { return m_pdef; }
-    string GetParticleName() const { return m_pdef->GetName(); }
+    string GetParticleName() const { return m_pdef->Type::GetName(); }
     intmax_t GetTrackId() const { return m_track_id; }
 };
 ```
@@ -131,7 +131,7 @@ struct TrackCaster : public Track
     Type*  GetParticleDefinition() const { return static_cast<Type*>(m_pdef); }
     std::string GetParticleName() const
     {
-        return static_cast<Type*>(m_pdef)->GetName() + "_casted";
+       return static_cast<Type*>(m_pdef)->Type:::GetName() + "_casted";
     }
     // no need to reimplement GetTrackId()
 };
