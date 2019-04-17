@@ -1,6 +1,8 @@
 
 #include "test_tuple.hpp"
 
+#include <array>
+
 //======================================================================================//
 
 // some short hand definitions
