@@ -33,10 +33,10 @@ public:
   double LogEkin() const { return this->Pstate().fLogEkin; }
   double Ekin() const { return this->Pstate().fEnergy - this->Pstate().fMass; }
 
-  MaterialId_t Material() const { return fTrack.fMaterialState.fMaterial; }
+  MaterialId_t Material() const { return Track().fMaterialState.fMaterial; }
 
 private:
-  inline const TrackPhysicsState &Pstate() const { return fTrack.fPhysicsState; }
+  inline const TrackPhysicsState &Pstate() const { return Track().fPhysicsState; }
 };
 
 } // namespace geantx
