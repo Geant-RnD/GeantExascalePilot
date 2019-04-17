@@ -191,9 +191,9 @@ struct Sub : public Printer<_Tp>
 
 template <typename _Tp, typename... _Args>
 class ObjectAccessor;
-class ConstructAccessor;
-class ConstructAccessorA;
-class ConstructAccessorB;
+struct ConstructAccessor;
+struct ConstructAccessorA;
+struct ConstructAccessorB;
 
 //======================================================================================//
 //  this class is sort of dummy demonstration class for the accessor
@@ -240,8 +240,8 @@ private:
     template <typename _Tp, typename... _Args>
     friend class ObjectAccessor;
 
-    friend class ConstructAccessor;
-    friend class ConstructAccessorA;
+    friend struct ConstructAccessor;
+    friend struct ConstructAccessorA;
 };
 
 //======================================================================================//
@@ -258,8 +258,8 @@ public:
     }
 
 private:
-    friend class ConstructAccessor;
-    friend class ConstructAccessorA;
+    friend struct ConstructAccessor;
+    friend struct ConstructAccessorA;
     uintmax_t   nquery     = 0;
     std::string m_class_id = "virtual base class";
 };
@@ -300,8 +300,8 @@ protected:
 private:
     template <typename _Tp, typename... _Args>
     friend class ObjectAccessor;
-    friend class ConstructAccessor;
-    friend class ConstructAccessorB;
+    friend struct ConstructAccessor;
+    friend struct ConstructAccessorB;
 };
 
 //======================================================================================//
@@ -318,8 +318,8 @@ public:
     }
 
 private:
-    friend class ConstructAccessor;
-    friend class ConstructAccessorB;
+    friend struct ConstructAccessor;
+    friend struct ConstructAccessorB;
     uintmax_t   nquery     = 0;
     std::string m_class_id = "virtual derived class";
 };

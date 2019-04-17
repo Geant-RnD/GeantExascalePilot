@@ -343,7 +343,7 @@ struct _TupleImpl;
 template <std::size_t _Idx, typename _Head, typename... _Tail>
 struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>, private _HeadBase<_Idx, _Head> {
   template <std::size_t, typename...>
-  friend class _TupleImpl;
+  friend struct _TupleImpl;
 
   typedef _TupleImpl<_Idx + 1, _Tail...> _Inherited;
   typedef _HeadBase<_Idx, _Head> _Base;
@@ -484,7 +484,7 @@ struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>
 template <std::size_t _Idx, typename _Head>
 struct _TupleImpl<_Idx, _Head> : private _HeadBase<_Idx, _Head> {
   template <std::size_t, typename...>
-  friend class _TupleImpl;
+  friend struct _TupleImpl;
 
   typedef _HeadBase<_Idx, _Head> _Base;
 
