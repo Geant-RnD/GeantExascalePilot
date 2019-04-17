@@ -208,6 +208,8 @@ def run_pyctest():
                              "gperf.cpu.prof.{}.0.cum.txt".format(
                                  os.path.basename(cmd[0])),
                              clobber=False)
+        else:
+            _cmd.append("./timem")
         _cmd.extend(cmd)
         return _cmd
 
@@ -229,6 +231,8 @@ def run_pyctest():
     pyctest.test("bench_tuple", construct_command(["./bench_tuple"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("bench_nvstd", construct_command(["./bench_nvstd"], args),
+                 {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
+    pyctest.test("track_manager_tuple", construct_command(["./track_manager_tuple"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
 
     tasking_suffix = ""

@@ -1,8 +1,8 @@
-################################################################################
-#                                                                              #
-#                               General                                        #
-#                                                                              #
-################################################################################
+##########################################################################################
+#                                                                                        #
+#                                         General                                        #
+#                                                                                        #
+##########################################################################################
 
 add_feature(VECGEOM_VECTOR "VecGeom vector instruction set")
 add_feature(VECGEOM_BACKEND "VecGeom backend")
@@ -22,6 +22,8 @@ set(PTL_USE_TBB OFF CACHE BOOL "Enable TBB backend for PTL")
 set(PTL_USE_ARCH ${GEANT_USE_ARCH} CACHE BOOL "" FORCE)
 set(PTL_USE_GPERF ${GEANT_USE_GPERF} CACHE BOOL "" FORCE)
 set(PTL_USE_SANITIZER ${GEANT_USE_SANITIZER} CACHE BOOL "" FORCE)
+set(TIMEMORY_BUILD_C OFF CACHE BOOL "Build TiMemory C interface" FORCE)
+set(TIMEMORY_BUILD_PYTHON OFF CACHE BOOL "Build TiMemory Python interface")
 if(GEANT4_USE_ARCH)
     set(PTL_USE_AVX512 ${GEANT_USE_AVX512} CACHE BOOL "" FORCE)
 endif()
@@ -44,15 +46,27 @@ endif()
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR})
 
+#----------------------------------------------------------------------------------------#
 # PTL submodule
+#
 checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
     RELATIVE_PATH source/PTL WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-# add submodule
 add_subdirectory(PTL)
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}/PTL/source)
 
+#----------------------------------------------------------------------------------------#
+# TiMemory submodule
+#
+checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
+    RELATIVE_PATH source/TiMemory WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+add_subdirectory(TiMemory)
+list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
+    ${CMAKE_CURRENT_LIST_DIR}/TiMemory/source)
+
+#----------------------------------------------------------------------------------------#
 # VecCore submodule
+#
 if(NOT VecCore_FOUND)
     checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
         RELATIVE_PATH source/VecCore WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
@@ -61,7 +75,9 @@ if(NOT VecCore_FOUND)
         ${CMAKE_CURRENT_LIST_DIR}/VecCore/include)
 endif()
 
-# VecMath package or submodule
+#----------------------------------------------------------------------------------------#
+# VecMath submodule
+#
 if(NOT VecMath_FOUND)
     checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
         RELATIVE_PATH source/VecMath WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
@@ -70,7 +86,9 @@ if(NOT VecMath_FOUND)
         ${CMAKE_CURRENT_LIST_DIR}/VecMath/include)
 endif()
 
+#----------------------------------------------------------------------------------------#
 # VecGeom submodule
+#
 if(NOT VecGeom_FOUND)
     checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
         RELATIVE_PATH source/VecGeom WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})

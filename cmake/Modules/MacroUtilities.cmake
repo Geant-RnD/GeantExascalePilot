@@ -357,6 +357,10 @@ FUNCTION(CHECKOUT_GIT_SUBMODULE)
         set(_RECURSE --recursive)
     endif(CHECKOUT_RECURSIVE)
 
+    # submodule typically should be updated if already checked out but this should be disabled
+    # if a submodule has been updated but not staged into the commit
+    add_option(GEANT_SUBMODULE_UPDATE "Run git submodule update if submodules already checked out" ON)
+
     # if the module has not been checked out
     if(NOT EXISTS "${_TEST_FILE}")
         # perform the checkout
@@ -376,8 +380,10 @@ FUNCTION(CHECKOUT_GIT_SUBMODULE)
             message(WARNING "Command: \"${_CMD}\"")
             return()
         endif()
-    elseif(NOT SKIP_GIT_UPDATE)
-        message(STATUS "Executing '${GIT_EXECUTABLE} submodule update ${_RECURSE} ${CHECKOUT_RELATIVE_PATH}'... Disable with SKIP_GIT_UPDATE...")
+    elseif(GEANT_SUBMODULE_UPDATE)
+        set(MSG "Executing '${GIT_EXECUTABLE} submodule update ${_RECURSE} ${CHECKOUT_RELATIVE_PATH}'...")
+        set(MSG "${MSG} Disable with GEANT_SUBMODULE_UPDATE=OFF...")
+        message(STATUS "${MSG}")
         execute_process(
             COMMAND
                 ${GIT_EXECUTABLE} submodule update ${_RECURSE} ${CHECKOUT_RELATIVE_PATH}

@@ -27,7 +27,6 @@ add_feature(CMAKE_CXX_STANDARD "C++11 STL standard")
 
 # options (always available)
 add_option(GEANT_USE_GPERF "Enable Google perftools profiler" OFF)
-add_option(GEANT_USE_TIMEMORY "Enable TiMemory for timing+memory analysis" OFF)
 add_option(GEANT_USE_ARCH "Enable architecture specific flags" OFF)
 add_option(GEANT_USE_SANITIZER "Enable sanitizer" OFF)
 add_option(GEANT_USE_COVERAGE "Enable code coverage" OFF)
