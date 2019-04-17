@@ -16,14 +16,14 @@ install:
   - env
   - mkdir -p ~/.tokens
   - echo "${CTEST_TOKEN}" > ~/.tokens/nersc-cdash
-  - export ARGS="--arch --gperf -S -F --pyctest-model=Continuous --pyctest-site=Travis"
-  - if [ -z "${NOTBB}" ]; then ARGS="${ARGS} --tbb"; fi
-  - if [ -n "${COVERAGE}" ]; then
-      ARGS="${ARGS} --coverage --num-tasks=64";
-    else
-      ARGS="${ARGS} --num-tasks=2048 --pyctest-build-type=RelWithDebInfo";
-    fi
-  - CMD="python ./pyctest-runner.py ${ARGS}"
+  - export ARGS="--tbb -SF --pyctest-model=Continuous --pyctest-site=Travis -L GeantExascalePilot PTL"
+  - OPTIM_FLAGS="--num-tasks=2048 --pyctest-build-type=RelWithDebInfo"
+  - DEBUG_FLAGS="--num-tasks=64  --pyctest-build-type=Debug"
+  - CMD="python ./pyctest-runner.py ${ARGS} --gperf ${OPTIM_FLAGS}"
+  - docker run -it -v ~/.tokens:/root/.tokens -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
+  - CMD="python ./pyctest-runner.py ${ARGS} --sanitizer ${OPTIM_FLAGS}"
+  - docker run -it -v ~/.tokens:/root/.tokens -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
+  - CMD="python ./pyctest-runner.py ${ARGS} --coverage ${DEBUG_FLAGS}"
   - docker run -it -v ~/.tokens:/root/.tokens -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
 
 script:

@@ -66,11 +66,7 @@
 #include <utility>
 #include <vector>
 
-#ifdef GEANT_USE_TIMEMORY
-#include <timemory/timemory.hpp>
-#else
 #include "Profiler.hpp"
-#endif
 
 #include "PTL/AutoLock.hh"
 #include "PTL/TBBTaskGroup.hh"

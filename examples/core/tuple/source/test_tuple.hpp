@@ -23,8 +23,6 @@
 #include <thread>
 #include <type_traits>
 
-#include "rusage.hpp"
-
 typedef std::chrono::duration<double> duration_t;
 using Generator = std::mt19937_64;
 

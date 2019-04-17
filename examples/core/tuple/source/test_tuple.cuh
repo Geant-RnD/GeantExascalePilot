@@ -89,14 +89,14 @@ template <typename _Tuple, std::size_t _N = TupleSize<_Tuple>::value>
 void test_invoke()
 {
     auto func = [&]()
-	{
-		// where obj_a, obj_b, virt_a, virt_b are all virtual class
-		// instances that want to run some calculation on the GPU
+    {
+        // where obj_a, obj_b, virt_a, virt_b are all virtual class
+        // instances that want to run some calculation on the GPU
         auto device_tuple = MakeTuple(obj_a, obj_b, virt_a, virt_b);
         typedef Tuple<Accessor, Accessor, Accessor, Accessor> ctors_tuple;
         Apply<void>::apply_access<ctors_tuple, decltype(device_tuple)>(object_tuple);
     };
 
-	invoker(func);
+    invoker(func);
 }
 */
