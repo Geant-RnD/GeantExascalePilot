@@ -1,7 +1,18 @@
+#pragma once
+
+#ifndef REQUIRE
+#define REQUIRE(X)
+#endif
+
+#include <base/Vector3D.h>
+#include "navigation/NavigationState.h"
+#include "volumes/LogicalVolume.h"
 
 namespace geantx {
 
-using Vector3        = vecgeom::Vector3D<double>;
+using VolumePath_t   = VECGEOM_NAMESPACE::NavigationState;
+using Volume_t       = VECGEOM_NAMESPACE::LogicalVolume;
+using Vector3D_t     = VECGEOM_NAMESPACE::Vector3D<double>;
 using ParticleId_t   = unsigned int;
 using ParticleType_t = unsigned int;
 using VolumeId_t     = unsigned int;

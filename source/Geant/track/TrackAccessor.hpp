@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Track.hpp"
+#include "Geant/track/Types.hpp"
+#include "Geant/track/TrackState.hpp"
+
+namespace geantx {
 
 //---------------------------------------------------------------------------//
 /*!
@@ -15,15 +18,17 @@ public:
 
   // >>> ACCESSORS
 
-  const Vector3 &Position() const { return this->Track().fPos; }
-  const Vector3 &Direction() const { return this->Track().fDir; }
+  const Vector3D_t &Position() const { return this->Track().fPos; }
+  const Vector3D_t &Direction() const { return this->Track().fDir; }
   double Step() const { return this->Track().fStep; }
 
-  ParticleId_t Id() const { return this->Track().fParticle; }
+  ParticleId_t Id() const { return this->Track().fHistoryState.fParticle; }
 
   // TODO: treat as protected/implementation detail? used by TrackModifier
   const TrackState &Track() const { return fTrack; }
 };
+
+} // geantx
 
 
 

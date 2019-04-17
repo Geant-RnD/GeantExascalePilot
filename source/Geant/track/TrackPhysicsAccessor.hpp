@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Track.hpp"
+#include "Geant/track/TrackAccessor.hpp"
+#include "Geant/track/TrackState.hpp"
+
+namespace geantx {
 
 //---------------------------------------------------------------------------//
 /*!
@@ -28,11 +31,12 @@ public:
   double P() const { return this->Pstate().fMomentum; }
   double E() const { return this->Pstate().fEnergy; }
   double LogEkin() const { return this->Pstate().fLogEkin; }
-  double Ekin() const { return this->Pstate().fE - this->Pstate().mass; }
+  double Ekin() const { return this->Pstate().fEnergy - this->Pstate().fMass; }
 
-  MaterialId_t Material() const { return this->Pstate().fMaterial; }
+  MaterialId_t Material() const { return fTrack.fMaterialState.fMaterial; }
 
 private:
-  inline const PhysicsState &Pstate() const { return fTrack.fPhysicsState; }
+  inline const TrackPhysicsState &Pstate() const { return fTrack.fPhysicsState; }
 };
 
+} // namespace geantx

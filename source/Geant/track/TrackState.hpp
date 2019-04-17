@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Geant/track/Types.hpp"
+
+namespace geantx {
+
 #if 0
 //---------------------------------------------------------------------------//
 /*!
@@ -80,7 +84,8 @@ constexpr size_t kNumPhysicsProcess = 10;
  * TODO: replace with velocity to reduce state size?
  */
 struct TrackPhysicsState {
-#if 0
+#if 1
+  // Consider replacing with lookup values or are those used too often?
   Species_t fSpecies = kHadron; /** Particle species */
   double fMass       = 0;       /** Particle mass */
   int fCharge        = 0;       /** Particle charge */
@@ -109,8 +114,8 @@ struct TrackState {
   TrackStatus_t fStatus = kAlive; /** Track status */
   double fStep          = 0;      /** Step length being travelled */
 
-  Vector3 fPos = 0; /** Position */
-  Vector3 fDir = 0; /** Direction */
+  Vector3D_t fPos = 0; /** Position */
+  Vector3D_t fDir = 0; /** Direction */
   double fTime = 0; /** Time at beginning of step */
 
   /* don't use: ESimulationStage fStage */
@@ -122,7 +127,8 @@ struct TrackState {
   /* don't use: TrackSchedulingState fSchedulingState; */
   TrackHistoryState fHistoryState;
   TrackPhysicsState fPhysicsState;
-  TrackMaterialState fMaterialState
+  TrackMaterialState fMaterialState;
   TrackGeometryState fGeometryState;
 };
 
+} // namespace geantx

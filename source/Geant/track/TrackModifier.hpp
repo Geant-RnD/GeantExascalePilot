@@ -1,7 +1,10 @@
 #pragma once
 
-#include "TrackState.hpp"
-#include "PhysicsAccessor.hpp"
+#include "Geant/track/TrackState.hpp"
+#include "Geant/track/TrackAccessor.hpp"
+#include "Geant/track/TrackPhysicsAccessor.hpp"
+
+namespace geantx {
 
 class TrackModifier {
 private:
@@ -19,7 +22,7 @@ public:
   void CreateSecondaryFrom(const TrackPhysicsAccessor &other,
                            ParticleType_t newType,
                            ParticleId_t newId,
-                           const Vector3 &newDirection,
+                           const Vector3D_t &newDirection,
                            double newKineticEnergy) const {
       REQUIRE(newId > TrackAccessor(other).Id());
       REQUIRE(newKineticEnergy >= 0);
@@ -30,7 +33,7 @@ public:
 
       // Set new physical properties
       fState.fPhysicsState.fParticleType = newType;
-      fState.fMomentum = std::sqrt(newKineticEnergy * (newKineticEnergy
+      fState.fPhysicsState.fMomentum = std::sqrt(newKineticEnergy * (newKineticEnergy
                                                        + 2 * other.Mass()));
 
       TrackHistoryState& hist = fState.fHistoryState;
@@ -38,8 +41,10 @@ public:
       ++hist.fGeneration;
       // Set mother ID and new ID
       hist.fMother = other.Id();
-      hist.fParticle = new_id;
+      hist.fParticle = newId;
       // Set status (TODO: should this reset anything???)
-      hist.fStatus = kNew;
+      fState.fStatus = kNew;
   }
 };
+
+} // namespace geantx
