@@ -15,7 +15,7 @@ public:
 
   void UpdateTime() const
   {
-    PhysicsAccessor phys(fState);
+    TrackPhysicsAccessor phys(fState);
     fState.fTime += phys.E() * phys.Step() / phys.P();
   }
 
