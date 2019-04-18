@@ -29,6 +29,11 @@ void                                          record()
     generator = Generator(seed);
 }
 
+namespace tim
+{
+using namespace tim::component;
+}
+
 //======================================================================================//
 
 class Executor
@@ -104,7 +109,7 @@ void run_reference(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Reference", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -123,7 +128,7 @@ void run_functional(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Functional", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -139,7 +144,7 @@ void run_virtual_class(uintmax_t nloop, uintmax_t nitr)
         virtual_vector[i] = virt_b;
 
     Executor executor("Virtual (class)", nloop, nitr, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec_virtual(virtual_vector);
     record();
 }
@@ -160,7 +165,7 @@ void run_virtual_lambda(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Virtual (lambda)", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -181,7 +186,7 @@ void run_function_access(uintmax_t nloop, uintmax_t nitr)
     auto func = [&](Generator& gen) { Apply<void>::apply_functions(array_access, array_funct, std::ref(gen)); };
 
     Executor executor("Funct Access", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -199,7 +204,7 @@ void run_ctors_base(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Ctors Base", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -217,7 +222,7 @@ void run_ctors_virtual(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Ctors Virtual", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -236,7 +241,7 @@ void run_ctors_base_ab(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Ctors Base AB", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -255,7 +260,7 @@ void run_ctors_virtual_ab(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Ctors Virtual AB", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -273,7 +278,7 @@ void run_tuple(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Tuple", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -296,7 +301,7 @@ void run_lambda(uintmax_t nloop, uintmax_t nitr)
     };
 
     Executor executor("Lambda", nloop, nitr, func, &generator);
-    TIMEMORY_BASIC_AUTO_TIMER();
+    TIMEMORY_BASIC_AUTO_TIMER("");
     executor.exec();
     record();
 }
@@ -306,7 +311,7 @@ void run_lambda(uintmax_t nloop, uintmax_t nitr)
 void run(uintmax_t nloop, uintmax_t nitr)
 {
     {
-        TIMEMORY_BASIC_AUTO_TIMER();
+        TIMEMORY_BASIC_AUTO_TIMER("");
         run_reference(nloop, nitr);
         run_functional(nloop, nitr);
         run_virtual_class(nloop, nitr);
@@ -336,17 +341,21 @@ int main(int argc, char** argv)
 {
     write_app_info(argc, argv);
 
-#if defined(GEANT_USE_TIMEMORY)
-    auto manager = tim::manager::instance();
-#endif
+    // print output to screen by default
+    tim::env::file_output() = true;
+    // parse setting in environment
+    tim::env::parse();
 
-    typedef usage_tuple<usage::peak_rss, usage::current_rss, usage::stack_rss, usage::data_rss, usage::num_swap,
-                        usage::num_io_in, usage::num_io_out, usage::num_minor_page_faults, usage::num_major_page_faults>
-        usage_tuple_t;
+    typedef tim::auto_tuple<tim::current_rss, tim::peak_rss, tim::num_swap, tim::num_minor_page_faults,
+                            tim::num_major_page_faults, tim::num_msg_sent, tim::voluntary_context_switch,
+                            tim::priority_context_switch>
+        auto_usage_t;
 
-    usage_tuple_t initial_usage;
-    usage_tuple_t final_usage;
-    initial_usage.record();
+    auto_usage_t auto_rusage("rusage information");
+    auto_rusage.local_object().reset();
+    // get an identical copy but not an auto-tuple
+    auto exe_rusage = auto_rusage.local_object();
+    exe_rusage.reset();
 
     uintmax_t nloop = 11;
     uintmax_t nitr  = 1000000;
@@ -359,18 +368,14 @@ int main(int argc, char** argv)
 
     for(uintmax_t i = 0; i < nloop; ++i)
     {
+        TIMEMORY_BASIC_AUTO_TUPLE(auto_usage_t, "");
         std::cerr << std::endl;
         run(i, nitr * ((i > 0) ? i * nfac : 1));
     }
     std::cerr << std::endl;
 
-    final_usage.record();
-    std::cout << "initial: \n" << initial_usage << std::endl;
-    std::cout << "final: \n" << final_usage << std::endl;
-
-#if defined(GEANT_USE_TIMEMORY)
-    manager->report();
-#endif
+    exe_rusage.record();
+    std::cout << exe_rusage << std::endl;
 }
 
 //======================================================================================//

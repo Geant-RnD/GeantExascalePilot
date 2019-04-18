@@ -16,10 +16,10 @@ int main(int argc, char** argv)
     write_app_info(argc, argv);
 
     // create thread-pool with two threads
-    uintmax_t  num_threads = GetEnv<uintmax_t>("NUM_THREADS", 2);
-    ThreadPool tp(num_threads);
+    uintmax_t                  num_threads = GetEnv<uintmax_t>("NUM_THREADS", 2);
+    ThreadPool                 tp(num_threads);
     static constexpr uintmax_t N = 10;
-    uintmax_t vals[N];
+    uintmax_t                  vals[N];
     memset(vals, 0, N * sizeof(uintmax_t));
 
     auto            join = []() { cudaStreamSynchronize(0); };

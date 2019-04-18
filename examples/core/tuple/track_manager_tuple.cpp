@@ -16,16 +16,16 @@ void print(const _Tp* t, int expected_id, const std::string& access_method)
 int main()
 {
     Electron* electron = new Electron();
-    Proton* proton = new Proton();
-    Track* t1 = new Track();
-    Track* t2 = new Track();
-    Track* t3 = new Track();
+    Proton*   proton   = new Proton();
+    Track*    t1       = new Track();
+    Track*    t2       = new Track();
+    Track*    t3       = new Track();
 
-    t1->m_pdef = electron;
+    t1->m_pdef     = electron;
     t1->m_track_id = 0;
-    t2->m_pdef = proton;
+    t2->m_pdef     = proton;
     t2->m_track_id = 1;
-    t3->m_pdef = proton;
+    t3->m_pdef     = proton;
     t3->m_track_id = 2;
 
     Manager_t* manager = new Manager_t;

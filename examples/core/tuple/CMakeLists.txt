@@ -3,13 +3,6 @@ cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(Tuple LANGUAGES C CXX CUDA)
 
 find_package(GeantExascalePilot REQUIRED)
-find_package(TiMemory)
-
-if(TiMemory_FOUND)
-    find_package(MPI REQUIRED)
-    include_directories(${TiMemory_INCLUDE_DIRS} ${MPI_C_HEADER_DIR} ${MPI_CXX_HEADER_DIR} ${MPI_CXX_ADDITIONAL_INCLUDE_DIRS})
-    add_definitions(-DGEANT_USE_TIMEMORY)
-endif()
 
 include(MacroUtilities)
 

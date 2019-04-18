@@ -10,3 +10,6 @@
 [submodule "source/VecGeom"]
 	path = source/VecGeom
 	url = https://gitlab.cern.ch/VecGeom/VecGeom.git
+[submodule "source/TiMemory"]
+	path = source/TiMemory
+	url = https://github.com/jrmadsen/TiMemory.git
