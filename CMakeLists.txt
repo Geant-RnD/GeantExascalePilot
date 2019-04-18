@@ -20,8 +20,6 @@ cmake_policy(SET CMP0048 NEW)
 cmake_policy(SET CMP0042 NEW)
 cmake_policy(SET CMP0053 NEW)
 
-include(cmake/modules/CaptureCommandLine.cmake)
-
 project(GeantExascalePilot LANGUAGES C CXX CUDA VERSION ${VERSION_STRING})
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/Modules ${CMAKE_MODULE_PATH})
@@ -29,6 +27,7 @@ set(CMAKE_DIRECTORY_LABELS "GeantExascalePilot")
 
 ################################################################################
 
+include(CaptureCommandLine)
 include(MacroUtilities)
 include(Compilers)
 include(Options)
