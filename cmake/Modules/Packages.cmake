@@ -44,25 +44,6 @@ endif()
 
 ################################################################################
 #
-#                               TiMemory
-#
-################################################################################
-
-if(GEANT_USE_TIMEMORY)
-    find_package(TiMemory)
-
-    if(TiMemory_FOUND)
-        list(APPEND EXTERNAL_INCLUDE_DIRS ${TiMemory_INCLUDE_DIRS})
-        list(APPEND EXTERNAL_LIBRARIES
-            ${TiMemory_LIBRARIES} ${TiMemory_C_LIBRARIES})
-        list(APPEND ${PROJECT_NAME}_DEFINITIONS GEANT_USE_TIMEMORY)
-    endif()
-
-endif()
-
-
-################################################################################
-#
 #        Google PerfTools
 #
 ################################################################################
