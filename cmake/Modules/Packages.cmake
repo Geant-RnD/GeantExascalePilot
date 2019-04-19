@@ -132,7 +132,10 @@ foreach(_DIR ${EXTERNAL_INCLUDE_DIRS})
 endforeach()
 
 # include dirs
-set(${PROJECT_NAME}_INCLUDE_DIRECTORIES
+set(${PROJECT_NAME}_INCLUDE_DIRECTORIES )
+
+# system include dirs
+set(${PROJECT_NAME}_SYSTEM_INCLUDE_DIRECTORIES
     ${EXTERNAL_INCLUDE_DIRS})
 
 # link libs

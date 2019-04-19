@@ -69,6 +69,9 @@ checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
 add_subdirectory(TiMemory)
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}/TiMemory/source)
+# suppress annoying cereal warnings
+list(APPEND ${PROJECT_NAME}_SYSTEM_INCLUDE_DIRECTORIES
+    ${CMAKE_CURRENT_LIST_DIR}/TiMemory/source/cereal/include)
 
 #----------------------------------------------------------------------------------------#
 # VecCore submodule
