@@ -121,8 +121,8 @@ void run_functional(uintmax_t nloop, uintmax_t nitr)
         using GeneratorFunc                       = std::function<void()>;
         auto                          b_funct     = [&]() { AccessA(obj_a).generate(gen); };
         auto                          d_funct     = [&]() { AccessB(obj_b).generate(gen); };
-        std::array<GeneratorFunc, 10> funct_funct = { b_funct, d_funct, b_funct, d_funct, b_funct,
-                                                      d_funct, b_funct, d_funct, b_funct, d_funct };
+        std::array<GeneratorFunc, 10> funct_funct { { b_funct, d_funct, b_funct, d_funct, b_funct,
+                                                    d_funct, b_funct, d_funct, b_funct, d_funct } };
         for(const auto& itr : funct_funct)
             itr();
     };
