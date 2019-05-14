@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
   // Create detector TestEm3 construction
   userapplication::TestEm3DetectorConstruction *det = new userapplication::TestEm3DetectorConstruction(runMgr);
   // Temporary workaround to allow migration to detector construction
-  vector_t<Volume_t const *> volumes;
+  geantx::vector_t<geantx::Volume_t const *> volumes;
   int numVolumes = 0;
   if (det) {
     det->CreateMaterials();

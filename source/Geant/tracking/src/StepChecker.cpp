@@ -15,7 +15,7 @@ bool StepChecker::CompareStep(vecgeom::Vector3D<double> const &Position, vecgeom
                               vecgeom::Vector3D<double> const &endDirectionRef //  Reference solution / direction
                               ) const
 {
-  using ThreeVector = vecgeom::Vector3D<double>;
+  //using ThreeVector = vecgeom::Vector3D<double>;
 
   if (fVerbose) {
     printf("Particle with charge %g  momentum = %8.4g Position= %10.6f %10.6f %10.6f "
@@ -62,7 +62,7 @@ bool StepChecker::CheckStep(vecgeom::Vector3D<double> const &Position, vecgeom::
                             vecgeom::Vector3D<double> const &endDirection,
                             vecgeom::Vector3D<double> const &BfieldVec) const
 {
-  using ThreeVector = vecgeom::Vector3D<double>;
+  //using ThreeVector = vecgeom::Vector3D<double>;
 
   ThreeVector PositionNewHelix(0., 0., 0.);
   ThreeVector DirectionNewHelix(0., 0., 0.);
