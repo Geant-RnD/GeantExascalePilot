@@ -7,3 +7,4 @@ endif()
 
 add_subdirectory(core)
 add_subdirectory(track)
+add_subdirectory(geometry)
