@@ -5,19 +5,20 @@
 #endif
 
 #include <base/Vector3D.h>
-#include "navigation/NavigationState.h"
-#include "volumes/LogicalVolume.h"
+#include <navigation/NavigationState.h>
+#include <volumes/LogicalVolume.h>
+#include "Geant/core/Typedefs.hpp"
 
 namespace geantx {
 
-using VolumePath_t   = VECGEOM_NAMESPACE::NavigationState;
-using Volume_t       = VECGEOM_NAMESPACE::LogicalVolume;
-using Vector3D_t     = VECGEOM_NAMESPACE::Vector3D<double>;
-using ParticleId_t   = unsigned int;
-using ParticleType_t = unsigned int;
-using VolumeId_t     = unsigned int;
-using MaterialId_t   = unsigned int;
-using ProcessId_t    = unsigned int;
+using VolumePath_t    = VECGEOM_NAMESPACE::NavigationState;
+using Volume_t        = VECGEOM_NAMESPACE::LogicalVolume;
+using ThreeVector     = VECGEOM_NAMESPACE::Vector3D<double>;
+using ParticleId_t    = unsigned int;
+using ParticleDefId_t = unsigned int;
+using VolumeId_t      = unsigned int;
+using MaterialId_t    = unsigned int;
+using ProcessId_t     = unsigned int;
 
 //! Physics
 enum Species_t { kHadron, kLepton };

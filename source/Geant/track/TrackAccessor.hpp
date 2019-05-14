@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Geant/track/Types.hpp"
+#include "Geant/track/TrackCollection.hpp"
 #include "Geant/track/TrackState.hpp"
 
 namespace geantx {
@@ -11,21 +12,31 @@ namespace geantx {
  * \brief Common attributes about the track's state.
  */
 class TrackAccessor {
-  const TrackState &fTrack;
+  const TrackState &fState;
 
 public:
-  explicit TrackAccessor(const TrackState &track) : fTrack(track) {}
+  using TrackId_t = TrackCollection::TrackId_t;
+
+public:
+  TrackAccessor(const TrackCollection &tracks, TrackId_t track_id) : fState(tracks.Get(track_id)) {}
 
   // >>> ACCESSORS
 
-  const Vector3D_t &Position() const { return this->Track().fPos; }
-  const Vector3D_t &Direction() const { return this->Track().fDir; }
-  double Step() const { return this->Track().fStep; }
+  const ThreeVector &Position() const { return this->State().fPos; }
+  const ThreeVector &Direction() const { return this->State().fDir; }
+  double Step() const { return this->State().fStep; }
 
-  ParticleId_t Id() const { return this->Track().fHistoryState.fParticle; }
+  ParticleId_t Id() const { return this->State().fHistoryState.fParticle; }
 
-  // TODO: treat as protected/implementation detail? used by TrackModifier
-  const TrackState &Track() const { return fTrack; }
+protected:
+  // >>> IMPLEMENTATION DETAILS
+
+  explicit TrackAccessor(const TrackState &state) : fState(state) {}
+  const TrackState &State() const { return fState; }
+
+  template<class PT> friend class TrackModifier;
 };
 
 } // namespace geantx
+
+
