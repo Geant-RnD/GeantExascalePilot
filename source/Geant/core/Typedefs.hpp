@@ -4,15 +4,42 @@
 #include "Geant/core/Config.hpp"
 #include "Geant/core/VectorTypes.hpp"
 #include "Geant/core/Macros.hpp"
+#include "navigation/NavigationState.h"
+#include "Geant/material/Material.hpp"
+#include "volumes/LogicalVolume.h"
+#include "volumes/PlacedVolume.h"
 
 #ifdef VECCORE_CUDA
 #include "base/Vector.h"
-template <class T>
-using vector_t = vecgeom::Vector<T>;
 #else
 #include <vector>
 #ifdef GEANT_USE_NUMA
 #include <GeantNuma.h>
+#endif
+#endif
+
+// XXX: move to geantx namespace
+namespace geantphysics {
+class Particle;
+
+enum EModel_t {
+  kMSC = GEANT_BIT(0)
+  // others to be added
+};
+} // namespace geantphysics
+
+namespace geantx {
+
+typedef VECGEOM_NAMESPACE::NavigationState VolumePath_t;
+typedef geantphysics::Material Material_t;
+typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
+typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
+
+#ifdef VECCORE_CUDA
+template <class T>
+using vector_t = vecgeom::Vector<T>;
+#else
+#ifdef GEANT_USE_NUMA
 template <class T>
 using vector_t = std::vector<T, geantx::NumaAllocator<T>>;
 #else
@@ -22,33 +49,20 @@ using vector_t = std::vector<T>;
 #endif
 
 // three vector types
-using ThreeVector = vecgeom::Vector3D<double>;
 template <typename T>
 using Vector3D = vecgeom::Vector3D<T>;
+using ThreeVector = Vector3D<double>;
 
-namespace geantphysics {
-class Particle;
-
-enum EModel_t {
-  kMSC = GEANT_BIT(0)
-  // others to be added
-};
-} // namespace geantphysics
 typedef geantphysics::Particle Particle_t;
 
-#include "navigation/NavigationState.h"
-typedef VECGEOM_NAMESPACE::NavigationState VolumePath_t;
-#include "Geant/material/Material.hpp"
-typedef geantphysics::Material Material_t;
-#include "volumes/LogicalVolume.h"
-typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
-#include "volumes/PlacedVolume.h"
-typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
-
-namespace geantx {
 inline namespace cuda {
 template <typename _Tp>
 using device_info = std::unordered_map<int, _Tp>;
 
 }
-} // namespace geant
+} // namespace geantx
+
+// XXX: remove me once namespaces are fixed
+using geantx::Vector3D;
+using geantx::ThreeVector;
+using geantx::Particle_t;

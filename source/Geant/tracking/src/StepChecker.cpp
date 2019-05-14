@@ -5,6 +5,8 @@
 #include "Geant/magneticfield/ConstBzFieldHelixStepper.hpp"
 #include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
 
+namespace geantx {
+
 VECCORE_ATT_HOST_DEVICE
 bool StepChecker::CompareStep(vecgeom::Vector3D<double> const &Position, vecgeom::Vector3D<double> const &Direction,
                               double charge, double momentum, double step, vecgeom::Vector3D<double> const &endPosition,
@@ -85,3 +87,5 @@ bool StepChecker::CheckStep(vecgeom::Vector3D<double> const &Position, vecgeom::
   return CompareStep(Position, Direction, charge, momentum, step, endPosition, endDirection, PositionNewHelix,
                      DirectionNewHelix);
 }
+
+} // namespace geantx
