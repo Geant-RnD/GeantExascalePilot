@@ -5,4 +5,4 @@ Geant Exascale Pilot application
 
 [GeantExascalePilot on GitHub (Source code)](https://github.com/Geant-RnD/GeantExascalePilot)
 
-[GeantExascalePilot Testing Dashboard (CDash)]([https://cdash.nersc.gov/index.php?project=TiMemory](https://cdash.nersc.gov/index.php?project=GeantExascalePilot))
+[GeantExascalePilot Testing Dashboard (CDash)](https://cdash.nersc.gov/index.php?project=GeantExascalePilot)

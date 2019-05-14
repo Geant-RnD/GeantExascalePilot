@@ -344,9 +344,9 @@ int main(int argc, char** argv)
     write_app_info(argc, argv);
 
     // print output to screen by default
-    tim::env::file_output() = true;
-    // parse setting in environment
-    tim::env::parse();
+    tim::settings::file_output() = true;
+    // initialize
+    tim::timemory_init(argc, argv);
 
     typedef tim::auto_tuple<tim::current_rss, tim::peak_rss, tim::num_swap, tim::num_minor_page_faults,
                             tim::num_major_page_faults, tim::num_msg_sent, tim::voluntary_context_switch,
@@ -354,9 +354,9 @@ int main(int argc, char** argv)
         auto_usage_t;
 
     auto_usage_t auto_rusage("rusage information");
-    auto_rusage.local_object().reset();
+    auto_rusage.component_tuple().reset();
     // get an identical copy but not an auto-tuple
-    auto exe_rusage = auto_rusage.local_object();
+    auto exe_rusage = auto_rusage.component_tuple();
     exe_rusage.reset();
 
     uintmax_t nloop = 11;
