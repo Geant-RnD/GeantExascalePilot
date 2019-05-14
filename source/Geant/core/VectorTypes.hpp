@@ -8,16 +8,16 @@
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 using VectorBackend = vecgeom::VectorBackend;
-typedef VectorBackend::Float_v Float_v;
-typedef VectorBackend::Double_v Double_v;
-typedef VectorBackend::Int_v Int_v;
+using Float_v       = VectorBackend::Float_v;
+using Double_v      = VectorBackend::Double_v;
+using Int_v         = VectorBackend::Int_v;
 
-typedef vecCore::Mask_v<Float_v> MaskF_v;
-typedef vecCore::Mask_v<Double_v> MaskD_v;
-typedef vecCore::Mask_v<Int_v> MaskI_v;
+using MaskF_v = vecCore::Mask_v<Float_v>;
+using MaskD_v = vecCore::Mask_v<Double_v>;
+using MaskI_v = vecCore::Mask_v<Int_v>;
 
-typedef vecCore::Index<Double_v> IndexD_v;
-typedef vecCore::Index<Float_v> IndexF_v;
+using IndexD_v = vecCore::Index<Double_v>;
+using IndexF_v = vecCore::Index<Float_v>;
 
 const int kVecLenF = vecCore::VectorSize<Float_v>();
 const int kVecLenD = vecCore::VectorSize<Double_v>();
