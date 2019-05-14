@@ -50,9 +50,9 @@ VScalarIntegrationStepper *StepperFactory::CreateStepper(EquationType *equation,
   VScalarIntegrationStepper *stepper; // , *exactStepper;
 
   const char *stepperName             = 0;
-  const char *const NameSimpleRunge   = "TSimpleRunge";
-  const char *const NameClassicalRK4  = "TClassicalRK4";
-  const char *const NameCashKarpRKF45 = "TCashKarpRKF45";
+  const char NameSimpleRunge[]   = "TSimpleRunge";
+  const char NameClassicalRK4[]  = "TClassicalRK4";
+  const char NameCashKarpRKF45[] = "TCashKarpRKF45";
 
   int MaxStepperCode = 5;
 
