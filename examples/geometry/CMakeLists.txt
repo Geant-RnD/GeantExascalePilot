@@ -22,7 +22,7 @@ CREATE_LIBRARY(
 )
 
 CREATE_EXECUTABLE(
-    TARGET_NAME             geomTest
+    TARGET_NAME             GeometryTest
     HEADERS                 ${headers}
     SOURCES                 GeometryTest.cpp
     INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source

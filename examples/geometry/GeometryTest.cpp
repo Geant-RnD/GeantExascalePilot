@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
   GetArguments(argc, argv);
   //
   // Create and configure run manager
-  geant::RunManager *runMgr = NULL; //RunManager();
+  geantx::RunManager *runMgr = NULL; //RunManager();
 
   // // Create user defined physics list for TestEm3
   // userapplication::TestEm3PhysicsList *userPhysList =
@@ -118,8 +118,11 @@ int main(int argc, char *argv[])
     numVolumes = det->SetupGeometry(volumes);
   }
   int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
-  geant::Info("main", "Geometry created with maxdepth %d\n", maxDepth);
-  geant::Info("main", "Geometry created with %d volumes and maxdepth %d\n", numVolumes, maxDepth);
+  geantx::Info("main", "Geometry created with maxdepth %d\n", maxDepth);
+  geantx::Info("main", "Geometry created with %d volumes and maxdepth %d\n", numVolumes, maxDepth);
+
+  // print detector information
+  det->DetectorInfo();
 
   //SetupUserDetector(det);
   // runMgr->SetDetectorConstruction(det);

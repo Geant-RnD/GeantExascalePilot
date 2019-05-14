@@ -21,7 +21,7 @@
 #include "volumes/LogicalVolume.h"
 #include "volumes/PlacedVolume.h"
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 
 //______________________________________________________________________________
@@ -33,7 +33,7 @@ int UserDetectorConstruction::SetupGeometry(vector_t<Volume_t const *> &volumes,
   vecgeom::GeoManager::Instance().GetAllLogicalVolumes(volumes);
   nvolumes = volumes.size();
   if (!nvolumes) {
-    Fatal("UserDetectorConstruction::SetupGeometry", "Geometry is empty");
+    geantx::Fatal("UserDetectorConstruction::SetupGeometry", "Geometry is empty");
     return 0;
   }
 
@@ -58,7 +58,7 @@ bool UserDetectorConstruction::LoadGeometry(const char *filename)
     return true;
   }
 #endif
-  Error("UserDetectorConstruction::LoadGeometry", "Cannot load geometry from file %s", filename);
+  geantx::Error("UserDetectorConstruction::LoadGeometry", "Cannot load geometry from file %s", filename);
   return false;
 }
 

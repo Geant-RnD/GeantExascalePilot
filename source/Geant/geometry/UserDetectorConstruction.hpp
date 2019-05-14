@@ -17,7 +17,7 @@
 class TGeoMaterial;
 #endif
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 
 class RunManager;

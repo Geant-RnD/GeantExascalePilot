@@ -25,11 +25,11 @@ namespace geantphysics {
 
 namespace userapplication {
 
-class TestEm3DetectorConstruction : public geant::UserDetectorConstruction {
+class TestEm3DetectorConstruction : public geantx::UserDetectorConstruction {
 
 public:
   // CTR
-  TestEm3DetectorConstruction(geant::RunManager *runmgr);
+  TestEm3DetectorConstruction(geantx::RunManager *runmgr);
   // DTR
   ~TestEm3DetectorConstruction();
 
