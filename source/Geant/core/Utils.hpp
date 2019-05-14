@@ -18,7 +18,7 @@
 #include <libgen.h>
 #include <string>
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 inline std::string GetDataFileLocation(int argc, char **argv, const char *dataFilename)
 {

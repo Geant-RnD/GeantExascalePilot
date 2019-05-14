@@ -12,7 +12,8 @@
  * could take e.g. some abstract multi-particle state *plus* a particle index.
  */
 class TrackGeometryAccessor : public TrackAccessor {
-    using Base = TrackAccessor;
+  using Base = TrackAccessor;
+
 public:
   explicit TrackGeometryAccessor(const TrackState &track) : Base(track) {}
 
@@ -23,5 +24,3 @@ public:
 private:
   const GeometryState &Gstate() const { return this->.fGeometryState; }
 };
-
-

@@ -6,7 +6,7 @@
 namespace geantphysics {
 Positron *Positron::Definition()
 {
-  static Positron instance("e+", -11, 23, geant::units::kElectronMassC2, 1.0 * geant::units::eplus);
+  static Positron instance("e+", -11, 23, geantx::units::kElectronMassC2, 1.0 * geantx::units::eplus);
   return &instance;
 }
 

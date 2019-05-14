@@ -6,8 +6,8 @@
 #include "Geant/track/Types.hpp"
 
 struct ParticleType {
-    double fCharge;
-    double fRestMass;
-    int fCode; /* Particle Data Group code index */
-    Species_t fSpecies;
+  double fCharge;
+  double fRestMass;
+  int fCode; /* Particle Data Group code index */
+  Species_t fSpecies;
 };

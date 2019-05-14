@@ -5,7 +5,7 @@
 #include <base/Global.h>
 #include <base/Vector3D.h>
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 using VectorBackend = vecgeom::VectorBackend;
 typedef VectorBackend::Float_v Float_v;

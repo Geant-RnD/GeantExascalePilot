@@ -32,7 +32,7 @@
 
 #pragma once
 
-namespace geant {
+namespace geantx {
 namespace units {
 //
 // (kPi is used here (degree) so we declare here and not among the constants.)

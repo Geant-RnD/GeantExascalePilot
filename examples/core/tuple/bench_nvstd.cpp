@@ -43,10 +43,10 @@ int main(int argc, char** argv)
     auto            join = []() { cudaStreamSynchronize(0); };
     TaskGroup<void> tg(join, &tp);
 
-    geant::cuda::device_query();
+    geantx::cuda::device_query();
 
     // launches task that runs on GPU
-    if(geant::cuda::device_count() > 0)
+    if(geantx::cuda::device_count() > 0)
     {
         launch(tg);
     }

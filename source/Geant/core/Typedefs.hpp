@@ -14,7 +14,7 @@ using vector_t = vecgeom::Vector<T>;
 #ifdef GEANT_USE_NUMA
 #include <GeantNuma.h>
 template <class T>
-using vector_t = std::vector<T, geant::NumaAllocator<T>>;
+using vector_t = std::vector<T, geantx::NumaAllocator<T>>;
 #else
 template <class T>
 using vector_t = std::vector<T>;
@@ -45,7 +45,7 @@ typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
 #include "volumes/PlacedVolume.h"
 typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
 
-namespace geant {
+namespace geantx {
 inline namespace cuda {
 template <typename _Tp>
 using device_info = std::unordered_map<int, _Tp>;

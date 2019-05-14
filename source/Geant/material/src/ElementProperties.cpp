@@ -41,7 +41,7 @@ void ElementProperties::InitialiseMembers()
 void ElementProperties::ComputeCoulombCorrection(double z)
 {
   // Coulomb correction from Davis,Bethe,Maximom PRL 1954 Eqs.(36-38)
-  double mu          = z * geant::units::kFineStructConst;
+  double mu          = z * geantx::units::kFineStructConst;
   double mu2         = mu * mu;
   double mu4         = mu2 * mu2;
   double mu6         = mu2 * mu4;

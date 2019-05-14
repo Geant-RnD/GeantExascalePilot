@@ -9,14 +9,14 @@
 namespace geantphysics {
 void NISTElementData::BuildTable()
 {
-  using geant::units::eV;
-  using geant::units::GeV;
-  using geant::units::kAtomicMassUnit;
-  using geant::units::kAtomicMassUnitC2;
-  using geant::units::kAvogadro;
-  using geant::units::kCLightSquare;
-  using geant::units::kElectronMassC2;
-  using geant::units::kProtonMassC2;
+  using geantx::units::eV;
+  using geantx::units::GeV;
+  using geantx::units::kAtomicMassUnit;
+  using geantx::units::kAtomicMassUnitC2;
+  using geantx::units::kAvogadro;
+  using geantx::units::kCLightSquare;
+  using geantx::units::kElectronMassC2;
+  using geantx::units::kProtonMassC2;
 
   constexpr double u               = kAtomicMassUnit;
   constexpr double kDeuteronMassC2 = 1.875613 * GeV; // TODO: update this according to particle properties

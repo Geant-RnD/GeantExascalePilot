@@ -24,10 +24,10 @@ Material::Material(const std::string &name, double z, double a, double density, 
                    double pressure)
     : fName(name)
 {
-  using geant::units::cm3;
-  using geant::units::g;
-  using geant::units::kGasThreshold;
-  using geant::units::kUniverseMeanDensity;
+  using geantx::units::cm3;
+  using geantx::units::g;
+  using geantx::units::kGasThreshold;
+  using geantx::units::kUniverseMeanDensity;
 
   InitialiseMembers();
 
@@ -84,10 +84,10 @@ Material::Material(const std::string &name, double density, int numcomponents, M
                    double pressure)
     : fName(name)
 {
-  using geant::units::cm3;
-  using geant::units::g;
-  using geant::units::kGasThreshold;
-  using geant::units::kUniverseMeanDensity;
+  using geantx::units::cm3;
+  using geantx::units::g;
+  using geantx::units::kGasThreshold;
+  using geantx::units::kUniverseMeanDensity;
 
   InitialiseMembers();
 
@@ -234,7 +234,7 @@ void Material::AddElement(Element *element, double massfraction)
       fRelNumOfAtomsPerVol[i] = fMassFractionVector[i] / fElementVector[i]->GetA();
       normFactor += fRelNumOfAtomsPerVol[i];
     }
-    if (std::fabs(1. - sumWeight) > geant::units::perThousand) {
+    if (std::fabs(1. - sumWeight) > geantx::units::perThousand) {
       std::cerr << "WARNING !! Material::AddElement by mass fraction :" << std::endl
                 << " Sum of fractional masses = " << sumWeight << " is not = 1. This can lead to wrong results! "
                 << std::endl
@@ -333,7 +333,7 @@ void Material::AddMaterial(Material *material, double massfraction)
       fRelNumOfAtomsPerVol[i] = fMassFractionVector[i] / fElementVector[i]->GetA();
       normFactor += fRelNumOfAtomsPerVol[i];
     }
-    if (std::fabs(1. - sumWeight) > geant::units::perThousand) {
+    if (std::fabs(1. - sumWeight) > geantx::units::perThousand) {
       std::cerr << "WARNING !! Material::AddMaterial by mass fraction :" << std::endl
                 << " Sum of fractional masses = " << sumWeight << " is not = 1. This can lead to wrong results! "
                 << std::endl
@@ -459,11 +459,11 @@ std::ostream &operator<<(std::ostream &flux, const Material *material)
   flux.setf(std::ios::fixed, std::ios::floatfield);
   long prec = flux.precision(3);
 
-  using geant::units::atmosphere;
-  using geant::units::cm3;
-  using geant::units::g;
-  using geant::units::kelvin;
-  using geant::units::perCent;
+  using geantx::units::atmosphere;
+  using geantx::units::cm3;
+  using geantx::units::g;
+  using geantx::units::kelvin;
+  using geantx::units::perCent;
 
   flux << " Material: " << std::setw(8) << material->fName << "  with density = " << std::setw(6)
        << std::setprecision(5) << material->fDensity / (g / cm3) << " [g/cm3]"
@@ -476,7 +476,7 @@ std::ostream &operator<<(std::ostream &flux, const Material *material)
       flux
       << std::setfill(' ') << std::setw(10) << " "
         << " Material properties:  "
-        << " Imean =  " << matp->GetMeanExcitationEnergy()/geant::units::eV << " [eV]"
+        << " Imean =  " << matp->GetMeanExcitationEnergy()/geantx::units::eV << " [eV]"
         << "\n";
     }
   */

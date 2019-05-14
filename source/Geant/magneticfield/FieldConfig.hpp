@@ -16,7 +16,7 @@
 #include "Geant/core/Typedefs.hpp"
 #include "Geant/magneticfield/VVectorField.hpp"
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 // This class owns the field Object which it is passed.
 

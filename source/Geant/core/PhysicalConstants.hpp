@@ -27,7 +27,7 @@
 
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geant {
+namespace geantx {
 namespace units {
 //
 //

@@ -12,25 +12,25 @@ namespace geantphysics {
 std::vector<PhysicsParameters *> PhysicsParameters::gThePhysicsParametersTable;
 
 // set to default values
-double PhysicsParameters::gMinAllowedGammaCutEnergy    = 990.0 * geant::units::eV;
-double PhysicsParameters::gMaxAllowedGammaCutEnergy    = 10.0 * geant::units::GeV;
-double PhysicsParameters::gMinAllowedElectronCutEnergy = 990.0 * geant::units::eV;
-double PhysicsParameters::gMaxAllowedElectronCutEnergy = 10.0 * geant::units::GeV;
-double PhysicsParameters::gMinAllowedPositronCutEnergy = 990.0 * geant::units::eV;
-double PhysicsParameters::gMaxAllowedPositronCutEnergy = 10.0 * geant::units::GeV;
+double PhysicsParameters::gMinAllowedGammaCutEnergy    = 990.0 * geantx::units::eV;
+double PhysicsParameters::gMaxAllowedGammaCutEnergy    = 10.0 * geantx::units::GeV;
+double PhysicsParameters::gMinAllowedElectronCutEnergy = 990.0 * geantx::units::eV;
+double PhysicsParameters::gMaxAllowedElectronCutEnergy = 10.0 * geantx::units::GeV;
+double PhysicsParameters::gMinAllowedPositronCutEnergy = 990.0 * geantx::units::eV;
+double PhysicsParameters::gMaxAllowedPositronCutEnergy = 10.0 * geantx::units::GeV;
 
-double PhysicsParameters::gDefaultGammaCutInLength    = 1.0 * geant::units::mm;
-double PhysicsParameters::gDefaultElectronCutInLength = 1.0 * geant::units::mm;
-double PhysicsParameters::gDefaultPositronCutInLength = 1.0 * geant::units::mm;
+double PhysicsParameters::gDefaultGammaCutInLength    = 1.0 * geantx::units::mm;
+double PhysicsParameters::gDefaultElectronCutInLength = 1.0 * geantx::units::mm;
+double PhysicsParameters::gDefaultPositronCutInLength = 1.0 * geantx::units::mm;
 
-double PhysicsParameters::gDefaultGammaCutInEnergy    = 100.0 * geant::units::keV;
-double PhysicsParameters::gDefaultElectronCutInEnergy = 100.0 * geant::units::keV;
-double PhysicsParameters::gDefaultPositronCutInEnergy = 100.0 * geant::units::keV;
+double PhysicsParameters::gDefaultGammaCutInEnergy    = 100.0 * geantx::units::keV;
+double PhysicsParameters::gDefaultElectronCutInEnergy = 100.0 * geantx::units::keV;
+double PhysicsParameters::gDefaultPositronCutInEnergy = 100.0 * geantx::units::keV;
 
 PhysicsParameters::PhysicsParameters()
 {
-  fMinLossTableEnergy        = 100.0 * geant::units::eV;
-  fMaxLossTableEnergy        = 100.0 * geant::units::TeV;
+  fMinLossTableEnergy        = 100.0 * geantx::units::eV;
+  fMaxLossTableEnergy        = 100.0 * geantx::units::TeV;
   fNumLossTableBins          = 84;
   fNumLossTableBinsPerDecade = 7;
 
@@ -41,12 +41,12 @@ PhysicsParameters::PhysicsParameters()
   fNumLambdaTableBins          = fNumLossTableBins;
   fNumLambdaTableBinsPerDecade = fNumLossTableBinsPerDecade;
 
-  fLowestElectronTrackingEnergy = 1.0 * geant::units::keV;
+  fLowestElectronTrackingEnergy = 1.0 * geantx::units::keV;
 
   fLinearEnergyLossLimit = 0.01;
 
   fDRoverRange = 0.2;
-  fFinalRange  = 1.0 * geant::units::mm;
+  fFinalRange  = 1.0 * geantx::units::mm;
 
   gThePhysicsParametersTable.push_back(this);
 }
@@ -73,26 +73,26 @@ void PhysicsParameters::Clear()
 
 void PhysicsParameters::SetMinLossTableEnergy(double val)
 {
-  if (val > 1.e-3 * geant::units::eV && val < fMaxLossTableEnergy) {
+  if (val > 1.e-3 * geantx::units::eV && val < fMaxLossTableEnergy) {
     fMinLossTableEnergy = val;
     // update number of bins
     fNumLossTableBins = fNumLossTableBinsPerDecade * std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetMinLossTableEnergy() " << std::endl
-              << "    Value of fMinLossTableEnergy is out of range: " << val / geant::units::keV
+              << "    Value of fMinLossTableEnergy is out of range: " << val / geantx::units::keV
               << " [keV] so it's ignored!" << std::endl;
   }
 }
 
 void PhysicsParameters::SetMaxLossTableEnergy(double val)
 {
-  if (val > fMinLossTableEnergy && val < 1.e+7 * geant::units::TeV) {
+  if (val > fMinLossTableEnergy && val < 1.e+7 * geantx::units::TeV) {
     fMaxLossTableEnergy = val;
     // update number of bins
     fNumLossTableBins = fNumLossTableBinsPerDecade * std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetMaxLossTableEnergy() " << std::endl
-              << "    Value of fMaxLossTableEnergy is out of range: " << val / geant::units::GeV
+              << "    Value of fMaxLossTableEnergy is out of range: " << val / geantx::units::GeV
               << " [GeV] so it's ignored!" << std::endl;
   }
 }
@@ -124,28 +124,28 @@ void PhysicsParameters::SetNumLossTableBinsPerDecade(int val)
 ////
 void PhysicsParameters::SetMinLambdaTableEnergy(double val)
 {
-  if (val > 1.e-3 * geant::units::eV && val < fMaxLambdaTableEnergy) {
+  if (val > 1.e-3 * geantx::units::eV && val < fMaxLambdaTableEnergy) {
     fMinLambdaTableEnergy = val;
     // update number of bins
     fNumLambdaTableBins =
         fNumLambdaTableBinsPerDecade * std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetMinLambdaTableEnergy() " << std::endl
-              << "    Value of fMinLambdaTableEnergy is out of range: " << val / geant::units::keV
+              << "    Value of fMinLambdaTableEnergy is out of range: " << val / geantx::units::keV
               << " [keV] so it's ignored!" << std::endl;
   }
 }
 
 void PhysicsParameters::SetMaxLambdaTableEnergy(double val)
 {
-  if (val > fMinLambdaTableEnergy && val < 1.e+7 * geant::units::TeV) {
+  if (val > fMinLambdaTableEnergy && val < 1.e+7 * geantx::units::TeV) {
     fMaxLambdaTableEnergy = val;
     // update number of bins
     fNumLambdaTableBins =
         fNumLambdaTableBinsPerDecade * std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetMaxLambdaTableEnergy() " << std::endl
-              << "    Value of fMaxLambdaTableEnergy is out of range: " << val / geant::units::GeV
+              << "    Value of fMaxLambdaTableEnergy is out of range: " << val / geantx::units::GeV
               << " [GeV] so it's ignored!" << std::endl;
   }
 }
@@ -183,7 +183,7 @@ void PhysicsParameters::SetLowestElectronTrackingEnergy(double val)
     fLowestElectronTrackingEnergy = val;
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetLowestElectronTrackingEnergy " << std::endl
-              << "    Value of fLowestElectronTrackingEnergy is out of range: " << val / geant::units::keV
+              << "    Value of fLowestElectronTrackingEnergy is out of range: " << val / geantx::units::keV
               << " [keV] so it's ignored!" << std::endl;
   }
 }
@@ -205,7 +205,7 @@ void PhysicsParameters::SetStepFunction(double roverrange, double finalrange)
     fFinalRange  = finalrange;
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetStepFunction " << std::endl
-              << "    Values of step function are out of range: " << roverrange << ", " << finalrange / geant::units::mm
+              << "    Values of step function are out of range: " << roverrange << ", " << finalrange / geantx::units::mm
               << " [mm]  so they are ignored!" << std::endl;
   }
 }
@@ -218,9 +218,9 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters *physpar)
 
 std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
 {
-  using geant::units::cm;
-  using geant::units::GeV;
-  //  using geant::units::eV;
+  using geantx::units::cm;
+  using geantx::units::GeV;
+  //  using geantx::units::eV;
   int textW = 70;
   int valW  = 12;
 
@@ -266,9 +266,9 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
   flux << std::setw(90) << std::left << std::setfill('-') << "     --- Energy loss table related parameter values "
        << std::setfill(' ') << "\n";
   flux << std::left << std::setw(textW) << "     - Minimum kinetic energy of the energy loss table grid " << std::right
-       << std::setw(valW) << physpar.GetMinLossTableEnergy() / geant::units::keV << "   [keV] \n"
+       << std::setw(valW) << physpar.GetMinLossTableEnergy() / geantx::units::keV << "   [keV] \n"
        << std::left << std::setw(textW) << "     - Maximum kinetic energy of the energy loss table grid " << std::right
-       << std::setw(valW) << physpar.GetMaxLossTableEnergy() / geant::units::TeV << "   [TeV] \n"
+       << std::setw(valW) << physpar.GetMaxLossTableEnergy() / geantx::units::TeV << "   [TeV] \n"
        << std::left << std::setw(textW) << "     - Number of energy bins in the energy loss table " << std::right
        << std::setw(valW) << physpar.GetNumLossTableBins() << "\n"
        << std::left << std::setw(textW) << "     - Number of energy bins per decade in the energy loss table "
@@ -278,9 +278,9 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
   flux << std::setw(90) << std::left << std::setfill('-') << "     --- Lambda table related parameter values "
        << std::setfill(' ') << "\n";
   flux << std::left << std::setw(textW) << "     - Minimum kinetic energy of the lambda table grid " << std::right
-       << std::setw(valW) << physpar.GetMinLambdaTableEnergy() / geant::units::keV << "   [keV] \n"
+       << std::setw(valW) << physpar.GetMinLambdaTableEnergy() / geantx::units::keV << "   [keV] \n"
        << std::left << std::setw(textW) << "     - Maximum kinetic energy of the lambda table grid " << std::right
-       << std::setw(valW) << physpar.GetMaxLambdaTableEnergy() / geant::units::TeV << "   [TeV] \n"
+       << std::setw(valW) << physpar.GetMaxLambdaTableEnergy() / geantx::units::TeV << "   [TeV] \n"
        << std::left << std::setw(textW) << "     - Number of energy bins in the lambda table " << std::right
        << std::setw(valW) << physpar.GetNumLambdaTableBins() << "\n"
        << std::left << std::setw(textW) << "     - Number of energy bins per decade in the lambda table " << std::right
@@ -290,7 +290,7 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
   flux << std::setw(90) << std::left << std::setfill('-') << "     --- Electron/positron related parameters "
        << std::setfill(' ') << "\n";
   flux << std::left << std::setw(textW) << "     - Lowest e-/e+ kinetic energy for tracking  " << std::right
-       << std::setw(valW) << physpar.GetLowestElectronTrackingEnergy() / geant::units::keV << "   [keV] \n"
+       << std::setw(valW) << physpar.GetLowestElectronTrackingEnergy() / geantx::units::keV << "   [keV] \n"
        << std::endl;
 
   flux << std::setw(90) << std::left << std::setfill('-') << "     --- Other parameters " << std::setfill(' ') << "\n";
@@ -301,7 +301,7 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
        << std::left << std::setw(textW) << "     - Continuous step limit function parameters : fDRoverRange "
        << std::right << std::setw(valW) << physpar.GetDRoverRange() << "\n"
        << std::left << std::setw(textW) << "     - Continuous step limit function parameters : fFInalRange "
-       << std::right << std::setw(valW) << physpar.GetFinalRange() / geant::units::mm << "   [mm] " << std::endl;
+       << std::right << std::setw(valW) << physpar.GetFinalRange() / geantx::units::mm << "   [mm] " << std::endl;
 
   flux << std::setw(100) << std::setfill('=') << std::left << "  =" << std::setfill(' ') << std::endl << std::endl;
 

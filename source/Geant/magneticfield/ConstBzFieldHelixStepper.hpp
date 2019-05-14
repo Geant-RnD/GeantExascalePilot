@@ -10,7 +10,7 @@
 #include <Geant/core/Config.hpp>
 #include <Geant/core/VectorTypes.hpp>
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 /**
  * A very simple stepper treating the propagation of particles in a constant Bz magnetic field
@@ -156,7 +156,7 @@ void ConstBzFieldHelixStepper::DoStep_v(
                      newdirx_v, newdiry_v,newdirz_v;
           DoStep( Double_v(posx[i]), Double_v(posy[i]), Double_v(posz[i]),
                   Double_v(dirx[i]), Double_v(diry[i]), Double_v(dirz[i]),
-                  geant::Int_v(charge[i]), Double_v(momentum[i]), Double_v(step[i]),
+                  geantx::Int_v(charge[i]), Double_v(momentum[i]), Double_v(step[i]),
                   newposx_v,
                   newposy_v,
                   newposz_v,

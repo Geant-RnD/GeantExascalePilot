@@ -29,7 +29,7 @@ public:
   template <typename T>
   using Vector3D = vecgeom::Vector3D<T>;
 
-  using Double_v        = geant::Double_v;
+  using Double_v        = geantx::Double_v;
   using ThreeVectorSimd = Vector3D<Double_v>;
 
   static constexpr unsigned int sOrderMethod = 4;
@@ -344,7 +344,7 @@ GUVVectorIntegrationStepper *CashKarp<T_Equation, Nvar>::Clone() const
 
 #if ENABLE_CHORD_DIST
 template <class Real_v, class T_Equation, unsigned int Nvar>
-inline geant::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
+inline geantx::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
 {
   Real_v distLine, distChord;
   ThreeVectorSimd initialPoint, finalPoint, midPoint;

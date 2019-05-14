@@ -3,7 +3,7 @@
 
 #include "base/SOA3D.h"
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 struct WorkspaceForFieldPropagation {
 public:

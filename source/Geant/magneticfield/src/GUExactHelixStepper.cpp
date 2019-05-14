@@ -14,8 +14,8 @@
 
 // #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
-using geant::units::kPi;
-using geant::units::kTwoPi;
+using geantx::units::kPi;
+using geantx::units::kTwoPi;
 
 #include <cfloat>
 
@@ -79,10 +79,10 @@ double GUExactHelixStepper::DistChord(double /*charge*/) const
   double distChord;
   double Ang_curve = GetAngCurve();
 
-  if (Ang_curve <= geant::units::kPi) {
+  if (Ang_curve <= geantx::units::kPi) {
     distChord = GetRadHelix() * (1 - Math::Cos(0.5 * Ang_curve));
   } else if (Ang_curve < kTwoPi) {
-    distChord = GetRadHelix() * (1 + Math::Cos(0.5 * (geant::units::kTwoPi - Ang_curve)));
+    distChord = GetRadHelix() * (1 + Math::Cos(0.5 * (geantx::units::kTwoPi - Ang_curve)));
   } else {
     distChord = 2. * GetRadHelix();
   }

@@ -4,7 +4,7 @@
 #endif
 #include <stdarg.h>
 
-namespace geant {
+namespace geantx {
 inline namespace cxx {
 void ErrorHandlerImpl(EMsgLevel level, const char *location, const char *msgfmt, ...)
 {

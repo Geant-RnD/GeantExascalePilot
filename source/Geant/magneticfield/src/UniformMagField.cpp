@@ -3,8 +3,8 @@
 // #include "Geant/core/PhysicalConstants.hpp"  //   For pi & twopi - Temporary solution ..
 #include "Geant/core/SystemOfUnits.hpp" //   For pi & twopi - Temporary solution ..
 
-using geant::units::kPi;
-using geant::units::kTwoPi;
+using geantx::units::kPi;
+using geantx::units::kTwoPi;
 
 // Virtual methods
 

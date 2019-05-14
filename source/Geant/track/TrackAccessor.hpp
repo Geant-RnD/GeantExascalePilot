@@ -28,7 +28,4 @@ public:
   const TrackState &Track() const { return fTrack; }
 };
 
-} // geantx
-
-
-
+} // namespace geantx

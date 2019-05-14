@@ -40,7 +40,7 @@
 #include "Geant/magneticfield/FlexIntegrationDriver.hpp"
 #include "Geant/magneticfield/FormattedReporter.hpp"
 
-#include "Geant/core/VectorTypes.hpp" //  Defines geant::Double_v
+#include "Geant/core/VectorTypes.hpp" //  Defines geantx::Double_v
 #include "Geant/core/math_wrappers.hpp"
 
 #ifndef NO_FIELD_STATISTICS
@@ -2005,7 +2005,7 @@ void SimpleIntegrationDriver<T_Stepper, Nvar>::AccurateAdvance(const FieldTrack 
                                                                double epsilon, // Can be scalar or varying
                                                                FieldTrack yOutput[], int nTracks, bool stillOK[]) const
 {
-  AccurateAdvance<geant::Double_v>(yInput, hstep, charge,
+  AccurateAdvance<geantx::Double_v>(yInput, hstep, charge,
                                    epsilon, // Can be scalar or varying
                                    yOutput, stillOK, nTracks);
 }

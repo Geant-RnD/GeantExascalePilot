@@ -69,8 +69,8 @@ public:
   //
   // Ctr to create a material from single element
   Material(const std::string &name, double z, double a, double density,
-           MaterialState state = MaterialState::kStateUndefined, double temp = geant::units::kNTPTemperature,
-           double pressure = geant::units::kSTPPressure);
+           MaterialState state = MaterialState::kStateUndefined, double temp = geantx::units::kNTPTemperature,
+           double pressure = geantx::units::kSTPPressure);
 
   /**
    * @brief Constructor to create material from elements and/or materials.
@@ -88,8 +88,8 @@ public:
   // Ctr to create a material from a combination of elements and/or materials
   // subsequently added via AddElement and/or AddMaterial
   Material(const std::string &name, double density, int numcomponents,
-           MaterialState state = MaterialState::kStateUndefined, double temp = geant::units::kNTPTemperature,
-           double pressure = geant::units::kSTPPressure);
+           MaterialState state = MaterialState::kStateUndefined, double temp = geantx::units::kNTPTemperature,
+           double pressure = geantx::units::kSTPPressure);
 
   /**
    * @brief Method to add an element to the material based on molecular composition.

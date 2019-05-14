@@ -19,10 +19,10 @@ template <class Field>
 class MagFieldEquation {
 public:
   //  static const unsigned int  N   = Size;
-  using Double_v = geant::Double_v;
-  using Float_v  = geant::Float_v;
+  using Double_v = geantx::Double_v;
+  using Float_v  = geantx::Float_v;
 
-  static constexpr double gCof = geant::units::kCLight; //   / fieldUnits::meter ;
+  static constexpr double gCof = geantx::units::kCLight; //   / fieldUnits::meter ;
 
   // Expected constant value:
   // static constexpr double gCof    = Constants::c_light * fieldUnits::second /
@@ -103,7 +103,7 @@ public:
   template <typename Real_v>
   void PrintAll(Real_v const y[], const Vector3D<Real_v> &B, Real_v charge, Real_v cof, Real_v const dydx[]) const
   {
-    using geant::units::kilogauss;
+    using geantx::units::kilogauss;
 
     std::cout.precision(8);
     std::cout << "Equation:  gCof= " << gCof << " charge= " << charge << " cof= " << cof << " Bfield= " << B

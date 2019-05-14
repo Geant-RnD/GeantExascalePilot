@@ -86,9 +86,9 @@ void init_nvtx()
 
 //======================================================================================//
 
-int geant::cuda::set_device(int device)
+int geantx::cuda::set_device(int device)
 {
-  int deviceCount = geant::cuda::device_count();
+  int deviceCount = geantx::cuda::device_count();
   if (deviceCount == 0) return -1;
 
   // don't set to higher than number of devices
@@ -103,12 +103,12 @@ int geant::cuda::set_device(int device)
 
 //======================================================================================//
 
-int geant::cuda::multi_processor_count()
+int geantx::cuda::multi_processor_count()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cuda::device_count() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cuda::device_info<int> *_instance = new geantx::cuda::device_info<int>();
   // use the thread assigned devices
   int device = this_thread_device();
 
@@ -123,12 +123,12 @@ int geant::cuda::multi_processor_count()
 
 //======================================================================================//
 
-int geant::cuda::max_threads_per_block()
+int geantx::cuda::max_threads_per_block()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cuda::device_count() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cuda::device_info<int> *_instance = new geantx::cuda::device_info<int>();
   // use the thread assigned devices
   int device = this_thread_device();
 
@@ -143,12 +143,12 @@ int geant::cuda::max_threads_per_block()
 
 //======================================================================================//
 
-int geant::cuda::warp_size()
+int geantx::cuda::warp_size()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cuda::device_count() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cuda::device_info<int> *_instance = new geantx::cuda::device_info<int>();
   // use the thread assigned devices
   int device = this_thread_device();
 
@@ -163,12 +163,12 @@ int geant::cuda::warp_size()
 
 //======================================================================================//
 
-int geant::cuda::shared_memory_per_block()
+int geantx::cuda::shared_memory_per_block()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cuda::device_count() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cuda::device_info<int> *_instance = new geantx::cuda::device_info<int>();
   // use the thread assigned devices
   int device = this_thread_device();
 
@@ -183,7 +183,7 @@ int geant::cuda::shared_memory_per_block()
 
 //======================================================================================//
 
-int geant::cuda::device_count()
+int geantx::cuda::device_count()
 {
   int deviceCount      = 0;
   cudaError_t error_id = cudaGetDeviceCount(&deviceCount);
@@ -195,7 +195,7 @@ int geant::cuda::device_count()
 
 //======================================================================================//
 
-void geant::cuda::device_query()
+void geantx::cuda::device_query()
 {
   static std::atomic<int16_t> once;
   if (++once > 1) return;

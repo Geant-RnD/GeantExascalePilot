@@ -106,7 +106,7 @@ inline GUFieldPropagator *FieldPropagatorFactory::CreatePropagator( // Field_t& 
               << " - Integration constraint:  eps_tol= " << relEpsilonTolerance << std::endl;
     std::cout << methodName << "  scalarDriver = " << &integrDriver << std::endl;
     std::cout << methodName << "  vectorDriver = " << flexDriver << std::endl;
-    // geant::Printf("FieldPropagatorFactory::CreatePropagator",
+    // geantx::Printf("FieldPropagatorFactory::CreatePropagator",
     //             "Parameters for RK integration in magnetic field: \n - Integration constraint:  eps_tol=
     //             %8.3g\n",
     //              relEpsilonTolerance);
@@ -158,7 +158,7 @@ inline ScalarIntegrationDriver *FieldPropagatorFactory::CreateScalarDriver(Field
     std::cout << " - Driver minimum step (h_min) = " << minStepSize << scalarDriver->GetMaxNoSteps() << std::endl;
     // Test the object ...
 
-    // geant::Print(methodName,
+    // geantx::Print(methodName,
     // "Parameters for RK integration in magnetic field: "
     //            " - Driver minimum step (h_min) = %8.3g\n", minStepSize);
   }
@@ -196,7 +196,7 @@ inline FlexIntegrationDriver *FieldPropagatorFactory::CreateFlexibleDriver(Field
     std::cout << methodName << ": Parameters for RK integration in magnetic field: "
               << " - Driver minimum step (h_min) = " << minStepSize << std::endl;
     std::cout << methodName << ": created vector driver = " << vectorDriver << std::endl;
-    // geant::Print(methodName,
+    // geantx::Print(methodName,
     //              "Parameters for RK integration in magnetic field: "
     //             " - Driver minimum step (h_min) = %8.3g\n", minStepSize);
   }

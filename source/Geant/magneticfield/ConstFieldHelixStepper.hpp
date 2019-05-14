@@ -14,7 +14,7 @@
 #include <base/SOA3D.h>
 #include <base/Vector3D.h>
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 /**
  * A very simple stepper treating the propagation of particles in a constant Bz magnetic field

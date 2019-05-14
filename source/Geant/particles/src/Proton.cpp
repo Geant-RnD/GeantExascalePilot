@@ -6,7 +6,7 @@
 namespace geantphysics {
 Proton *Proton::Definition()
 {
-  static Proton instance("proton", 2212, 1, geant::units::kProtonMassC2, 1.0 * geant::units::eplus);
+  static Proton instance("proton", 2212, 1, geantx::units::kProtonMassC2, 1.0 * geantx::units::eplus);
   return &instance;
 }
 

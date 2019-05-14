@@ -66,7 +66,7 @@ void GenVecCart(vector<Vector3D> &posVec, const int &n)
 
 int main(int argc, char **argv)
 {
-  std::string datafile(geant::GetDataFileLocation(argc, argv, "cmsmagfield2015.txt"));
+  std::string datafile(geantx::GetDataFileLocation(argc, argv, "cmsmagfield2015.txt"));
 
   MagField m1;
   m1.ReadVectorData(datafile.c_str());

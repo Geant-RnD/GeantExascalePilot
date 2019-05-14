@@ -17,7 +17,7 @@
 #include <cstdio>
 #include <mutex>
 
-namespace geant {
+namespace geantx {
 enum class EMsgLevel {
   kUnset    = -1,
   kPrint    = 0,

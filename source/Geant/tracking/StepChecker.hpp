@@ -8,7 +8,7 @@
 
 #include "Geant/core/Config.hpp"
 
-// namespace geant {
+// namespace geantx {
 // inline namespace MagField {
 
 class StepChecker {

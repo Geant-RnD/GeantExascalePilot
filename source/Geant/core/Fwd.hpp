@@ -3,7 +3,7 @@
 
 #include "Geant/core/Config.hpp"
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 class Track;
 class Event;

@@ -18,15 +18,15 @@
 
 using namespace std;
 
-using Double_v      = geant::Double_v;
+using Double_v      = geantx::Double_v;
 using ThreeVector   = vecgeom::Vector3D<double>;
 using ThreeVector_v = vecgeom::Vector3D<Double_v>;
 
 template <typename T>
 using vector_t        = std::vector<T>;
-constexpr float tesla = geant::units::tesla;
-// constexpr float kilogauss = geant::units::kilogauss;
-constexpr float millimeter = geant::units::millimeter;
+constexpr float tesla = geantx::units::tesla;
+// constexpr float kilogauss = geantx::units::kilogauss;
+constexpr float millimeter = geantx::units::millimeter;
 
 const double kRMax = 9000 * millimeter;
 const double kZMax = 16000 * millimeter;
@@ -65,7 +65,7 @@ void GenVecCart(vector_t<ThreeVector> &posVec, const int &n)
 
 int main(int argc, char *argv[])
 {
-  std::string datafile(geant::GetDataFileLocation(argc, argv, "cmsmagfield2015.txt"));
+  std::string datafile(geantx::GetDataFileLocation(argc, argv, "cmsmagfield2015.txt"));
 
   CMSmagField m1;
   m1.ReadVectorData(datafile.c_str());
@@ -98,11 +98,11 @@ int main(int argc, char *argv[])
 #ifdef VERBOSE
   cout << "\nVector fields start: " << endl;
 #endif
-  size_t inputVcLen          = ceil(((double)n) / geant::kVecLenD);
+  size_t inputVcLen          = ceil(((double)n) / geantx::kVecLenD);
   ThreeVector_v *inputForVec = new ThreeVector_v[inputVcLen];
   size_t init                = 0;
-  for (size_t i = 0; i < n; i += geant::kVecLenD) {
-    for (size_t j = 0; j < geant::kVecLenD; ++j) {
+  for (size_t i = 0; i < n; i += geantx::kVecLenD) {
+    for (size_t j = 0; j < geantx::kVecLenD; ++j) {
       vecCore::Set(inputForVec[init].x(), j, posVec[i + j].x());
       vecCore::Set(inputForVec[init].y(), j, posVec[i + j].y());
       vecCore::Set(inputForVec[init].z(), j, posVec[i + j].z());
@@ -128,9 +128,9 @@ int main(int argc, char *argv[])
 
   // Now compare the results scalar/vector
   for (size_t i = 0; i < inputVcLen; ++i) {
-    for (size_t lane = 0; lane < geant::kVecLenD; ++lane) {
+    for (size_t lane = 0; lane < geantx::kVecLenD; ++lane) {
       // ThreeVector testVec2(xyzField_v[0][j], xyzField_v[1][j], xyzField_v[2][j]);
-      size_t k = i * geant::kVecLenD + lane;
+      size_t k = i * geantx::kVecLenD + lane;
       ThreeVector testVec(vecCore::Get(outputVec[i].x(), lane), vecCore::Get(outputVec[i].y(), lane),
                           vecCore::Get(outputVec[i].z(), lane));
 #ifdef VERBOSE

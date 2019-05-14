@@ -15,7 +15,7 @@
 #include "PTL/ThreadPool.hh"
 #include "PTL/Threading.hh"
 
-namespace geant {
+namespace geantx {
 inline namespace tasking {
 inline void init_thread_data(ThreadPool *tp)
 {

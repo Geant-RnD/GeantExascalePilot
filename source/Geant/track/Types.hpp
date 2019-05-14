@@ -27,7 +27,7 @@ enum TrackStatus_t { kAlive, kKilled, kInFlight, kBoundary, kExitingSetup, kPhys
 
 /** Basket simulation stages. */
 enum ESimulationStage {
-  kBeginStage,        // Actions at the beginning of the step
+  kBeginStage,          // Actions at the beginning of the step
   kComputeIntLStage,    // Physics interaction length computation stage
   kGeometryStepStage,   // Compute geometry transport length
   kPrePropagationStage, // Special msc stage for step limit phase

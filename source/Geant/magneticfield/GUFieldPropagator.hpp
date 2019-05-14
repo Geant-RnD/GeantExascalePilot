@@ -11,7 +11,7 @@
 // typedef vecgeom::Vector3D<double>  ThreeVector;
 // #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
 
-// namespace geant {
+// namespace geantx {
 // inline namespace GEANT_IMPL_NAMESPACE {
 
 // template <class Backend> class TemplateGUIntegrationDriver;
