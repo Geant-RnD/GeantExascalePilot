@@ -46,25 +46,6 @@ inline uintmax_t GetThisThreadID()
 {
   return ThreadPool::GetThisThreadID();
 }
-
-//======================================================================================//
-
-#if !defined(scast)
-#define scast static_cast
-#endif
-
-//======================================================================================//
-
-#if !defined(HW_CONCURRENCY)
-#define HW_CONCURRENCY std::thread::hardware_concurrency()
-#endif
-
-//======================================================================================//
-
-#if !defined(_Forward_t)
-#define _Forward_t(TYPE, VAL) std::forward<TYPE>(VAL)...
-#endif
-
 //======================================================================================//
 
 #if !defined(PRAGMA_SIMD)

@@ -145,7 +145,7 @@ public:
   inline static std::string tolower(std::string val)
   {
     for (auto &itr : val)
-      itr = scast<char>(::tolower(itr));
+      itr = static_cast<char>(::tolower(itr));
     return val;
   }
 
@@ -185,7 +185,7 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
   bool use_cpu = GetEnv<bool>("GEANT_USE_CPU", false);
   if (use_cpu) {
     try {
-      cpu_func(_Forward_t(_Args, args));
+      cpu_func(std::forward<_Args>(args)...);
     } catch (const std::exception &e) {
       AutoLock l(TypeMutex<decltype(std::cout)>());
       std::cerr << e.what() << '\n';
@@ -253,7 +253,7 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
 
   // Run on CPU if nothing available
   if (options.size() <= 1) {
-    cpu_func(_Forward_t(_Args, args));
+    cpu_func(std::forward<_Args>(args)...);
     return;
   }
 
@@ -275,13 +275,13 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
   try {
     switch (selection->index) {
     case 0:
-      cpu_func(_Forward_t(_Args, args));
+      cpu_func(std::forward<_Args>(args)...);
       break;
     case 1:
-      cuda_func(_Forward_t(_Args, args));
+      cuda_func(std::forward<_Args>(args)...);
       break;
     default:
-      cpu_func(_Forward_t(_Args, args));
+      cpu_func(std::forward<_Args>(args)...);
       break;
     }
   } catch (std::exception &e) {
@@ -293,7 +293,7 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
                   << "Falling back to CPU algorithm..." << std::endl;
       }
       try {
-        cpu_func(_Forward_t(_Args, args));
+        cpu_func(std::forward<_Args>(args)...);
       } catch (std::exception &_e) {
         std::stringstream ss;
         ss << "\n\nError executing :: " << _e.what() << "\n\n";
