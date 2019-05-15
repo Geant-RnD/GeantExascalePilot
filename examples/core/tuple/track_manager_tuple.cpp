@@ -7,8 +7,9 @@ template <typename _Tp>
 void print(const _Tp* t, int expected_id, const std::string& access_method)
 {
     auto w = 24;
-    std::cout << "track " << expected_id << " (" << access_method << "). name : " << std::setw(15)
-              << t->GetParticleName() << ",  id : " << t->m_track_id << ",  typeid : " << std::setw(w)
+    std::cout << "track " << expected_id << " (" << access_method
+              << "). name : " << std::setw(15) << t->GetParticleName()
+              << ",  id : " << t->m_track_id << ",  typeid : " << std::setw(w)
               << typeid(*t).name() << ", particle def typeid : " << std::setw(10)
               << typeid(*t->GetParticleDefinition()).name() << std::endl;
 }

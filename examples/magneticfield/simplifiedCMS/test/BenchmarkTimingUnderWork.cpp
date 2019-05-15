@@ -39,7 +39,8 @@ void GenVecCart(vecgeom::Vector<ThreeVector> &posVec, const int &n);
 void CalculateMeanStDev(const vector<float> timeVec, float &mean, float &stDev);
 
 template <class Backend, bool ForVectorized>
-float Time(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n, const int &nRepetitions)
+float Time(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n,
+           const int &nRepetitions)
 {
 
   int noOfFloats = 1;
@@ -105,8 +106,8 @@ float Time(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &
 
   cout << sumXYZField << endl;
 
-  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns "<<endl;
-  // cout<<"totTime is: "<<totTime<<endl;
+  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns
+  // "<<endl; cout<<"totTime is: "<<totTime<<endl;
   cout << "Mean time is: " << timeMean * 1e+9 << "ns" << endl;
   // cout<<"Standard devi. is: "<<timeStDev*1e+9<<"ns"<<endl;
   return totTime / noRunsAvg;

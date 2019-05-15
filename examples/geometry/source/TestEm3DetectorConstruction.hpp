@@ -9,17 +9,17 @@
 #include <vector>
 
 namespace geant {
-  inline namespace GEANT_IMPL_NAMESPACE {
-    class UserDetectorConstruction;
-    class RunManager;
-  }
-}
+inline namespace GEANT_IMPL_NAMESPACE {
+class UserDetectorConstruction;
+class RunManager;
+} // namespace GEANT_IMPL_NAMESPACE
+} // namespace geant
 
 namespace geantphysics {
-  inline namespace GEANT_IMPL_NAMESPACE {
-    class Material;
-  }
+inline namespace GEANT_IMPL_NAMESPACE {
+class Material;
 }
+} // namespace geantphysics
 
 namespace userapplication {
 
@@ -47,7 +47,8 @@ public:
   double GetAbsorberThickness(int absindx) const;
   // set absorber material name
   void SetAbsorberMaterialName(int absindx, const std::string &matname);
-  // get absorber material (must be used after the CreateMaterials interface method is called)
+  // get absorber material (must be used after the CreateMaterials interface method is
+  // called)
   const geantphysics::Material *GetAbsorberMaterial(int absindx) const;
   // set/get production cut (value in length for gamma/e-/e+)
   void SetProductionCut(double pcut) { fProductionCut = pcut; }
@@ -95,7 +96,8 @@ private:
 
   double fProductionCut; // in length
 
-  std::vector<int> fLayerIDToLayerIndex; // map of the layer (as VPlacedVolume) IDs to their index.
+  std::vector<int>
+      fLayerIDToLayerIndex; // map of the layer (as VPlacedVolume) IDs to their index.
 
   geantphysics::Material *fAbsorberMaterials[gMaxNumAbsorbers];
   geantphysics::Material *fWorldMaterial;

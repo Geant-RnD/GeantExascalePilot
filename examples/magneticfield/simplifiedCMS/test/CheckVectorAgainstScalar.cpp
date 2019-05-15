@@ -116,14 +116,17 @@ int main(int argc, char *argv[])
   for (size_t i = 0; i < inputVcLen; ++i) {
     m1.GetFieldValue(inputForVec[i], outputVec[i]);
 #ifdef VERBOSE
-    cout << "   point: " << inputForVec[i] << "   field: " << outputVec[i] / tesla << endl;
+    cout << "   point: " << inputForVec[i] << "   field: " << outputVec[i] / tesla
+         << endl;
 #endif
     sumXYZField_v += outputVec[i];
   }
 
-  sumXYZFieldVec.Set(vecCore::ReduceAdd(sumXYZField_v.x()), vecCore::ReduceAdd(sumXYZField_v.y()),
+  sumXYZFieldVec.Set(vecCore::ReduceAdd(sumXYZField_v.x()),
+                     vecCore::ReduceAdd(sumXYZField_v.y()),
                      vecCore::ReduceAdd(sumXYZField_v.z()));
-  cout << "   Vector field sum (after ReduceAdd): " << sumXYZFieldVec / tesla << " [Tesla]" << endl;
+  cout << "   Vector field sum (after ReduceAdd): " << sumXYZFieldVec / tesla
+       << " [Tesla]" << endl;
   assert(ApproxEqual(sumXYZField / tesla, sumXYZFieldVec / tesla));
 
   // Now compare the results scalar/vector
@@ -131,10 +134,12 @@ int main(int argc, char *argv[])
     for (size_t lane = 0; lane < geantx::kVecLenD; ++lane) {
       // ThreeVector testVec2(xyzField_v[0][j], xyzField_v[1][j], xyzField_v[2][j]);
       size_t k = i * geantx::kVecLenD + lane;
-      ThreeVector testVec(vecCore::Get(outputVec[i].x(), lane), vecCore::Get(outputVec[i].y(), lane),
+      ThreeVector testVec(vecCore::Get(outputVec[i].x(), lane),
+                          vecCore::Get(outputVec[i].y(), lane),
                           vecCore::Get(outputVec[i].z(), lane));
 #ifdef VERBOSE
-      cout << k << ": " << testVec / tesla << " being tested against " << outputScalar[k] / tesla << endl;
+      cout << k << ": " << testVec / tesla << " being tested against "
+           << outputScalar[k] / tesla << endl;
 #endif
       assert(ApproxEqual(testVec / tesla, outputScalar[k] / tesla));
       k++;

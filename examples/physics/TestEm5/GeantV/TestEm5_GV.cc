@@ -19,8 +19,8 @@
 
 #include "Geant/UserFieldConstruction.h"
 
-// some helper methods to get the possible input arguments and configure the user defined components of the application,
-// set up the run manager and run the simulation.
+// some helper methods to get the possible input arguments and configure the user defined
+// components of the application, set up the run manager and run the simulation.
 void GetInputArguments(int argc, char *argv[]);
 void SetupUserPhysicsList(userapplication::TestEm5PhysicsList *physlist);
 void SetupUserDetector(userapplication::TestEm5DetectorConstruction *detector);
@@ -29,7 +29,8 @@ void SetupUserPrimaryGenerator(userapplication::TestEm5PrimaryGenerator *primary
 void SetupUserApplication(userapplication::TestEm5 *app);
 geant::RunManager *RunManager();
 
-// The main application: gets the possible input arguments, sets up the run-manager, physics-list, detector, primary
+// The main application: gets the possible input arguments, sets up the run-manager,
+// physics-list, detector, primary
 //                       generator, application and starts the simulation.
 int main(int argc, char *argv[])
 {
@@ -40,28 +41,35 @@ int main(int argc, char *argv[])
   // Create run manager and set configuration parameters
   geant::RunManager *runManager = RunManager();
   //
-  // Create a user defined pysics list object, set its configurable parameters and register it in the global
-  // PhysicsListManager
-  // NOTE: if the user not register its own physics list then the default physics list will be used
-  userapplication::TestEm5PhysicsList *userPhysList = new userapplication::TestEm5PhysicsList("testEm5-user-physics");
+  // Create a user defined pysics list object, set its configurable parameters and
+  // register it in the global PhysicsListManager NOTE: if the user not register its own
+  // physics list then the default physics list will be used
+  userapplication::TestEm5PhysicsList *userPhysList =
+      new userapplication::TestEm5PhysicsList("testEm5-user-physics");
   SetupUserPhysicsList(userPhysList);
   geantphysics::PhysicsListManager::Instance().RegisterPhysicsList(userPhysList);
   //
-  // create the user detector construction object, set its configurable parameters and register in the RunManager
-  userapplication::TestEm5DetectorConstruction *detector = new userapplication::TestEm5DetectorConstruction(runManager);
+  // create the user detector construction object, set its configurable parameters and
+  // register in the RunManager
+  userapplication::TestEm5DetectorConstruction *detector =
+      new userapplication::TestEm5DetectorConstruction(runManager);
   SetupUserDetector(detector);
   runManager->SetDetectorConstruction(detector);
   //
-  // create the user primary generator object, set its configurable parameters and register in the RunManager
-  userapplication::TestEm5PrimaryGenerator *primaryGenerator = new userapplication::TestEm5PrimaryGenerator(detector);
+  // create the user primary generator object, set its configurable parameters and
+  // register in the RunManager
+  userapplication::TestEm5PrimaryGenerator *primaryGenerator =
+      new userapplication::TestEm5PrimaryGenerator(detector);
   SetupUserPrimaryGenerator(primaryGenerator);
   runManager->SetPrimaryGenerator(primaryGenerator);
   //
   // set up mag. field propagation
   SetupUserField(runManager);
   //
-  // create the testEm5 user application object, set its configurable parameters and register in the RunManager
-  userapplication::TestEm5 *testEm5Application = new userapplication::TestEm5(runManager, detector, primaryGenerator);
+  // create the testEm5 user application object, set its configurable parameters and
+  // register in the RunManager
+  userapplication::TestEm5 *testEm5Application =
+      new userapplication::TestEm5(runManager, detector, primaryGenerator);
   SetupUserApplication(testEm5Application);
   runManager->SetUserApplication(testEm5Application);
   //
@@ -74,8 +82,9 @@ int main(int argc, char *argv[])
 }
 
 //
-// Optional input arguments that make possible the configuration of detector(parDet), primary generator(parGun), the
-// application(parApp), run configuration(parConfig) and some physics processes(parProcess):
+// Optional input arguments that make possible the configuration of detector(parDet),
+// primary generator(parGun), the application(parApp), run configuration(parConfig) and
+// some physics processes(parProcess):
 //
 // detector parameters
 std::string parDetTargetMaterial = ""; // i.e. default application value
@@ -96,8 +105,9 @@ double parAppHist1MinVal        = -1.; // i.e. default application value
 double parAppHist1MaxVal        = -1.; // i.e. default application value
 //
 // run configuration parameters
-int parConfigNumBufferedEvt   = 4;    // number of events taken to be transported on the same time (buffered)
-int parConfigNumRunEvt        = 4000; // total number of events to be transported during the run
+int parConfigNumBufferedEvt =
+    4; // number of events taken to be transported on the same time (buffered)
+int parConfigNumRunEvt = 4000; // total number of events to be transported during the run
 int parConfigNumPrimaryPerEvt = 1000; // number of primary particles per event
 int parConfigNumThreads       = 4;    // number of working threads
 int parConfigNumPropagators   = 1;    // number of propagators per working threads
@@ -116,43 +126,44 @@ double parFieldEpsRK    = 0.0003;    // Revised / reduced accuracy - vs. 0.0003 
 int parFieldBasketized  = 1;         // basketize magnetic field
 float parFieldVector[3] = {0, 0, 2}; // default constant field value {0,0,2} [kilogauss]
 
-static struct option options[] = {{"det-Target-Material-Name", required_argument, 0, 'a'},
-                                  {"det-Target-Thickness", required_argument, 0, 'b'},
-                                  {"det-Production-Cuts", required_argument, 0, 'c'},
-                                  {"det-Gamma-Production-Cut", required_argument, 0, 'd'},
-                                  {"det-Electron-Production-Cut", required_argument, 0, 'e'},
-                                  {"det-Positron-Production-Cut", required_argument, 0, 'f'},
+static struct option options[] = {
+    {"det-Target-Material-Name", required_argument, 0, 'a'},
+    {"det-Target-Thickness", required_argument, 0, 'b'},
+    {"det-Production-Cuts", required_argument, 0, 'c'},
+    {"det-Gamma-Production-Cut", required_argument, 0, 'd'},
+    {"det-Electron-Production-Cut", required_argument, 0, 'e'},
+    {"det-Positron-Production-Cut", required_argument, 0, 'f'},
 
-                                  {"gun-Primary-Kinetic-Energy", required_argument, 0, 'g'},
-                                  {"gun-Primary-Particle-Name", required_argument, 0, 'h'},
+    {"gun-Primary-Kinetic-Energy", required_argument, 0, 'g'},
+    {"gun-Primary-Particle-Name", required_argument, 0, 'h'},
 
-                                  {"app-Hist1-File-Name", required_argument, 0, 'i'},
-                                  {"app-Hist1-Bin-Number", required_argument, 0, 'j'},
-                                  {"app-Hist1-Minimum-Value", required_argument, 0, 'k'},
-                                  {"app-Hist1-Maximum-Value", required_argument, 0, 'l'},
+    {"app-Hist1-File-Name", required_argument, 0, 'i'},
+    {"app-Hist1-Bin-Number", required_argument, 0, 'j'},
+    {"app-Hist1-Minimum-Value", required_argument, 0, 'k'},
+    {"app-Hist1-Maximum-Value", required_argument, 0, 'l'},
 
-                                  {"field-active", required_argument, 0, 'E'},
-                                  {"field-vector", required_argument, 0, 'F'},
-                                  {"field-use-RK", required_argument, 0, 'G'},
-                                  {"field-eps-RK", required_argument, 0, 'H'},
-                                  {"field-basketized", required_argument, 0, 'I'},
+    {"field-active", required_argument, 0, 'E'},
+    {"field-vector", required_argument, 0, 'F'},
+    {"field-use-RK", required_argument, 0, 'G'},
+    {"field-eps-RK", required_argument, 0, 'H'},
+    {"field-basketized", required_argument, 0, 'I'},
 
-                                  {"config-Number-Of-Buffered-Events", required_argument, 0, 'M'},
-                                  {"config-number-of-buffered-events", required_argument, 0, 'm'},
-                                  {"config-Total-Number-Of-Events", required_argument, 0, 'N'},
-                                  {"config-total-number-of-events", required_argument, 0, 'n'},
-                                  {"config-number-of-primary-per-events", required_argument, 0, 'o'},
-                                  {"config-Number-Of-Primary-Per-Events", required_argument, 0, 'O'},
-                                  {"config-Number-Of-Threads", required_argument, 0, 'p'},
-                                  {"config-Number-Of-Propagators", required_argument, 0, 'q'},
-                                  {"config-Vectorized-Geom", required_argument, 0, 'r'},
-                                  {"config-Tracks-Per-Basket", required_argument, 0, 's'},
+    {"config-Number-Of-Buffered-Events", required_argument, 0, 'M'},
+    {"config-number-of-buffered-events", required_argument, 0, 'm'},
+    {"config-Total-Number-Of-Events", required_argument, 0, 'N'},
+    {"config-total-number-of-events", required_argument, 0, 'n'},
+    {"config-number-of-primary-per-events", required_argument, 0, 'o'},
+    {"config-Number-Of-Primary-Per-Events", required_argument, 0, 'O'},
+    {"config-Number-Of-Threads", required_argument, 0, 'p'},
+    {"config-Number-Of-Propagators", required_argument, 0, 'q'},
+    {"config-Vectorized-Geom", required_argument, 0, 'r'},
+    {"config-Tracks-Per-Basket", required_argument, 0, 's'},
 
-                                  {"process-MSC-Step-Limit", required_argument, 0, 't'},
-                                  {"process-Step-Max-Value", required_argument, 0, 'u'},
+    {"process-MSC-Step-Limit", required_argument, 0, 't'},
+    {"process-Step-Max-Value", required_argument, 0, 'u'},
 
-                                  {"help", required_argument, 0, 'x'},
-                                  {0, 0, 0, 0}};
+    {"help", required_argument, 0, 'x'},
+    {0, 0, 0, 0}};
 
 enum DIR_OPTIONS { DIR_X_OPT = 0, DIR_Y_OPT, DIR_Z_OPT };
 char *const dir_token[] = {[DIR_OPTIONS::DIR_X_OPT] = (char *const) "x",
@@ -164,7 +175,8 @@ void help()
 {
   printf("\nUsage: runTestEm5 [OPTIONS] INPUT_FILE\n\n");
   for (int i = 0; options[i].name != NULL; i++) {
-    printf("\t-%c  --%s\t%s\n", options[i].val, options[i].name, options[i].has_arg ? options[i].name : "");
+    printf("\t-%c  --%s\t%s\n", options[i].val, options[i].name,
+           options[i].has_arg ? options[i].name : "");
   }
   printf("\n\n");
 }
@@ -203,7 +215,8 @@ void GetInputArguments(int argc, char *argv[])
       break;
     case 'g':
       parGunPrimaryKinEnergy = (double)strtof(optarg, NULL);
-      if (parGunPrimaryKinEnergy <= 0) errx(1, "primary particle energy must be positive");
+      if (parGunPrimaryKinEnergy <= 0)
+        errx(1, "primary particle energy must be positive");
       break;
     case 'h':
       parGunPrimaryParticleName = optarg;
@@ -300,7 +313,8 @@ geant::RunManager *RunManager()
 {
   // create the GeantConfiguration object and the RunManager object
   geant::GeantConfig *runConfig = new geant::GeantConfig();
-  geant::RunManager *runManager = new geant::RunManager(parConfigNumPropagators, parConfigNumThreads, runConfig);
+  geant::RunManager *runManager =
+      new geant::RunManager(parConfigNumPropagators, parConfigNumThreads, runConfig);
   //
   // Set parameters of the GeantConfig object:
   runConfig->fNtotal            = parConfigNumRunEvt;
@@ -311,7 +325,8 @@ geant::RunManager *RunManager()
   // create the real physics main manager/interface object and set it in the RunManager
   runManager->SetPhysicsInterface(new geantphysics::PhysicsProcessHandler(*runConfig));
   //
-  // Some additional parameters that have values in this application different than their default
+  // Some additional parameters that have values in this application different than their
+  // default
   //
   // this should be true by default from now on since we use only V3
   runConfig->fUseV3         = true;
@@ -319,7 +334,8 @@ geant::RunManager *RunManager()
   // Set threshold for tracks to be reused in the same volume
   runConfig->fNminReuse = 100000;
   // Number of steps after the particle is killed:
-  // for msc if we run in single scattering setings high number of steps are perfectly possible
+  // for msc if we run in single scattering setings high number of steps are perfectly
+  // possible
   runConfig->fNstepsKillThr = 100000000;
   // Activate standard scoring
   runConfig->fUseStdScoring = true;
@@ -335,8 +351,10 @@ void SetupUserDetector(userapplication::TestEm5DetectorConstruction *detector)
     detector->SetProductionCuts(parDetProductionCuts);
   } else {
     if (parDetGammaProdCut > 0.) detector->SetGammaProductionCut(parDetGammaProdCut);
-    if (parDetElectronProdCut > 0.) detector->SetElectronProductionCut(parDetElectronProdCut);
-    if (parDetPositronProdCut > 0.) detector->SetPositronProductionCut(parDetPositronProdCut);
+    if (parDetElectronProdCut > 0.)
+      detector->SetElectronProductionCut(parDetElectronProdCut);
+    if (parDetPositronProdCut > 0.)
+      detector->SetPositronProductionCut(parDetPositronProdCut);
   }
 }
 
@@ -363,10 +381,14 @@ void SetupUserField(geant::RunManager *runMgr)
 
 void SetupUserPrimaryGenerator(userapplication::TestEm5PrimaryGenerator *primarygun)
 {
-  // it needs to be consistent with GeantConfig::fNaverage i.e. number of primary particles per event !!!
-  if (parConfigNumPrimaryPerEvt > 0) primarygun->SetNumberOfPrimaryParticlePerEvent(parConfigNumPrimaryPerEvt);
-  if (parGunPrimaryParticleName != "") primarygun->SetPrimaryParticleName(parGunPrimaryParticleName);
-  if (parGunPrimaryKinEnergy > 0.) primarygun->SetPrimaryParticleEnergy(parGunPrimaryKinEnergy);
+  // it needs to be consistent with GeantConfig::fNaverage i.e. number of primary
+  // particles per event !!!
+  if (parConfigNumPrimaryPerEvt > 0)
+    primarygun->SetNumberOfPrimaryParticlePerEvent(parConfigNumPrimaryPerEvt);
+  if (parGunPrimaryParticleName != "")
+    primarygun->SetPrimaryParticleName(parGunPrimaryParticleName);
+  if (parGunPrimaryKinEnergy > 0.)
+    primarygun->SetPrimaryParticleEnergy(parGunPrimaryKinEnergy);
 }
 
 void SetupUserApplication(userapplication::TestEm5 *app)
@@ -385,10 +407,12 @@ void SetupUserPhysicsList(userapplication::TestEm5PhysicsList *physlist)
     } else if (parProcessMSCStepLimit == "ErrorFree") {
       physlist->SetMSCStepLimit(geantphysics::MSCSteppingAlgorithm::kErrorFree);
     } else if (parProcessMSCStepLimit == "UseDistanceToBoundary") {
-      physlist->SetMSCStepLimit(geantphysics::MSCSteppingAlgorithm::kUseDistanceToBoundary);
+      physlist->SetMSCStepLimit(
+          geantphysics::MSCSteppingAlgorithm::kUseDistanceToBoundary);
     } else {
       std::cerr << " **** ERROR runTestEm5::SetupUserPhysicsList() \n"
-                << "   unknown MSC stepping algorithm = " << parProcessMSCStepLimit << std::endl;
+                << "   unknown MSC stepping algorithm = " << parProcessMSCStepLimit
+                << std::endl;
       exit(-1);
     }
   }

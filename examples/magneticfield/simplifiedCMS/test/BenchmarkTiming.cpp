@@ -85,7 +85,8 @@ void GenVecCart(vector<ThreeVector> &posVec, const size_t &n)
   }
 }
 
-float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVector> &outputVec, const size_t &n)
+float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec,
+                 vector<ThreeVector> &outputVec, const size_t &n)
 {
   ThreeVector xyzField, sumField(0.);
   vector<float> scaTimePerRepitition;
@@ -122,11 +123,14 @@ float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
   scaTimePerRepitition.erase(scaTimePerRepitition.begin() + std::max(imin, imax));
   scaTimePerRepitition.erase(scaTimePerRepitition.begin() + std::min(imin, imax));
 
-  float timeSum  = std::accumulate(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), 0.0);
+  float timeSum =
+      std::accumulate(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), 0.0);
   float timeMean = timeSum / scaTimePerRepitition.size();
   float timeSqSum =
-      std::inner_product(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), scaTimePerRepitition.begin(), 0.0);
-  float timeStDev = std::sqrt(timeSqSum / scaTimePerRepitition.size() - timeMean * timeMean);
+      std::inner_product(scaTimePerRepitition.begin(), scaTimePerRepitition.end(),
+                         scaTimePerRepitition.begin(), 0.0);
+  float timeStDev =
+      std::sqrt(timeSqSum / scaTimePerRepitition.size() - timeMean * timeMean);
 
   cout << "   Scalar sumField is: " << sumField << endl;
   cout << "   totScaTime is: " << timeSum << endl;
@@ -136,7 +140,8 @@ float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
   return timeSum;
 }
 
-float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVector> &outputVec, const size_t &n)
+float TimeVector(MagField &m1, const vector<ThreeVector> &posVec,
+                 vector<ThreeVector> &outputVec, const size_t &n)
 {
   cout << "\n=== Vector field start: " << endl;
   float tmin  = FLT_MAX;
@@ -173,11 +178,13 @@ float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
       // We benchmark also writing to the Double_v
       geantx::CopyFltToDbl(xyzField, xyzField1, xyzField2);
       for (size_t lane = 0; lane < geantx::kVecLenD; ++lane) {
-        xyzFieldS.Set(vecCore::Get(xyzField1.x(), lane), vecCore::Get(xyzField1.y(), lane),
+        xyzFieldS.Set(vecCore::Get(xyzField1.x(), lane),
+                      vecCore::Get(xyzField1.y(), lane),
                       vecCore::Get(xyzField1.z(), lane));
         sumField += xyzFieldS;
         outputVec.push_back(xyzFieldS);
-        xyzFieldS.Set(vecCore::Get(xyzField2.x(), lane), vecCore::Get(xyzField2.y(), lane),
+        xyzFieldS.Set(vecCore::Get(xyzField2.x(), lane),
+                      vecCore::Get(xyzField2.y(), lane),
                       vecCore::Get(xyzField2.z(), lane));
         sumField += xyzFieldS;
         outputVec.push_back(xyzFieldS);
@@ -200,11 +207,14 @@ float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
   // Remove imin and imax measurements from the sample
   vecTimePerRepitition.erase(vecTimePerRepitition.begin() + std::max(imin, imax));
   vecTimePerRepitition.erase(vecTimePerRepitition.begin() + std::min(imin, imax));
-  float timeSum  = std::accumulate(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), 0.0);
+  float timeSum =
+      std::accumulate(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), 0.0);
   float timeMean = timeSum / vecTimePerRepitition.size();
   float timeSqSum =
-      std::inner_product(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), vecTimePerRepitition.begin(), 0.0);
-  float timeStDev = std::sqrt(timeSqSum / vecTimePerRepitition.size() - timeMean * timeMean);
+      std::inner_product(vecTimePerRepitition.begin(), vecTimePerRepitition.end(),
+                         vecTimePerRepitition.begin(), 0.0);
+  float timeStDev =
+      std::sqrt(timeSqSum / vecTimePerRepitition.size() - timeMean * timeMean);
 
   cout << "   Vector sumField is: " << sumField << endl;
   cout << "   totVecTime is: " << timeSum << endl;

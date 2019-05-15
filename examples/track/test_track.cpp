@@ -1,7 +1,7 @@
 #if defined(GEANT_USE_TIMEMORY)
-#    include "timemory/timemory.hpp"
+#include "timemory/timemory.hpp"
 #else
-#    include <Geant/core/Profiler.hpp>
+#include <Geant/core/Profiler.hpp>
 #endif
 
 #include <Geant/track/TrackAccessor.hpp>
@@ -9,6 +9,7 @@
 #include <Geant/track/TrackState.hpp>
 #include <Geant/track/TrackPhysicsAccessor.hpp>
 
-int main(int, char**) {
-   return 0;
+int main(int, char **)
+{
+  return 0;
 }

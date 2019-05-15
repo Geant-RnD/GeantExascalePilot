@@ -27,22 +27,24 @@
 //#include "HepMCTruth.h"
 //#include "Geant/ExternalFramework.h"
 
-// some helper methods to get the possible input arguments and configure the user defined components of the application,
-// set up the run manager and run the simulation.
+// some helper methods to get the possible input arguments and configure the user defined
+// components of the application, set up the run manager and run the simulation.
 void GetArguments(int argc, char *argv[]);
 // void SetupPhysicsList(userapplication::TestEm3PhysicsList *physlist);
 void SetupUserDetector(userapplication::TestEm3DetectorConstruction *detector);
 // void SetupUserField(geant::RunManager *runMgr);
-// void SetupUserPrimaryGenerator(userapplication::TestEm3PrimaryGenerator *primarygun, int numprimsperevt);
-// void SetupMCTruthHandling(geant::RunManager *runMgr);
-//void SetupUserApplication(userapplication::TestEm3App *app);
-//void PrintRunInfo(userapplication::TestEm3PrimaryGenerator *gun, geant::RunManager *rmg);
+// void SetupUserPrimaryGenerator(userapplication::TestEm3PrimaryGenerator *primarygun,
+// int numprimsperevt); void SetupMCTruthHandling(geant::RunManager *runMgr);
+// void SetupUserApplication(userapplication::TestEm3App *app);
+// void PrintRunInfo(userapplication::TestEm3PrimaryGenerator *gun, geant::RunManager
+// *rmg);
 void PreSet(int num);
 // geant::RunManager *RunManager();
 
 //
-// Optional input arguments that make possible the configuration of detector(parDet), primary generator(parGun), the
-// application(parApp), run configuration(parConfig) and some physics processes(parProcess):
+// Optional input arguments that make possible the configuration of detector(parDet),
+// primary generator(parGun), the application(parApp), run configuration(parConfig) and
+// some physics processes(parProcess):
 //
 // detector parameters
 int parDetNumberOfAbsorbers = 2;             // i.e. default application value
@@ -62,11 +64,12 @@ double mctruthminE      = 1.;               // i.e. default application value
 std::string mctruthFile = "testEm3.hepmc3"; // i.e. default application value
 //
 // run configuration parameters
-int parConfigNumBufferedEvt     = 10; // number of events taken to be transported on the same time (buffered)
-int parConfigNumRunEvt          = 10; // total number of events to be transported during the run
-int parConfigNumPrimaryPerEvt   = 10; // number of primary particles per event
-int parConfigNumThreads         = 1;  // number of working threads             // Default = 4
-int parConfigNumPropagators     = 1;  // number of propagators per working threads
+int parConfigNumBufferedEvt =
+    10; // number of events taken to be transported on the same time (buffered)
+int parConfigNumRunEvt = 10; // total number of events to be transported during the run
+int parConfigNumPrimaryPerEvt = 10; // number of primary particles per event
+int parConfigNumThreads       = 1; // number of working threads             // Default = 4
+int parConfigNumPropagators   = 1; // number of propagators per working threads
 int parConfigNumTracksPerBasket = 16; // default number of tracks per basket
 int parConfigIsPerformance      = 1;  // run without any user actions
 int parConfigVectorizedGeom     = 0;  // activate geometry basketizing
@@ -89,7 +92,8 @@ double parFieldEpsRK    = 0.0003;    // Revised / reduced accuracy - vs. 0.0003 
 int parFieldBasketized  = 1;         // basketize magnetic field
 float parFieldVector[3] = {0, 0, 2}; // default constant field value
 
-// The main application: gets the possible input arguments, sets up the run-manager, physics-list, detector, primary
+// The main application: gets the possible input arguments, sets up the run-manager,
+// physics-list, detector, primary
 //                       generator, application and starts the simulation.
 int main(int argc, char *argv[])
 {
@@ -99,16 +103,18 @@ int main(int argc, char *argv[])
   GetArguments(argc, argv);
   //
   // Create and configure run manager
-  geantx::RunManager *runMgr = NULL; //RunManager();
+  geantx::RunManager *runMgr = NULL; // RunManager();
 
   // // Create user defined physics list for TestEm3
   // userapplication::TestEm3PhysicsList *userPhysList =
-  //     new userapplication::TestEm3PhysicsList("TestEm3PhysicsList", *runMgr->GetConfig());
+  //     new userapplication::TestEm3PhysicsList("TestEm3PhysicsList",
+  //     *runMgr->GetConfig());
   // SetupPhysicsList(userPhysList);
   // geantphysics::PhysicsListManager::Instance().RegisterPhysicsList(userPhysList);
 
   // Create detector TestEm3 construction
-  userapplication::TestEm3DetectorConstruction *det = new userapplication::TestEm3DetectorConstruction(runMgr);
+  userapplication::TestEm3DetectorConstruction *det =
+      new userapplication::TestEm3DetectorConstruction(runMgr);
   // Temporary workaround to allow migration to detector construction
   geantx::vector_t<geantx::Volume_t const *> volumes;
   int numVolumes = 0;
@@ -119,21 +125,22 @@ int main(int argc, char *argv[])
   }
   int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
   geantx::Info("main", "Geometry created with maxdepth %d\n", maxDepth);
-  geantx::Info("main", "Geometry created with %d volumes and maxdepth %d\n", numVolumes, maxDepth);
+  geantx::Info("main", "Geometry created with %d volumes and maxdepth %d\n", numVolumes,
+               maxDepth);
 
   // print detector information
   det->DetectorInfo();
 
-  //SetupUserDetector(det);
+  // SetupUserDetector(det);
   // runMgr->SetDetectorConstruction(det);
 
   // // Create user field if requested
   // SetupUserField(runMgr);
 
   // // Create TestEm3 primary generator
-  // userapplication::TestEm3PrimaryGenerator *gun = new userapplication::TestEm3PrimaryGenerator(det);
-  // SetupUserPrimaryGenerator(gun, runMgr->GetConfig()->fNaverage);
-  // runMgr->SetPrimaryGenerator(gun);
+  // userapplication::TestEm3PrimaryGenerator *gun = new
+  // userapplication::TestEm3PrimaryGenerator(det); SetupUserPrimaryGenerator(gun,
+  // runMgr->GetConfig()->fNaverage); runMgr->SetPrimaryGenerator(gun);
 
   // // Setup the MCTruth handling
   // SetupMCTruthHandling(runMgr);
@@ -147,11 +154,12 @@ int main(int argc, char *argv[])
   // runMgr->SetUserApplication(app);
 
   // Print basic parameters for the simulation
-  //PrintRunInfo(gun, runMgr);
+  // PrintRunInfo(gun, runMgr);
 
   // // Run the simulation
   // if (parConfigExternalLoop) {
-  //   userfw::Framework fw(parConfigNumPropagators * parConfigNumThreads, parConfigNumRunEvt, runMgr,
+  //   userfw::Framework fw(parConfigNumPropagators * parConfigNumThreads,
+  //   parConfigNumRunEvt, runMgr,
   //                        runMgr->GetPrimaryGenerator());
   //   fw.Run();
   // } else {
@@ -173,43 +181,44 @@ void PreSet(int num)
   parDetAbsMaterials[1]   = "NIST_MAT_lAr";
 }
 
-static struct option options[] = {{"det-number-of-absorbers", required_argument, 0, 'a'},
-                                  {"det-number-of-layers", required_argument, 0, 'b'},
-                                  {"det-set-absorber", required_argument, 0, 'c'},
-                                  {"det-set-sizeYZ", required_argument, 0, 'd'},
-                                  {"det-prod-cut-length", required_argument, 0, 'e'},
+static struct option options[] = {
+    {"det-number-of-absorbers", required_argument, 0, 'a'},
+    {"det-number-of-layers", required_argument, 0, 'b'},
+    {"det-set-absorber", required_argument, 0, 'c'},
+    {"det-set-sizeYZ", required_argument, 0, 'd'},
+    {"det-prod-cut-length", required_argument, 0, 'e'},
 
-                                  {"gun-primary-energy", required_argument, 0, 'f'},
-                                  {"gun-primary-type", required_argument, 0, 'g'},
+    {"gun-primary-energy", required_argument, 0, 'f'},
+    {"gun-primary-type", required_argument, 0, 'g'},
 
-                                  {"mctruth-store", required_argument, 0, 'B'},
-                                  {"mctruth-minE", required_argument, 0, 'C'},
-                                  {"mctruth-file", required_argument, 0, 'D'},
+    {"mctruth-store", required_argument, 0, 'B'},
+    {"mctruth-minE", required_argument, 0, 'C'},
+    {"mctruth-file", required_argument, 0, 'D'},
 
-                                  {"field-active", required_argument, 0, 'E'},
-                                  {"field-vector", required_argument, 0, 'F'},
-                                  {"field-use-RK", required_argument, 0, 'G'},
-                                  {"field-eps-RK", required_argument, 0, 'H'},
-                                  {"field-basketized", required_argument, 0, 'I'},
+    {"field-active", required_argument, 0, 'E'},
+    {"field-vector", required_argument, 0, 'F'},
+    {"field-use-RK", required_argument, 0, 'G'},
+    {"field-eps-RK", required_argument, 0, 'H'},
+    {"field-basketized", required_argument, 0, 'I'},
 
-                                  {"config-number-of-buffered-events", required_argument, 0, 'm'},
-                                  {"config-total-number-of-events", required_argument, 0, 'n'},
-                                  {"config-number-of-primary-per-events", required_argument, 0, 'o'},
-                                  {"config-number-of-threads", required_argument, 0, 'p'},
-                                  {"config-number-of-propagators", required_argument, 0, 'q'},
-                                  {"config-tracks-per-basket", required_argument, 0, 'r'},
-                                  {"config-run-performance", required_argument, 0, 's'},
-                                  {"config-vectorized-geom", required_argument, 0, 't'},
-                                  {"config-external-loop", required_argument, 0, 'u'},
-                                  {"process-MSC-step-limit", required_argument, 0, 'A'},
-                                  {"config-vectorized-physics", required_argument, 0, 'v'},
-                                  {"config-vectorized-MSC", required_argument, 0, 'V'},
-                                  {"fastsim-active", required_argument, 0, 'w'},
-                                  {"config-monitoring", required_argument, 0, 'x'},
-                                  {"config-single-track", required_argument, 0, 'y'},
+    {"config-number-of-buffered-events", required_argument, 0, 'm'},
+    {"config-total-number-of-events", required_argument, 0, 'n'},
+    {"config-number-of-primary-per-events", required_argument, 0, 'o'},
+    {"config-number-of-threads", required_argument, 0, 'p'},
+    {"config-number-of-propagators", required_argument, 0, 'q'},
+    {"config-tracks-per-basket", required_argument, 0, 'r'},
+    {"config-run-performance", required_argument, 0, 's'},
+    {"config-vectorized-geom", required_argument, 0, 't'},
+    {"config-external-loop", required_argument, 0, 'u'},
+    {"process-MSC-step-limit", required_argument, 0, 'A'},
+    {"config-vectorized-physics", required_argument, 0, 'v'},
+    {"config-vectorized-MSC", required_argument, 0, 'V'},
+    {"fastsim-active", required_argument, 0, 'w'},
+    {"config-monitoring", required_argument, 0, 'x'},
+    {"config-single-track", required_argument, 0, 'y'},
 
-                                  {"help", no_argument, 0, 'h'},
-                                  {0, 0, 0, 0}};
+    {"help", no_argument, 0, 'h'},
+    {0, 0, 0, 0}};
 
 enum ABS_OPTIONS { ABS_INDEX_OPT = 0, ABS_MATNAME_OPT, ABS_THICK_OPT };
 char *const abs_token[] = {[ABS_OPTIONS::ABS_INDEX_OPT]   = (char *) "absorber-index",
@@ -227,7 +236,8 @@ void help()
 {
   printf("\nUsage: TestEm3 [OPTIONS] INPUT_FILE\n\n");
   for (int i = 0; options[i].name != NULL; i++) {
-    printf("\t-%c  --%s\t%s\n", options[i].val, options[i].name, options[i].has_arg ? options[i].name : "");
+    printf("\t-%c  --%s\t%s\n", options[i].val, options[i].name,
+           options[i].has_arg ? options[i].name : "");
   }
   printf("\n\n");
 }
@@ -239,16 +249,20 @@ void PrintRunInfo(userapplication::TestEm3PrimaryGenerator *gun, geant::RunManag
   long int nevents    = rmg->GetConfig()->fNtotal;
   long int nprimpere  = rmg->GetConfig()->fNaverage;
   long int nprimtotal = nevents * nprimpere;
-  auto isActive       = [](int flag) { return (const char *)((flag > 0) ? "ON\n" : "OFF\n"); };
-  std::cout << "\n\n"
-            << " ===================================================================================  \n"
+  auto isActive       = [](int flag) { return (const char *)((flag > 0) ? "ON\n" :
+"OFF\n"); }; std::cout << "\n\n"
+            << "
+===================================================================================  \n"
             << "  primary              : " << gun->GetPrimaryParticleName() << "       \n"
-            << "  primary energy       : " << gun->GetPrimaryParticleEnergy() << " [GeV] \n"
+            << "  primary energy       : " << gun->GetPrimaryParticleEnergy() << " [GeV]
+\n"
             << "  magnetic field       : " << isActive(parFieldActive);
   if (parFieldActive) {
-    std::cout << "  constant field       : (" << parFieldVector[0] << ", " << parFieldVector[1] << ", "
+    std::cout << "  constant field       : (" << parFieldVector[0] << ", " <<
+parFieldVector[1] << ", "
               << parFieldVector[2] << ") [kilogauss]\n"
-              << "  RK propagator        : " << isActive(parFieldUseRK) << "  epsilon RK           : " << parFieldEpsRK
+              << "  RK propagator        : " << isActive(parFieldUseRK) << "  epsilon RK
+: " << parFieldEpsRK
               << "\n"
               << "  basketized field pr. : " << isActive(parFieldBasketized);
   }
@@ -258,8 +272,9 @@ void PrintRunInfo(userapplication::TestEm3PrimaryGenerator *gun, geant::RunManag
             << "  performance mode     : " << isActive(parConfigIsPerformance)
             << "  basketized geometry  : " << isActive(parConfigVectorizedGeom)
             << "  external loop mode   : " << isActive(parConfigExternalLoop)
-            << " ===================================================================================\n\n";
-	    }*/
+            << "
+===================================================================================\n\n";
+      }*/
 
 void GetArguments(int argc, char *argv[])
 {
@@ -283,7 +298,8 @@ void GetArguments(int argc, char *argv[])
     //---- Primary generator
     case 'f':
       parGunPrimaryKinEnergy = strtod(optarg, NULL);
-      if (parGunPrimaryKinEnergy <= 0) errx(1, "primary particle energy must be positive");
+      if (parGunPrimaryKinEnergy <= 0)
+        errx(1, "primary particle energy must be positive");
       break;
     case 'g':
       parGunPrimaryParticleName = optarg;
@@ -309,7 +325,8 @@ void GetArguments(int argc, char *argv[])
           parDetAbsThicknesses[absorberIndex] = strtod(value, NULL);
           break;
         default:
-          std::cerr << " No match found for token: [" << value << "] among ABS_OPTIONS" << std::endl;
+          std::cerr << " No match found for token: [" << value << "] among ABS_OPTIONS"
+                    << std::endl;
           errfnd = 1;
           break;
         }
@@ -430,14 +447,16 @@ geant::RunManager *RunManager()
 {
   // create the GeantConfiguration object and the RunManager object
   geant::GeantConfig *runConfig = new geant::GeantConfig();
-  geant::RunManager *runManager = new geant::RunManager(parConfigNumPropagators, parConfigNumThreads, runConfig);
+  geant::RunManager *runManager = new geant::RunManager(parConfigNumPropagators,
+parConfigNumThreads, runConfig);
   //
   // Set parameters of the GeantConfig object:
   runConfig->fNtotal   = parConfigNumRunEvt;
   runConfig->fNbuff    = parConfigNumBufferedEvt;
   runConfig->fNaverage = parConfigNumPrimaryPerEvt;
   //
-  // Some additional parameters that have values in this application different than their default
+  // Some additional parameters that have values in this application different than their
+default
   //
   // this should be true by default from now on since we use only V3
   runConfig->fUseV3         = true;
@@ -514,12 +533,14 @@ void SetupUserField(geant::RunManager *runMgr)
   }
 }
 
-void SetupUserPrimaryGenerator(userapplication::TestEm3PrimaryGenerator *primarygun, int numprimsperevt)
+void SetupUserPrimaryGenerator(userapplication::TestEm3PrimaryGenerator *primarygun, int
+numprimsperevt)
 {
-  // it needs to be consistent with GeantConfig::fNaverage i.e. number of primary particles per event !!!
-  primarygun->SetNumberOfPrimaryParticlePerEvent(numprimsperevt);
-  if (parGunPrimaryParticleName != "") primarygun->SetPrimaryParticleName(parGunPrimaryParticleName);
-  if (parGunPrimaryKinEnergy > 0.) primarygun->SetPrimaryParticleEnergy(parGunPrimaryKinEnergy);
+  // it needs to be consistent with GeantConfig::fNaverage i.e. number of primary
+particles per event !!! primarygun->SetNumberOfPrimaryParticlePerEvent(numprimsperevt); if
+(parGunPrimaryParticleName != "")
+primarygun->SetPrimaryParticleName(parGunPrimaryParticleName); if (parGunPrimaryKinEnergy
+> 0.) primarygun->SetPrimaryParticleEnergy(parGunPrimaryKinEnergy);
 }
 
 void SetupMCTruthHandling(geant::RunManager *runMgr)3
@@ -544,8 +565,8 @@ void SetupPhysicsList(userapplication::TestEm3PhysicsList *userPhysList)
       userPhysList->SetMSCStepLimit(geantphysics::MSCSteppingAlgorithm::kUseDistanceToBoundary);
     } else {
       std::cerr << " **** ERROR TestEm3::SetupPhysicsList() \n"
-                << "   unknown MSC stepping algorithm = " << parProcessMSCStepLimit << std::endl;
-      exit(-1);
+                << "   unknown MSC stepping algorithm = " << parProcessMSCStepLimit <<
+std::endl; exit(-1);
     }
   }
 }

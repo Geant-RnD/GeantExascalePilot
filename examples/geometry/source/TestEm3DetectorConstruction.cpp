@@ -66,9 +66,10 @@ TestEm3DetectorConstruction::~TestEm3DetectorConstruction()
 void TestEm3DetectorConstruction::SetNumberOfAbsorbersPerLayer(int numabs)
 {
   if (numabs > gMaxNumAbsorbers) {
-    std::cerr << "  **** ERROR: TestEm3DetectorConstruction::SetNumberOfAbsorbersPerLayer() \n"
-                 "    Number of absorbers per layer "
-              << numabs << " > maximum " << gMaxNumAbsorbers << std::endl;
+    std::cerr
+        << "  **** ERROR: TestEm3DetectorConstruction::SetNumberOfAbsorbersPerLayer() \n"
+           "    Number of absorbers per layer "
+        << numabs << " > maximum " << gMaxNumAbsorbers << std::endl;
     exit(-1);
   }
   fNumberOfAbsorbers = numabs;
@@ -79,7 +80,8 @@ void TestEm3DetectorConstruction::SetAbsorberThickness(int absindx, double thick
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: TestEm3DetectorConstruction::SetAbsorberThickness() \n"
                  "    Unknown absorber index = "
-              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )" << std::endl;
+              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )"
+              << std::endl;
     exit(-1);
   }
   fAbsorberThicknesses[absindx] = thick;
@@ -90,29 +92,34 @@ double TestEm3DetectorConstruction::GetAbsorberThickness(int absindx) const
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: TestEm3DetectorConstruction::GetAbsorberThickness() \n"
                  "    Unknown absorber index = "
-              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )" << std::endl;
+              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )"
+              << std::endl;
     exit(-1);
   }
   return fAbsorberThicknesses[absindx];
 }
 
-void TestEm3DetectorConstruction::SetAbsorberMaterialName(int absindx, const std::string &matname)
+void TestEm3DetectorConstruction::SetAbsorberMaterialName(int absindx,
+                                                          const std::string &matname)
 {
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: TestEm3DetectorConstruction::SetAbsorberMaterialName() \n"
                  "    Unknown absorber index = "
-              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )" << std::endl;
+              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )"
+              << std::endl;
     exit(-1);
   }
   fAbsorberMaterialNames[absindx] = matname;
 }
 
-void TestEm3DetectorConstruction::SetAbsorberMaterial(int absindx, const std::string &matname)
+void TestEm3DetectorConstruction::SetAbsorberMaterial(int absindx,
+                                                      const std::string &matname)
 {
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: TestEm3DetectorConstruction::SetAbsorberMaterial() \n"
                  "    Unknown absorber index = "
-              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )" << std::endl;
+              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )"
+              << std::endl;
     exit(-1);
   }
   // will report proper error msg if the material cannot be found or created
@@ -120,12 +127,14 @@ void TestEm3DetectorConstruction::SetAbsorberMaterial(int absindx, const std::st
   fAbsorberMaterials[absindx] = mat;
 }
 
-const geantphysics::Material *TestEm3DetectorConstruction::GetAbsorberMaterial(int absindx) const
+const geantphysics::Material *TestEm3DetectorConstruction::GetAbsorberMaterial(
+    int absindx) const
 {
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: TestEm3DetectorConstruction::GetAbsorberMaterial() \n"
                  "    Unknown absorber index = "
-              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )" << std::endl;
+              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )"
+              << std::endl;
     exit(-1);
   }
   return fAbsorberMaterials[absindx];
@@ -134,9 +143,10 @@ const geantphysics::Material *TestEm3DetectorConstruction::GetAbsorberMaterial(i
 int TestEm3DetectorConstruction::GetAbsorberLogicalVolumeID(int absindx) const
 {
   if (absindx >= fNumberOfAbsorbers) {
-    std::cerr << "  **** ERROR: TestEm3DetectorConstruction::GetAbsorberLogicalVolumeID() \n"
-                 "    Unknown absorber index = "
-              << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )" << std::endl;
+    std::cerr
+        << "  **** ERROR: TestEm3DetectorConstruction::GetAbsorberLogicalVolumeID() \n"
+           "    Unknown absorber index = "
+        << absindx << " ( should be <= " << fNumberOfAbsorbers - 1 << " )" << std::endl;
     exit(-1);
   }
   return fAbsorberLogicVolIDs[absindx];
@@ -155,14 +165,18 @@ void TestEm3DetectorConstruction::ComputeCalorimeter()
 
 void TestEm3DetectorConstruction::DetectorInfo()
 {
-  std::cout << "\n ========================    Detector Info   ========================================  " << std::endl;
+  std::cout << "\n ========================    Detector Info   "
+               "========================================  "
+            << std::endl;
   std::cout << "     Calorimeter is " << fNumberOfLayers << " layers of [ ";
   for (int i = 0; i < fNumberOfAbsorbers; ++i) {
     std::cerr << fAbsorberThicknesses[i] / mm << "  mm " << fAbsorberMaterialNames[i];
     if (i < fNumberOfAbsorbers - 1) std::cerr << " + ";
   }
   std::cout << " ]" << std::endl;
-  std::cout << " ====================================================================================  \n" << std::endl;
+  std::cout << " ========================================================================"
+               "============  \n"
+            << std::endl;
 }
 
 void TestEm3DetectorConstruction::CreateMaterials()
@@ -177,29 +191,35 @@ void TestEm3DetectorConstruction::CreateMaterials()
   double temperature = 2.73 * kelvin;
   double z           = 1.;
   double a           = 1.008 * g / mole;
-  new geantphysics::Material("Galactic", z, a, density, geantphysics::MaterialState::kStateGas, temperature, pressure);
+  new geantphysics::Material("Galactic", z, a, density,
+                             geantphysics::MaterialState::kStateGas, temperature,
+                             pressure);
   //
   // create material Lead (by mass fraction)
-  double massfraction             = 1.;
-  int ncomponents                 = 1;
-  density                         = 11.35 * g / cm3;
-  geantphysics::Material *matLead = new geantphysics::Material("Lead", density, ncomponents);
+  double massfraction = 1.;
+  int ncomponents     = 1;
+  density             = 11.35 * g / cm3;
+  geantphysics::Material *matLead =
+      new geantphysics::Material("Lead", density, ncomponents);
   matLead->AddElement(elPb, massfraction = 1.0);
   //
   // create Scintillator (by atom count)
-  density                        = 1.032 * g / cm3;
-  ncomponents                    = 2;
-  int natoms                     = 1;
-  geantphysics::Material *matSci = new geantphysics::Material("Scintillator", density, ncomponents);
+  density     = 1.032 * g / cm3;
+  ncomponents = 2;
+  int natoms  = 1;
+  geantphysics::Material *matSci =
+      new geantphysics::Material("Scintillator", density, ncomponents);
   matSci->AddElement(elC, natoms = 9);
   matSci->AddElement(elH, natoms = 10);
   //
-  // create liquidArgon (from material NIST_MAT_lAr with different density by mass fraction)
+  // create liquidArgon (from material NIST_MAT_lAr with different density by mass
+  // fraction)
   geantphysics::Material *matlAr = geantphysics::Material::NISTMaterial("NIST_MAT_lAr");
   density                        = 1.390 * g / cm3;
   ncomponents                    = 1;
   massfraction                   = 1.;
-  geantphysics::Material *lArEm3 = new geantphysics::Material("liquidArgon", density, ncomponents);
+  geantphysics::Material *lArEm3 =
+      new geantphysics::Material("liquidArgon", density, ncomponents);
   lArEm3->AddMaterial(matlAr, massfraction);
 }
 
@@ -214,19 +234,21 @@ void TestEm3DetectorConstruction::CreateGeometry()
   }
 
   // // create one region (with the production cut in length)
-  // // all logical volume will be assigned to this region (i.e. enough to set for the world)
-  // vecgeom::Region *aRegion = new vecgeom::Region("Region", true, fProductionCut, fProductionCut, fProductionCut);
+  // // all logical volume will be assigned to this region (i.e. enough to set for the
+  // world) vecgeom::Region *aRegion = new vecgeom::Region("Region", true, fProductionCut,
+  // fProductionCut, fProductionCut);
 
   // create geometry
-  vecgeom::UnplacedBox *world = new vecgeom::UnplacedBox(0.5 * fWorldSizeX, 0.5 * fWorldSizeYZ, 0.5 * fWorldSizeYZ);
+  vecgeom::UnplacedBox *world =
+      new vecgeom::UnplacedBox(0.5 * fWorldSizeX, 0.5 * fWorldSizeYZ, 0.5 * fWorldSizeYZ);
   // create the corresponding logical volume
   vecgeom::LogicalVolume *logicWorld = new vecgeom::LogicalVolume("world", world);
   // set material pointer
   logicWorld->SetMaterialPtr(fWorldMaterial);
   //
   // create layer
-  vecgeom::UnplacedBox *layer =
-      new vecgeom::UnplacedBox("layer", 0.5 * fLayerThickness, 0.5 * fCaloSizeYZ, 0.5 * fCaloSizeYZ);
+  vecgeom::UnplacedBox *layer = new vecgeom::UnplacedBox(
+      "layer", 0.5 * fLayerThickness, 0.5 * fCaloSizeYZ, 0.5 * fCaloSizeYZ);
   // create the corresponding logical volume
   vecgeom::LogicalVolume *logicLayer = new vecgeom::LogicalVolume("layer", layer);
   // set material pointer
@@ -251,12 +273,14 @@ void TestEm3DetectorConstruction::CreateGeometry()
     // compute placement and place the absorber into the layer
     xcenter = xstart + sizeX;
     xstart += fAbsorberThicknesses[i];
-    vecgeom::Transformation3D *place = new vecgeom::Transformation3D(xcenter, 0, 0, 0, 0, 0);
+    vecgeom::Transformation3D *place =
+        new vecgeom::Transformation3D(xcenter, 0, 0, 0, 0, 0);
     logicLayer->PlaceDaughter(name, logicAbsor, place);
   }
   //
   // create calorimeter and place fNumberOfLayers into the calorimeter
-  vecgeom::UnplacedBox *calo = new vecgeom::UnplacedBox("calo", 0.5 * fCaloSizeX, 0.5 * fCaloSizeYZ, 0.5 * fCaloSizeYZ);
+  vecgeom::UnplacedBox *calo = new vecgeom::UnplacedBox(
+      "calo", 0.5 * fCaloSizeX, 0.5 * fCaloSizeYZ, 0.5 * fCaloSizeYZ);
   // create the corresponding logical volume
   vecgeom::LogicalVolume *logicCalo = new vecgeom::LogicalVolume("calo", calo);
   // set material pointer
@@ -265,14 +289,17 @@ void TestEm3DetectorConstruction::CreateGeometry()
   xstart  = -0.5 * fCaloSizeX;
   std::vector<int> layerIDs;
   int maxLayerID = -1;
-  // place fNumberOfLayers layers into the calorimeter and store the ID-s of the placed layers (as VPlacedVolume-s)
+  // place fNumberOfLayers layers into the calorimeter and store the ID-s of the placed
+  // layers (as VPlacedVolume-s)
   for (int i = 0; i < fNumberOfLayers; ++i) {
     sprintf(name, "layer_%d", i);
     xcenter = xstart + 0.5 * fLayerThickness;
     xstart += fLayerThickness;
-    vecgeom::Transformation3D *place          = new vecgeom::Transformation3D(xcenter, 0, 0, 0, 0, 0);
-    const vecgeom::VPlacedVolume *placedLayer = logicCalo->PlaceDaughter(name, logicLayer, place);
-    int layerID                               = placedLayer->id();
+    vecgeom::Transformation3D *place =
+        new vecgeom::Transformation3D(xcenter, 0, 0, 0, 0, 0);
+    const vecgeom::VPlacedVolume *placedLayer =
+        logicCalo->PlaceDaughter(name, logicLayer, place);
+    int layerID = placedLayer->id();
     layerIDs.push_back(layerID);
     if (layerID > maxLayerID) {
       maxLayerID = layerID;
@@ -289,7 +316,8 @@ void TestEm3DetectorConstruction::CreateGeometry()
   vecgeom::Transformation3D *place = new vecgeom::Transformation3D(0, 0, 0, 0, 0, 0);
   logicWorld->PlaceDaughter("calorimeter", logicCalo, place);
   //
-  // set the world logical volume, assigned it to the created region and close the geometry
+  // set the world logical volume, assigned it to the created region and close the
+  // geometry
   vecgeom::VPlacedVolume *w = logicWorld->Place();
   vecgeom::GeoManager::Instance().SetWorld(w);
   // // set region for the world logical volume (will be set for all daughter volumes)

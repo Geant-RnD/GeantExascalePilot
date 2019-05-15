@@ -10,7 +10,8 @@ __global__ void testNew(vecgeom::map<double, double> *devMap, double *key, int N
   }
 }
 
-__global__ void rebuildMap(vecgeom::map<double, double> *devMap, double *key, double *value, int N)
+__global__ void rebuildMap(vecgeom::map<double, double> *devMap, double *key,
+                           double *value, int N)
 {
   //  vecgeom::map<double,double> *myDevMap = new vecgeom::map<double, double>;
   // for (int i=0;i<N;i++)
@@ -28,8 +29,8 @@ namespace cxx {
 template size_t DevicePtr<cuda::map<double, double>>::SizeOf();
 template void DevicePtr<cuda::map<double, double>>::Construct() const;
 
-} // End cxx namespace
-}
+} // namespace cxx
+} // namespace vecgeom
 
 void launchTestNew(vecgeom::cxx::DevicePtr<vecgeom::cuda::map<double, double>> &devMap,
                    vecgeom::cxx::DevicePtr<double> key, int N, int nBlocks, int nThreads)
@@ -40,7 +41,8 @@ void launchTestNew(vecgeom::cxx::DevicePtr<vecgeom::cuda::map<double, double>> &
 }
 
 void launchRebuildMap(vecgeom::cxx::DevicePtr<vecgeom::cuda::map<double, double>> &devMap,
-                      vecgeom::cxx::DevicePtr<double> key, vecgeom::cxx::DevicePtr<double> value, int N, int nBlocks,
+                      vecgeom::cxx::DevicePtr<double> key,
+                      vecgeom::cxx::DevicePtr<double> value, int N, int nBlocks,
                       int nThreads)
 {
   int threadsPerBlock = nThreads;

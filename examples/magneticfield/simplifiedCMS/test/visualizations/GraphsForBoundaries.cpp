@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
 
     //(r,0,z) == (r,z)
     // z = -16k, -8k, 0, 8k, 16k
-    vecgeom::Vector3D<double> pos1(r, 0., -kZMax), pos2(r, 0., -kZMax * 0.5), pos3(r, 0., 0.), pos4(r, 0., kZMax * 0.5),
-        pos5(r, 0., kZMax);
+    vecgeom::Vector3D<double> pos1(r, 0., -kZMax), pos2(r, 0., -kZMax * 0.5),
+        pos3(r, 0., 0.), pos4(r, 0., kZMax * 0.5), pos5(r, 0., kZMax);
     vecgeom::Vector3D<double> rzField1, rzField2, rzField3, rzField4, rzField5;
     m1.GetFieldValueTest(pos1, rzField1);
     m1.GetFieldValueTest(pos2, rzField2);
@@ -68,8 +68,8 @@ int main(int argc, char *argv[])
   for (double z = -kZMax; z <= kZMax; z = z + kZDiff) {
 
     // r = 0, 2250,4500,6750,9000
-    vecgeom::Vector3D<double> pos1(0., 0., z), pos2(kRMax * 0.25, 0., z), pos3(kRMax * 0.5, 0., z),
-        pos4(kRMax * 0.75, 0., z), pos5(kRMax, 0., z);
+    vecgeom::Vector3D<double> pos1(0., 0., z), pos2(kRMax * 0.25, 0., z),
+        pos3(kRMax * 0.5, 0., z), pos4(kRMax * 0.75, 0., z), pos5(kRMax, 0., z);
     vecgeom::Vector3D<double> rzField1, rzField2, rzField3, rzField4, rzField5;
     m1.GetFieldValueTest(pos1, rzField1);
     m1.GetFieldValueTest(pos2, rzField2);

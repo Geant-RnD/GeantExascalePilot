@@ -21,7 +21,8 @@ int main()
   ifstream pFile("cms2015.txt");
   if (pFile.is_open()) {
     row = 0;
-    // getline() returns the stream. testing the stream with while returns error such as EOF
+    // getline() returns the stream. testing the stream with while returns error such as
+    // EOF
     while (getline(pFile, line)) {
       // so here we know that the read was a success and that line has valid data
       stringstream ss(line);

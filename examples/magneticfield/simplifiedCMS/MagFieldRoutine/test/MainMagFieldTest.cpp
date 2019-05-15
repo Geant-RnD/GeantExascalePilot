@@ -82,7 +82,8 @@ int main()
       m1.GetFieldValueTest(pos2, rzField2);
       int i = r * kRDiffInv * noZValues + halfZValues + z * kZDiffInv;
 
-      vecgeom::Vector3D<double> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i], dataMap.fBz[i]);
+      vecgeom::Vector3D<double> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i],
+                                              dataMap.fBz[i]);
 
       assert(ApproxEqual(rzField1, rzCheckField1));
       assert(ApproxEqual(rzField2, rzCheckField1));
@@ -94,14 +95,15 @@ int main()
     }
   }
 
-  // Check for points on mid of cell lines i.e. (r/2,0,z) , (0,r/2,z) , (r,0,z/2), (0,r,z/2)
-  // being done in separate loop because otherwise indices go beyond where they should. Should not be required though if
-  // taken
-  // care of out of bound indices. Done as of now for MagField.cpp , but not when reading data from file
+  // Check for points on mid of cell lines i.e. (r/2,0,z) , (0,r/2,z) , (r,0,z/2),
+  // (0,r,z/2) being done in separate loop because otherwise indices go beyond where they
+  // should. Should not be required though if taken care of out of bound indices. Done as
+  // of now for MagField.cpp , but not when reading data from file
   for (double r = 0.; r < kRMax; r = r + kRDiff) {
     for (double z = -kZMax; z < kZMax; z = z + kZDiff) {
-      vecgeom::Vector3D<double> pos4(r + kRDiff * halfWeight, 0., z), pos5(0., r + kRDiff * halfWeight, z),
-          pos6(r, 0., z + kZDiff * halfWeight), pos7(0., r, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<double> pos4(r + kRDiff * halfWeight, 0., z),
+          pos5(0., r + kRDiff * halfWeight, z), pos6(r, 0., z + kZDiff * halfWeight),
+          pos7(0., r, z + kZDiff * halfWeight);
       vecgeom::Vector3D<double> rzField4, rzField5, rzField6, rzField7;
       m1.GetFieldValueTest(pos4, rzField4);
       m1.GetFieldValueTest(pos5, rzField5);
@@ -111,8 +113,8 @@ int main()
       // Say i1, i2, i3, i4
       vecgeom::Vector3D<double> rzCheckField2, rzCheckField3;
       // Now need i1, i2, i3, i4
-      // for pos4 and pos5, take i1 and i2. i4 = i3 + 161. Same z, different r. so skip through as many values of z as
-      // for one r
+      // for pos4 and pos5, take i1 and i2. i4 = i3 + 161. Same z, different r. so skip
+      // through as many values of z as for one r
       int i1 = r * kRDiffInv * noZValues + halfZValues + z * kZDiffInv;
       int i2 = i1 + noZValues;
 
@@ -139,8 +141,10 @@ int main()
   // For point in middle of cell
   for (double r = 0.; r < kRMax; r = r + kRDiff) {
     for (double z = -kZMax; z < kZMax; z = z + kZDiff) {
-      vecgeom::Vector3D<double> pos8(r + kRDiff * halfWeight, 0., z + kZDiff * halfWeight);
-      vecgeom::Vector3D<double> pos9(0., r + kRDiff * halfWeight, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<double> pos8(r + kRDiff * halfWeight, 0.,
+                                     z + kZDiff * halfWeight);
+      vecgeom::Vector3D<double> pos9(0., r + kRDiff * halfWeight,
+                                     z + kZDiff * halfWeight);
       vecgeom::Vector3D<double> rzField8, rzCheckField4;
       vecgeom::Vector3D<double> rzField9;
       m1.GetFieldValueTest(pos8, rzField8);
@@ -153,9 +157,13 @@ int main()
       int i3 = i1 + 1;
       int i4 = i2 + 1;
 
-      rzCheckField4.x() = (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
-      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] + dataMap.fBphi[i4]) * 0.25;
-      rzCheckField4.z() = (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
+      rzCheckField4.x() =
+          (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
+      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] +
+                           dataMap.fBphi[i4]) *
+                          0.25;
+      rzCheckField4.z() =
+          (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
 
       assert(ApproxEqual(rzField8, rzCheckField4));
       assert(ApproxEqual(rzField9, rzCheckField4));

@@ -12,7 +12,8 @@ void update_array(std::array<std::atomic_intmax_t, N>& vals)
 }
 
 template <intmax_t N>
-void loop_update_array(const intmax_t& beg, const intmax_t& end, std::array<std::atomic_intmax_t, N>& vals)
+void loop_update_array(const intmax_t& beg, const intmax_t& end,
+                       std::array<std::atomic_intmax_t, N>& vals)
 {
     printf("[%20s@%i]> beg = %li, end = %li\n", __FUNCTION__, __LINE__, beg, end);
     for(auto i = beg; i < end; ++i)
@@ -63,7 +64,8 @@ int main(int argc, char** argv)
     tg.join();
     print_array<N>(vals);
 
-    auto loop_update_args = [&](const intmax_t& beg, const intmax_t& end, std::array<std::atomic_intmax_t, N>& _vals) {
+    auto loop_update_args = [&](const intmax_t& beg, const intmax_t& end,
+                                std::array<std::atomic_intmax_t, N>& _vals) {
         printf("[%20s@%i]> beg = %li, end = %li\n", __FUNCTION__, __LINE__, beg, end);
         for(auto i = beg; i < end; ++i)
             update_array<N>(_vals);

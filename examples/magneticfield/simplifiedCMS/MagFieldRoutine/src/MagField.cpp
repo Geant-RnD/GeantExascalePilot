@@ -11,13 +11,9 @@ using namespace std;
 
 typedef vecgeom::Vector3D<double> Vector3D;
 
-MagField::MagField()
-{
-}
+MagField::MagField() {}
 
-MagField::~MagField()
-{
-}
+MagField::~MagField() {}
 
 void MagField::ReadVectorData(string inputMap)
 {
@@ -26,7 +22,8 @@ void MagField::ReadVectorData(string inputMap)
   double d1, d2, d3, d4, d5, d0;
   ifstream pFile(inputMap);
   if (pFile.is_open()) {
-    // getline() returns the stream. testing the stream with while returns error such as EOF
+    // getline() returns the stream. testing the stream with while returns error such as
+    // EOF
     while (getline(pFile, line)) {
       // so here we know that the read was a success and that line has valid data
       stringstream ss(line);
@@ -63,11 +60,12 @@ void MagField::GetFieldValueRZ(const double r, const double Z, Vector3D &rzField
   // i.e. we are saying:
   int zInd = floor((z - kZ0) * kZDiffInv);
   // need i1,i2,i3,i4 for 4 required indices
-  int i1            = rIndLow + zInd;
-  int i2            = i1 + 1;
-  int i3            = rIndHigh + zInd;
-  int i4            = i3 + 1;
-  double zLow       = (zInd - kHalfZValues) * kZDiff; // 80 because it's the middle index in 0 to 160
+  int i1 = rIndLow + zInd;
+  int i2 = i1 + 1;
+  int i3 = rIndHigh + zInd;
+  int i4 = i3 + 1;
+  double zLow =
+      (zInd - kHalfZValues) * kZDiff; // 80 because it's the middle index in 0 to 160
   double zHigh      = zLow + kZDiff;
   double radiusLow  = rFloor * kRDiff;
   double radiusHigh = radiusLow + kRDiff;
@@ -79,9 +77,10 @@ void MagField::GetFieldValueRZ(const double r, const double Z, Vector3D &rzField
   double a3 = (radius - radiusLow) * (zHigh - z);
   double a4 = (radius - radiusLow) * (z - zLow);
 
-  double BR   = (fBr[i1] * a1 + fBr[i2] * a2 + fBr[i3] * a3 + fBr[i4] * a4) * kAInverse;
-  double BZ   = (fBz[i1] * a1 + fBz[i2] * a2 + fBz[i3] * a3 + fBz[i4] * a4) * kAInverse;
-  double BPhi = (fBphi[i1] * a1 + fBphi[i2] * a2 + fBphi[i3] * a3 + fBphi[i4] * a4) * kAInverse;
+  double BR = (fBr[i1] * a1 + fBr[i2] * a2 + fBr[i3] * a3 + fBr[i4] * a4) * kAInverse;
+  double BZ = (fBz[i1] * a1 + fBz[i2] * a2 + fBz[i3] * a3 + fBz[i4] * a4) * kAInverse;
+  double BPhi =
+      (fBphi[i1] * a1 + fBphi[i2] * a2 + fBphi[i3] * a3 + fBphi[i4] * a4) * kAInverse;
 
   // To make it thread safe. Because the previous predicted_B* vectors weren't threadsafe
   rzField.x() = BR;
@@ -125,7 +124,8 @@ void MagField::GetFieldValueTest(const Vector3D &pos, Vector3D &rzField)
   GetFieldValueRZ(cyl[0], cyl[1], rzField); // cyl[] =[r,z]
 }
 
-void MagField::GetFieldValues(const vecgeom::SOA3D<double> &posVec, vecgeom::SOA3D<double> &fieldVec)
+void MagField::GetFieldValues(const vecgeom::SOA3D<double> &posVec,
+                              vecgeom::SOA3D<double> &fieldVec)
 {
   for (int i = 0; i < posVec.size(); ++i) {
     // fill a vector3D with ith triplet for input to getFieldValue

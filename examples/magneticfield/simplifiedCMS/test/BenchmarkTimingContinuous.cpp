@@ -147,7 +147,8 @@ void GenVecCartContinuous(vecgeom::Vector<ThreeVector> &posVec, int &n)
   n = n * 8;
 }
 
-float TimeScalar(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n, const int &nRepetitions)
+float TimeScalar(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n,
+                 const int &nRepetitions)
 {
   ThreeVector sumXYZField(0., 0., 0.), xyzField;
   float totScaTime = 0.;
@@ -172,24 +173,30 @@ float TimeScalar(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const
   }
   cout << sumXYZField << endl;
 
-  float timeSum  = std::accumulate(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), 0.0);
+  float timeSum =
+      std::accumulate(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), 0.0);
   float timeMean = timeSum / scaTimePerRepitition.size();
   float timeSqSum =
-      std::inner_product(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), scaTimePerRepitition.begin(), 0.0);
-  float timeStDev = std::sqrt(timeSqSum / scaTimePerRepitition.size() - timeMean * timeMean);
+      std::inner_product(scaTimePerRepitition.begin(), scaTimePerRepitition.end(),
+                         scaTimePerRepitition.begin(), 0.0);
+  float timeStDev =
+      std::sqrt(timeSqSum / scaTimePerRepitition.size() - timeMean * timeMean);
 
   cout << "\nScalar: " << endl;
   // cout<<"Total time is: "<<clock1InFloat <<endl;
-  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns "<<endl;
+  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns
+  // "<<endl;
   cout << "totScaTime is: " << totScaTime << endl;
-  // cout<<"Time per call inside loop: "<<totScaTime/(n*nRepetitions*noRunsAvg)*1e+9 << " ns "<<endl;
+  // cout<<"Time per call inside loop: "<<totScaTime/(n*nRepetitions*noRunsAvg)*1e+9 << "
+  // ns "<<endl;
   cout << "Mean time is: " << timeMean * 1e+9 << "ns" << endl;
   cout << "Standard devi. is: " << timeStDev * 1e+9 << "ns" << endl;
   // return clock1InFloat;
   return totScaTime / noRunsAvg;
 }
 
-float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n, const int &nRepetitions)
+float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n,
+                 const int &nRepetitions)
 {
   cout << "\nVector fields start: " << endl;
   vecgeom::kVcFloat::precision_v vX;
@@ -239,20 +246,25 @@ float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const
     totVecTime += clock1InFloat;
   }
 
-  float timeSum  = std::accumulate(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), 0.0);
+  float timeSum =
+      std::accumulate(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), 0.0);
   float timeMean = timeSum / vecTimePerRepitition.size();
   float timeSqSum =
-      std::inner_product(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), vecTimePerRepitition.begin(), 0.0);
-  float timeStDev = std::sqrt(timeSqSum / vecTimePerRepitition.size() - timeMean * timeMean);
+      std::inner_product(vecTimePerRepitition.begin(), vecTimePerRepitition.end(),
+                         vecTimePerRepitition.begin(), 0.0);
+  float timeStDev =
+      std::sqrt(timeSqSum / vecTimePerRepitition.size() - timeMean * timeMean);
 
   cout << sumXYZField << endl;
   // float clock1InFloat = ((float)clock1)/CLOCKS_PER_SEC;
 
   cout << "\nVector: " << endl;
   // cout<<"Total time is: "<<clock1InFloat<<endl;
-  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns "<<endl;
+  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns
+  // "<<endl;
   cout << "totVecTime is: " << totVecTime << endl;
-  // cout<<"Time per call inside loop: "<<totVecTime/(n*nRepetitions*noRunsAvg)*1e+9 << " ns "<<endl;
+  // cout<<"Time per call inside loop: "<<totVecTime/(n*nRepetitions*noRunsAvg)*1e+9 << "
+  // ns "<<endl;
   cout << "Mean time is: " << timeMean * 1e+9 << "ns" << endl;
   cout << "Standard devi. is: " << timeStDev * 1e+9 << "ns" << endl;
   return totVecTime / noRunsAvg;

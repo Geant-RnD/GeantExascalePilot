@@ -45,9 +45,11 @@ int main()
   for (int i = 0; i < 50 ; ++i)  //or i < m1.predicted_Br.size()
   {
       //cout<<"Entering loop"<<endl;
-      //cout<<m1.allR[i]<<" "<<m1.allZ[i]<<" "<<m1.predicted_BZ[i]<< " "<<m1.predicted_Br[i]<<"
+      //cout<<m1.allR[i]<<" "<<m1.allZ[i]<<" "<<m1.predicted_BZ[i]<< "
+  "<<m1.predicted_Br[i]<<"
   "<<m1.predicted_Bphi[i]<<endl;
-      cout<<m1.all_x[i]<<" "<<m1.all_y[i]<<" "<<m1.all_z[i]<<" "<<m1.predicted_Bx[i]<<" "<<m1.predicted_By[i]<<"
+      cout<<m1.all_x[i]<<" "<<m1.all_y[i]<<" "<<m1.all_z[i]<<" "<<m1.predicted_Bx[i]<<"
+  "<<m1.predicted_By[i]<<"
   "<<m1.predicted_Bz[i]<<endl;
   }
   */

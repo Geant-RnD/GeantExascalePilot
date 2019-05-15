@@ -19,10 +19,11 @@ public:
   float getData() const { return fData; }
 };
 
-void launchTestNew(vecgeom::DevicePtr<vecgeom::cuda::map<double, MyClass>> &devMap, vecgeom::DevicePtr<double> key,
-                   int N, int nBlocks, int nThreads);
-void launchRebuildMap(vecgeom::DevicePtr<vecgeom::cuda::map<double, MyClass>> &devMap, vecgeom::DevicePtr<double> key,
-                      vecgeom::DevicePtr<MyClass> value, int N, int nBlocks, int nThreads);
+void launchTestNew(vecgeom::DevicePtr<vecgeom::cuda::map<double, MyClass>> &devMap,
+                   vecgeom::DevicePtr<double> key, int N, int nBlocks, int nThreads);
+void launchRebuildMap(vecgeom::DevicePtr<vecgeom::cuda::map<double, MyClass>> &devMap,
+                      vecgeom::DevicePtr<double> key, vecgeom::DevicePtr<MyClass> value,
+                      int N, int nBlocks, int nThreads);
 
 VECCORE_ATT_HOST
 double getRandom()
@@ -38,7 +39,8 @@ void testStd(int size, double* keys,MyClass* values) {
    }
 
    for (int i=0; i < size; ++i)
-      printf("From std map= %f and with find %f\n",stdMap[keys[i]],stdMap.find(keys[i])->second);
+      printf("From std map= %f and with find
+%f\n",stdMap[keys[i]],stdMap.find(keys[i])->second);
 
 }
 */
