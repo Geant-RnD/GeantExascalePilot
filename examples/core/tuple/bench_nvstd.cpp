@@ -33,9 +33,9 @@ int main(int argc, char** argv)
     write_app_info(argc, argv);
 
     // create thread-pool with two threads
-    intmax_t                  num_threads = GetEnv<intmax_t>("NUM_THREADS", 2);
-    ThreadPool                 tp(num_threads);
-    static constexpr intmax_t N = 10;
+    intmax_t                            num_threads = GetEnv<intmax_t>("NUM_THREADS", 2);
+    ThreadPool                          tp(num_threads);
+    static constexpr intmax_t           N = 10;
     std::array<std::atomic_intmax_t, N> vals;
     for(intmax_t i = 0; i < N; ++i)
         vals[i].store(-N + i);

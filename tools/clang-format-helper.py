@@ -1,17 +1,23 @@
 #!/usr/bin/env python
 
-import os, sys, glob, shutil, argparse, subprocess as sp
+import os
+import sys
+import glob
+import shutil
+import argparse
+import subprocess as sp
 from enum import Enum
 from pathlib import Path
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 FILE_ROOT = os.path.dirname(os.path.realpath(__file__))
 CLANG_FORMAT_EXE = shutil.which('clang-format')
-DEFAULT_PATHS = [ os.path.join('source', 'Geant') ]
+DEFAULT_PATHS = [os.path.join('source', 'Geant'), 'examples']
 FORMAT_MODE_OPTIONS = ['local', 'geant', 'custom', 'global']
 CUSTOM_FORMAT_FILE = 'local-clang-format'
 GLOBAL_FORMAT_FILE = 'geant-clang-format'
-EXTENSIONS = ['.hh', '.cc', '.icc', '.hpp', '.cpp', '.tcc', '.cu', '.cuh']
+EXTENSIONS = ['.hh', '.cc', '.icc', '.hpp', '.cpp',
+              '.tcc', '.cu', '.cuh', '.tcpp', '.icpp']
 TMP_DIR = os.path.join('/tmp', 'geant-format-test')
 VERBOSE = 0
 
@@ -33,7 +39,8 @@ def get_format_mode(mode):
     elif mode == 'global' or mode == 'geant':
         return FormatMode.GLOBAL
     else:
-        raise KeyError('Unknown format mode: {}. Valid options: {}', mode, FORMAT_MODE_OPTIONS)
+        raise KeyError('Unknown format mode: {}. Valid options: {}',
+                       mode, FORMAT_MODE_OPTIONS)
 
 
 def get_default_paths():
@@ -112,7 +119,8 @@ def copy_format(paths, format_mode):
     for p in paths:
         worker_format_file = os.path.join(p, '.clang-format')
         if VERBOSE > 0:
-            print('Copying "{}" to "{}"...'.format(format_file, worker_format_file))
+            print('Copying "{}" to "{}"...'.format(
+                format_file, worker_format_file))
         shutil.copy2(format_file, worker_format_file)
 
 
@@ -147,7 +155,8 @@ def apply_clang_format(target_file, inplace=False):
         proc = sp.Popen(cmd, stdout=sp.PIPE)
         out, err = proc.communicate()
     except Exception as e:
-        print('Error running clang-format on "{}"...\nProcess Error Message:{}\nException:{}'.format(target_file, err.decode("utf-8"), e))
+        print('Error running clang-format on "{}"...\nProcess Error Message:{}\nException:{}'.format(
+            target_file, err.decode("utf-8"), e))
     return out.decode("utf-8")
 
 
@@ -212,7 +221,8 @@ def commit_check(files, paths, extensions):
 
     # Uh-oh
     if len(bad_format) > 0:
-        raise RuntimeError('Failure to apply formatting on files: {}'.format(bad_format))
+        raise RuntimeError(
+            'Failure to apply formatting on files: {}'.format(bad_format))
 
 
 def verify(files, paths, extensions):
@@ -294,13 +304,13 @@ def verify(files, paths, extensions):
         for f in dict_files:
             counter += 1
             if revert_format[f] != global_format[f]:
-                sys.stdout.write("!") # warn there was an error
+                sys.stdout.write("!")  # warn there was an error
                 msg += '  - Warning! File: "{}" had formatting changes after applying custom format and then global format\n'.format(
                     f.replace(TMP_DIR, REPO_ROOT))
                 good_format[f] = global_format[f]
                 bad_format[f] = revert_format[f]
             else:
-                sys.stdout.write(".") # no warning
+                sys.stdout.write(".")  # no warning
 
             # flush the output
             sys.stdout.flush()
@@ -318,21 +328,21 @@ def verify(files, paths, extensions):
         # remove custom format in directory
         remove_format(get_worker_format_files([dict_dir]))
 
-
     # Uh-oh
     if len(bad_format) > 0:
         forig = open(os.path.join(REPO_ROOT, 'format-original.txt'), 'w')
         for key, out in good_format.items():
-            forig.write("\n\n{0}\n{1}\n{0}\n\n{2}\n".format('#'*80, key, "{}".format(out)))
+            forig.write("\n\n{0}\n{1}\n{0}\n\n{2}\n".format(
+                '#'*80, key, "{}".format(out)))
         forig.close()
 
         fmod = open(os.path.join(REPO_ROOT, 'format-modified.txt'), 'w')
         for key, out in bad_format.items():
-            fmod.write("\n\n{0}\n{1}\n{0}\n\n{2}\n".format('#'*80, key, "{}".format(out)))
+            fmod.write("\n\n{0}\n{1}\n{0}\n\n{2}\n".format(
+                '#'*80, key, "{}".format(out)))
         fmod.close()
 
         raise RuntimeError('Verification of custom format failed')
-
 
 
 if __name__ == "__main__":
@@ -360,7 +370,8 @@ if __name__ == "__main__":
                         help='Folder and/or file paths to operate on')
     parser.add_argument('-l', '--local-file', help="Path to local/custom clang-format file",
                         type=str, default=None)
-    parser.add_argument('-V', '--verbose', help="Verbosity", type=int, default=VERBOSE)
+    parser.add_argument('-V', '--verbose', help="Verbosity",
+                        type=int, default=VERBOSE)
 
     args = parser.parse_args()
 
@@ -370,11 +381,15 @@ if __name__ == "__main__":
     format_mode = get_format_mode(args.mode)
 
     if args.format_exe is None:
-        raise FileNotFoundError('Error! No "clang-format" executable was found or specified!')
+        raise FileNotFoundError(
+            'Error! No "clang-format" executable was found or specified!')
 
     CLANG_FORMAT_EXE = os.path.realpath(args.format_exe)
     if VERBOSE > 0:
         print("Using '{}'...".format(CLANG_FORMAT_EXE))
+
+    if VERBOSE > 1:
+        print("paths: {}, extensions = {}".format(args.paths, args.extensions))
 
     files = []
     dpaths = []
@@ -385,6 +400,8 @@ if __name__ == "__main__":
             var = os.path.join(REPO_ROOT, var)
         # realpath
         var = os.path.realpath(var)
+        if VERBOSE > 2:
+            print('var = {}'.format(var))
 
         if os.path.isfile(var):
             # if file, add to file list and append to path
@@ -409,8 +426,9 @@ if __name__ == "__main__":
     fpaths = list(set(fpaths))
 
     if VERBOSE > 0:
-        print('Files: {}')
+        print('Files: {}'.format(files))
         print('Paths: {}'.format(dpaths))
+        print('Folders: {}'.format(fpaths))
         print('')
 
     ret = 0
