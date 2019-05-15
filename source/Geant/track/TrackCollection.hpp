@@ -22,7 +22,7 @@ private:
   const value_type &Get(TrackId_t i) const { return fTracks.at(i); }
   value_type &Get(TrackId_t i) { return fTracks.at(i); }
 
-  template <class PT>
+  template <typename PT>
   friend class TrackModifier;
   friend class TrackAccessor;
 };

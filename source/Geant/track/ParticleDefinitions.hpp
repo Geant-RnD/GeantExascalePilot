@@ -30,9 +30,9 @@ private:
   const value_type &Get(PDefId_t i) const { return fPdef.at(i); }
   value_type &Get(PDefId_t i) { return fPdef.at(i); }
 
-  template <class PT>
+  template <typename PT>
   friend class TrackModifier;
-  template <class PT>
+  template <typename PT>
   friend class TrackPhysicsAccessor;
 };
 

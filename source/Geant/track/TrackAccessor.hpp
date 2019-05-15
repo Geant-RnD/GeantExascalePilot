@@ -37,7 +37,7 @@ protected:
   explicit TrackAccessor(const TrackState &state) : fState(state) {}
   const TrackState &State() const { return fState; }
 
-  template <class PT>
+  template <typename PT>
   friend class TrackModifier;
 };
 

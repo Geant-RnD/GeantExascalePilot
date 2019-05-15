@@ -7,7 +7,7 @@
 
 namespace geantx {
 
-template <class PD>
+template <typename PD>
 class TrackModifier {
   using Base = TrackAccessor;
 
@@ -34,7 +34,7 @@ public:
     fState.fTime += phys.E() * phys.Step() / phys.P();
   }
 
-  template <class OPD>
+  template <typename OPD>
   void CreateSecondaryFrom(const TrackPhysicsAccessor<OPD> &other, ParticleId_t newId,
                            const ThreeVector &newDirection, double newKineticEnergy) const
   {

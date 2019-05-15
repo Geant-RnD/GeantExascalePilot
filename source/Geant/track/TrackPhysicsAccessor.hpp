@@ -14,7 +14,7 @@ namespace geantx {
  * This currently takes just a track state, but if the data layout changes, it
  * could take e.g. some abstract multi-particle state *plus* a particle index.
  */
-template <class PD>
+template <typename PD>
 class TrackPhysicsAccessor : public TrackAccessor {
   using Base = TrackAccessor;
 
