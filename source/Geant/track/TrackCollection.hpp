@@ -15,18 +15,16 @@ private:
   std::vector<TrackState> fTracks;
 
 public:
-
-
 private:
   using value_type = TrackState;
 
   // FIXME: temporary implementation
-  const value_type& Get(TrackId_t i) const { return fTracks.at(i); }
-  value_type& Get(TrackId_t i) { return fTracks.at(i); }
+  const value_type &Get(TrackId_t i) const { return fTracks.at(i); }
+  value_type &Get(TrackId_t i) { return fTracks.at(i); }
 
-  template<class PT> friend class TrackModifier;
+  template <class PT>
+  friend class TrackModifier;
   friend class TrackAccessor;
 };
 
 } // namespace geantx
-

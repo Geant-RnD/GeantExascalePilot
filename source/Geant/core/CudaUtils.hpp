@@ -31,9 +31,10 @@ inline namespace GEANT_IMPL_NAMESPACE {
 inline void HandleCudaError(cudaError_t err, const char *file, int line)
 {
   if (err != cudaSuccess) {
-    ::geantx::Fatal("Cuda", "%s (%d) in %s at line %d\n", cudaGetErrorString(err), err, file, line);
+    ::geantx::Fatal("Cuda", "%s (%d) in %s at line %d\n", cudaGetErrorString(err), err,
+                    file, line);
   }
 }
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx

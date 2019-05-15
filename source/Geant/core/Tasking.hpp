@@ -30,8 +30,8 @@ inline void init_thread_data(ThreadPool *tp)
 inline TaskRunManager *cpu_run_manager()
 {
   typedef std::shared_ptr<TaskRunManager> pointer;
-  static thread_local pointer _instance =
-      pointer(new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
+  static thread_local pointer _instance = pointer(
+      new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
   return _instance.get();
 }
 
@@ -40,17 +40,17 @@ inline TaskRunManager *cpu_run_manager()
 inline TaskRunManager *gpu_run_manager()
 {
   typedef std::shared_ptr<TaskRunManager> pointer;
-  static thread_local pointer _instance =
-      pointer(new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
+  static thread_local pointer _instance = pointer(
+      new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
   return _instance.get();
 }
 
 //======================================================================================//
 
 inline void init_run_manager(TaskRunManager *run_man,
-                             uintmax_t nthreads = GetEnv<uintmax_t>("GEANT_NUM_THREADS",
-                                                                    std::thread::hardware_concurrency(),
-                                                                    "Number of threads"))
+                             uintmax_t nthreads = GetEnv<uintmax_t>(
+                                 "GEANT_NUM_THREADS", std::thread::hardware_concurrency(),
+                                 "Number of threads"))
 {
   // register thread-id
   auto tid = ThreadPool::GetThisThreadID();
@@ -65,7 +65,8 @@ inline void init_run_manager(TaskRunManager *run_man,
       if (verbose > 0) {
         AutoLock lcout(TypeMutex<decltype(std::cout)>());
         std::cout << "\n"
-                  << "[" << tid << "] Initializing tasking run manager with " << nthreads << " threads..." << std::endl;
+                  << "[" << tid << "] Initializing tasking run manager with " << nthreads
+                  << " threads..." << std::endl;
       }
       run_man->Initialize(nthreads);
     }
@@ -75,4 +76,4 @@ inline void init_run_manager(TaskRunManager *run_man,
 
 } // namespace tasking
 
-} // namespace geant
+} // namespace geantx

@@ -22,7 +22,8 @@ class FlexIntegrationDriver;
 
 class GUFieldPropagator {
 public:
-  GUFieldPropagator(ScalarIntegrationDriver *scalarDriver, double epsilon, FlexIntegrationDriver *flexDriver = nullptr);
+  GUFieldPropagator(ScalarIntegrationDriver *scalarDriver, double epsilon,
+                    FlexIntegrationDriver *flexDriver = nullptr);
 
   // template <typename Backend>
   // GUFieldPropagator(TemplateGUIntegrationDriver<Backend>* driver, double epsilon);
@@ -38,23 +39,33 @@ public:
    *   output: success(returned), new position, new direction of particle
    */
   // VECCORE_ATT_HOST_DEVICE
-  bool DoStep(vecgeom::Vector3D<double> const &position, vecgeom::Vector3D<double> const &direction, int const &charge,
-              double const &momentum, double const &step, vecgeom::Vector3D<double> &endPosition,
-              vecgeom::Vector3D<double> &endDiretion); //  Goal => make it 'const';  -- including all classes it uses
+  bool DoStep(vecgeom::Vector3D<double> const &position,
+              vecgeom::Vector3D<double> const &direction, int const &charge,
+              double const &momentum, double const &step,
+              vecgeom::Vector3D<double> &endPosition,
+              vecgeom::Vector3D<double> &endDiretion); //  Goal => make it 'const';  --
+                                                       //  including all classes it uses
 
   ScalarIntegrationDriver *GetScalarIntegrationDriver() { return fScalarDriver; }
-  const ScalarIntegrationDriver *GetScalarIntegrationDriver() const { return fScalarDriver; }
+  const ScalarIntegrationDriver *GetScalarIntegrationDriver() const
+  {
+    return fScalarDriver;
+  }
 
   // static FlexIntegrationDriver* GetFlexibleIntegrationDriver(){ return fVectorDriver; }
-  static const FlexIntegrationDriver *GetFlexibleIntegrationDriver() /*const*/ { return fVectorDriver; }
+  static const FlexIntegrationDriver *GetFlexibleIntegrationDriver() /*const*/
+  {
+    return fVectorDriver;
+  }
   static void SetFlexIntegrationDriver(FlexIntegrationDriver *flexDrv);
 
   double GetEpsilon() { return fEpsilon; }
 
   VVectorField *GetField();
   GUFieldPropagator *Clone() const; // { return this; }
-                                    // Choice 1:  No longer allowing cloning !!  -- later solution
-                                    // Choice 2:  Clone only the scalar 'old' stepper.  Share the flexible stepper
+                                    // Choice 1:  No longer allowing cloning !!  -- later
+                                    // solution Choice 2:  Clone only the scalar 'old'
+                                    // stepper.  Share the flexible stepper
 
   /******
     template<typename Vector3D, typename DblType, typename IntType>
@@ -78,10 +89,9 @@ public:
     VECCORE_ATT_HOST_DEVICE
        void DoStep( DblType const & posx, DblType const & posy, DblType const & posz,
                     DblType const & dirx, DblType const & diry, DblType const & dirz,
-                    IntType const & charge, DblType const & momentum, DblType const & step,
-                    DblType & newsposx, DblType  & newposy, DblType  & newposz,
-                    DblType & newdirx, DblType  & newdiry, DblType  & newdirz
-                  ) const ;
+                    IntType const & charge, DblType const & momentum, DblType const &
+   step, DblType & newsposx, DblType  & newposy, DblType  & newposz, DblType & newdirx,
+   DblType  & newdiry, DblType  & newdirz ) const ;
    *****/
 
 private:

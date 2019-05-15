@@ -11,7 +11,8 @@ namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
 // static data member init
 Vector_t<Isotope *> Isotope::gTheIsotopeTable; // global isotope table
-Map_t<int, int> Isotope::gTheIsotopeMap;       // map to get iso. the index (used only internaly)
+Map_t<int, int>
+    Isotope::gTheIsotopeMap; // map to get iso. the index (used only internaly)
 
 /**
  *  If a(atomic mass) and/or isomass(mass of the bare nucleus) are not given
@@ -19,7 +20,8 @@ Map_t<int, int> Isotope::gTheIsotopeMap;       // map to get iso. the index (use
  *  Similarly, if the name/symbol of the isotope is not given it will be set
  *  automatically.
  */
-Isotope *Isotope::GetIsotope(int z, int n, double a, int isol, double isomass, const std::string &name)
+Isotope *Isotope::GetIsotope(int z, int n, double a, int isol, double isomass,
+                             const std::string &name)
 {
   Isotope *theIsotope;
   // check if this isotope has already been created
@@ -28,27 +30,32 @@ Isotope *Isotope::GetIsotope(int z, int n, double a, int isol, double isomass, c
     theIsotope = Isotope::GetTheIsotopeTable()[isoindx];
   } else { // i.e. has not been created yet so create it
     if (z < 1) {
-      std::cerr << "Wrong Isotope in Isotope::Isotope() " << name << " Z= " << z << std::endl;
+      std::cerr << "Wrong Isotope in Isotope::Isotope() " << name << " Z= " << z
+                << std::endl;
       exit(1);
     }
     if (n < z) {
-      std::cerr << "Wrong Isotope in Isotope::Isotope()" << name << " Z= " << z << " > N= " << n << std::endl;
+      std::cerr << "Wrong Isotope in Isotope::Isotope()" << name << " Z= " << z
+                << " > N= " << n << std::endl;
       exit(1);
     }
-    if (a <= 0.) { // consistency of isotope mass with some particles guaranted only in this case !!!
+    if (a <= 0.) { // consistency of isotope mass with some particles guaranted only in
+                   // this case !!!
       a = NISTElementData::Instance().GetAtomicMass(z, n);
       if (isomass <= 0.) {
         isomass = NISTElementData::Instance().GetIsotopeMass(z, n);
       }
     } else if (isomass <= 0.) {
-      isomass = a / geantx::units::kAvogadro * geantx::units::kCLightSquare - z * geantx::units::kElectronMassC2 +
+      isomass = a / geantx::units::kAvogadro * geantx::units::kCLightSquare -
+                z * geantx::units::kElectronMassC2 +
                 NISTElementData::Instance().GetBindingEnergy(z, n);
     }
     if (name != "") {
       theIsotope = new Isotope(name, z, n, a, isomass, isol);
     } else {
       theIsotope =
-          new Isotope(NISTElementData::Instance().GetElementSymbol(z) + std::to_string(n), z, n, a, isomass, isol);
+          new Isotope(NISTElementData::Instance().GetElementSymbol(z) + std::to_string(n),
+                      z, n, a, isomass, isol);
     }
   }
   return theIsotope;
@@ -56,7 +63,8 @@ Isotope *Isotope::GetIsotope(int z, int n, double a, int isol, double isomass, c
 
 //
 // ctr
-Isotope::Isotope(const std::string &name, int z, int n, double a, double isomass, int isol)
+Isotope::Isotope(const std::string &name, int z, int n, double a, double isomass,
+                 int isol)
     : fName(name), fZ(z), fN(n), fIsoL(isol), fIndex(-1), fA(a), fIsoMass(isomass)
 {
   fIndex = gTheIsotopeTable.size();
@@ -103,8 +111,9 @@ std::ostream &operator<<(std::ostream &flux, const Isotope *isotope)
   flux.setf(std::ios::fixed, std::ios::floatfield);
   long prec = flux.precision(3);
 
-  flux << " Isotope: " << std::setw(5) << isotope->fName << "   Z = " << std::setw(2) << isotope->fZ
-       << "   N = " << std::setw(3) << isotope->fN << "   A = " << std::setw(6) << std::setprecision(6)
+  flux << " Isotope: " << std::setw(5) << isotope->fName << "   Z = " << std::setw(2)
+       << isotope->fZ << "   N = " << std::setw(3) << isotope->fN
+       << "   A = " << std::setw(6) << std::setprecision(6)
        << (isotope->fA) / (geantx::units::g / geantx::units::mole) << " [g/mole]"
        << "   mass of nucleus = " << isotope->fIsoMass / (geantx::units::GeV) << " [GeV]";
 
@@ -122,7 +131,8 @@ std::ostream &operator<<(std::ostream &flux, const Isotope &isotope)
 std::ostream &operator<<(std::ostream &flux, Vector_t<Isotope *> isotable)
 {
   // dump info for all known isotopes
-  flux << "\n***** Table : Nb of isotopes = " << isotable.size() << " *****\n" << std::endl;
+  flux << "\n***** Table : Nb of isotopes = " << isotable.size() << " *****\n"
+       << std::endl;
   for (size_t i = 0; i < isotable.size(); ++i) {
     flux << isotable[i] << std::endl;
   }

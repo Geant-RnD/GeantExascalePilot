@@ -15,9 +15,13 @@ namespace geantx {
  * could take e.g. some abstract multi-particle state *plus* a particle index.
  */
 class TrackGeometryAccessor : public TrackAccessor {
-    using Base = TrackAccessor;
+  using Base = TrackAccessor;
+
 public:
-  explicit TrackGeometryAccessor(const TrackCollection &tracks, TrackId_t track_id) : Base(tracks, track_id) {}
+  explicit TrackGeometryAccessor(const TrackCollection &tracks, TrackId_t track_id)
+      : Base(tracks, track_id)
+  {
+  }
 
   // >>> ACCESSORS
 

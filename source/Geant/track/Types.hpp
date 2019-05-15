@@ -24,7 +24,16 @@ using ProcessId_t     = unsigned int;
 enum Species_t { kHadron, kLepton };
 
 //! Track
-enum TrackStatus_t { kAlive, kKilled, kInFlight, kBoundary, kExitingSetup, kPhysics, kPostponed, kNew };
+enum TrackStatus_t {
+  kAlive,
+  kKilled,
+  kInFlight,
+  kBoundary,
+  kExitingSetup,
+  kPhysics,
+  kPostponed,
+  kNew
+};
 
 /** Basket simulation stages. */
 enum ESimulationStage {

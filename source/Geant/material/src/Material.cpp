@@ -20,8 +20,8 @@ Map_t<std::string, int> Material::gMapMaterialNameToIndex;
  * state will be determined automatically based on the relation of the given
  * density to the kGasThreshold density constant and set internally .
  */
-Material::Material(const std::string &name, double z, double a, double density, MaterialState state, double temp,
-                   double pressure)
+Material::Material(const std::string &name, double z, double a, double density,
+                   MaterialState state, double temp, double pressure)
     : fName(name)
 {
   using geantx::units::cm3;
@@ -35,7 +35,8 @@ Material::Material(const std::string &name, double z, double a, double density, 
     std::cerr << " Material WARNING in Material::Material() :"
               << " define a material with density=0 is not allowed. \n"
               << " The material " << name << " will be constructed with the"
-              << " default minimal density: " << kUniverseMeanDensity / (g / cm3) << " [g/cm3]" << std::endl;
+              << " default minimal density: " << kUniverseMeanDensity / (g / cm3)
+              << " [g/cm3]" << std::endl;
     density = kUniverseMeanDensity;
   }
   fIsUsed      = false;
@@ -80,8 +81,8 @@ Material::Material(const std::string &name, double z, double a, double density, 
 
 // Ctr to create a material from a combination of elements and/or materials
 // subsequently added via AddElement and/or AddMaterial
-Material::Material(const std::string &name, double density, int numcomponents, MaterialState state, double temp,
-                   double pressure)
+Material::Material(const std::string &name, double density, int numcomponents,
+                   MaterialState state, double temp, double pressure)
     : fName(name)
 {
   using geantx::units::cm3;
@@ -95,7 +96,8 @@ Material::Material(const std::string &name, double density, int numcomponents, M
     std::cerr << " Material WARNING in Material::Material() :"
               << " define a material with density=0 is not allowed. \n"
               << " The material " << name << " will be constructed with the"
-              << " default minimal density: " << kUniverseMeanDensity / (g / cm3) << " [g/cm3]" << std::endl;
+              << " default minimal density: " << kUniverseMeanDensity / (g / cm3)
+              << " [g/cm3]" << std::endl;
     density = kUniverseMeanDensity;
   }
   fIsUsed      = false;
@@ -160,7 +162,8 @@ void Material::AddElement(Element *element, int numatoms)
   } else {
     std::cerr << "Material::AddElement ERROR : Attempt to add more than the "
               << "declared number of elements for material: " << std::endl
-              << " Name = " << fName << " # components(elements) declared = " << fNumOfElements << std::endl;
+              << " Name = " << fName
+              << " # components(elements) declared = " << fNumOfElements << std::endl;
     exit(-1);
   }
   // filled ..
@@ -219,7 +222,8 @@ void Material::AddElement(Element *element, double massfraction)
   } else {
     std::cerr << "Material::AddElement ERROR : Attempt to add more than the "
               << "declared number of components for material: " << std::endl
-              << " Name = " << fName << " # components declared = " << fNumOfComponents << std::endl;
+              << " Name = " << fName << " # components declared = " << fNumOfComponents
+              << std::endl;
     exit(-1);
   }
   // filled.
@@ -236,8 +240,8 @@ void Material::AddElement(Element *element, double massfraction)
     }
     if (std::fabs(1. - sumWeight) > geantx::units::perThousand) {
       std::cerr << "WARNING !! Material::AddElement by mass fraction :" << std::endl
-                << " Sum of fractional masses = " << sumWeight << " is not = 1. This can lead to wrong results! "
-                << std::endl
+                << " Sum of fractional masses = " << sumWeight
+                << " is not = 1. This can lead to wrong results! " << std::endl
                 << "  Material name = " << fName << std::endl;
     }
     // compute relative number of atoms ( only a normalisation is left )
@@ -258,7 +262,8 @@ void Material::AddMaterial(Material *material, double massfraction)
   if (massfraction < 0.0 || massfraction > 1.0) {
     std::cerr << "Material::AddMaterial ERROR : Attempt to add material with "
               << " wrong mass fraction in case of material: " << std::endl
-              << " Material name = " << fName << " Material name(try to add)  = " << material->GetName()
+              << " Material name = " << fName
+              << " Material name(try to add)  = " << material->GetName()
               << " Material mass fraction(try to add) = " << massfraction << std::endl;
     exit(-1);
   }
@@ -303,12 +308,15 @@ void Material::AddMaterial(Material *material, double massfraction)
       int el = 0;
       while ((el < fNumOfElements) && (elemVector[ielem] != fElementVector[el]))
         ++el;
-      // check if this element has already been found in the element vector of this material
+      // check if this element has already been found in the element vector of this
+      // material
       if (el < fNumOfElements) { // already there
-        fMassFractionVector[el] += massfraction * (material->GetMassFractionVector())[ielem];
+        fMassFractionVector[el] +=
+            massfraction * (material->GetMassFractionVector())[ielem];
       } else { // not there -> insert
         fElementVector.push_back(elemVector[ielem]);
-        fMassFractionVector[el] += massfraction * (material->GetMassFractionVector())[ielem];
+        fMassFractionVector[el] +=
+            massfraction * (material->GetMassFractionVector())[ielem];
         ++fNumOfElements;
       }
     }
@@ -317,7 +325,8 @@ void Material::AddMaterial(Material *material, double massfraction)
   } else {
     std::cerr << "Material::AddMaterial ERROR : Attempt to add more than the "
               << "declared number of components for material: " << std::endl
-              << " Name = " << fName << " # components declared = " << fNumOfComponents << std::endl;
+              << " Name = " << fName << " # components declared = " << fNumOfComponents
+              << std::endl;
     exit(-1);
   }
 
@@ -335,8 +344,8 @@ void Material::AddMaterial(Material *material, double massfraction)
     }
     if (std::fabs(1. - sumWeight) > geantx::units::perThousand) {
       std::cerr << "WARNING !! Material::AddMaterial by mass fraction :" << std::endl
-                << " Sum of fractional masses = " << sumWeight << " is not = 1. This can lead to wrong results! "
-                << std::endl
+                << " Sum of fractional masses = " << sumWeight
+                << " is not = 1. This can lead to wrong results! " << std::endl
                 << "  Material name = " << fName << std::endl;
     }
     // compute relative number of atoms ( only a normalisation is left )
@@ -423,7 +432,8 @@ Material *Material::NISTMaterial(const std::string &name)
     const std::string _name = NISTMaterialData::Instance().GetName(indx);
     double density          = NISTMaterialData::Instance().GetDensity(indx);
     // will be set in the corresponding MaterialProperties
-    //    double        meanExcEnergy   = NISTMaterialData::Instance().GetMeanExcitationEnergy(indx);
+    //    double        meanExcEnergy   =
+    //    NISTMaterialData::Instance().GetMeanExcitationEnergy(indx);
     double temperature  = NISTMaterialData::Instance().GetTemperature(indx);
     double pressure     = NISTMaterialData::Instance().GetPressure(indx);
     MaterialState state = NISTMaterialData::Instance().GetMaterialState(indx);
@@ -444,10 +454,12 @@ Material *Material::NISTMaterial(const std::string &name)
       }
     }
   } else { // material was not found (has not been created before) and we don't have
-           // NIST material data for the given material name ==> we cannot create the material
+           // NIST material data for the given material name ==> we cannot create the
+           // material
     std::cerr << "  ERROR in Material::GetNISTMaterial() : \n"
               << "   - material Name = " << name << " has not been created earlier and\n"
-              << "      NISTMaterialData cannot be found for this material name." << std::endl;
+              << "      NISTMaterialData cannot be found for this material name."
+              << std::endl;
     exit(-1);
   }
   return mat;
@@ -465,8 +477,9 @@ std::ostream &operator<<(std::ostream &flux, const Material *material)
   using geantx::units::kelvin;
   using geantx::units::perCent;
 
-  flux << " Material: " << std::setw(8) << material->fName << "  with density = " << std::setw(6)
-       << std::setprecision(5) << material->fDensity / (g / cm3) << " [g/cm3]"
+  flux << " Material: " << std::setw(8) << material->fName
+       << "  with density = " << std::setw(6) << std::setprecision(5)
+       << material->fDensity / (g / cm3) << " [g/cm3]"
        << "\n";
 
   if (material->fMaterialProperties) flux << material->fMaterialProperties;
@@ -483,15 +496,18 @@ std::ostream &operator<<(std::ostream &flux, const Material *material)
   if (material->fState == MaterialState::kStateGas) {
     flux << std::setfill(' ') << std::setw(10) << " "
          << " Material state is kStateGas :"
-         << "  temperature = " << std::setw(6) << std::setprecision(2) << material->fTemperature / kelvin << " [K]"
-         << "  pressure = " << std::setw(6) << std::setprecision(2) << material->fPressure / atmosphere << " [atm]";
+         << "  temperature = " << std::setw(6) << std::setprecision(2)
+         << material->fTemperature / kelvin << " [K]"
+         << "  pressure = " << std::setw(6) << std::setprecision(2)
+         << material->fPressure / atmosphere << " [atm]";
   }
   flux << "\n";
   for (int i = 0; i < material->fNumOfElements; ++i) {
-    flux << "\n   ---> " << (material->fElementVector)[i] << "\n          ElmMassFraction: " << std::setw(6)
-         << std::setprecision(2) << (material->fMassFractionVector)[i] / perCent << " [%]"
-         << "  ElmAbundance " << std::setw(6) << std::setprecision(2) << 100 * ((material->fRelNumOfAtomsPerVol)[i])
-         << " [%] \n";
+    flux << "\n   ---> " << (material->fElementVector)[i]
+         << "\n          ElmMassFraction: " << std::setw(6) << std::setprecision(2)
+         << (material->fMassFractionVector)[i] / perCent << " [%]"
+         << "  ElmAbundance " << std::setw(6) << std::setprecision(2)
+         << 100 * ((material->fRelNumOfAtomsPerVol)[i]) << " [%] \n";
   }
   flux.precision(prec);
   flux.setf(mode, std::ios::floatfield);

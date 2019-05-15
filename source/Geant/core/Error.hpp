@@ -35,8 +35,8 @@ void ErrorHandlerImpl(EMsgLevel level, const char *location, const char *msgfmt,
 #endif
 
 template <typename... ArgsTypes>
-VECCORE_ATT_HOST_DEVICE void MessageHandler(EMsgLevel level, const char *location, const char *msgfmt,
-                                            ArgsTypes... params)
+VECCORE_ATT_HOST_DEVICE void MessageHandler(EMsgLevel level, const char *location,
+                                            const char *msgfmt, ArgsTypes... params)
 {
 #ifdef VECCORE_CUDA
 #ifndef VECCORE_CUDA_DEVICE_COMPILATION
@@ -103,34 +103,39 @@ VECCORE_ATT_HOST_DEVICE void Printf(const char *msgfmt, ArgsTypes... params)
 }
 
 template <typename... ArgsTypes>
-VECCORE_ATT_HOST_DEVICE void Print(const char *location, const char *msgfmt, ArgsTypes... params)
+VECCORE_ATT_HOST_DEVICE void Print(const char *location, const char *msgfmt,
+                                   ArgsTypes... params)
 {
   MessageHandler(EMsgLevel::kPrint, location, msgfmt, params...);
 }
 
 template <typename... ArgsTypes>
-VECCORE_ATT_HOST_DEVICE void Info(const char *location, const char *msgfmt, ArgsTypes... params)
+VECCORE_ATT_HOST_DEVICE void Info(const char *location, const char *msgfmt,
+                                  ArgsTypes... params)
 {
   MessageHandler(EMsgLevel::kInfo, location, msgfmt, params...);
 }
 
 template <typename... ArgsTypes>
-VECCORE_ATT_HOST_DEVICE void Warning(const char *location, const char *msgfmt, ArgsTypes... params)
+VECCORE_ATT_HOST_DEVICE void Warning(const char *location, const char *msgfmt,
+                                     ArgsTypes... params)
 {
   MessageHandler(EMsgLevel::kWarning, location, msgfmt, params...);
 }
 
 template <typename... ArgsTypes>
-VECCORE_ATT_HOST_DEVICE void Error(const char *location, const char *msgfmt, ArgsTypes... params)
+VECCORE_ATT_HOST_DEVICE void Error(const char *location, const char *msgfmt,
+                                   ArgsTypes... params)
 {
   MessageHandler(EMsgLevel::kError, location, msgfmt, params...);
 }
 
 template <typename... ArgsTypes>
-VECCORE_ATT_HOST_DEVICE void Fatal(const char *location, const char *msgfmt, ArgsTypes... params)
+VECCORE_ATT_HOST_DEVICE void Fatal(const char *location, const char *msgfmt,
+                                   ArgsTypes... params)
 {
   MessageHandler(EMsgLevel::kFatal, location, msgfmt, params...);
 }
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx

@@ -16,7 +16,8 @@ template <class T_Stepper, class T_Equation, unsigned int Nvar>
 class TMagErrorStepper;
 
 template <class T_Stepper, class T_Equation, unsigned int Nvar>
-std::ostream &operator<<(std::ostream &ostr, const TMagErrorStepper<T_Stepper, T_Equation, Nvar> &stepper);
+std::ostream &operator<<(std::ostream &ostr,
+                         const TMagErrorStepper<T_Stepper, T_Equation, Nvar> &stepper);
 
 template <class T_Stepper, class T_Equation, unsigned int Nvar>
 class TMagErrorStepper : public VScalarIntegrationStepper {
@@ -25,9 +26,10 @@ public: // with description
       (Nvar > GUIntegrationNms::NumVarBase) ? Nvar : GUIntegrationNms::NumVarBase;
   // std::max( GUIntegrationNms::NumVarBase,  Nvar);
 
-  TMagErrorStepper(T_Equation *EqRhs,
-                   unsigned int integrationOrder,   // Make it a template Parameter ??
-                   unsigned int numStateVariables); // = -1)  // No default -- must ensure order is set
+  TMagErrorStepper(
+      T_Equation *EqRhs,
+      unsigned int integrationOrder,   // Make it a template Parameter ??
+      unsigned int numStateVariables); // = -1)  // No default -- must ensure order is set
 
   TMagErrorStepper(const TMagErrorStepper &right);
 
@@ -41,8 +43,9 @@ public: // with description
     fEquation_Rhs->T_Equation::RightHandSide(y, charge, dydx);
   }
 
-  inline void StepWithErrorEstimate(const double yInput[], const double dydx[], double charge, double hstep,
-                                    double yOutput[], double yError[]);
+  inline void StepWithErrorEstimate(const double yInput[], const double dydx[],
+                                    double charge, double hstep, double yOutput[],
+                                    double yError[]);
   // The stepper for the Runge Kutta integration. The stepsize
   // is fixed, with the Step size given by h.
   // Integrates ODE starting values y[0 to 6].
@@ -51,7 +54,8 @@ public: // with description
   double DistChord(double charge) const;
 
   template <class T_Stepper_, class T_Equation_, int Nvar_>
-  friend std::ostream &operator<<(std::ostream &os, const TMagErrorStepper<T_Stepper_, T_Equation_, Nvar_> &);
+  friend std::ostream &operator<<(
+      std::ostream &os, const TMagErrorStepper<T_Stepper_, T_Equation_, Nvar_> &);
 
   bool CheckInitialisation() const;
 
@@ -81,20 +85,24 @@ private:
 // ------------------------------------------------------------------
 
 template <class T_Stepper, class T_Equation, unsigned int Nvar>
-TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(T_Equation *EqRhs, unsigned int integrationOrder,
-                                                                unsigned int numStateVariables)
+TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(
+    T_Equation *EqRhs, unsigned int integrationOrder, unsigned int numStateVariables)
     : VScalarIntegrationStepper(EqRhs, integrationOrder,
                                 Nvar,               // Must pass it to base class
-                                numStateVariables), // ((numStateVariables>0) ? numStateVariables : NumVarStore) ),
+                                numStateVariables), // ((numStateVariables>0) ?
+                                                    // numStateVariables : NumVarStore) ),
       fEquation_Rhs(EqRhs)
 {
   // assert(EqRhs != 0);
-  std::cerr << "- TMagErrorStepper<T_Stepper, T_Equation, Nvar> Constructor 1 called: " << std::endl;
+  std::cerr << "- TMagErrorStepper<T_Stepper, T_Equation, Nvar> Constructor 1 called: "
+            << std::endl;
   // std::cerr << "  Full info: " << *this << std::endl;
 
-  std::cerr << "    Nvar = " << Nvar << "  numState = " << numStateVariables; // << std::endl;
+  std::cerr << "    Nvar = " << Nvar
+            << "  numState = " << numStateVariables; // << std::endl;
   std::cerr << "    order= " << integrationOrder << std::endl;
-  std::cerr << "    Eq-of-motion (arg)  = " << EqRhs << " Id= " << EqRhs->GetId(); // << std::endl;
+  std::cerr << "    Eq-of-motion (arg)  = " << EqRhs
+            << " Id= " << EqRhs->GetId(); // << std::endl;
   // std::cerr << "    Eq-of-motion (here) = " << GetEquationOfMotion()
   //          << " Id= " << GetEquationOfMotion()->GetId() << std::endl;
   // std::cerr << "    Eq-of-motion (base) = " << this->fEquation_Rhs
@@ -110,7 +118,8 @@ TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(T_Equation *EqRh
 }
 
 template <class T_Stepper, class T_Equation, unsigned int Nvar>
-TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(const TMagErrorStepper &right)
+TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(
+    const TMagErrorStepper &right)
     : VScalarIntegrationStepper((T_Equation *)0, right.IntegratorOrder(),
                                 right.GetNumberOfVariables(), // must be == Nvar
                                 right.GetNumberOfStateVariables()),
@@ -128,15 +137,17 @@ TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(const TMagErrorS
 }
 
 template <class T_Stepper, class T_Equation, unsigned int Nvar>
-std::ostream &operator<<(std::ostream &ostr, const TMagErrorStepper<T_Stepper, T_Equation, Nvar> &stepper)
+std::ostream &operator<<(std::ostream &ostr,
+                         const TMagErrorStepper<T_Stepper, T_Equation, Nvar> &stepper)
 {
   ostr << "- TMagErrorStepper<T_Stepper, T_Equation, Nvar>: " << std::endl;
   ostr << "    order= " << stepper.IntegrationOrder() << std::endl;
-  ostr << "    Nvar = " << Nvar << "  numState = " << stepper.GetNumberOfStateVariables() << std::endl;
-  ostr << "    Eq-of-motion (here) = " << stepper.GetEquationOfMotion() << " Id= " << stepper.GetEquationOfMotion()
+  ostr << "    Nvar = " << Nvar << "  numState = " << stepper.GetNumberOfStateVariables()
        << std::endl;
-  ostr << "    Eq-of-motion (base) = " << stepper.fEquation_Rhs << " Id= " << stepper.fEquation_Rhs->GetId()
-       << std::endl;
+  ostr << "    Eq-of-motion (here) = " << stepper.GetEquationOfMotion()
+       << " Id= " << stepper.GetEquationOfMotion() << std::endl;
+  ostr << "    Eq-of-motion (base) = " << stepper.fEquation_Rhs
+       << " Id= " << stepper.fEquation_Rhs->GetId() << std::endl;
   ostr << "    this = " << &stepper << std::endl;
   ostr << std::endl;
 
@@ -163,9 +174,9 @@ bool TMagErrorStepper<T_Stepper, T_Equation, Nvar>::CheckInitialisation() const
 
 // inline
 template <class T_Stepper, class T_Equation, unsigned int Nvar>
-void TMagErrorStepper<T_Stepper, T_Equation, Nvar>::StepWithErrorEstimate(const double yInput[], const double dydx[],
-                                                                          double charge, double hstep, double yOutput[],
-                                                                          double yError[])
+void TMagErrorStepper<T_Stepper, T_Equation, Nvar>::StepWithErrorEstimate(
+    const double yInput[], const double dydx[], double charge, double hstep,
+    double yOutput[], double yError[])
 // The stepper for the Runge Kutta integration. The stepsize
 // is fixed, with the Step size given by h.
 // Integrates ODE starting values y[0 to 6].
@@ -197,20 +208,25 @@ void TMagErrorStepper<T_Stepper, T_Equation, Nvar>::StepWithErrorEstimate(const 
 
   // Do two half steps
 
-  static_cast<T_Stepper *>(this)->T_Stepper::StepWithoutErrorEst(yInitial, charge, dydx, halfStep, yMiddle);
+  static_cast<T_Stepper *>(this)->T_Stepper::StepWithoutErrorEst(yInitial, charge, dydx,
+                                                                 halfStep, yMiddle);
   this->RightHandSide(yMiddle, charge, dydxMid);
-  static_cast<T_Stepper *>(this)->T_Stepper::StepWithoutErrorEst(yMiddle, charge, dydxMid, halfStep, yOutput);
+  static_cast<T_Stepper *>(this)->T_Stepper::StepWithoutErrorEst(yMiddle, charge, dydxMid,
+                                                                 halfStep, yOutput);
 
   // Store midpoint, chord calculation
 
   fMidPoint = ThreeVector(yMiddle[0], yMiddle[1], yMiddle[2]);
 
   // Do a full Step
-  //            static_cast<T_Stepper*>(this)->T_Stepper::StepWithoutErrorEst (yInitial, dydx, hstep, yOneStep);
-  static_cast<T_Stepper *>(this)->T_Stepper::StepWithoutErrorEst(yInitial, charge, dydx, hstep, yOneStep);
+  //            static_cast<T_Stepper*>(this)->T_Stepper::StepWithoutErrorEst (yInitial,
+  //            dydx, hstep, yOneStep);
+  static_cast<T_Stepper *>(this)->T_Stepper::StepWithoutErrorEst(yInitial, charge, dydx,
+                                                                 hstep, yOneStep);
   for (unsigned int i = 0; i < Nvar; i++) {
     yError[i] = yOutput[i] - yOneStep[i];
-    yOutput[i] += yError[i] * static_cast<T_Stepper *>(this)->T_Stepper::IntegratorCorrection();
+    yOutput[i] +=
+        yError[i] * static_cast<T_Stepper *>(this)->T_Stepper::IntegratorCorrection();
     // T_Stepper::IntegratorCorrection ;
     // Provides accuracy increased by 1 order via the
     // Richardson Extrapolation

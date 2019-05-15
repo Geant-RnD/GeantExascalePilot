@@ -25,9 +25,10 @@ using geantx::units::kTwoPi;
 // #include "ThreeVector.h"
 // #include "Geant/magneticfield/GULineSection.hpp"
 
-GUExactHelixStepper::GUExactHelixStepper(VScalarEquationOfMotion *EqRhs) // TMagFieldEquation
-    : VScalarHelicalStepper(EqRhs, 1),                                   // "Order" = 1 - not really applicable
-      fBfieldValue(DBL_MAX),                                             // , DBL_MAX, DBL_MAX),
+GUExactHelixStepper::GUExactHelixStepper(
+    VScalarEquationOfMotion *EqRhs)    // TMagFieldEquation
+    : VScalarHelicalStepper(EqRhs, 1), // "Order" = 1 - not really applicable
+      fBfieldValue(DBL_MAX),           // , DBL_MAX, DBL_MAX),
       fPtrMagEqOfMot(EqRhs)
 {
   ;
@@ -37,7 +38,8 @@ GUExactHelixStepper::~GUExactHelixStepper() {}
 
 void GUExactHelixStepper::StepWithErrorEstimate(const double yInput[],
                                                 const double *, // dydx
-                                                double charge, double hstep, double yOut[], double yErr[])
+                                                double charge, double hstep,
+                                                double yOut[], double yErr[])
 {
   const unsigned int nvar = 6;
 
@@ -57,15 +59,16 @@ void GUExactHelixStepper::StepWithErrorEstimate(const double yInput[],
   fBfieldValue = Bfld_value;
 }
 
-void GUExactHelixStepper::StepWithoutErrorEstimate(const double yIn[], ThreeVector Bfld, double charge, double h,
-                                                   double yOut[])
+void GUExactHelixStepper::StepWithoutErrorEstimate(const double yIn[], ThreeVector Bfld,
+                                                   double charge, double h, double yOut[])
 {
   // Assuming a constant field: solution is a helix
 
   AdvanceHelix(yIn, Bfld, charge, h, yOut);
 
   std::cerr << "GUExactHelixStepper::StepWithoutErrorEstimate"
-            << "should *NEVER* be called. StepWithErrorEstimate must do the work." << std::endl;
+            << "should *NEVER* be called. StepWithErrorEstimate must do the work."
+            << std::endl;
 }
 
 // ---------------------------------------------------------------------------
@@ -82,7 +85,8 @@ double GUExactHelixStepper::DistChord(double /*charge*/) const
   if (Ang_curve <= geantx::units::kPi) {
     distChord = GetRadHelix() * (1 - Math::Cos(0.5 * Ang_curve));
   } else if (Ang_curve < kTwoPi) {
-    distChord = GetRadHelix() * (1 + Math::Cos(0.5 * (geantx::units::kTwoPi - Ang_curve)));
+    distChord =
+        GetRadHelix() * (1 + Math::Cos(0.5 * (geantx::units::kTwoPi - Ang_curve)));
   } else {
     distChord = 2. * GetRadHelix();
   }

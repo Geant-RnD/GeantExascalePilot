@@ -7,7 +7,8 @@
 // #define  INTEGRATOR_CORRECTION   (1./((1<<2)-1))
 
 template <class T_Equation, unsigned int Nvar>
-class TSimpleRunge : public TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar> {
+class TSimpleRunge
+    : public TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar> {
 public: // with description
   static constexpr unsigned int OrderSimpleR = 2;
   static const unsigned int Nmax_SR          = 12;
@@ -22,12 +23,15 @@ public: // with description
 
   inline double IntegratorCorrection() { return 1. / ((1 << OrderSimpleR) - 1); }
 
-  inline __attribute__((always_inline)) void RightHandSide(double y[], double charge, double dydx[])
+  inline __attribute__((always_inline)) void RightHandSide(double y[], double charge,
+                                                           double dydx[])
   {
     fEquation_Rhs->T_Equation::RightHandSide(y, charge, dydx);
   }
 
-  inline __attribute__((always_inline)) void StepWithoutErrorEst(const double yIn[], double charge, const double dydx[],
+  inline __attribute__((always_inline)) void StepWithoutErrorEst(const double yIn[],
+                                                                 double charge,
+                                                                 const double dydx[],
                                                                  double h, double yOut[]);
 
 private:
@@ -47,8 +51,8 @@ private:
 
 template <class T_Equation, unsigned int Nvar>
 TSimpleRunge<T_Equation, Nvar>::TSimpleRunge(T_Equation *EqRhs, unsigned int numStateVar)
-    : TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>(EqRhs, OrderSimpleR,
-                                                                         (numStateVar > 0 ? numStateVar : Nvar)),
+    : TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>(
+          EqRhs, OrderSimpleR, (numStateVar > 0 ? numStateVar : Nvar)),
       fNumberOfStateVariables(numStateVar > 0 ? numStateVar : Nvar), fEquation_Rhs(EqRhs)
 {
   // default GetNumberOfStateVariables() == Nmax_SR
@@ -59,12 +63,13 @@ TSimpleRunge<T_Equation, Nvar>::TSimpleRunge(T_Equation *EqRhs, unsigned int num
 
 template <class T_Equation, unsigned int Nvar>
 TSimpleRunge<T_Equation, Nvar>::TSimpleRunge(const TSimpleRunge &right)
-    : TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>((T_Equation *)0, OrderSimpleR,
-                                                                         right.fNumberOfStateVariables),
+    : TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>(
+          (T_Equation *)0, OrderSimpleR, right.fNumberOfStateVariables),
       fEquation_Rhs(new T_Equation(*(right.fEquation_Rhs)))
 {
   // Propagate it to the base class
-  TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>::SetEquationOfMotion(fEquation_Rhs);
+  TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>::SetEquationOfMotion(
+      fEquation_Rhs);
 
   // SetEquationOfMotion(fEquation_Rhs);
 }
@@ -73,7 +78,8 @@ template <class T_Equation, unsigned int Nvar>
 void TSimpleRunge<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 {
   fEquation_Rhs = equation;
-  TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>::SetEquationOfMotion(fEquation_Rhs);
+  TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>::SetEquationOfMotion(
+      fEquation_Rhs);
 
   // TMagErrorStepper::SetEquationOfMotion(fEquation_Rhs);
 }
@@ -85,10 +91,9 @@ VScalarIntegrationStepper *TSimpleRunge<T_Equation, Nvar>::Clone() const
 }
 
 template <class T_Equation, unsigned int Nvar>
-inline __attribute__((always_inline)) void TSimpleRunge<T_Equation, Nvar>::StepWithoutErrorEst(const double yIn[],
-                                                                                               double charge,
-                                                                                               const double dydx[],
-                                                                                               double h, double yOut[])
+inline __attribute__((always_inline)) void TSimpleRunge<
+    T_Equation, Nvar>::StepWithoutErrorEst(const double yIn[], double charge,
+                                           const double dydx[], double h, double yOut[])
 {
   // Initialise time to t0, needed when it is not updated by the integration.
   yTemp[7] = yOut[7] = yIn[7]; //  Better to set it to NaN;  // TODO

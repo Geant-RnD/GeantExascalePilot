@@ -41,7 +41,8 @@ inline int &this_thread_device()
   // the thread is assigned to
   //
   static std::atomic<int> _ntid(0);
-  static thread_local int _instance = (device_count() > 0) ? ((_ntid++) % device_count()) : 0;
+  static thread_local int _instance =
+      (device_count() > 0) ? ((_ntid++) % device_count()) : 0;
   return _instance;
 }
 
@@ -75,7 +76,10 @@ public:
   string_t key;
   string_t description;
 
-  DeviceOption(const int &_idx, crstring_t _key, crstring_t _desc) : index(_idx), key(_key), description(_desc) {}
+  DeviceOption(const int &_idx, crstring_t _key, crstring_t _desc)
+      : index(_idx), key(_key), description(_desc)
+  {
+  }
 
   static void spacer(std::ostream &os, const char c = '-')
   {
@@ -93,12 +97,19 @@ public:
 
   friend bool operator==(const DeviceOption &itr, crstring_t cmp)
   {
-    return (!is_numeric(cmp)) ? (itr.key == tolower(cmp)) : (itr.index == from_string<int>(cmp));
+    return (!is_numeric(cmp)) ? (itr.key == tolower(cmp))
+                              : (itr.index == from_string<int>(cmp));
   }
 
-  friend bool operator!=(const DeviceOption &lhs, const DeviceOption &rhs) { return !(lhs == rhs); }
+  friend bool operator!=(const DeviceOption &lhs, const DeviceOption &rhs)
+  {
+    return !(lhs == rhs);
+  }
 
-  friend bool operator!=(const DeviceOption &itr, crstring_t cmp) { return !(itr == cmp); }
+  friend bool operator!=(const DeviceOption &itr, crstring_t cmp)
+  {
+    return !(itr == cmp);
+  }
 
   static void header(std::ostream &os)
   {
@@ -125,8 +136,9 @@ public:
   friend std::ostream &operator<<(std::ostream &os, const DeviceOption &opt)
   {
     std::stringstream ss;
-    ss << "\t" << std::right << std::setw(5) << opt.index << "  \t" << std::left << std::setw(12) << opt.key << "  "
-       << std::left << std::setw(40) << opt.description;
+    ss << "\t" << std::right << std::setw(5) << opt.index << "  \t" << std::left
+       << std::setw(12) << opt.key << "  " << std::left << std::setw(40)
+       << opt.description;
     os << ss.str();
     return os;
   }
@@ -200,7 +212,8 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
 #endif
 
   auto default_itr =
-      std::find_if(options.begin(), options.end(), [&](const DeviceOption &itr) { return (itr == default_key); });
+      std::find_if(options.begin(), options.end(),
+                   [&](const DeviceOption &itr) { return (itr == default_key); });
 
   //------------------------------------------------------------------------//
   auto print_options = [&]() {
@@ -252,11 +265,12 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
   default_key = default_itr->key;
   auto key    = GetEnv("GEANT_DEVICE", default_key);
 
-  auto selection = std::find_if(options.begin(), options.end(), [&](const DeviceOption &itr) { return (itr == key); });
+  auto selection = std::find_if(options.begin(), options.end(),
+                                [&](const DeviceOption &itr) { return (itr == key); });
 
   if (selection == options.end())
-    selection =
-        std::find_if(options.begin(), options.end(), [&](const DeviceOption &itr) { return itr == default_key; });
+    selection = std::find_if(options.begin(), options.end(),
+                             [&](const DeviceOption &itr) { return itr == default_key; });
 
   print_selection(*selection);
 
@@ -297,6 +311,6 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
 
 //======================================================================================//
 
-} // namespace geant
+} // namespace geantx
 
 //======================================================================================//

@@ -74,8 +74,8 @@ public:
    * @return    Pointer to the requested isotope specified by the given input
    *            parameter values.
    */
-  static Isotope *GetIsotope(int z, int n, double a = 0., int isol = 0, double isomass = 0.,
-                             const std::string &name = "");
+  static Isotope *GetIsotope(int z, int n, double a = 0., int isol = 0,
+                             double isomass = 0., const std::string &name = "");
   //@}
 
   /** @brief Destructor.
@@ -137,8 +137,8 @@ public:
   /**
    * @brief Public method to delete all Element objects that has been created.
    *
-   * This method is called by the PhysicsProcessHandler when it is deleted to clean all Element objects.
-   * Users should never call this method!
+   * This method is called by the PhysicsProcessHandler when it is deleted to clean all
+   * Element objects. Users should never call this method!
    */
   static void ClearAllIsotopes();
 
@@ -172,7 +172,8 @@ private:
    * @param[in] isomass Mass of the bare nucleus in internal [energy] units.
    * @param[in] isol Isomer level.
    */
-  Isotope(const std::string &name, int z, int n, double a = 0., double isomass = 0., int isol = 0);
+  Isotope(const std::string &name, int z, int n, double a = 0., double isomass = 0.,
+          int isol = 0);
 
   /** @brief Copy constructor. Not implemented yet. */
   Isotope(const Isotope &); // not implemented
@@ -216,8 +217,9 @@ private:
   int fN;            /** @brief Number of nucleons */
   int fIsoL;         /** @brief Isomer level */
   int fIndex;        /** @brief Index in this isotope in the global table */
-  double fA;         /** @brief Atomic mass in internal [weight/mole] units (including electron shell) */
-  double fIsoMass;   /** @brief Mass of the bare nucleus in internal [energy] units */
+  double fA; /** @brief Atomic mass in internal [weight/mole] units (including electron
+                shell) */
+  double fIsoMass; /** @brief Mass of the bare nucleus in internal [energy] units */
 
   /** The global isotope table that stores the pointers of all isotopes that
    *  has already been created.

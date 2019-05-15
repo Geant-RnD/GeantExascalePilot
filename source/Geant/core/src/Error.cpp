@@ -26,4 +26,4 @@ void ErrorHandlerImpl(EMsgLevel level, const char *location, const char *msgfmt,
   va_end(args);
 }
 } // namespace cxx
-} // namespace geant
+} // namespace geantx

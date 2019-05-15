@@ -24,7 +24,7 @@ class Propagator;
 class SimulationStage;
 class TrackDataMgr;
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx
 
 /**
  * @brief Class describing physics interface
@@ -55,26 +55,34 @@ public:
   // simulation stages defined in the real-physics library.
   /** @brief Obtain/create physics step limit computation stage.
    *
-   * @param[in,out] prop  Pointer to the propagator object that requires the simulation stage.
+   * @param[in,out] prop  Pointer to the propagator object that requires the simulation
+   * stage.
    * @return     Pointer to a created ComputeIntLen real-physics simulation stage object.
    */
-  virtual geantx::SimulationStage *CreateFastSimStage(geantx::Propagator *prop)         = 0;
-  virtual geantx::SimulationStage *CreateComputeIntLStage(geantx::Propagator *prop)     = 0;
-  virtual geantx::SimulationStage *CreatePrePropagationStage(geantx::Propagator *prop)  = 0;
-  virtual geantx::SimulationStage *CreatePostPropagationStage(geantx::Propagator *prop) = 0;
+  virtual geantx::SimulationStage *CreateFastSimStage(geantx::Propagator *prop)     = 0;
+  virtual geantx::SimulationStage *CreateComputeIntLStage(geantx::Propagator *prop) = 0;
+  virtual geantx::SimulationStage *CreatePrePropagationStage(
+      geantx::Propagator *prop) = 0;
+  virtual geantx::SimulationStage *CreatePostPropagationStage(
+      geantx::Propagator *prop) = 0;
 
   /** @brief Obtain/create along step action (continuous part) computation stage.
    *
-   * @param[in,out] prop  Pointer to the propagator object that requires the simulation stage.
-   * @return     Pointer to a created AlongStepAction real-physics simulation stage object.
+   * @param[in,out] prop  Pointer to the propagator object that requires the simulation
+   * stage.
+   * @return     Pointer to a created AlongStepAction real-physics simulation stage
+   * object.
    */
-  virtual geantx::SimulationStage *CreateAlongStepActionStage(geantx::Propagator *prop) = 0;
+  virtual geantx::SimulationStage *CreateAlongStepActionStage(
+      geantx::Propagator *prop) = 0;
   /** @brief Obtain/create post step action (discrete part) computation stage.
    *
-   * @param[in,out] prop  Pointer to the propagator object that requires the simulation stage.
+   * @param[in,out] prop  Pointer to the propagator object that requires the simulation
+   * stage.
    * @return     Pointer to a created PostStepAction real-physics simulation stage object.
    */
-  virtual geantx::SimulationStage *CreatePostStepActionStage(geantx::Propagator *prop) = 0;
+  virtual geantx::SimulationStage *CreatePostStepActionStage(
+      geantx::Propagator *prop) = 0;
 
   virtual geantx::SimulationStage *CreateAtRestActionStage(geantx::Propagator *prop) = 0;
 };

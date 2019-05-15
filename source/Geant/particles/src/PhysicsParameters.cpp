@@ -76,11 +76,14 @@ void PhysicsParameters::SetMinLossTableEnergy(double val)
   if (val > 1.e-3 * geantx::units::eV && val < fMaxLossTableEnergy) {
     fMinLossTableEnergy = val;
     // update number of bins
-    fNumLossTableBins = fNumLossTableBinsPerDecade * std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
+    fNumLossTableBins =
+        fNumLossTableBinsPerDecade *
+        std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetMinLossTableEnergy() " << std::endl
-              << "    Value of fMinLossTableEnergy is out of range: " << val / geantx::units::keV
-              << " [keV] so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetMinLossTableEnergy() "
+              << std::endl
+              << "    Value of fMinLossTableEnergy is out of range: "
+              << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
   }
 }
 
@@ -89,11 +92,14 @@ void PhysicsParameters::SetMaxLossTableEnergy(double val)
   if (val > fMinLossTableEnergy && val < 1.e+7 * geantx::units::TeV) {
     fMaxLossTableEnergy = val;
     // update number of bins
-    fNumLossTableBins = fNumLossTableBinsPerDecade * std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
+    fNumLossTableBins =
+        fNumLossTableBinsPerDecade *
+        std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetMaxLossTableEnergy() " << std::endl
-              << "    Value of fMaxLossTableEnergy is out of range: " << val / geantx::units::GeV
-              << " [GeV] so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetMaxLossTableEnergy() "
+              << std::endl
+              << "    Value of fMaxLossTableEnergy is out of range: "
+              << val / geantx::units::GeV << " [GeV] so it's ignored!" << std::endl;
   }
 }
 
@@ -102,10 +108,12 @@ void PhysicsParameters::SetNumLossTableBins(int val)
 {
   if (val > 4 && val < 10000000) {
     fNumLossTableBins          = val;
-    fNumLossTableBinsPerDecade = std::lrint(fNumLossTableBins / Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
+    fNumLossTableBinsPerDecade = std::lrint(
+        fNumLossTableBins / Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetNumLossTableBins() " << std::endl
-              << "    Value of fNumLossTableBins is out of range: " << val << " so it's ignored!" << std::endl;
+              << "    Value of fNumLossTableBins is out of range: " << val
+              << " so it's ignored!" << std::endl;
   }
 }
 
@@ -114,10 +122,14 @@ void PhysicsParameters::SetNumLossTableBinsPerDecade(int val)
 {
   if (val > 4 && val < 1000000) {
     fNumLossTableBinsPerDecade = val;
-    fNumLossTableBins = fNumLossTableBinsPerDecade * std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
+    fNumLossTableBins =
+        fNumLossTableBinsPerDecade *
+        std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetNumLossTableBinsPerDecade() " << std::endl
-              << "    Value of fNumLossTableBinsPerDecade is out of range: " << val << " so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetNumLossTableBinsPerDecade() "
+              << std::endl
+              << "    Value of fNumLossTableBinsPerDecade is out of range: " << val
+              << " so it's ignored!" << std::endl;
   }
 }
 
@@ -128,11 +140,13 @@ void PhysicsParameters::SetMinLambdaTableEnergy(double val)
     fMinLambdaTableEnergy = val;
     // update number of bins
     fNumLambdaTableBins =
-        fNumLambdaTableBinsPerDecade * std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
+        fNumLambdaTableBinsPerDecade *
+        std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetMinLambdaTableEnergy() " << std::endl
-              << "    Value of fMinLambdaTableEnergy is out of range: " << val / geantx::units::keV
-              << " [keV] so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetMinLambdaTableEnergy() "
+              << std::endl
+              << "    Value of fMinLambdaTableEnergy is out of range: "
+              << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
   }
 }
 
@@ -142,11 +156,13 @@ void PhysicsParameters::SetMaxLambdaTableEnergy(double val)
     fMaxLambdaTableEnergy = val;
     // update number of bins
     fNumLambdaTableBins =
-        fNumLambdaTableBinsPerDecade * std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
+        fNumLambdaTableBinsPerDecade *
+        std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetMaxLambdaTableEnergy() " << std::endl
-              << "    Value of fMaxLambdaTableEnergy is out of range: " << val / geantx::units::GeV
-              << " [GeV] so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetMaxLambdaTableEnergy() "
+              << std::endl
+              << "    Value of fMaxLambdaTableEnergy is out of range: "
+              << val / geantx::units::GeV << " [GeV] so it's ignored!" << std::endl;
   }
 }
 
@@ -154,12 +170,14 @@ void PhysicsParameters::SetMaxLambdaTableEnergy(double val)
 void PhysicsParameters::SetNumLambdaTableBins(int val)
 {
   if (val > 4 && val < 10000000) {
-    fNumLambdaTableBins = val;
-    fNumLambdaTableBinsPerDecade =
-        std::lrint(fNumLambdaTableBins / Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
+    fNumLambdaTableBins          = val;
+    fNumLambdaTableBinsPerDecade = std::lrint(
+        fNumLambdaTableBins / Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetNumLambdaTableBins() " << std::endl
-              << "    Value of fNumLambdaTableBins is out of range: " << val << " so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetNumLambdaTableBins() "
+              << std::endl
+              << "    Value of fNumLambdaTableBins is out of range: " << val
+              << " so it's ignored!" << std::endl;
   }
 }
 
@@ -169,11 +187,13 @@ void PhysicsParameters::SetNumLambdaTableBinsPerDecade(int val)
   if (val > 4 && val < 1000000) {
     fNumLambdaTableBinsPerDecade = val;
     fNumLambdaTableBins =
-        fNumLambdaTableBinsPerDecade * std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
+        fNumLambdaTableBinsPerDecade *
+        std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetNumLambdaTableBinsPerDecade() " << std::endl
-              << "    Value of fNumLambdaTableBinsPerDecade is out of range: " << val << " so it's ignored!"
-              << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetNumLambdaTableBinsPerDecade() "
+              << std::endl
+              << "    Value of fNumLambdaTableBinsPerDecade is out of range: " << val
+              << " so it's ignored!" << std::endl;
   }
 }
 
@@ -182,9 +202,10 @@ void PhysicsParameters::SetLowestElectronTrackingEnergy(double val)
   if (val >= 0.0) {
     fLowestElectronTrackingEnergy = val;
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetLowestElectronTrackingEnergy " << std::endl
-              << "    Value of fLowestElectronTrackingEnergy is out of range: " << val / geantx::units::keV
-              << " [keV] so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetLowestElectronTrackingEnergy "
+              << std::endl
+              << "    Value of fLowestElectronTrackingEnergy is out of range: "
+              << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
   }
 }
 
@@ -193,8 +214,10 @@ void PhysicsParameters::SetLinearEnergyLossLimit(double val)
   if (val > 0.0 && val < 0.5) {
     fLinearEnergyLossLimit = val;
   } else {
-    std::cerr << "  **** WARNING: PhysicsParameters::SetLinearEnergyLossLimit " << std::endl
-              << "    Value of fLinearEnergyLossLimit is out of range: " << val << " so it's ignored!" << std::endl;
+    std::cerr << "  **** WARNING: PhysicsParameters::SetLinearEnergyLossLimit "
+              << std::endl
+              << "    Value of fLinearEnergyLossLimit is out of range: " << val
+              << " so it's ignored!" << std::endl;
   }
 }
 
@@ -205,8 +228,9 @@ void PhysicsParameters::SetStepFunction(double roverrange, double finalrange)
     fFinalRange  = finalrange;
   } else {
     std::cerr << "  **** WARNING: PhysicsParameters::SetStepFunction " << std::endl
-              << "    Values of step function are out of range: " << roverrange << ", " << finalrange / geantx::units::mm
-              << " [mm]  so they are ignored!" << std::endl;
+              << "    Values of step function are out of range: " << roverrange << ", "
+              << finalrange / geantx::units::mm << " [mm]  so they are ignored!"
+              << std::endl;
   }
 }
 
@@ -226,8 +250,10 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
 
   flux << std::setw(100) << std::setfill('=') << std::left << "  =" << std::endl
        << std::setw(40) << std::setfill('-') << std::left << "  -"
-       << " Physics parameters " << std::setw(40) << std::setfill('-') << std::left << "-" << std::endl
-       << std::setw(100) << std::setfill('=') << std::left << "  =" << std::setfill(' ') << std::endl;
+       << " Physics parameters " << std::setw(40) << std::setfill('-') << std::left << "-"
+       << std::endl
+       << std::setw(100) << std::setfill('=') << std::left << "  =" << std::setfill(' ')
+       << std::endl;
 
   // parameters that are the same in each region
   flux << "    **** (Static)Parameters that must have the same value in each region: \n"
@@ -263,47 +289,69 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
   flux << "\n\n";
 
   flux << "    **** Additional parameter values: \n\n";
-  flux << std::setw(90) << std::left << std::setfill('-') << "     --- Energy loss table related parameter values "
-       << std::setfill(' ') << "\n";
-  flux << std::left << std::setw(textW) << "     - Minimum kinetic energy of the energy loss table grid " << std::right
-       << std::setw(valW) << physpar.GetMinLossTableEnergy() / geantx::units::keV << "   [keV] \n"
-       << std::left << std::setw(textW) << "     - Maximum kinetic energy of the energy loss table grid " << std::right
-       << std::setw(valW) << physpar.GetMaxLossTableEnergy() / geantx::units::TeV << "   [TeV] \n"
-       << std::left << std::setw(textW) << "     - Number of energy bins in the energy loss table " << std::right
+  flux << std::setw(90) << std::left << std::setfill('-')
+       << "     --- Energy loss table related parameter values " << std::setfill(' ')
+       << "\n";
+  flux << std::left << std::setw(textW)
+       << "     - Minimum kinetic energy of the energy loss table grid " << std::right
+       << std::setw(valW) << physpar.GetMinLossTableEnergy() / geantx::units::keV
+       << "   [keV] \n"
+       << std::left << std::setw(textW)
+       << "     - Maximum kinetic energy of the energy loss table grid " << std::right
+       << std::setw(valW) << physpar.GetMaxLossTableEnergy() / geantx::units::TeV
+       << "   [TeV] \n"
+       << std::left << std::setw(textW)
+       << "     - Number of energy bins in the energy loss table " << std::right
        << std::setw(valW) << physpar.GetNumLossTableBins() << "\n"
-       << std::left << std::setw(textW) << "     - Number of energy bins per decade in the energy loss table "
+       << std::left << std::setw(textW)
+       << "     - Number of energy bins per decade in the energy loss table "
        << std::right << std::setw(valW) << physpar.GetNumLossTableBinsPerDecade() << "\n"
        << std::endl;
 
-  flux << std::setw(90) << std::left << std::setfill('-') << "     --- Lambda table related parameter values "
-       << std::setfill(' ') << "\n";
-  flux << std::left << std::setw(textW) << "     - Minimum kinetic energy of the lambda table grid " << std::right
-       << std::setw(valW) << physpar.GetMinLambdaTableEnergy() / geantx::units::keV << "   [keV] \n"
-       << std::left << std::setw(textW) << "     - Maximum kinetic energy of the lambda table grid " << std::right
-       << std::setw(valW) << physpar.GetMaxLambdaTableEnergy() / geantx::units::TeV << "   [TeV] \n"
-       << std::left << std::setw(textW) << "     - Number of energy bins in the lambda table " << std::right
+  flux << std::setw(90) << std::left << std::setfill('-')
+       << "     --- Lambda table related parameter values " << std::setfill(' ') << "\n";
+  flux << std::left << std::setw(textW)
+       << "     - Minimum kinetic energy of the lambda table grid " << std::right
+       << std::setw(valW) << physpar.GetMinLambdaTableEnergy() / geantx::units::keV
+       << "   [keV] \n"
+       << std::left << std::setw(textW)
+       << "     - Maximum kinetic energy of the lambda table grid " << std::right
+       << std::setw(valW) << physpar.GetMaxLambdaTableEnergy() / geantx::units::TeV
+       << "   [TeV] \n"
+       << std::left << std::setw(textW)
+       << "     - Number of energy bins in the lambda table " << std::right
        << std::setw(valW) << physpar.GetNumLambdaTableBins() << "\n"
-       << std::left << std::setw(textW) << "     - Number of energy bins per decade in the lambda table " << std::right
+       << std::left << std::setw(textW)
+       << "     - Number of energy bins per decade in the lambda table " << std::right
        << std::setw(valW) << physpar.GetNumLambdaTableBinsPerDecade() << "\n"
        << std::endl;
 
-  flux << std::setw(90) << std::left << std::setfill('-') << "     --- Electron/positron related parameters "
-       << std::setfill(' ') << "\n";
-  flux << std::left << std::setw(textW) << "     - Lowest e-/e+ kinetic energy for tracking  " << std::right
-       << std::setw(valW) << physpar.GetLowestElectronTrackingEnergy() / geantx::units::keV << "   [keV] \n"
+  flux << std::setw(90) << std::left << std::setfill('-')
+       << "     --- Electron/positron related parameters " << std::setfill(' ') << "\n";
+  flux << std::left << std::setw(textW)
+       << "     - Lowest e-/e+ kinetic energy for tracking  " << std::right
+       << std::setw(valW)
+       << physpar.GetLowestElectronTrackingEnergy() / geantx::units::keV << "   [keV] \n"
        << std::endl;
 
-  flux << std::setw(90) << std::left << std::setfill('-') << "     --- Other parameters " << std::setfill(' ') << "\n";
-  flux << std::left << std::setw(textW) << "     - Compute CSDA range tables  " << std::right << std::setw(valW)
-       << physpar.GetIsComputeCSDARange() << "\n"
-       << std::left << std::setw(textW) << "     - Linear energy loss approximation limit  " << std::right
+  flux << std::setw(90) << std::left << std::setfill('-') << "     --- Other parameters "
+       << std::setfill(' ') << "\n";
+  flux << std::left << std::setw(textW) << "     - Compute CSDA range tables  "
+       << std::right << std::setw(valW) << physpar.GetIsComputeCSDARange() << "\n"
+       << std::left << std::setw(textW)
+       << "     - Linear energy loss approximation limit  " << std::right
        << std::setw(valW) << physpar.GetLinearEnergyLossLimit() << "\n"
-       << std::left << std::setw(textW) << "     - Continuous step limit function parameters : fDRoverRange "
-       << std::right << std::setw(valW) << physpar.GetDRoverRange() << "\n"
-       << std::left << std::setw(textW) << "     - Continuous step limit function parameters : fFInalRange "
-       << std::right << std::setw(valW) << physpar.GetFinalRange() / geantx::units::mm << "   [mm] " << std::endl;
+       << std::left << std::setw(textW)
+       << "     - Continuous step limit function parameters : fDRoverRange " << std::right
+       << std::setw(valW) << physpar.GetDRoverRange() << "\n"
+       << std::left << std::setw(textW)
+       << "     - Continuous step limit function parameters : fFInalRange " << std::right
+       << std::setw(valW) << physpar.GetFinalRange() / geantx::units::mm << "   [mm] "
+       << std::endl;
 
-  flux << std::setw(100) << std::setfill('=') << std::left << "  =" << std::setfill(' ') << std::endl << std::endl;
+  flux << std::setw(100) << std::setfill('=') << std::left << "  =" << std::setfill(' ')
+       << std::endl
+       << std::endl;
 
   return flux;
 }

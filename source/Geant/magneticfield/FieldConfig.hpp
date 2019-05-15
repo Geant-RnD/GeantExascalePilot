@@ -23,8 +23,8 @@ inline namespace GEANT_IMPL_NAMESPACE {
 class FieldConfig {
 public:
   FieldConfig()
-      : fFieldObj(nullptr), fConstFieldValue(vecgeom::Vector3D<double>(0., 0., 0.)), fBfieldMag(0.0),
-        fBfieldIsConst(false)
+      : fFieldObj(nullptr), fConstFieldValue(vecgeom::Vector3D<double>(0., 0., 0.)),
+        fBfieldMag(0.0), fBfieldIsConst(false)
   {
   }
 
@@ -32,7 +32,10 @@ public:
   inline FieldConfig(VVectorField *vf, bool isUniform);
 
   /* @brief Create a uniform field. If its magnitude is 0.0, the field will be ignored. */
-  FieldConfig(vecgeom::Vector3D<double> fieldValue) : FieldConfig() { SetUniformField(fieldValue); }
+  FieldConfig(vecgeom::Vector3D<double> fieldValue) : FieldConfig()
+  {
+    SetUniformField(fieldValue);
+  }
 
   ~FieldConfig() { delete fFieldObj; }
 
@@ -67,8 +70,8 @@ public:
 private:
   VVectorField *fFieldObj                    = nullptr; /** point to field class object */
   vecgeom::Vector3D<double> fConstFieldValue = {0., 0., 0.};
-  double fBfieldMag                          = 0.0; /** Magnitude of field in case of const field [kiloGauss] */
-  bool fBfieldIsConst                        = false;
+  double fBfieldMag   = 0.0; /** Magnitude of field in case of const field [kiloGauss] */
+  bool fBfieldIsConst = false;
 };
 
 //______________________________________________________________________________
@@ -129,4 +132,4 @@ inline void FieldConfig::SetUniformField(VVectorField *fldUnif)
   fBfieldMag       = fieldValue.Mag(); // If its value is 0.0, the field will be ignored
 }
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx

@@ -69,8 +69,9 @@ public:
   //
   // Ctr to create a material from single element
   Material(const std::string &name, double z, double a, double density,
-           MaterialState state = MaterialState::kStateUndefined, double temp = geantx::units::kNTPTemperature,
-           double pressure = geantx::units::kSTPPressure);
+           MaterialState state = MaterialState::kStateUndefined,
+           double temp         = geantx::units::kNTPTemperature,
+           double pressure     = geantx::units::kSTPPressure);
 
   /**
    * @brief Constructor to create material from elements and/or materials.
@@ -80,7 +81,8 @@ public:
    *
    * @param[in] name Name of the material.
    * @param[in] density Density of the material in internal [weight/length\f$^3\f$] units.
-   * @param[in] numcomponents Number of components(elements and/or materials) this material will be bult up.
+   * @param[in] numcomponents Number of components(elements and/or materials) this
+   * material will be bult up.
    * @param[in] state State of the material (see MaterialState).
    * @param[in] temp  Temperature of the material in internal [temperature] units.
    * @param[in] pressure  Pressure of the material in internal [pressure] units.
@@ -88,8 +90,9 @@ public:
   // Ctr to create a material from a combination of elements and/or materials
   // subsequently added via AddElement and/or AddMaterial
   Material(const std::string &name, double density, int numcomponents,
-           MaterialState state = MaterialState::kStateUndefined, double temp = geantx::units::kNTPTemperature,
-           double pressure = geantx::units::kSTPPressure);
+           MaterialState state = MaterialState::kStateUndefined,
+           double temp         = geantx::units::kNTPTemperature,
+           double pressure     = geantx::units::kSTPPressure);
 
   /**
    * @brief Method to add an element to the material based on molecular composition.
@@ -114,7 +117,8 @@ public:
    * @brief Method to add a material to the material based on its mass fraction.
    *
    * @param[in] material Pointer to the currently added Material object.
-   * @param[in] massfraction Mass fraction of the currently added Material in the material.
+   * @param[in] massfraction Mass fraction of the currently added Material in the
+   * material.
    */
   void AddMaterial(Material *material, double massfraction);
 
@@ -134,11 +138,13 @@ public:
    *  @return Name of this material. */
   const std::string &GetName() const { return fName; }
 
-  /** @brief Public method to get the flag that indicates whether the material is used or not in the geometry.
+  /** @brief Public method to get the flag that indicates whether the material is used or
+   * not in the geometry.
    *  @return  that indicates whether the material is used or not in the geometry */
   bool IsUsed() const { return fIsUsed; }
 
-  /** @brief Public method to set the flag that indicates whether the material is used or not in the geometry.*/
+  /** @brief Public method to set the flag that indicates whether the material is used or
+   * not in the geometry.*/
   void SetIsUsed(bool val) { fIsUsed = val; }
 
   /** @brief Public method to get the density of this material.
@@ -179,12 +185,16 @@ public:
    *  @return Vector of elements this material is bult up. */
   const Vector_t<Element *> &GetElementVector() const { return fElementVector; }
 
-  /** @brief Public method to get the mas fraction for each elements this material is built up.
-   *  @return Mass fraction for each elements this material is built up [GetNumberOfElements()]. */
+  /** @brief Public method to get the mas fraction for each elements this material is
+   * built up.
+   *  @return Mass fraction for each elements this material is built up
+   * [GetNumberOfElements()]. */
   const double *GetMassFractionVector() const { return fMassFractionVector; }
 
-  /** @brief Public method to get the relative number of atoms for each elements this material is built up.
-   *  @return Relative number of atoms for each elements this material is built up [GetNumberOfElements()]. */
+  /** @brief Public method to get the relative number of atoms for each elements this
+   * material is built up.
+   *  @return Relative number of atoms for each elements this material is built up
+   * [GetNumberOfElements()]. */
   const double *GetRelativeNumberOfAtomsPerVolume() const { return fRelNumOfAtomsPerVol; }
   //@}
 
@@ -237,8 +247,8 @@ public:
   /**
    * @brief Public method to delete all Material objects that has been created.
    *
-   * This method is called by the PhysicsProcessHandler when it is deleted to clean all Material objects.
-   * Users should never call this method!
+   * This method is called by the PhysicsProcessHandler when it is deleted to clean all
+   * Material objects. Users should never call this method!
    */
   static void ClearAllMaterials();
   /**
@@ -306,34 +316,40 @@ private:
   /** @brief Pressure in internal [pressure] units. */
   double fPressure; // pressure    (defaults: STP)
   /** @brief Number of components this material is built up (internal only). */
-  int fNumOfComponents; // total number of components in the material (used only internally, go getter)
+  int fNumOfComponents; // total number of components in the material (used only
+                        // internally, go getter)
   /** @brief Number of components that has been added to so far (internal only). */
-  int fCurNumOfComponents; // number of components added so far(used only internally, no getter)
+  int fCurNumOfComponents; // number of components added so far(used only internally, no
+                           // getter)
   /** @brief Number of elements this material is built up. */
   int fNumOfElements; // number of elements this material is composed from
   /** @brief Index of this material in the global material table. */
   int fIndex; // the position of this material in the global material table
   /** @brief Current length of some arrays at construction (internal only). */
-  int fCurArrayLenght; // just a helper at ctr: lenght of currently pre-allocated space(no getter)
+  int fCurArrayLenght; // just a helper at ctr: lenght of currently pre-allocated space(no
+                       // getter)
   /** @brief Sate of the material. */
   MaterialState fState; // state of the material (default kStateUndefined)
 
   /** @brief Ratio by mass for each element this material is bult up. */
   double *fMassFractionVector; // ratio by mass for each element this material is built up
-  /** @brief Relative number of atoms per volume for each element this material is buit up. */
-  double *fRelNumOfAtomsPerVol; // relative number of atoms per volume for each element this
-                                // material is built up
+  /** @brief Relative number of atoms per volume for each element this material is buit
+   * up. */
+  double *fRelNumOfAtomsPerVol; // relative number of atoms per volume for each element
+                                // this material is built up
   /** @brief List of elements this material built up. */
-  Vector_t<Element *> fElementVector; // vector of element pointers this material is built up
+  Vector_t<Element *>
+      fElementVector; // vector of element pointers this material is built up
 
   /** @brief The global material table. */
   static Vector_t<Material *> gTheMaterialTable; // the global material table
 
-  /** @brief Internal map to store the already created material indices in the global material
-   *         table with a key = material name. */
+  /** @brief Internal map to store the already created material indices in the global
+   * material table with a key = material name. */
   static Map_t<std::string, int> gMapMaterialNameToIndex;
 
-  /** @brief Object to store additional properties realted to this material (the class owns the object)*/
+  /** @brief Object to store additional properties realted to this material (the class
+   * owns the object)*/
   MaterialProperties *fMaterialProperties;
 
   /** @brief THIS MEMBER IS ONLY FOR THE TABULATED PHSYICS AND WILL BE REMOVED SOON */

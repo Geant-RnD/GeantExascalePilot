@@ -2,10 +2,10 @@
 #pragma once
 
 #include "Geant/core/Config.hpp"
-#include "Geant/core/VectorTypes.hpp"
 #include "Geant/core/Macros.hpp"
-#include "navigation/NavigationState.h"
+#include "Geant/core/VectorTypes.hpp"
 #include "Geant/material/Material.hpp"
+#include "navigation/NavigationState.h"
 #include "volumes/LogicalVolume.h"
 #include "volumes/PlacedVolume.h"
 
@@ -29,7 +29,6 @@ enum EModel_t {
 } // namespace geantphysics
 
 namespace geantx {
-
 typedef VECGEOM_NAMESPACE::NavigationState VolumePath_t;
 typedef geantphysics::Material Material_t;
 typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
@@ -50,7 +49,7 @@ using vector_t = std::vector<T>;
 
 // three vector types
 template <typename T>
-using Vector3D = vecgeom::Vector3D<T>;
+using Vector3D    = vecgeom::Vector3D<T>;
 using ThreeVector = Vector3D<double>;
 
 typedef geantphysics::Particle Particle_t;
@@ -58,11 +57,10 @@ typedef geantphysics::Particle Particle_t;
 inline namespace cuda {
 template <typename _Tp>
 using device_info = std::unordered_map<int, _Tp>;
-
 }
 } // namespace geantx
 
 // XXX: remove me once namespaces are fixed
-using geantx::Vector3D;
-using geantx::ThreeVector;
 using geantx::Particle_t;
+using geantx::ThreeVector;
+using geantx::Vector3D;

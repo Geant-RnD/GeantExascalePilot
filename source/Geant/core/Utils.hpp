@@ -38,7 +38,6 @@ inline std::string GetDataFileLocation(int argc, char **argv, std::string dataFi
 //======================================================================================//
 
 inline namespace cuda {
-
 //======================================================================================//
 
 inline int GetNumMasterStreams(const int &init = 1)
@@ -95,7 +94,8 @@ inline dim3 GetGridDims(const dim3 &init = dim3(0, 0, 0))
 
 inline dim3 ComputeGridDims(const dim3 &dims, const dim3 &blocks = GetBlockDims())
 {
-  return dim3(ComputeGridSize(dims.x, blocks.x), ComputeGridSize(dims.y, blocks.y), ComputeGridSize(dims.z, blocks.z));
+  return dim3(ComputeGridSize(dims.x, blocks.x), ComputeGridSize(dims.y, blocks.y),
+              ComputeGridSize(dims.z, blocks.z));
 }
 
 //======================================================================================//
@@ -125,8 +125,9 @@ _Tp *gpu_malloc(uintmax_t size)
     int _device = 0;
     cudaGetDevice(&_device);
     std::stringstream ss;
-    ss << "Error allocating memory on GPU " << _device << " of size " << (size * sizeof(_Tp)) << " and type "
-       << typeid(_Tp).name() << " (type size = " << sizeof(_Tp) << ")";
+    ss << "Error allocating memory on GPU " << _device << " of size "
+       << (size * sizeof(_Tp)) << " and type " << typeid(_Tp).name()
+       << " (type size = " << sizeof(_Tp) << ")";
     throw std::runtime_error(ss.str().c_str());
   }
   return _gpu;
@@ -203,7 +204,8 @@ void gpu2cpu_memcpy_and_free(_Tp *_cpu, _Tp *_gpu, uintmax_t size, cudaStream_t 
 
 //======================================================================================//
 
-inline cudaStream_t *create_streams(const int nstreams, unsigned int flag = cudaStreamDefault)
+inline cudaStream_t *create_streams(const int nstreams,
+                                    unsigned int flag = cudaStreamDefault)
 {
   cudaStream_t *streams = new cudaStream_t[nstreams];
   for (int i = 0; i < nstreams; ++i) {
@@ -229,4 +231,4 @@ inline void destroy_streams(cudaStream_t *streams, const int nstreams)
 
 } // namespace cuda
 
-} // namespace geant
+} // namespace geantx

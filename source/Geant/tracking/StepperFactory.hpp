@@ -38,25 +38,28 @@ public:
    * @param StepperCode  - Integer Code to identify type of Stepper
    */
   template <typename EquationType>
-  static VScalarIntegrationStepper *CreateStepper(EquationType *equation, int StepperCode = DefaultStepperCode,
-                                                  bool verbose = false);
+  static VScalarIntegrationStepper *CreateStepper(EquationType *equation,
+                                                  int StepperCode = DefaultStepperCode,
+                                                  bool verbose    = false);
 
   // static StepperFactory* Instance();
 };
 
 template <typename EquationType>
-VScalarIntegrationStepper *StepperFactory::CreateStepper(EquationType *equation, int StepperCode, bool verbose)
+VScalarIntegrationStepper *StepperFactory::CreateStepper(EquationType *equation,
+                                                         int StepperCode, bool verbose)
 {
   VScalarIntegrationStepper *stepper; // , *exactStepper;
 
-  const char *stepperName             = 0;
+  const char *stepperName        = 0;
   const char NameSimpleRunge[]   = "TSimpleRunge";
   const char NameClassicalRK4[]  = "TClassicalRK4";
   const char NameCashKarpRKF45[] = "TCashKarpRKF45";
 
   int MaxStepperCode = 5;
 
-  if ((StepperCode <= 0) || (StepperCode > MaxStepperCode) || (StepperCode == 2) // Missing in range  min - max
+  if ((StepperCode <= 0) || (StepperCode > MaxStepperCode) ||
+      (StepperCode == 2) // Missing in range  min - max
       || (StepperCode == 3))
     StepperCode = DefaultStepperCode;
 
@@ -81,7 +84,9 @@ VScalarIntegrationStepper *StepperFactory::CreateStepper(EquationType *equation,
     break;
     // exit(1);
   }
-  if (stepperName && verbose) std::cout << "StepperFactory: Chosen the  " << stepperName << " stepper." << std::endl;
+  if (stepperName && verbose)
+    std::cout << "StepperFactory: Chosen the  " << stepperName << " stepper."
+              << std::endl;
 
   return stepper;
 }

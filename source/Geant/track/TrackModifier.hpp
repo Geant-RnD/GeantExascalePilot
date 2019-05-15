@@ -10,9 +10,10 @@ namespace geantx {
 template <class PD>
 class TrackModifier {
   using Base = TrackAccessor;
+
 public:
-  using ParticleDef_t = PD;
-  using TrackId_t     = TrackCollection::TrackId_t;
+  using ParticleDef_t     = PD;
+  using TrackId_t         = TrackCollection::TrackId_t;
   using PhysicsAccessor_t = TrackPhysicsAccessor<ParticleDef_t>;
 
 private:
@@ -20,9 +21,12 @@ private:
   const ParticleDef_t &fParDef;
 
 public:
-  TrackModifier(TrackCollection &tracks, TrackId_t track_id, const ParticleDefinitions &pdefs)
-      : fState(tracks.Get(track_id)), fParDef(PhysicsAccessor_t::GetParticleDef(pdefs, fState))
-  {}
+  TrackModifier(TrackCollection &tracks, TrackId_t track_id,
+                const ParticleDefinitions &pdefs)
+      : fState(tracks.Get(track_id)),
+        fParDef(PhysicsAccessor_t::GetParticleDef(pdefs, fState))
+  {
+  }
 
   void UpdateTime() const
   {
@@ -31,8 +35,7 @@ public:
   }
 
   template <class OPD>
-  void CreateSecondaryFrom(const TrackPhysicsAccessor<OPD> &other,
-                           ParticleId_t newId,
+  void CreateSecondaryFrom(const TrackPhysicsAccessor<OPD> &other, ParticleId_t newId,
                            const ThreeVector &newDirection, double newKineticEnergy) const
   {
     REQUIRE(newId > TrackAccessor(other).Id());
@@ -44,7 +47,8 @@ public:
 
     // Set new physical properties
     fState.fPhysicsState.fParticleDefId = fParDef.Id();
-    fState.fPhysicsState.fMomentum = std::sqrt(newKineticEnergy * (newKineticEnergy + 2 * fParDef.Mass()));
+    fState.fPhysicsState.fMomentum =
+        std::sqrt(newKineticEnergy * (newKineticEnergy + 2 * fParDef.Mass()));
 
     TrackHistoryState &hist = fState.fHistoryState;
     // Increment generation

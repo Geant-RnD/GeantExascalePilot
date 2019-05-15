@@ -20,12 +20,12 @@ public:
   bool CompareStep(ThreeVector const &position, ThreeVector const &direction,
                    double charge, double momentum, double step,
                    ThreeVector const &endPosition1, ThreeVector const &endDirection1,
-                   ThreeVector const &endPositionRef, ThreeVector const &endDirectionRef) const;
+                   ThreeVector const &endPositionRef,
+                   ThreeVector const &endDirectionRef) const;
 
   /** @brief Check against helical solution */
-  bool CheckStep(ThreeVector const &position, ThreeVector const &direction,
-                 double charge, double momentum, double step,
-                 ThreeVector const &endPosition,
+  bool CheckStep(ThreeVector const &position, ThreeVector const &direction, double charge,
+                 double momentum, double step, ThreeVector const &endPosition,
                  ThreeVector const &endDirection, ThreeVector const &BfieldVec) const;
 
   // Potential to generalise methods above using template:

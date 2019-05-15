@@ -25,7 +25,8 @@ namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 
 //______________________________________________________________________________
-int UserDetectorConstruction::SetupGeometry(vector_t<Volume_t const *> &volumes, TaskBroker *broker)
+int UserDetectorConstruction::SetupGeometry(vector_t<Volume_t const *> &volumes,
+                                            TaskBroker *broker)
 {
   // Setup geometry after being constructed by the user (or loaded from file)
   int nvolumes = 0;
@@ -58,16 +59,18 @@ bool UserDetectorConstruction::LoadGeometry(const char *filename)
     return true;
   }
 #endif
-  geantx::Error("UserDetectorConstruction::LoadGeometry", "Cannot load geometry from file %s", filename);
+  geantx::Error("UserDetectorConstruction::LoadGeometry",
+                "Cannot load geometry from file %s", filename);
   return false;
 }
 
 //______________________________________________________________________________
-	 bool UserDetectorConstruction::LoadVecGeomGeometry(TaskBroker *broker)
+bool UserDetectorConstruction::LoadVecGeomGeometry(TaskBroker *broker)
 {
   if (vecgeom::GeoManager::Instance().GetWorld() == NULL) {
 #ifdef USE_ROOT
-    vecgeom::RootGeoManager::Instance().SetMaterialConversionHook(CreateMaterialConversion());
+    vecgeom::RootGeoManager::Instance().SetMaterialConversionHook(
+        CreateMaterialConversion());
     printf("Now loading VecGeom geometry...\n");
     vecgeom::RootGeoManager::Instance().LoadRootGeometry();
     printf("Loading VecGeom geometry done\n");
@@ -85,7 +88,7 @@ bool UserDetectorConstruction::LoadGeometry(const char *filename)
   }
   if (broker) {
     printf("Now uploading VecGeom geometry to Coprocessor(s)...\n");
-    //return broker->UploadGeometry();
+    // return broker->UploadGeometry();
   }
   InitNavigators();
   return true;
@@ -108,19 +111,22 @@ int UserDetectorConstruction::ImportRegions()
     electronCut = positronCut = gammaCut = protonCut = -1.;
     // loop cuts for this region
     for (int icut = 0; icut < region_root->GetNcuts(); ++icut) {
-      std::string cutname                  = region_root->GetCut(icut)->GetName();
-      double cutvalue                      = region_root->GetCut(icut)->GetCut();
-      if (cutname == "gamcut") gammaCut    = cutvalue;
-      if (cutname == "ecut") electronCut   = cutvalue;
+      std::string cutname = region_root->GetCut(icut)->GetName();
+      double cutvalue     = region_root->GetCut(icut)->GetCut();
+      if (cutname == "gamcut") gammaCut = cutvalue;
+      if (cutname == "ecut") electronCut = cutvalue;
       if (cutname == "poscut") positronCut = cutvalue;
-      if (cutname == "pcut") protonCut     = cutvalue;
+      if (cutname == "pcut") protonCut = cutvalue;
     }
-    Region *region = new Region(std::string(region_root->GetName()), gammaCut, electronCut, positronCut, protonCut);
-    printf("Created region %s with: gammaCut = %g [cm], eleCut = %g [cm], posCut = %g [cm], protonCut = %g [cm]\n",
+    Region *region = new Region(std::string(region_root->GetName()), gammaCut,
+                                electronCut, positronCut, protonCut);
+    printf("Created region %s with: gammaCut = %g [cm], eleCut = %g [cm], posCut = %g "
+           "[cm], protonCut = %g [cm]\n",
            region_root->GetName(), gammaCut, electronCut, positronCut, protonCut);
     // loop volumes in the region. Volumes should be already converted to LogicalVolume
     for (int ivol = 0; ivol < region_root->GetNvolumes(); ++ivol) {
-      LogicalVolume *vol = vecgeom::RootGeoManager::Instance().Convert(region_root->GetVolume(ivol));
+      LogicalVolume *vol =
+          vecgeom::RootGeoManager::Instance().Convert(region_root->GetVolume(ivol));
       vol->SetRegion(region);
       // printf("   added to volume %s\n", vol->GetName());
     }
@@ -149,12 +155,14 @@ void UserDetectorConstruction::InitNavigators()
 
 //______________________________________________________________________________
 #ifdef USE_ROOT
-std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::CreateMaterialConversion()
+std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::
+    CreateMaterialConversion()
 {
   return [](TGeoMaterial const *rootmat) {
     // std::cout<<"     -->  Creating Material  "<<rootmat->GetName();
-    int numElem            = rootmat->GetNelements();
-    double density         = rootmat->GetDensity() * geant::units::g / geant::units::cm3; // in g/cm3
+    int numElem = rootmat->GetNelements();
+    double density =
+        rootmat->GetDensity() * geant::units::g / geant::units::cm3; // in g/cm3
     const std::string name = rootmat->GetName();
     // check if it is a G4 NIST material
     std::string postName = "";
@@ -193,5 +201,5 @@ std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::CreateMate
 }
 #endif
 
-} // GEANT_IMPL_NAMESPACE
-} // Geant
+} // namespace GEANT_IMPL_NAMESPACE
+} // namespace geantx

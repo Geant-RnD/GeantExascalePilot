@@ -20,14 +20,14 @@ public:                                                // with description
   GUExactHelixStepper(VScalarEquationOfMotion *EqRhs); // ScalarMagFieldEquation *EqRhs);
   ~GUExactHelixStepper();
 
-  void StepWithErrorEstimate(const double y[], const double dydx[], double charge, double h, double yout[],
-                             double yerr[]) override final;
+  void StepWithErrorEstimate(const double y[], const double dydx[], double charge,
+                             double h, double yout[], double yerr[]) override final;
   // Step 'integration' for step size 'h'
   // Provides helix starting at y[0 to 6]
   // Outputs yout[] and ZERO estimated error yerr[]=0.
 
-  void StepWithoutErrorEstimate(const double y[], ThreeVector Bfld, double charge, double h,
-                                double yout[]) override final;
+  void StepWithoutErrorEstimate(const double y[], ThreeVector Bfld, double charge,
+                                double h, double yout[]) override final;
   // Performs a 'dump' Step without error calculation.
 
   double DistChord(double charge) const override final;

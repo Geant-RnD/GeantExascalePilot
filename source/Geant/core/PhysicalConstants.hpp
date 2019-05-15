@@ -82,11 +82,11 @@ static constexpr double kEpsilon0 = 1. / (kCLightSquare * kMu0);
 // kClassicElectronRadius -> classical electron radius = 2.8179403e-13 [cm]
 // kRedElectronComptonWLenght -> reduced electron Compton wave length = 3.8615926e-10 [cm]
 // kBohrRadius            -> Bohr radius               = 5.2917721e-08 [cm]
-static constexpr double kEMCoupling                = kUnitChargeSquare / (4 * kPi * kEpsilon0);
-static constexpr double kFineStructConst           = kEMCoupling / kHBarPlanckCLight;
+static constexpr double kEMCoupling      = kUnitChargeSquare / (4 * kPi * kEpsilon0);
+static constexpr double kFineStructConst = kEMCoupling / kHBarPlanckCLight;
 static constexpr double kClassicElectronRadius     = kEMCoupling / kElectronMassC2;
 static constexpr double kRedElectronComptonWLenght = kHBarPlanckCLight / kElectronMassC2;
-static constexpr double kBohrRadius                = kRedElectronComptonWLenght / kFineStructConst;
+static constexpr double kBohrRadius = kRedElectronComptonWLenght / kFineStructConst;
 
 //
 //
@@ -108,4 +108,4 @@ static constexpr double kGasThreshold   = 10. * mg / cm3;
 static constexpr double kUniverseMeanDensity = 1.e-25 * g / cm3;
 
 } // namespace units
-} // namespace geant
+} // namespace geantx

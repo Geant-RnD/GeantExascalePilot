@@ -17,7 +17,8 @@ const int sDefaultVarSize    = 12;
 // using std::endl;
 
 template <typename Real_v>
-void ReportRowOfDoubles(std::string varName, const Real_v &varValue, int charName = -1, int widthVal = -1)
+void ReportRowOfDoubles(std::string varName, const Real_v &varValue, int charName = -1,
+                        int widthVal = -1)
 {
   using std::cout;
   using std::endl;
@@ -36,11 +37,12 @@ void ReportRowOfDoubles(std::string varName, const Real_v &varValue, int charNam
 
   cout << std::setw(charName) << varName << " : ";
   for (size_t i = 0; i < vecCore::VectorSize<Real_v>(); ++i) {
-    cout << " " << std::setw(widthVal) << std::setprecision(prec) << vecCore::Get(varValue, i) << " | ";
+    cout << " " << std::setw(widthVal) << std::setprecision(prec)
+         << vecCore::Get(varValue, i) << " | ";
   }
   // Auxiliary information about width, precision
-  // cout << " withVal: arg= " << argWV << " used= " << widthVal << " ( prec= " << prec << " ) ";
-  // cout << " lenName = " << charName;
+  // cout << " withVal: arg= " << argWV << " used= " << widthVal << " ( prec= " << prec <<
+  // " ) "; cout << " lenName = " << charName;
   cout << endl;
 }
 
@@ -62,8 +64,8 @@ void ReportRowOfSquareRoots(std::string varName,
 // ---------------------------------------------
 
 template <typename Real_v>
-void ReportManyRowsOfDoubles(std::string varArrName, const Real_v varArr[], int arrLen, int charName = -1,
-                             int widthVal = -1)
+void ReportManyRowsOfDoubles(std::string varArrName, const Real_v varArr[], int arrLen,
+                             int charName = -1, int widthVal = -1)
 {
   for (int i = 0; i < arrLen; i++) {
     // std::ostringstream nameAndIndex;
@@ -72,7 +74,9 @@ void ReportManyRowsOfDoubles(std::string varArrName, const Real_v varArr[], int 
     std::string nameAndIndex = varArrName + "[" + std::to_string(i) + "]"; // + "/AF";
     ReportRowOfDoubles<Real_v>(nameAndIndex, varArr[i], charName, widthVal);
   }
-  std::cout << "##-------------------------------------------------------------------------------" << std::endl;
+  std::cout << "##-----------------------------------------------------------------------"
+               "--------"
+            << std::endl;
 }
 
 // ---------------------------------------------
@@ -87,7 +91,8 @@ Real_v GetMomentumMag(const Real_v varPositionsMomenta[6])
 }
 
 template <typename Real_v>
-void ReportRowsOfPositionsMomenta(std::string varName, const Real_v varPositionsMomenta[], int arrLen,
+void ReportRowsOfPositionsMomenta(std::string varName, const Real_v varPositionsMomenta[],
+                                  int arrLen,
                                   const Real_v &momentumMagStart, //
                                   int widthNm = -1, int widthVal = -1)
 {
@@ -119,15 +124,17 @@ void ReportRowsOfPositionsMomenta(std::string varName, const Real_v varPositions
     } else {
       ReportRowOfDoubles("|momEnd|", momEnd);
     }
-    std::cout << "##-------------------------------------------------------------------------------" << std::endl;
+    std::cout << "##---------------------------------------------------------------------"
+                 "----------"
+              << std::endl;
   }
 }
 
 // ---------------------------------------------
 
 template <typename Real_v>
-inline void ReportRowOfBools(std::string varName, const vecCore::Mask_v<Real_v> &var, int widthName = -1,
-                             int widthVal = -1)
+inline void ReportRowOfBools(std::string varName, const vecCore::Mask_v<Real_v> &var,
+                             int widthName = -1, int widthVal = -1)
 {
   using std::cout;
 
@@ -150,8 +157,9 @@ inline void ReportRowOfBools(std::string varName, const vecCore::Mask_v<Real_v> 
 // ===============  Selective Reporting / Printing ==================
 
 template <typename Real_v>
-inline void ReportRowOfDoublesIf(std::string varName, const Real_v var, vecCore::Mask_v<Real_v> cond,
-                                 int widthName = -1, int widthVal = -1)
+inline void ReportRowOfDoublesIf(std::string varName, const Real_v var,
+                                 vecCore::Mask_v<Real_v> cond, int widthName = -1,
+                                 int widthVal = -1)
 {
   using std::cout;
   if (widthName < 0) {
@@ -169,8 +177,8 @@ inline void ReportRowOfDoublesIf(std::string varName, const Real_v var, vecCore:
 }
 
 // ----------------------------------------------------------------------------------
-inline void ReportArray(const char *methodName, const std::string &variableName, const double Arr[], int numTracks,
-                        bool banner = false)
+inline void ReportArray(const char *methodName, const std::string &variableName,
+                        const double Arr[], int numTracks, bool banner = false)
 {
   using std::cout;
   using std::endl;
@@ -180,7 +188,8 @@ inline void ReportArray(const char *methodName, const std::string &variableName,
   const int charWidth    = precisionVal + 2;
 
   if (banner) {
-    cout << " **** Method " << std::setw(wdName) << methodName << " values of arrays: " << endl;
+    cout << " **** Method " << std::setw(wdName) << methodName
+         << " values of arrays: " << endl;
     cout << std::setw(wdName) << "Variable Name"
          << " :";
     for (int i = 0; i < numTracks; ++i) {

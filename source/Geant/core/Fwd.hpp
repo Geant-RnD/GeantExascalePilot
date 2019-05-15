@@ -11,4 +11,4 @@ class TaskData;
 class GeantBasket;
 class GeantBasketMgr;
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx

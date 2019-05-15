@@ -18,7 +18,10 @@ public:
   using TrackId_t = TrackCollection::TrackId_t;
 
 public:
-  TrackAccessor(const TrackCollection &tracks, TrackId_t track_id) : fState(tracks.Get(track_id)) {}
+  TrackAccessor(const TrackCollection &tracks, TrackId_t track_id)
+      : fState(tracks.Get(track_id))
+  {
+  }
 
   // >>> ACCESSORS
 
@@ -34,9 +37,8 @@ protected:
   explicit TrackAccessor(const TrackState &state) : fState(state) {}
   const TrackState &State() const { return fState; }
 
-  template<class PT> friend class TrackModifier;
+  template <class PT>
+  friend class TrackModifier;
 };
 
 } // namespace geantx
-
-

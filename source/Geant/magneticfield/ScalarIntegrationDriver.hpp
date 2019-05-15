@@ -22,7 +22,8 @@
 class ScalarIntegrationDriver {
 public:                                    // with description
   ScalarIntegrationDriver(double hminimum, // same
-                          VScalarIntegrationStepper *pStepper, int numberOfComponents = 6, int statisticsVerbosity = 1);
+                          VScalarIntegrationStepper *pStepper, int numberOfComponents = 6,
+                          int statisticsVerbosity = 1);
   ScalarIntegrationDriver(const ScalarIntegrationDriver &);
   // Copy constructor used to create Clone method
   ~ScalarIntegrationDriver();
@@ -51,12 +52,20 @@ public:                                    // with description
   //        momentum (normalised: Delta_Integration(p^2)/(p^2) )
 
   ScalarIntegrationDriver *Clone() const;
-  // Create an independent copy of the current object -- including independent 'owned' objects
+  // Create an independent copy of the current object -- including independent 'owned'
+  // objects
   //
-  // Question:  If the current object and all sub-objects are const, can it return 'this' ?
+  // Question:  If the current object and all sub-objects are const, can it return 'this'
+  // ?
 
-  VScalarEquationOfMotion *GetEquationOfMotion() { return fpStepper->GetEquationOfMotion(); }
-  const VScalarEquationOfMotion *GetEquationOfMotion() const { return fpStepper->GetEquationOfMotion(); }
+  VScalarEquationOfMotion *GetEquationOfMotion()
+  {
+    return fpStepper->GetEquationOfMotion();
+  }
+  const VScalarEquationOfMotion *GetEquationOfMotion() const
+  {
+    return fpStepper->GetEquationOfMotion();
+  }
 
   // Auxiliary methods
   inline double GetHmin() const { return fMinimumStep; }
@@ -84,8 +93,8 @@ public:                                    // with description
   inline void SetPowerShrink(double valPs); // { fPowerShrink= valPs; }
   inline void SetPowerGrow(double valPg);   // { fPowerGrow= valPg; }
   inline void SetErrcon(double valEc);      // { fErrcon= valEc; }
-                                            // When setting safety or fPowerGrow, errcon will be set to a
-                                            // compatible value.
+                                       // When setting safety or fPowerGrow, errcon will
+                                       // be set to a compatible value.
 
   inline double ComputeAndSetErrcon();
 
@@ -100,17 +109,19 @@ public:                                    // with description
   // satisfying the accuracy criterion of:
   // yerr < eps * |y_end-y_start|
 
-  double ComputeNewStepSize(double errMaxNorm,    // normalised error
-                            double hstepCurrent); // current step size
-                                                  // Taking the last step's normalised error, calculate
-                                                  // a step size for the next step.
-                                                  // Do not limit the next step's size within a factor of the
-                                                  // current one.
+  double ComputeNewStepSize(
+      double errMaxNorm,    // normalised error
+      double hstepCurrent); // current step size
+                            // Taking the last step's normalised error, calculate
+                            // a step size for the next step.
+                            // Do not limit the next step's size within a factor of the
+                            // current one.
 
-  double ComputeNewStepSize_WithinLimits(double errMaxNorm,    // normalised error
-                                         double hstepCurrent); // current step size
-                                                               // Taking the last step's normalised error, calculate
-                                                               // a step size for the next step.
+  double ComputeNewStepSize_WithinLimits(
+      double errMaxNorm,    // normalised error
+      double hstepCurrent); // current step size
+                            // Taking the last step's normalised error, calculate
+                            // a step size for the next step.
   // Limit the next step's size within a range around the current one.
 
   inline int GetMaxNoSteps() const;
@@ -130,15 +141,17 @@ public: // without description
 protected: // without description
   void WarnSmallStepSize(double hnext, double hstep, double h, double xDone, int noSteps);
   void WarnTooManySteps(double x1start, double x2end, double xCurrent);
-  void WarnEndPointTooFar(double endPointDist, double hStepSize, double epsilonRelative, int debugFlag);
+  void WarnEndPointTooFar(double endPointDist, double hStepSize, double epsilonRelative,
+                          int debugFlag);
   //  Issue warnings for undesirable situations
 
-  void PrintStatus(const double *StartArr, double xstart, const double *CurrentArr, double xcurrent, double requestStep,
-                   int subStepNo);
-  void PrintStatus(const ScalarFieldTrack &StartFT, const ScalarFieldTrack &CurrentFT, double requestStep,
-                   int subStepNo);
-  void PrintStat_Aux(const ScalarFieldTrack &aScalarFieldTrack, double requestStep, double actualStep, int subStepNo,
-                     double subStepSize, double dotVelocities);
+  void PrintStatus(const double *StartArr, double xstart, const double *CurrentArr,
+                   double xcurrent, double requestStep, int subStepNo);
+  void PrintStatus(const ScalarFieldTrack &StartFT, const ScalarFieldTrack &CurrentFT,
+                   double requestStep, int subStepNo);
+  void PrintStat_Aux(const ScalarFieldTrack &aScalarFieldTrack, double requestStep,
+                     double actualStep, int subStepNo, double subStepSize,
+                     double dotVelocities);
   //  Verbose output for debugging
 
   void PrintStatisticsReport();
@@ -167,7 +180,8 @@ private:
   double fMinimumStep;
   // Minimum Step allowed in a Step (in absolute units)
   double fSmallestFraction; //   Expected range 1e-12 to 5e-15;
-                            // Smallest fraction of (existing) curve length - in relative units
+                            // Smallest fraction of (existing) curve length - in relative
+                            // units
                             //  below this fraction the current step will be the last
 
   const int fNoIntegrationVariables; // Number of Variables in integration
@@ -225,8 +239,8 @@ inline void ScalarIntegrationDriver::ReSetParameters(double new_safety)
 
   if (fVerboseLevel > 0)
     std::cout << "ScalarIntegrationDriver::ResetParameters > Powers used: "
-              << "  shrink = " << fPowerShrink << "  grow = " << fPowerGrow << " ( Stepper order = " << stepperOrder
-              << "  ) " << std::endl;
+              << "  shrink = " << fPowerShrink << "  grow = " << fPowerGrow
+              << " ( Stepper order = " << stepperOrder << "  ) " << std::endl;
   ComputeAndSetErrcon();
 }
 
@@ -247,7 +261,8 @@ inline void ScalarIntegrationDriver::SetErrcon(double val)
   fErrcon = val;
 }
 
-inline void ScalarIntegrationDriver::RenewStepperAndAdjust(VScalarIntegrationStepper *pStepper)
+inline void ScalarIntegrationDriver::RenewStepperAndAdjust(
+    VScalarIntegrationStepper *pStepper)
 {
   fpStepper = pStepper;
   ReSetParameters();
@@ -273,9 +288,10 @@ inline void ScalarIntegrationDriver::SetMaxNoSteps(int val)
   fMaxNoSteps = val;
 }
 
-inline void ScalarIntegrationDriver::GetDerivatives(const ScalarFieldTrack &y_curr, // const, INput
-                                                    double charge,
-                                                    double dydx[]) // OUTput
+inline void ScalarIntegrationDriver::GetDerivatives(
+    const ScalarFieldTrack &y_curr, // const, INput
+    double charge,
+    double dydx[]) // OUTput
 {
   double tmpValArr[ScalarFieldTrack::ncompSVEC];
   y_curr.DumpToArray(tmpValArr);

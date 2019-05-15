@@ -34,25 +34,25 @@ struct TrackSchedulingState {
  * one.
  */
 struct TrackHistoryState {
-  int fEvent             = 0;  /** Event number */
-  int fPrimaryIndx       = 0;  /** Index of the primary particle in the current event */
-  ParticleId_t fParticle = 0;  /** Unique particle ID within the event */
-  ParticleId_t fMother   = 0;  /** ID of mother particle within the event*/
-  int fNsteps            = 0;  /** Number of steps made in this track */
-  int fGeneration        = 0;  /** Number of generations to initial particle (0 for primary) */
+  int fEvent             = 0; /** Event number */
+  int fPrimaryIndx       = 0; /** Index of the primary particle in the current event */
+  ParticleId_t fParticle = 0; /** Unique particle ID within the event */
+  ParticleId_t fMother   = 0; /** ID of mother particle within the event*/
+  int fNsteps            = 0; /** Number of steps made in this track */
+  int fGeneration = 0; /** Number of generations to initial particle (0 for primary) */
 };
 
 struct TrackGeometryState {
   // TODO: fVolume is a cached 'fPath->Top()->GetLogicalVolume()'
-  Volume_t const *fVolume = nullptr; /** Current volume the particle is in */
-  VolumePath_t *fPath     = nullptr; /** Current volume state */
-  VolumePath_t *fNextpath = nullptr; /** Next volume state */
-  double fSnext           = 0;       /** Straight distance to next boundary */
-  double fSafety          = 0;       /** Safe distance to any boundary */
-  int fMaxDepth           = 0;       /** Maximum geometry depth */
-  bool fIsOnBoundaryPreStp = false;  /** Particle was on boundary at the pre-step point */
-  bool fBoundary          = false;   /** Starting from boundary */
-  bool fPending           = false;   /** Track pending to be processed */
+  Volume_t const *fVolume  = nullptr; /** Current volume the particle is in */
+  VolumePath_t *fPath      = nullptr; /** Current volume state */
+  VolumePath_t *fNextpath  = nullptr; /** Next volume state */
+  double fSnext            = 0;       /** Straight distance to next boundary */
+  double fSafety           = 0;       /** Safe distance to any boundary */
+  int fMaxDepth            = 0;       /** Maximum geometry depth */
+  bool fIsOnBoundaryPreStp = false; /** Particle was on boundary at the pre-step point */
+  bool fBoundary           = false; /** Starting from boundary */
+  bool fPending            = false; /** Track pending to be processed */
 };
 
 struct TrackMaterialState {
@@ -85,11 +85,11 @@ constexpr size_t kNumPhysicsProcess = 10;
 struct TrackPhysicsState {
   ParticleDefId_t fParticleDefId = 0; /** Index into possible particle definitions */
 
-  double fEkin       = 0;       /** Kinetic energy */
-  double fMomentum   = 0;       /** Relativistic momentum */
+  double fEkin     = 0; /** Kinetic energy */
+  double fMomentum = 0; /** Relativistic momentum */
 
-  double fEdep  = 0; /** Energy deposition in the step */
-  double fPstep = 0; /** Distance before the next physics interaction */
+  double fEdep         = 0; /** Energy deposition in the step */
+  double fPstep        = 0; /** Distance before the next physics interaction */
   ProcessId_t fProcess = 0; /** ID of physics 'process' at the next interaction */
 
   /* Don't use: int fEindex; -1 for continuous, 1000 for discrete */
@@ -108,7 +108,7 @@ struct TrackState {
 
   ThreeVector fPos = 0; /** Position */
   ThreeVector fDir = 0; /** Direction */
-  double fTime = 0; /** Time at beginning of step */
+  double fTime     = 0; /** Time at beginning of step */
 
   /* don't use: ESimulationStage fStage */
   /* unused: double fintlen = 0; */

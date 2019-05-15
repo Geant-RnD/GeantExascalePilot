@@ -28,10 +28,11 @@
 class VScalarIntegrationStepper {
 public:
   // VScalarIntegrationStepper();   // DELET
-  VScalarIntegrationStepper(VScalarEquationOfMotion *equation, unsigned int IntegrationOrder,
-                            unsigned int numIntegrationVariables,
-                            int numStateVariables); // = -1 same? or  unsigned ?    // in G4 =12
-                                                    // See explanations of each below - e.g. order => RK order
+  VScalarIntegrationStepper(
+      VScalarEquationOfMotion *equation, unsigned int IntegrationOrder,
+      unsigned int numIntegrationVariables,
+      int numStateVariables); // = -1 same? or  unsigned ?    // in G4 =12
+                              // See explanations of each below - e.g. order => RK order
 
   VScalarIntegrationStepper(const VScalarIntegrationStepper &);
   // For use in Clone() method
@@ -40,8 +41,8 @@ public:
 
   // Core methods
   // ---------------------
-  virtual void StepWithErrorEstimate(const double y[], const double dydx[], double charge, double h, double yout[],
-                                     double yerr[]) = 0;
+  virtual void StepWithErrorEstimate(const double y[], const double dydx[], double charge,
+                                     double h, double yout[], double yerr[]) = 0;
   // Integrate typically using Runge Kutta
   // Input:
   //          y[] = initial derivative
@@ -58,7 +59,8 @@ public:
   // Auxiliary methods
   // ---------------------
   virtual VScalarIntegrationStepper *Clone() const = 0;
-  // Create an independent copy of the current object -- including independent 'owned' objects
+  // Create an independent copy of the current object -- including independent 'owned'
+  // objects
 
   inline void RightHandSideVIS(const double y[], double charge, double dydx[]);
   // Utility method to supply the standard Evaluation of the
@@ -83,7 +85,10 @@ public:
   // Simple utility function to (re)normalise 'unit spin' vector.
 
   inline VScalarEquationOfMotion *GetEquationOfMotion() { return fAbstrEquation; }
-  inline const VScalarEquationOfMotion *GetEquationOfMotion() const { return fAbstrEquation; }
+  inline const VScalarEquationOfMotion *GetEquationOfMotion() const
+  {
+    return fAbstrEquation;
+  }
   // As some steppers require access to other methods of Eq_of_Mot
   void SetEquationOfMotion(VScalarEquationOfMotion *newEquation);
 
@@ -107,7 +112,8 @@ private:
 };
 
 // #include  "VScalarIntegrationStepper.icc"
-inline void VScalarIntegrationStepper::RightHandSideVIS(const double y[], double charge, double dydx[])
+inline void VScalarIntegrationStepper::RightHandSideVIS(const double y[], double charge,
+                                                        double dydx[])
 {
   assert(fAbstrEquation != nullptr);
   fAbstrEquation->RightHandSide(y, charge, dydx);

@@ -55,16 +55,19 @@ public: // with description
   /**
    * @brief Scalar interface for field retrieval
    *
-   * @param Position - position (0,1,2=x,y,z)   [Input]   - Note: time is suppressed => B(t)=B(0)
+   * @param Position - position (0,1,2=x,y,z)   [Input]   - Note: time is suppressed =>
+   * B(t)=B(0)
    * @param fieldArr - output values of field. Usual convention:
    *                   0,1,2 = B_x, B_y, B_z
    *                   3,4,5 = E_x, E_y, E_z  (foreseen extension)
    *        Units are expected to be native GeantV units.
    */
-  virtual void ObtainFieldValue(const Vector3D<double> &position, Vector3D<double> &fieldValue) = 0;
+  virtual void ObtainFieldValue(const Vector3D<double> &position,
+                                Vector3D<double> &fieldValue) = 0;
 
   /** @brief Vector interface for field retrieval */
-  virtual void ObtainFieldValueSIMD(const Vector3D<Double_v> &position, Vector3D<Double_v> &fieldValue) = 0;
+  virtual void ObtainFieldValueSIMD(const Vector3D<Double_v> &position,
+                                    Vector3D<Double_v> &fieldValue) = 0;
 
   inline VVectorField(int numberOfComponents, bool changesEnergy)
       : fNumberOfComponents(numberOfComponents), fChangesEnergy(changesEnergy)
@@ -72,7 +75,8 @@ public: // with description
   }
 
   inline VVectorField(const VVectorField &field)
-      : fNumberOfComponents(field.fNumberOfComponents), fChangesEnergy(field.fChangesEnergy)
+      : fNumberOfComponents(field.fNumberOfComponents),
+        fChangesEnergy(field.fChangesEnergy)
   {
   }
   virtual ~VVectorField() {}

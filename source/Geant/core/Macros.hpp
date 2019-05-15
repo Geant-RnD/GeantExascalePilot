@@ -121,7 +121,9 @@ inline uintmax_t GetThisThreadID()
 //======================================================================================//
 
 #if !defined(PRINT_HERE)
-#define PRINT_HERE(extra) printf("[%lu]> %s@'%s':%i %s\n", GetThisThreadID(), __FUNCTION__, __FILE__, __LINE__, extra)
+#define PRINT_HERE(extra)                                                               \
+  printf("[%lu]> %s@'%s':%i %s\n", GetThisThreadID(), __FUNCTION__, __FILE__, __LINE__, \
+         extra)
 #endif
 
 //======================================================================================//
@@ -139,29 +141,29 @@ inline uintmax_t GetThisThreadID()
 //======================================================================================//
 
 #if !defined(REPORT_TIMER)
-#define REPORT_TIMER(start_time, note, counter, total_count)                                               \
-  {                                                                                                        \
-    auto end_time                                 = std::chrono::system_clock::now();                      \
-    std::chrono::duration<double> elapsed_seconds = end_time - start_time;                                 \
-    printf("[%li]> %-16s :: %3i of %3i... %5.2f seconds\n", GetThisThreadID(), note, counter, total_count, \
-           elapsed_seconds.count());                                                                       \
+#define REPORT_TIMER(start_time, note, counter, total_count)                          \
+  {                                                                                   \
+    auto end_time                                 = std::chrono::system_clock::now(); \
+    std::chrono::duration<double> elapsed_seconds = end_time - start_time;            \
+    printf("[%li]> %-16s :: %3i of %3i... %5.2f seconds\n", GetThisThreadID(), note,  \
+           counter, total_count, elapsed_seconds.count());                            \
   }
 #endif
 
 //======================================================================================//
 
 #if !defined(CUDA_CHECK_LAST_ERROR)
-#define CUDA_CHECK_LAST_ERROR()                                                                            \
-  {                                                                                                        \
-    cudaStreamSynchronize(0);                                                                              \
-    cudaError err = cudaGetLastError();                                                                    \
-    if (cudaSuccess != err) {                                                                              \
-      std::stringstream ss;                                                                                \
-      ss << "cudaCheckError() failed at " << __FUNCTION__ << "@'" << __FILE__ << "':" << __LINE__ << " : " \
-         << cudaGetErrorString(err);                                                                       \
-      fprintf(stderr, "%s\n", ss.str().c_str());                                                           \
-      throw std::runtime_error(ss.str().c_str());                                                          \
-    }                                                                                                      \
+#define CUDA_CHECK_LAST_ERROR()                                               \
+  {                                                                           \
+    cudaStreamSynchronize(0);                                                 \
+    cudaError err = cudaGetLastError();                                       \
+    if (cudaSuccess != err) {                                                 \
+      std::stringstream ss;                                                   \
+      ss << "cudaCheckError() failed at " << __FUNCTION__ << "@'" << __FILE__ \
+         << "':" << __LINE__ << " : " << cudaGetErrorString(err);             \
+      fprintf(stderr, "%s\n", ss.str().c_str());                              \
+      throw std::runtime_error(ss.str().c_str());                             \
+    }                                                                         \
   }
 #endif
 
@@ -169,17 +171,17 @@ inline uintmax_t GetThisThreadID()
 
 #if !defined(CUDA_DEBUG_LAST_ERROR)
 #if defined(DEBUG)
-#define CUDA_DEBUG_LAST_ERROR()                                                                            \
-  {                                                                                                        \
-    cudaStreamSynchronize(0);                                                                              \
-    cudaError err = cudaGetLastError();                                                                    \
-    if (cudaSuccess != err) {                                                                              \
-      std::stringstream ss;                                                                                \
-      ss << "cudaCheckError() failed at " << __FUNCTION__ << "@'" << __FILE__ << "':" << __LINE__ << " : " \
-         << cudaGetErrorString(err);                                                                       \
-      fprintf(stderr, "%s\n", ss.str().c_str());                                                           \
-      throw std::runtime_error(ss.str().c_str());                                                          \
-    }                                                                                                      \
+#define CUDA_DEBUG_LAST_ERROR()                                               \
+  {                                                                           \
+    cudaStreamSynchronize(0);                                                 \
+    cudaError err = cudaGetLastError();                                       \
+    if (cudaSuccess != err) {                                                 \
+      std::stringstream ss;                                                   \
+      ss << "cudaCheckError() failed at " << __FUNCTION__ << "@'" << __FILE__ \
+         << "':" << __LINE__ << " : " << cudaGetErrorString(err);             \
+      fprintf(stderr, "%s\n", ss.str().c_str());                              \
+      throw std::runtime_error(ss.str().c_str());                             \
+    }                                                                         \
   }
 #else
 #define CUDA_DEBUG_LAST_ERROR() \
@@ -192,15 +194,15 @@ inline uintmax_t GetThisThreadID()
 //--------------------------------------------------------------------------------------//
 
 #if !defined(CUDA_CHECK_CALL)
-#define CUDA_CHECK_CALL(err)                                                                               \
-  {                                                                                                        \
-    if (cudaSuccess != err) {                                                                              \
-      std::stringstream ss;                                                                                \
-      ss << "cudaCheckError() failed at " << __FUNCTION__ << "@'" << __FILE__ << "':" << __LINE__ << " : " \
-         << cudaGetErrorString(err);                                                                       \
-      fprintf(stderr, "%s\n", ss.str().c_str());                                                           \
-      throw std::runtime_error(ss.str().c_str());                                                          \
-    }                                                                                                      \
+#define CUDA_CHECK_CALL(err)                                                  \
+  {                                                                           \
+    if (cudaSuccess != err) {                                                 \
+      std::stringstream ss;                                                   \
+      ss << "cudaCheckError() failed at " << __FUNCTION__ << "@'" << __FILE__ \
+         << "':" << __LINE__ << " : " << cudaGetErrorString(err);             \
+      fprintf(stderr, "%s\n", ss.str().c_str());                              \
+      throw std::runtime_error(ss.str().c_str());                             \
+    }                                                                         \
   }
 #endif
 

@@ -29,19 +29,22 @@ VECCORE_ATT_HOST_DEVICE inline T Abs(T const &val)
   return vecCore::math::Abs(val);
 }
 template <typename T>
-VECCORE_ATT_HOST_DEVICE inline bool AreEqualAbs(T const &val1, T const &val2, T const &epsilon)
+VECCORE_ATT_HOST_DEVICE inline bool AreEqualAbs(T const &val1, T const &val2,
+                                                T const &epsilon)
 {
   return (vecCore::math::Abs(val1 - val2) < epsilon);
 }
 template <typename T>
-VECCORE_ATT_HOST_DEVICE inline bool AreEqualRel(T const &val1, T const &val2, T const &relPrec)
+VECCORE_ATT_HOST_DEVICE inline bool AreEqualRel(T const &val1, T const &val2,
+                                                T const &relPrec)
 {
-  return (vecCore::math::Abs(val1 - val2) < 0.5 * relPrec * (vecCore::math::Abs(val1) + vecCore::math::Abs(val2)));
+  return (vecCore::math::Abs(val1 - val2) <
+          0.5 * relPrec * (vecCore::math::Abs(val1) + vecCore::math::Abs(val2)));
 }
 
-//  template <typename T> VECCORE_ATT_HOST_DEVICE inline T Normalize(T const &val[3]) { return
-//  vecCore::math::Normalize(val); }
-//  VECCORE_ATT_HOST_DEVICE vecCore::math::Precision inline TwoPi() { return vecCore::math::TwoPi(); }
+//  template <typename T> VECCORE_ATT_HOST_DEVICE inline T Normalize(T const &val[3]) {
+//  return vecCore::math::Normalize(val); } VECCORE_ATT_HOST_DEVICE
+//  vecCore::math::Precision inline TwoPi() { return vecCore::math::TwoPi(); }
 
 // From TMath.cxx ....
 VECCORE_ATT_HOST_DEVICE

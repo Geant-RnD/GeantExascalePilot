@@ -62,7 +62,8 @@ public: // with description
   inline void SetMomentum(const ThreeVector &nMom);
   // Does change mom-dir too.
 
-  inline void SetCurvePnt(const ThreeVector &pPosition, const ThreeVector &pMomentum, double s_curve);
+  inline void SetCurvePnt(const ThreeVector &pPosition, const ThreeVector &pMomentum,
+                          double s_curve);
 
   // inline void SetMomentumDir(const ThreeVector& nMomDir);
   // Does NOT change Momentum or Velocity Vector.
@@ -139,7 +140,8 @@ inline ScalarFieldTrack::~ScalarFieldTrack()
   // delete fpChargeState;
 }
 
-inline void ScalarFieldTrack::SetCurvePnt(const ThreeVector &pPosition, const ThreeVector &pMomentum, double s_curve)
+inline void ScalarFieldTrack::SetCurvePnt(const ThreeVector &pPosition,
+                                          const ThreeVector &pMomentum, double s_curve)
 {
   SixVector[0] = pPosition.x();
   SixVector[1] = pPosition.y();

@@ -73,7 +73,8 @@ public: // with description
   inline void SetMomentum(ThreeVectorSIMD nMom);
   // Does change mom-dir too.
 
-  inline void SetCurvePnt(const ThreeVectorSIMD &pPosition, const ThreeVectorSIMD &pMomentum, Real_v s_curve);
+  inline void SetCurvePnt(const ThreeVectorSIMD &pPosition,
+                          const ThreeVectorSIMD &pMomentum, Real_v s_curve);
 
   // inline void SetMomentumDir(ThreeVectorSIMD nMomDir);
   // Does NOT change Momentum or Velocity Vector.
@@ -99,7 +100,8 @@ public: // without description
   inline void DumpToArray(Real_v valArr[ncompSVEC]) const;
   void LoadFromArray(const Real_v valArr[ncompSVEC], int noVarsIntegrated);
   template <class Backend_>
-  friend std::ostream &operator<<(std::ostream &os, const TemplateFieldTrack<Backend_> &SixVec);
+  friend std::ostream &operator<<(std::ostream &os,
+                                  const TemplateFieldTrack<Backend_> &SixVec);
 
 private: // public: by A. ?
   Real_v fPositionMomentum[6];
@@ -126,11 +128,13 @@ private:
 //
 
 template <class Real_v>
-inline TemplateFieldTrack<Real_v>::TemplateFieldTrack(const TemplateFieldTrack<Real_v> &rStVec)
+inline TemplateFieldTrack<Real_v>::TemplateFieldTrack(
+    const TemplateFieldTrack<Real_v> &rStVec)
     : fDistanceAlongCurve(rStVec.fDistanceAlongCurve), fMomentumMag(rStVec.fMomentumMag),
       // fKineticEnergy( rStVec.fKineticEnergy ),
       // fRestMass_c2( rStVec.fRestMass_c2),
-      fLabTimeOfFlight(rStVec.fLabTimeOfFlight), fProperTimeOfFlight(rStVec.fProperTimeOfFlight) //,
+      fLabTimeOfFlight(rStVec.fLabTimeOfFlight),
+      fProperTimeOfFlight(rStVec.fProperTimeOfFlight) //,
 // fMomentumModulus( rStVec.fMomentumModulus ),
 // fPolarization( rStVec.fPolarization ),
 // fMomentumDir( rStVec.fMomentumDir ),
@@ -148,8 +152,9 @@ inline TemplateFieldTrack<Real_v>::~TemplateFieldTrack()
 }
 
 template <class Real_v>
-inline void TemplateFieldTrack<Real_v>::SetCurvePnt(const vecgeom::Vector3D<Real_v> &pPosition,
-                                                    const vecgeom::Vector3D<Real_v> &pMomentum, Real_v s_curve)
+inline void TemplateFieldTrack<Real_v>::SetCurvePnt(
+    const vecgeom::Vector3D<Real_v> &pPosition,
+    const vecgeom::Vector3D<Real_v> &pMomentum, Real_v s_curve)
 {
   // try auto-vectorization
   for (int i = 0; i < 3; ++i) {
@@ -158,7 +163,8 @@ inline void TemplateFieldTrack<Real_v>::SetCurvePnt(const vecgeom::Vector3D<Real
   }
 
   fMomentumMag = pMomentum.Mag();
-  // Commented block below because seems to do nothing. If required, use a MaskedAssign : Ananya
+  // Commented block below because seems to do nothing. If required, use a MaskedAssign :
+  // Ananya
   /*  if( fMomentumMag > 0.0 )
     {
        // fMomentumDir = (1.0/fMomentumMag) * pMomentum;
@@ -169,7 +175,8 @@ inline void TemplateFieldTrack<Real_v>::SetCurvePnt(const vecgeom::Vector3D<Real
 template <class Real_v>
 inline vecgeom::Vector3D<Real_v> TemplateFieldTrack<Real_v>::GetPosition() const
 {
-  vecgeom::Vector3D<Real_v> myPosition(fPositionMomentum[0], fPositionMomentum[1], fPositionMomentum[2]);
+  vecgeom::Vector3D<Real_v> myPosition(fPositionMomentum[0], fPositionMomentum[1],
+                                       fPositionMomentum[2]);
   return myPosition;
 }
 
@@ -178,7 +185,8 @@ inline vecgeom::Vector3D<Real_v> TemplateFieldTrack<Real_v>::GetMomentumDirectio
 {
   typedef vecgeom::Vector3D<Real_v> ThreeVectorSIMD;
   Real_v inv_mag = 1.0 / fMomentumMag;
-  return inv_mag * ThreeVectorSIMD(fPositionMomentum[3], fPositionMomentum[4], fPositionMomentum[5]);
+  return inv_mag * ThreeVectorSIMD(fPositionMomentum[3], fPositionMomentum[4],
+                                   fPositionMomentum[5]);
 }
 
 template <class Real_v>
@@ -262,7 +270,8 @@ inline void TemplateFieldTrack<Real_v>::SetProperTimeOfFlight(Real_v nTOF)
 template <class Real_v>
 inline vecgeom::Vector3D<Real_v> TemplateFieldTrack<Real_v>::GetMomentum() const
 {
-  return ThreeVectorSIMD(fPositionMomentum[3], fPositionMomentum[4], fPositionMomentum[5]);
+  return ThreeVectorSIMD(fPositionMomentum[3], fPositionMomentum[4],
+                         fPositionMomentum[5]);
 }
 
 // Dump values to array
@@ -296,7 +305,8 @@ inline void TemplateFieldTrack<Real_v>::DumpToArray(Real_v valArr[ncompSVEC]) co
 }
 
 template <class Real_v>
-inline TemplateFieldTrack<Real_v> &TemplateFieldTrack<Real_v>::operator=(const TemplateFieldTrack<Real_v> &rStVec)
+inline TemplateFieldTrack<Real_v> &TemplateFieldTrack<Real_v>::operator=(
+    const TemplateFieldTrack<Real_v> &rStVec)
 {
   if (&rStVec == this) return *this;
 
@@ -323,15 +333,17 @@ TemplateFieldTrack<Real_v>::TemplateFieldTrack(const vecgeom::Vector3D<Real_v> &
                                                const vecgeom::Vector3D<Real_v> &pMomentum,
                                                // Real_v       restMass_c2,
                                                // Real_v charge,
-                                               Real_v LaboratoryTimeOfFlight, Real_v curve_length)
+                                               Real_v LaboratoryTimeOfFlight,
+                                               Real_v curve_length)
     // const    ThreeVectorSIMD& vecPolarization,
     // Real_v   curve_length )
     : fDistanceAlongCurve(curve_length),
       // fMomentumMag(pMomentum.Mag()),
       // fKineticEnergy(kineticEnergy), fRestMass_c2(restMass_c2),
-      fLabTimeOfFlight(LaboratoryTimeOfFlight), fProperTimeOfFlight(0.) // ,
-                                                                        // fMomentumDir(pMomentum.Unit()),
-                                                                        // fCharge( charge )
+      fLabTimeOfFlight(LaboratoryTimeOfFlight),
+      fProperTimeOfFlight(0.) // ,
+                              // fMomentumDir(pMomentum.Unit()),
+                              // fCharge( charge )
 {
   SetMomentum(pMomentum);
   SetPosition(pPosition);
@@ -361,7 +373,8 @@ TemplateFieldTrack<Real_v>::TemplateFieldTrack(char) //  Nothing is set !!
 //   note that momentum direction must-be/is normalised
 
 template <class Real_v>
-void TemplateFieldTrack<Real_v>::LoadFromArray(const Real_v valArrIn[ncompSVEC], int noVarsIntegrated)
+void TemplateFieldTrack<Real_v>::LoadFromArray(const Real_v valArrIn[ncompSVEC],
+                                               int noVarsIntegrated)
 {
   int i;
 
@@ -377,7 +390,8 @@ void TemplateFieldTrack<Real_v>::LoadFromArray(const Real_v valArrIn[ncompSVEC],
   }
 
 #if 1
-  SetCurvePnt(ThreeVectorSIMD(valArr[0], valArr[1], valArr[2]), ThreeVectorSIMD(valArr[3], valArr[4], valArr[5]),
+  SetCurvePnt(ThreeVectorSIMD(valArr[0], valArr[1], valArr[2]),
+              ThreeVectorSIMD(valArr[3], valArr[4], valArr[5]),
               0); // DistanceAlongCurve
 #else
   fPositionMomentum[0] = valArr[0];

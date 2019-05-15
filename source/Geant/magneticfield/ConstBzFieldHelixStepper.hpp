@@ -13,9 +13,9 @@
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 /**
- * A very simple stepper treating the propagation of particles in a constant Bz magnetic field
- * ( neglecting energy loss of particle )
- * This class is roughly equivalent to TGeoHelix in ROOT
+ * A very simple stepper treating the propagation of particles in a constant Bz magnetic
+ * field ( neglecting energy loss of particle ) This class is roughly equivalent to
+ * TGeoHelix in ROOT
  */
 class ConstBzFieldHelixStepper {
 private:
@@ -45,10 +45,12 @@ public:
    */
   template <typename BaseType, typename BaseIType>
   inline __attribute__((always_inline)) VECCORE_ATT_HOST_DEVICE void DoStep(
-      BaseType const & /*posx*/, BaseType const & /*posy*/, BaseType const & /*posz*/, BaseType const & /*dirx*/,
-      BaseType const & /*diry*/, BaseType const & /*dirz*/, BaseIType const & /*charge*/, BaseType const & /*momentum*/,
-      BaseType const & /*step*/, BaseType & /*newsposx*/, BaseType & /*newposy*/, BaseType & /*newposz*/,
-      BaseType & /*newdirx*/, BaseType & /*newdiry*/, BaseType & /*newdirz*/
+      BaseType const & /*posx*/, BaseType const & /*posy*/, BaseType const & /*posz*/,
+      BaseType const & /*dirx*/, BaseType const & /*diry*/, BaseType const & /*dirz*/,
+      BaseIType const & /*charge*/, BaseType const & /*momentum*/,
+      BaseType const & /*step*/, BaseType & /*newsposx*/, BaseType & /*newposy*/,
+      BaseType & /*newposz*/, BaseType & /*newdirx*/, BaseType & /*newdiry*/,
+      BaseType & /*newdirz*/
       ) const;
 
   /**
@@ -58,12 +60,14 @@ public:
    * SW: for the moment (12.5.2015) commenting this out as not used
    *
    */
-  // void DoStep_v( double const * /*posx*/, double const * /*posy*/, double const * /*posz*/,
-  //               double const * /*dirx*/, double const * /*diry*/, double const * /*dirz*/,
-  //              int const * /*charge*/, double const * /*momentum*/, double const * /*step*/,
-  //              double * /*newsposx*/, double * /*newposy*/, double * /*newposz*/,
-  //              double * /*newdirx*/, double * /*newdiry*/, double * /*newdirz*/,
-  //              int np
+  // void DoStep_v( double const * /*posx*/, double const * /*posy*/, double const *
+  // /*posz*/,
+  //               double const * /*dirx*/, double const * /*diry*/, double const *
+  //               /*dirz*/,
+  //              int const * /*charge*/, double const * /*momentum*/, double const *
+  //              /*step*/, double * /*newsposx*/, double * /*newposy*/, double *
+  //              /*newposz*/, double * /*newdirx*/, double * /*newdiry*/, double *
+  //              /*newdirz*/, int np
   //           ) const ;
 
   // in future will offer versions that take containers as input
@@ -74,26 +78,28 @@ public:
    * output: new position, new direction of particle
    */
   template <typename Vector3D, typename BaseType, typename BaseIType>
-  VECCORE_ATT_HOST_DEVICE void DoStep(Vector3D const &pos, Vector3D const &dir, BaseIType const &charge,
-                                      BaseType const &momentum, BaseType const &step, Vector3D &newpos,
+  VECCORE_ATT_HOST_DEVICE void DoStep(Vector3D const &pos, Vector3D const &dir,
+                                      BaseIType const &charge, BaseType const &momentum,
+                                      BaseType const &step, Vector3D &newpos,
                                       Vector3D &newdir) const
   {
-    DoStep(pos[0], pos[1], pos[2], dir[0], dir[1], dir[2], charge, momentum, step, newpos[0], newpos[1], newpos[2],
-           newdir[0], newdir[1], newdir[2]);
+    DoStep(pos[0], pos[1], pos[2], dir[0], dir[1], dir[2], charge, momentum, step,
+           newpos[0], newpos[1], newpos[2], newdir[0], newdir[1], newdir[2]);
   }
 
 }; // end class declaration
 
 /**
  * this function propagates the track along the "helix-solution" by a step step
- * input: current position (x0, y0, z0), current direction ( dx0, dy0, dz0 ), some particle properties
- * output: new position, new direction of particle
+ * input: current position (x0, y0, z0), current direction ( dx0, dy0, dz0 ), some
+ * particle properties output: new position, new direction of particle
  */
 template <typename BaseDType, typename BaseIType>
 inline __attribute__((always_inline)) void ConstBzFieldHelixStepper::DoStep(
-    BaseDType const &x0, BaseDType const &y0, BaseDType const &z0, BaseDType const &dx0, BaseDType const &dy0,
-    BaseDType const &dz0, BaseIType const &charge, BaseDType const &momentum, BaseDType const &step, BaseDType &x,
-    BaseDType &y, BaseDType &z, BaseDType &dx, BaseDType &dy, BaseDType &dz) const
+    BaseDType const &x0, BaseDType const &y0, BaseDType const &z0, BaseDType const &dx0,
+    BaseDType const &dy0, BaseDType const &dz0, BaseIType const &charge,
+    BaseDType const &momentum, BaseDType const &step, BaseDType &x, BaseDType &y,
+    BaseDType &z, BaseDType &dx, BaseDType &dy, BaseDType &dz) const
 {
   const double kB2C_local = -0.299792458e-3;
   const double kSmall     = 1.E-30;
@@ -128,13 +134,11 @@ inline __attribute__((always_inline)) void ConstBzFieldHelixStepper::DoStep(
      leaving the code here to show how one would dispatch to the kernel with Vc
 #define _R_ __restrict__
 void ConstBzFieldHelixStepper::DoStep_v(
-                      double const * _R_ posx, double const * _R_ posy, double const * _R_ posz,
-                      double const * _R_ dirx, double const * _R_ diry, double const * _R_ dirz,
-                      int const * _R_ charge, double const * _R_ momentum, double const * _R_ step,
-                      double * _R_ newposx, double * _R_ newposy, double * _R_ newposz,
-                      double * _R_ newdirx, double * _R_ newdiry, double * _R_ newdirz,
-                      int np
-                   ) const
+                      double const * _R_ posx, double const * _R_ posy, double const * _R_
+posz, double const * _R_ dirx, double const * _R_ diry, double const * _R_ dirz, int const
+* _R_ charge, double const * _R_ momentum, double const * _R_ step, double * _R_ newposx,
+double * _R_ newposy, double * _R_ newposz, double * _R_ newdirx, double * _R_ newdiry,
+double * _R_ newdirz, int np ) const
  {
      // we have choice here: ( try autovectorization: )
 
@@ -176,8 +180,9 @@ void ConstBzFieldHelixStepper::DoStep_v(
  }
 */
 
-// TODO: above stepper is tailored/specialized to B=(0,0,Bz) in the global frame of reference
-// might need to provide more general class in which the constant field has arbitrary direction
+// TODO: above stepper is tailored/specialized to B=(0,0,Bz) in the global frame of
+// reference might need to provide more general class in which the constant field has
+// arbitrary direction
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx

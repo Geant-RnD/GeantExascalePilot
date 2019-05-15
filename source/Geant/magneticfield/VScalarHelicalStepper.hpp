@@ -34,13 +34,15 @@ public:                                                 // with description
   virtual ~VScalarHelicalStepper();
 
   virtual void StepWithErrorEstimate(const double y[], // virtual for ExactHelix
-                                     const double dydx[], const double charge, double h, double yout[], double yerr[]);
+                                     const double dydx[], const double charge, double h,
+                                     double yout[], double yerr[]);
   // The stepper for the Runge Kutta integration.
   // The stepsize is fixed, equal to h.
   // Integrates ODE starting values y[0 to 6]
   // Outputs yout[] and its estimated error yerr[].
 
-  virtual void StepWithoutErrorEstimate(const double y[], ThreeVector Bfld, double charge, double h, double yout[]) = 0;
+  virtual void StepWithoutErrorEstimate(const double y[], ThreeVector Bfld, double charge,
+                                        double h, double yout[]) = 0;
   // Performs a 'dump' Step without error calculation.
 
   double DistChord(double charge) const;
@@ -80,7 +82,8 @@ private:
   VScalarHelicalStepper &operator=(const VScalarHelicalStepper &);
   // Private copy constructor and assignment operator.
 
-  static const double fUnitConstant; //  As in ScalarFieldEquation.h/cc where it is not used.
+  static const double
+      fUnitConstant; //  As in ScalarFieldEquation.h/cc where it is not used.
 private:
   // ScalarFieldEquation*
   VScalarEquationOfMotion *fPtrMagEqOfMot;
@@ -95,7 +98,8 @@ private:
 
 // #include  "VScalarHelicalStepper.icc"
 
-inline void VScalarHelicalStepper::LinearStep(const double yIn[], double h, double yLinear[]) const
+inline void VScalarHelicalStepper::LinearStep(const double yIn[], double h,
+                                              double yLinear[]) const
 {
   double momentum_val = std::sqrt(yIn[3] * yIn[3] + yIn[4] * yIn[4] + yIn[5] * yIn[5]);
   double inv_momentum = 1.0 / momentum_val;
@@ -115,7 +119,8 @@ inline void VScalarHelicalStepper::MagFieldEvaluate(const double y[], ThreeVecto
   GetEquationOfMotion()->GetFieldValue(ThreeVector(y[0], y[1], y[2]), Bfield);
 }
 
-inline double VScalarHelicalStepper::GetInverseCurve(double Momentum, double charge, double Bmag)
+inline double VScalarHelicalStepper::GetInverseCurve(double Momentum, double charge,
+                                                     double Bmag)
 {
   // define EquationType = ScalarFieldEquation<>;
   double inv_momentum = 1.0 / Momentum;

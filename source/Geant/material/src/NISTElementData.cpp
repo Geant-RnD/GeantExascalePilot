@@ -33,13 +33,15 @@ double NISTElementData::GetAtomicMass(int z, int n)
     int numisos = fNISTElementDataTable[z - 1].fNumOfIsotopes;
     int indxN   = n - fNISTElementDataTable[z - 1].fNIsos[0];
     if (indxN >= 0 && indxN < numisos) {
-      theMass = fNISTElementDataTable[z - 1].fMassIsos[indxN] + z * kElectronMassC2 - fBindingEnergies[z - 1];
+      theMass = fNISTElementDataTable[z - 1].fMassIsos[indxN] + z * kElectronMassC2 -
+                fBindingEnergies[z - 1];
     }
     theMass *= unitconv; // convert energy to [weight/mole]
   }
   if (theMass < 0.0) {
     std::cerr << " *** ERROR NISTElementData::GetAtomicMass \n "
-              << "   unknown isotope: atomic number = " << z << " nucleon number = " << n << std::endl;
+              << "   unknown isotope: atomic number = " << z << " nucleon number = " << n
+              << std::endl;
     exit(1);
   }
   return theMass;
@@ -51,11 +53,13 @@ double NISTElementData::GetIsotopeMass(int z, int n)
   if (z > 0 && z <= gNumberOfNISTElements) {
     int numisos = fNISTElementDataTable[z - 1].fNumOfIsotopes;
     int indxN   = n - fNISTElementDataTable[z - 1].fNIsos[0];
-    if (indxN >= 0 && indxN < numisos) theMass = fNISTElementDataTable[z - 1].fMassIsos[indxN];
+    if (indxN >= 0 && indxN < numisos)
+      theMass = fNISTElementDataTable[z - 1].fMassIsos[indxN];
   }
   if (theMass < 0.0) {
     std::cerr << " *** ERROR NISTElementData::GetIsotopeMass \n "
-              << "   unknown isotope: atomic number = " << z << " nucleon number = " << n << std::endl;
+              << "   unknown isotope: atomic number = " << z << " nucleon number = " << n
+              << std::endl;
     exit(1);
   }
   return theMass;
@@ -72,7 +76,8 @@ double NISTElementData::GetBindingEnergy(int z, int n)
   }
   if (theBE < 0.0) {
     std::cerr << " *** ERROR NISTElementData::GetBindingEnergy \n "
-              << "   unknown isotope: atomic number = " << z << " nucleon number = " << n << std::endl;
+              << "   unknown isotope: atomic number = " << z << " nucleon number = " << n
+              << std::endl;
     exit(1);
   }
   return theBE;
@@ -86,8 +91,10 @@ void NISTElementData::PrintData(int z)
   using geantx::units::mole;
   using geantx::units::perCent;
 
-  std::cout << "   *** NIST element data for " << GetElementSymbol(z) << " Z = " << z << " :" << std::endl;
-  std::cout << "   Mean Atomic mass = " << GetMeanAtomicMass(z) / (g / mole) << " [g/mole]" << std::endl;
+  std::cout << "   *** NIST element data for " << GetElementSymbol(z) << " Z = " << z
+            << " :" << std::endl;
+  std::cout << "   Mean Atomic mass = " << GetMeanAtomicMass(z) / (g / mole)
+            << " [g/mole]" << std::endl;
   int numisos = GetNumberOfIsotopes(z);
   std::cout << "   Number of known isotopes = " << GetNumberOfIsotopes(z) << std::endl;
   const std::string *symbols = GetIsotopeSymbols(z);
@@ -96,10 +103,13 @@ void NISTElementData::PrintData(int z)
   const double *W            = GetIsotopeNaturalAbundances(z);
   const double *M            = GetIsotopeMasses(z);
   for (int i = 0; i < numisos; ++i) {
-    std::cout << "    " << std::setw(6) << symbols[i] << "  N = " << std::setw(4) << N[i] << "  A = " << std::setw(12)
-              << std::setprecision(8) << A[i] * kAvogadro / (g / mole) << " [g/mole]"
-              << " natural abundance = " << std::setw(12) << std::setprecision(8) << W[i] / perCent << " [%]"
-              << " isotope mass = " << std::setw(12) << std::setprecision(8) << M[i] / GeV << " [GeV]" << std::endl;
+    std::cout << "    " << std::setw(6) << symbols[i] << "  N = " << std::setw(4) << N[i]
+              << "  A = " << std::setw(12) << std::setprecision(8)
+              << A[i] * kAvogadro / (g / mole) << " [g/mole]"
+              << " natural abundance = " << std::setw(12) << std::setprecision(8)
+              << W[i] / perCent << " [%]"
+              << " isotope mass = " << std::setw(12) << std::setprecision(8) << M[i] / GeV
+              << " [GeV]" << std::endl;
   }
 }
 

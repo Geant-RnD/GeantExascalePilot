@@ -27,12 +27,15 @@ using geantx::units::kTwoPi;
 
 // Constant for determining unit conversion when using normal as integrand.
 //
-constexpr double VScalarHelicalStepper::fUnitConstant = 0.299792458 * (GeV / (tesla * meter));
+constexpr double VScalarHelicalStepper::fUnitConstant =
+    0.299792458 * (GeV / (tesla * meter));
 
-VScalarHelicalStepper::VScalarHelicalStepper(VScalarEquationOfMotion *EqRhs, unsigned int order)
-    : VScalarIntegrationStepper(EqRhs, order,
-                                6,  // integrate over 6 variables only !! ( position & momentum )
-                                6), // state could be 8 - also t, E
+VScalarHelicalStepper::VScalarHelicalStepper(VScalarEquationOfMotion *EqRhs,
+                                             unsigned int order)
+    : VScalarIntegrationStepper(
+          EqRhs, order,
+          6,  // integrate over 6 variables only !! ( position & momentum )
+          6), // state could be 8 - also t, E
 
       fPtrMagEqOfMot(EqRhs), fAngCurve(0.), frCurve(0.), frHelix(0.)
 {
@@ -40,7 +43,8 @@ VScalarHelicalStepper::VScalarHelicalStepper(VScalarEquationOfMotion *EqRhs, uns
 
 VScalarHelicalStepper::~VScalarHelicalStepper() {}
 
-void VScalarHelicalStepper::AdvanceHelix(const double yIn[], ThreeVector Bfld, double charge, double h, double yHelix[],
+void VScalarHelicalStepper::AdvanceHelix(const double yIn[], ThreeVector Bfld,
+                                         double charge, double h, double yHelix[],
                                          double yHelix2[])
 {
   // const G4int    nvar = 6;
@@ -164,7 +168,8 @@ void VScalarHelicalStepper::AdvanceHelix(const double yIn[], ThreeVector Bfld, d
 
 void VScalarHelicalStepper::StepWithErrorEstimate(const double yInput[],
                                                   const double *, // dydx: Not relevant
-                                                  const double charge, double hstep, double yOut[], double yErr[])
+                                                  const double charge, double hstep,
+                                                  double yOut[], double yErr[])
 {
   const int nvar = 6;
 

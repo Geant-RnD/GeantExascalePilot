@@ -6,7 +6,8 @@
 namespace geantphysics {
 Electron *Electron::Definition()
 {
-  static Electron instance("e-", 11, 22, geantx::units::kElectronMassC2, -1.0 * geantx::units::eplus);
+  static Electron instance("e-", 11, 22, geantx::units::kElectronMassC2,
+                           -1.0 * geantx::units::eplus);
   return &instance;
 }
 

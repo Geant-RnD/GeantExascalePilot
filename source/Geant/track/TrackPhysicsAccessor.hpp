@@ -25,7 +25,8 @@ private:
   const ParticleDef_t &fParDef;
 
 public:
-  TrackPhysicsAccessor(const TrackCollection &tracks, TrackId_t track_id, const ParticleDefinitions &pdefs)
+  TrackPhysicsAccessor(const TrackCollection &tracks, TrackId_t track_id,
+                       const ParticleDefinitions &pdefs)
       : Base(tracks, track_id), fParDef(GetParticleDef(pdefs, Base::State()))
   {
   }
@@ -47,21 +48,19 @@ public:
   double E() const { return this->Mass() + this->Ekin(); }
 
   //! Natural logarithm of kinetic energy
-  double LogEkin() const {
-    return std::log(this->Ekin());
-  }
+  double LogEkin() const { return std::log(this->Ekin()); }
 
   MaterialId_t Material() const { return this->State().fMaterialState.fMaterial; }
 
 protected:
-
   // >>> IMPLEMENTATION DETAILS
 
-  static const ParticleDef_t &GetParticleDef(const ParticleDefinitions &pdefs, const TrackState &state)
+  static const ParticleDef_t &GetParticleDef(const ParticleDefinitions &pdefs,
+                                             const TrackState &state)
   {
-      return *static_cast<const ParticleDef_t *>(pdefs.Get(state.fPhysicsState.fParticleDefId));
+    return *static_cast<const ParticleDef_t *>(
+        pdefs.Get(state.fPhysicsState.fParticleDefId));
   }
-
 
   TrackPhysicsAccessor(const TrackState &track, const ParticleDefinitions &pdefs)
       : Base(track), fParDef(GetParticleDef(pdefs, Base::State()))
@@ -75,7 +74,8 @@ protected:
 
   const TrackPhysicsState &Pstate() const { return this->State().fPhysicsState; }
 
-  template<class PT> friend class TrackModifier;
+  template <class PT>
+  friend class TrackModifier;
 };
 
 } // namespace geantx

@@ -7,7 +7,8 @@
  * @author  M Novak
  * @date    March 2017
  *
- * Makes possible to switch between vecgeom and std containers with a -DUSE_VECGEOM_CONTAINERS cmake option.
+ * Makes possible to switch between vecgeom and std containers with a
+ * -DUSE_VECGEOM_CONTAINERS cmake option.
  *
  */
 #include "Geant/core/Config.hpp"

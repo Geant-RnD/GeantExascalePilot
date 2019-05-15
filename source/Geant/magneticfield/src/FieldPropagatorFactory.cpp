@@ -3,7 +3,8 @@
 // #include "Geant/core/Error.hpp"
 bool FieldPropagatorFactory::fVerboseConstruct = false;
 
-// Source file is required to aid compiler/linker in placing inline methods into a library.
+// Source file is required to aid compiler/linker in placing inline methods into a
+// library.
 
 //______________________________________________________________________________
 void FieldPropagatorFactory::RegisterPropagator(GUFieldPropagator *fieldPropagator)
@@ -15,11 +16,14 @@ void FieldPropagatorFactory::RegisterPropagator(GUFieldPropagator *fieldPropagat
   if (fpPool) {
     fpPool->RegisterPrototype(fieldPropagator);
     // Not complete until   fpPool->Initialize( numThreads ); is called
-    // geantx::Printf( "FieldPropagatorFactory: Registered Prototype field-prop %p\n", fieldPropagator );
+    // geantx::Printf( "FieldPropagatorFactory: Registered Prototype field-prop %p\n",
+    // fieldPropagator );
     if (verbose)
-      std::cout << "FieldPropagatorFactory: Registered Prototype field-prop " << fieldPropagator << std::endl;
+      std::cout << "FieldPropagatorFactory: Registered Prototype field-prop "
+                << fieldPropagator << std::endl;
   } else {
-    // geantx::Error("PrepareRkIntegration","Cannot find GUFieldPropagatorPool Instance.");
+    // geantx::Error("PrepareRkIntegration","Cannot find GUFieldPropagatorPool
+    // Instance.");
     std::cerr << "ERROR in PrepareRkIntegration: "
               << "Cannot find GUFieldPropagatorPool Instance." << std::endl;
   }

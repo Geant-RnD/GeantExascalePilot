@@ -61,7 +61,8 @@ private:
   void ComputeCoulombCorrection(double z);
 
 private:
-  /** @brief Pointer to the element that this element parameters belong to (doesn't own the object)*/
+  /** @brief Pointer to the element that this element parameters belong to (doesn't own
+   * the object)*/
   Element *fElement;
 
   /** @brief \f$ Z^{1/3} \f$ */

@@ -28,8 +28,14 @@ public:
   double GetPDGCharge() const { return fPDGCharge; }
 
   void ClearPhysicsProcessVector() { fPhysicsProcessVector.clear(); }
-  std::vector<PhysicsProcess *> &GetPhysicsProcessVector() { return fPhysicsProcessVector; }
-  std::vector<PhysicsManagerPerParticle *> &GetPhysicsManagerPerParticleVector() { return fPMPParticle; }
+  std::vector<PhysicsProcess *> &GetPhysicsProcessVector()
+  {
+    return fPhysicsProcessVector;
+  }
+  std::vector<PhysicsManagerPerParticle *> &GetPhysicsManagerPerParticleVector()
+  {
+    return fPMPParticle;
+  }
   PhysicsManagerPerParticle *GetPhysicsManagerPerParticlePerRegion(int regionindx) const
   {
     return fPMPParticle[regionindx];
@@ -37,7 +43,8 @@ public:
 
   static const Particle *GetParticleByInternalCode(unsigned int intercode)
   {
-    if (intercode < gInternalParticleCodes.size()) return gInternalParticleCodes[intercode];
+    if (intercode < gInternalParticleCodes.size())
+      return gInternalParticleCodes[intercode];
     return nullptr;
   }
 
@@ -55,9 +62,15 @@ public:
     return nullptr;
   }
 
-  static const std::vector<Particle *> &GetTheParticleTable() { return gTheParticleTable; }
+  static const std::vector<Particle *> &GetTheParticleTable()
+  {
+    return gTheParticleTable;
+  }
 
-  static const std::vector<Particle *> &GetInternalParticleTable() { return gInternalParticleCodes; }
+  static const std::vector<Particle *> &GetInternalParticleTable()
+  {
+    return gInternalParticleCodes;
+  }
 
 private:
   std::string fName;
@@ -67,9 +80,11 @@ private:
   double fPDGMass;
   double fPDGCharge;
 
-  std::vector<PhysicsProcess *> fPhysicsProcessVector;   // only one and used only as temporary storage
-  std::vector<PhysicsManagerPerParticle *> fPMPParticle; // as many as regions but those having no any active
-                                                         // processes will be nullptr
+  std::vector<PhysicsProcess *>
+      fPhysicsProcessVector; // only one and used only as temporary storage
+  std::vector<PhysicsManagerPerParticle *>
+      fPMPParticle; // as many as regions but those having no any active
+                    // processes will be nullptr
 
   // the particle table
   static std::vector<Particle *> gTheParticleTable;

@@ -215,7 +215,7 @@ static constexpr double ohm = volt / ampere; // ohm = 1.60217e-18*(GeV/eplus)/(e
 //
 // Electric capacitance [Q^2][E^-1]
 //
-static constexpr double farad      = coulomb / volt; // farad = 6.24150e+27 * eplus/gigavolt
+static constexpr double farad = coulomb / volt; // farad = 6.24150e+27 * eplus/gigavolt
 static constexpr double millifarad = 1.e-3 * farad;
 static constexpr double microfarad = 1.e-6 * farad;
 static constexpr double nanofarad  = 1.e-9 * farad;
@@ -299,4 +299,4 @@ static constexpr double perThousand = 0.001;
 static constexpr double perMillion  = 0.000001;
 
 } // namespace units
-} // namespace geant
+} // namespace geantx

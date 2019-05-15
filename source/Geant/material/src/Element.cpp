@@ -45,18 +45,21 @@ Vector_t<Element *> Element::gTheElementTable; // the global element table
  */
 //
 // ctr for direct build
-Element::Element(const std::string &name, const std::string &symbol, double zeff, double aeff)
+Element::Element(const std::string &name, const std::string &symbol, double zeff,
+                 double aeff)
     : fName(name), fSymbol(symbol), fElementProperties(nullptr)
 {
   using geantx::units::perMillion;
 
   int iz = std::lrint(zeff);
   if (iz < 1) {
-    std::cerr << "Fail to create Element in Element::Element():" << name << " Z= " << zeff << " < 1 !";
+    std::cerr << "Fail to create Element in Element::Element():" << name << " Z= " << zeff
+              << " < 1 !";
     exit(-1);
   }
   if (std::abs(zeff - iz) > perMillion) {
-    std::cerr << "Element Warning in Element::Element():  " << name << " Z= " << zeff << std::endl;
+    std::cerr << "Element Warning in Element::Element():  " << name << " Z= " << zeff
+              << std::endl;
   }
   //
   InitialiseMembers();
@@ -81,7 +84,8 @@ Element::Element(const std::string &name, const std::string &symbol, double zeff
     int maxZet = NISTElementData::Instance().GetNumberOfNISTElements();
     if (iz > maxZet) {
       std::cerr << "Failed to create NIST element with Z= " << iz
-                << " - available atomic numbers in the NISTElementData 1 <= Z <= " << maxZet << std::endl;
+                << " - available atomic numbers in the NISTElementData 1 <= Z <= "
+                << maxZet << std::endl;
       exit(-1);
     }
     // check if the corresponding NIST element has already been created
@@ -89,10 +93,14 @@ Element::Element(const std::string &name, const std::string &symbol, double zeff
     if (indx > -1) { // has already been created
       std::cerr << "Element Warning : in case of Element :"
                 << "  Name = " << fName << " with Z = " << zeff << " : " << std::endl
-                << "  Since natural isotope composition is taken and effective atomic mass is \n"
-                << "  not given this Element is exactly the same as the already existing NIST \n"
-                << "  element with the same atomic number (Z). We recommend to use that NIST  \n"
-                << "  element through the Element::NISTElement(Z) method instead of creating  \n"
+                << "  Since natural isotope composition is taken and effective atomic "
+                   "mass is \n"
+                << "  not given this Element is exactly the same as the already existing "
+                   "NIST \n"
+                << "  element with the same atomic number (Z). We recommend to use that "
+                   "NIST  \n"
+                << "  element through the Element::NISTElement(Z) method instead of "
+                   "creating  \n"
                 << "  this element as an exact duplicate (except its name)." << std::endl;
       fAeff = NISTElementData::Instance().GetMeanAtomicMass(iz);
     } else { // has NOT been created yet so create it and inform the user
@@ -103,10 +111,14 @@ Element::Element(const std::string &name, const std::string &symbol, double zeff
       // inform the user
       std::cerr << "Element Warning : in case of Element :"
                 << "  Name = " << name << " with Z = " << zeff << " : " << std::endl
-                << "  Since natural isotope composition is taken and effective atomic mass is    \n"
-                << "  not given, this Element is exactly the same as if it were created as a NIST \n"
-                << "  element by means of Element::NISTElement(Z) except its name. In order to   \n"
-                << "  to avoide duplication, the corresponding NIST element has been created with\n"
+                << "  Since natural isotope composition is taken and effective atomic "
+                   "mass is    \n"
+                << "  not given, this Element is exactly the same as if it were created "
+                   "as a NIST \n"
+                << "  element by means of Element::NISTElement(Z) except its name. In "
+                   "order to   \n"
+                << "  to avoide duplication, the corresponding NIST element has been "
+                   "created with\n"
                 << "  the Element Name = " << fName << std::endl;
     }
   }
@@ -134,8 +146,8 @@ Element::Element(const std::string &name, const std::string &symbol, int nisotop
   InitialiseMembers();
   int n = nisotopes;
   if (0 >= nisotopes) {
-    std::cerr << "Fail to create Element in Element::Element()" << name << " <" << symbol << "> with " << nisotopes
-              << " isotopes";
+    std::cerr << "Fail to create Element in Element::Element()" << name << " <" << symbol
+              << "> with " << nisotopes << " isotopes";
     exit(-1);
   } else {
     fIsotopeVector.resize(n, 0);
@@ -160,7 +172,8 @@ void Element::AddIsotope(Isotope *isotope, double abundance)
       fZeff = double(iz);
     } else if (double(iz) != fZeff) {
       std::cerr << "Fail to add Isotope Z= " << iz << " to Element " << fName
-                << " with different Z= " << fZeff /*<< fNeff */ << " in G4Element::AddIsotope()";
+                << " with different Z= "
+                << fZeff /*<< fNeff */ << " in G4Element::AddIsotope()";
       exit(-1);
     }
     // Z ok
@@ -168,7 +181,8 @@ void Element::AddIsotope(Isotope *isotope, double abundance)
     fIsotopeVector[fCurNumOfIsotopes]                  = isotope;
     ++fCurNumOfIsotopes;
   } else {
-    std::cerr << "Fail to add Isotope Z= " << iz << " to Element " << fName << " - more isotopes than declaired ";
+    std::cerr << "Fail to add Isotope Z= " << iz << " to Element " << fName
+              << " - more isotopes than declaired ";
     exit(-1);
   }
   // filled.
@@ -249,17 +263,20 @@ Element *Element::NISTElement(double zeff)
   int maxZet = NISTElementData::Instance().GetNumberOfNISTElements();
   if (iz < 1 || iz > maxZet) {
     std::cerr << "Failed to create NIST element with Z= " << iz
-              << " - available atomic number in the NISTElementData 1 <= Z <= " << maxZet << std::endl;
+              << " - available atomic number in the NISTElementData 1 <= Z <= " << maxZet
+              << std::endl;
     exit(-1);
   }
   Element *elem = nullptr;
   // check if NIST element with this atomic number has already been created
   int indx = NISTElementData::Instance().GetNISTElementIndex(iz);
-  if (indx > -1) { // already built so just return with its pointer from the global element table
+  if (indx >
+      -1) { // already built so just return with its pointer from the global element table
     elem = gTheElementTable[indx];
   } else { // has not been built yet so build it now and set its index
     double effAmass = NISTElementData::Instance().GetMeanAtomicMass(iz);
-    elem = new Element("NIST_ELM_" + NISTElementData::Instance().GetElementSymbol(iz), "", (double)iz, effAmass);
+    elem = new Element("NIST_ELM_" + NISTElementData::Instance().GetElementSymbol(iz), "",
+                       (double)iz, effAmass);
     // set its index
     NISTElementData::Instance().SetNISTElementIndex(iz, elem->GetIndex());
   }
@@ -290,7 +307,8 @@ void Element::AddNaturalIsotopes()
   }
   int idx     = 0;
   double xsum = 1.0;
-  // if the element has no natural isotope then we take the most stable one but we give a warning
+  // if the element has no natural isotope then we take the most stable one but we give a
+  // warning
   if (fCurNumOfIsotopes == 0) {
     fCurNumOfIsotopes = 1;
     idx               = 1;
@@ -303,11 +321,16 @@ void Element::AddNaturalIsotopes()
     fIsotopeVector[0]                  = Isotope::GetIsotope(Z, arrayN[indxN]);
     fRelativeIsotopeAbundanceVector[0] = 1.0;
     std::cerr << "Element Warning : in case of AddNaturalIsotopes :\n"
-              << "Element Z = " << Z << " has no stable isotope i.e. all natural abundances are zero.\n"
-              << "The most stable isotope Z = " << Z << "  N = " << arrayN[indxN] << " has been used with \n"
-              << "\"natural\" abudance = 1.0 in order to avoid having an element without any isotopes.\n"
-              << "Note, that elements can be built up by specifying their isotopes. We strongly recommend\n"
-              << "to use this later possibility in case of element Z = " << Z << " !" << std::endl;
+              << "Element Z = " << Z
+              << " has no stable isotope i.e. all natural abundances are zero.\n"
+              << "The most stable isotope Z = " << Z << "  N = " << arrayN[indxN]
+              << " has been used with \n"
+              << "\"natural\" abudance = 1.0 in order to avoid having an element without "
+                 "any isotopes.\n"
+              << "Note, that elements can be built up by specifying their isotopes. We "
+                 "strongly recommend\n"
+              << "to use this later possibility in case of element Z = " << Z << " !"
+              << std::endl;
   } else {
     // set container size
     fIsotopeVector.resize(fCurNumOfIsotopes, 0);
@@ -351,12 +374,15 @@ std::ostream &operator<<(std::ostream &flux, const Element *element)
   flux << " Element: " << element->fName << " (" << element->fSymbol << ")"
        << "   Z = " << std::setw(4) << std::setprecision(1)
        << element->fZeff
-       //    << "   N = "    << std::setw(4) << std::setprecision(1) <<  std::lrint(element->fNeff)
-       << "   A = " << std::setw(4) << std::setprecision(3) << (element->fAeff) / (g / mole) << " [g/mole]";
+       //    << "   N = "    << std::setw(4) << std::setprecision(1) <<
+       //    std::lrint(element->fNeff)
+       << "   A = " << std::setw(4) << std::setprecision(3)
+       << (element->fAeff) / (g / mole) << " [g/mole]";
 
   for (int i = 0; i < element->fCurNumOfIsotopes; ++i) {
-    flux << "\n         ---> " << (element->fIsotopeVector)[i] << "   abundance: " << std::setw(6)
-         << std::setprecision(3) << (element->fRelativeIsotopeAbundanceVector[i]) / perCent << " [%]";
+    flux << "\n         ---> " << (element->fIsotopeVector)[i]
+         << "   abundance: " << std::setw(6) << std::setprecision(3)
+         << (element->fRelativeIsotopeAbundanceVector[i]) / perCent << " [%]";
   }
   flux.precision(prec);
   flux.setf(mode, std::ios::floatfield);
@@ -372,7 +398,8 @@ std::ostream &operator<<(std::ostream &flux, const Element &element)
 std::ostream &operator<<(std::ostream &flux, Vector_t<Element *> elementtable)
 {
   // Dump info for all known elements
-  flux << "\n***** Table : Nb of elements = " << elementtable.size() << " *****\n" << std::endl;
+  flux << "\n***** Table : Nb of elements = " << elementtable.size() << " *****\n"
+       << std::endl;
   for (size_t i = 0; i < elementtable.size(); i++) {
     flux << elementtable[i] << std::endl << std::endl;
   }
