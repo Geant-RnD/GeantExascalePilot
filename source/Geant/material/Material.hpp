@@ -9,7 +9,7 @@
 
 #include <string>
 
-GEANT_DEVICE_DECLARE_CONV(geantphysics, typename, Material);
+GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Material);
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {

@@ -5,7 +5,7 @@
 
 #include <string>
 
-GEANT_DEVICE_DECLARE_CONV(geantphysics, typename, Isotope);
+GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Isotope);
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {
