@@ -301,6 +301,26 @@ public:
     return std::get<0>(_cpu);
   }
 
+  template <typename _Target,
+            std::enable_if_t<(std::is_same<_Target, device::cpu>::value), int> = 0>
+  _Tp *alloc()
+  {
+    auto _cpu                       = m_cpu.alloc();
+    auto _gpu                       = m_gpu.alloc(_cpu);
+    m_associated[std::get<0>(_cpu)] = std::get<0>(_gpu);
+    return std::get<0>(_cpu);
+  }
+
+  template <typename _Target,
+            std::enable_if_t<(std::is_same<_Target, device::gpu>::value), int> = 0>
+  _Tp *alloc()
+  {
+    auto _cpu                       = m_cpu.alloc();
+    auto _gpu                       = m_gpu.alloc(_cpu);
+    m_associated[std::get<0>(_cpu)] = std::get<0>(_gpu);
+    return std::get<0>(_gpu);
+  }
+
   void free(_Tp *&ptr)
   {
     m_cpu.free(ptr);
