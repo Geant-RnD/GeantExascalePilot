@@ -1,5 +1,20 @@
 #!/bin/bash
 
+#===------------------ GeantX --------------------------------------------===//
+#
+# Geant Exascale Pilot
+#
+# For the licensing terms see LICENSE file.
+# For the list of contributors see CREDITS file.
+# Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+#===----------------------------------------------------------------------===//
+#
+# @file
+# @brief Find existing variable prefix by the script's parameters in
+#        CMakeCache.txt and generate the list of corresponding -U
+#
+#===----------------------------------------------------------------------===//
+
 STR=""
 for i in $@
 do

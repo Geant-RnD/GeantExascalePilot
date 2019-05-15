@@ -1,12 +1,14 @@
-//===------------------ Geant-V ---------------------------------*- C++ -*-===//
+//===------------------ GeantX --------------------------------------------===//
 //
-//                     Geant-V Prototype
+// Geant Exascale Pilot
 //
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
 /**
- * @file GeantError.h
- * @brief Error handling routines.
- * @author Philippe Canal
+ * @file
+ * @brief CUDA helper routines.
  */
 //===----------------------------------------------------------------------===//
 

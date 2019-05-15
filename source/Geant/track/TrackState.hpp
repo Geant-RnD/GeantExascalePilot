@@ -1,3 +1,18 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Track information split in related categories.  See also the Track
+ *        Accessors and modifiers.
+ */
+//===----------------------------------------------------------------------===//
+
 #pragma once
 
 #include "Geant/track/Types.hpp"

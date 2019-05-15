@@ -1,6 +1,16 @@
+//===------------------ GeantX --------------------------------------------===//
 //
-// created by jrmadsen on Fri Mar  8 13:30:31 2019
+// Geant Exascale Pilot
 //
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Tasking helper routine.
+ */
+//===----------------------------------------------------------------------===//
 
 #pragma once
 

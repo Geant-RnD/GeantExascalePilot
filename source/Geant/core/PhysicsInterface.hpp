@@ -1,14 +1,18 @@
-//===--- PhysicsInterface.h - Geant-V -----------------------------*- C++ -*-===//
+//===------------------ GeantX --------------------------------------------===//
 //
-//                     Geant-V Prototype
+// Geant Exascale Pilot
 //
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
 /**
- * @file PhysicsInterface.h
+ * @file
  * @brief Physics interface to real physics simulation.
- * @author Andrei Gheata
  */
 //===----------------------------------------------------------------------===//
+
+// Originated in the GeantV project.
 
 #pragma once
 

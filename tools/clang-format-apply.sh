@@ -1,10 +1,22 @@
 #!/bin/bash
 
+#===------------------ GeantX --------------------------------------------===//
 #
-# This is apllying clang-format 
-# by doing a filtering step and then 
-#  applying ./scripts/clang-format-and-fix-macros.sh
+# Geant Exascale Pilot
 #
+# For the licensing terms see LICENSE file.
+# For the list of contributors see CREDITS file.
+# Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+#===----------------------------------------------------------------------===//
+#
+# @file
+# @brief This is apllying clang-format
+#        by doing a filtering step and then
+#        applying ./scripts/clang-format-and-fix-macros.sh
+#
+#===----------------------------------------------------------------------===//
+
+# Originated in the GeantV project.
 
 # check that we are in a clean state in order to prevent accidential
 # changes

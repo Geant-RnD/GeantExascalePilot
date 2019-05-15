@@ -1,14 +1,18 @@
-//===------------------ Geant-V ---------------------------------*- C++ -*-===//
+//===------------------ GeantX --------------------------------------------===//
 //
-//                     Geant-V Prototype
+// Geant Exascale Pilot
 //
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
 /**
- * @file GeantCudaUtils.h
+ * @file
  * @brief Utility routines for NVCC/CUDA compilation and setup
- * @author Philippe Canal
  */
 //===----------------------------------------------------------------------===//
+
+// Originated in the GeantV project.
 
 #pragma once
 

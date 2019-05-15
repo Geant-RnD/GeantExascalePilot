@@ -1,7 +1,21 @@
 #!/bin/bash
 
-# If the first argument is just '-', do not replace the files
-# instead print the result to stdout.
+#===------------------ GeantX --------------------------------------------===//
+#
+# Geant Exascale Pilot
+#
+# For the licensing terms see LICENSE file.
+# For the list of contributors see CREDITS file.
+# Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+#===----------------------------------------------------------------------===//
+#
+# @file
+# @brief If the first argument is just '-', do not replace the files
+#        instead print the result to stdout.
+#
+#===----------------------------------------------------------------------===//
+
+# Originated in the GeantV project.
 
 sed_i="-i .bak"
 testername=/tmp/sed_tester.$$.tmp

@@ -1,5 +1,21 @@
 #!/usr/bin/env python
 
+#===------------------ GeantX --------------------------------------------===//
+#
+# Geant Exascale Pilot
+#
+# For the licensing terms see LICENSE file.
+# For the list of contributors see CREDITS file.
+# Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+#===----------------------------------------------------------------------===//
+#
+# @file
+# @brief Apply a local clang-format.
+#
+#===----------------------------------------------------------------------===//
+
+# Originated in the Geant4 project.
+
 import os
 import sys
 import glob
