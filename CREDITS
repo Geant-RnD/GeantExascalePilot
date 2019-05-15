@@ -1,0 +1,38 @@
+This file lists the contributors to the Geant Exascale Pilot project.
+It is sorted by name and formatted to allow easy grepping and beautification
+by scripts. The fields are: name (N), email (E), description (D).
+
+Thanks,
+Rene Brun & Fons Rademakers.
+
+
+PS: please let us know if you are not on this list while you should be, or
+if something in your entry is incorrect.
+
+-------------------
+
+N: Philippe Canal
+E: pcanal@FNAL.GOV
+D: Initial contributor
+
+N: Seth Johnson
+E: johnsonsr@ORNL.GOV
+D: Initial contributor
+
+N: Soon Jun
+E: syjun@FNAL.GOV
+D: Initial contributor
+
+N: Guilherme Lima
+E: lima@FNAL.GOV
+D: Initial contributor
+
+N: Jonathan Madsen
+E: jrmadsen@LBL.GOV
+D: Initial contributor
+
+N: Yunsong Wang
+E: yunsongwang@LBL.GOV
+D: Initial contributor
+
+
