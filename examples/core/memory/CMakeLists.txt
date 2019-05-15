@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(Memory LANGUAGES C CXX CUDA)
 
 find_package(GeantExascalePilot REQUIRED)
-find_package(CUDA REQUIRED)
 
 include(MacroUtilities)
 
@@ -17,5 +16,7 @@ CREATE_EXECUTABLE(
     HEADERS                 ${headers}
     SOURCES                 test_memory.cpp ${sources}
     INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
-    LINK_LIBRARIES          GeantExascalePilot ${CUDA_LIBRARIES}
+    LINK_LIBRARIES          GeantExascalePilot
+    PROPERTIES
+        LINKER_LANGUAGE     CUDA
 )

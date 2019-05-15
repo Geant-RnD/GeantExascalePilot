@@ -63,7 +63,6 @@ void test(const std::string& id)
         geantx::MemoryPool<Type> _pool;
         Type*                    p = _pool.alloc();
         Type*                    o = _pool.get(p);
-        Type                     _p();
         assign(p, Type());
         _pool.transfer_to(geantx::device::gpu(), stream);
         _pool.transfer(cudaMemcpyDeviceToHost, stream);
