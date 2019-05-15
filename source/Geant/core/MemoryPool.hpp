@@ -271,8 +271,15 @@ public:
 
   _Tp *get(_Tp *_cpu) const { return _cpu; }
 
-  template <typename _Up>
-  void transfer_to(cudaStream_t = 0)
+  template <typename _Target,
+            std::enable_if_t<(std::is_same<_Target, device::gpu>::value), int> = 0>
+  void transfer_to(_Target &&, cudaStream_t = 0)
+  {
+  }
+
+  template <typename _Target,
+            std::enable_if_t<(std::is_same<_Target, device::cpu>::value), int> = 0>
+  void transfer_to(_Target &&, cudaStream_t = 0)
   {
   }
 
@@ -356,26 +363,26 @@ public:
 
   template <typename _Target,
             std::enable_if_t<(std::is_same<_Target, device::gpu>::value), int> = 0>
-  void transfer_to(cudaStream_t stream = 0)
+  void transfer_to(_Target &&, cudaStream_t stream = 0)
   {
     for (auto &itr : m_associated)
-      cudaMemcpyAsync(itr.second, itr.first, cudaMemcpyHostToDevice, stream);
+      cudaMemcpyAsync(itr.second, itr.first, sizeof(_Tp), cudaMemcpyHostToDevice, stream);
   }
 
   template <typename _Target,
             std::enable_if_t<(std::is_same<_Target, device::cpu>::value), int> = 0>
-  void transfer_to(cudaStream_t stream = 0)
+  void transfer_to(_Target &&, cudaStream_t stream = 0)
   {
     for (auto &itr : m_associated)
-      cudaMemcpyAsync(itr.first, itr.second, cudaMemcpyDeviceToHost, stream);
+      cudaMemcpyAsync(itr.first, itr.second, sizeof(_Tp), cudaMemcpyDeviceToHost, stream);
   }
 
   void transfer(const cudaMemcpyKind &kind, cudaStream_t stream = 0)
   {
     if (kind == cudaMemcpyDeviceToHost) {
-      transfer_to<device::cpu>(stream);
+      transfer_to(device::cpu(), stream);
     } else if (kind == cudaMemcpyDeviceToHost) {
-      transfer_to<device::gpu>(stream);
+      transfer_to(device::gpu(), stream);
     }
   }
 
