@@ -33,8 +33,9 @@ if(BUILD_STATIC_LIBS)
         TYPE                    STATIC
         HEADERS                 ${headers}
         SOURCES                 ${sources}
+        LINK_LIBRARIES          core-static ${VECGEOM_LIBRARIES}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
-        LINK_LIBRARIES          core-static
+        PROPERTIES              LINKER_LANGUAGE CUDA
     )
     set(LINK_TARGET ${LIBNAME}-static)
 endif()
@@ -49,8 +50,9 @@ if(BUILD_SHARED_LIBS)
         HEADERS                 ${headers}
         SOURCES                 ${sources}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
-        LINK_LIBRARIES          core-shared
+        LINK_LIBRARIES          core-shared ${VECGEOM_LIBRARIES}
         PROPERTIES              VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}
+                                LINKER_LANGUAGE CUDA
     )
     set(LINK_TARGET ${LIBNAME}-shared)
 endif()
