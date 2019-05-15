@@ -14,7 +14,7 @@
 // namespace geantx {
 // inline namespace GEANT_IMPL_NAMESPACE {
 
-// template <class Backend> class TemplateGUIntegrationDriver;
+// template <typename Backend> class TemplateGUIntegrationDriver;
 
 class VVectorField;
 class ScalarIntegrationDriver;

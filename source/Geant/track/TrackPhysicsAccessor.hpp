@@ -74,7 +74,7 @@ protected:
 
   const TrackPhysicsState &Pstate() const { return this->State().fPhysicsState; }
 
-  template <class PT>
+  template <typename PT>
   friend class TrackModifier;
 };
 

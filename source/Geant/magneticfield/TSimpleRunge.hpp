@@ -6,7 +6,7 @@
 
 // #define  INTEGRATOR_CORRECTION   (1./((1<<2)-1))
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 class TSimpleRunge
     : public TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar> {
 public: // with description
@@ -49,7 +49,7 @@ private:
 
 //  Constructors
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 TSimpleRunge<T_Equation, Nvar>::TSimpleRunge(T_Equation *EqRhs, unsigned int numStateVar)
     : TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>(
           EqRhs, OrderSimpleR, (numStateVar > 0 ? numStateVar : Nvar)),
@@ -61,7 +61,7 @@ TSimpleRunge<T_Equation, Nvar>::TSimpleRunge(T_Equation *EqRhs, unsigned int num
 
 //  Copy constructor
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 TSimpleRunge<T_Equation, Nvar>::TSimpleRunge(const TSimpleRunge &right)
     : TMagErrorStepper<TSimpleRunge<T_Equation, Nvar>, T_Equation, Nvar>(
           (T_Equation *)0, OrderSimpleR, right.fNumberOfStateVariables),
@@ -74,7 +74,7 @@ TSimpleRunge<T_Equation, Nvar>::TSimpleRunge(const TSimpleRunge &right)
   // SetEquationOfMotion(fEquation_Rhs);
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 void TSimpleRunge<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 {
   fEquation_Rhs = equation;
@@ -84,13 +84,13 @@ void TSimpleRunge<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
   // TMagErrorStepper::SetEquationOfMotion(fEquation_Rhs);
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 VScalarIntegrationStepper *TSimpleRunge<T_Equation, Nvar>::Clone() const
 {
   return new TSimpleRunge<T_Equation, Nvar>(*this);
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline __attribute__((always_inline)) void TSimpleRunge<
     T_Equation, Nvar>::StepWithoutErrorEst(const double yIn[], double charge,
                                            const double dydx[], double h, double yOut[])

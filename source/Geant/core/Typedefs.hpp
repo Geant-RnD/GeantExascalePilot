@@ -38,14 +38,14 @@ typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
 typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
 
 #ifdef VECCORE_CUDA
-template <class T>
+template <typename T>
 using vector_t = vecgeom::Vector<T>;
 #else
 #ifdef GEANT_USE_NUMA
-template <class T>
+template <typename T>
 using vector_t = std::vector<T, geantx::NumaAllocator<T>>;
 #else
-template <class T>
+template <typename T>
 using vector_t = std::vector<T>;
 #endif
 #endif

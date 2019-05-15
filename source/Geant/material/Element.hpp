@@ -7,7 +7,7 @@
 
 #include <string>
 
-GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Element);
+GEANT_DEVICE_DECLARE_CONV(geantphysics, typename, Element);
 
 namespace geantphysics {
 inline namespace GEANT_IMPL_NAMESPACE {

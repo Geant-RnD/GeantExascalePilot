@@ -1741,7 +1741,7 @@ inline
 // _GLIBCXX14_CONSTEXPR
 // 2933. PR for LWG 2773 could be clearer
 struct _Swallow_assign {
-  template <class _Tp>
+  template <typename _Tp>
   const _Swallow_assign &operator=(const _Tp &) const
   {
     return *this;
@@ -1763,7 +1763,7 @@ struct uses_allocator<Tuple<_Types...>, _Alloc> : true_type
 };
 
 // See stl_pair.h...
-template <class _T1, class _T2>
+template <typename _T1, typename _T2>
 template <typename... _Args1, typename... _Args2>
 inline pair<_T1, _T2>::pair(piecewise_construct_t, Tuple<_Args1...> __first,
 Tuple<_Args2...> __second) : pair(__first, __second, typename
@@ -1772,7 +1772,7 @@ _BuildIndexTuple<sizeof...(_Args2)>::__type())
 {
 }
 
-template <class _T1, class _T2>
+template <typename _T1, typename _T2>
 template <typename... _Args1, std::size_t... _Indexes1, typename... _Args2, std::size_t...
 _Indexes2> inline pair<_T1, _T2>::pair(Tuple<_Args1...>& __Tuple1, Tuple<_Args2...>&
 __Tuple2, _IndexTuple<_Indexes1...>, _IndexTuple<_Indexes2...>) :

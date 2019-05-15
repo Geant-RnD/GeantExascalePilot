@@ -21,7 +21,7 @@
 
 // #define Outside_CashKarp     1
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 class CashKarp
 // : public VVectorIntegrationStepper
 {
@@ -158,9 +158,9 @@ private:
 // -------------------------------------------------------------------------------
 
 #ifdef Outside_CashKarp
-// template <class Real_v, class T_Equation, unsigned int Nvar>
-template <class Real_v>
-template <class T_Equation, unsigned int Nvar>
+// template <typename Real_v, typename T_Equation, unsigned int Nvar>
+template <typename Real_v>
+template <typename T_Equation, unsigned int Nvar>
 void CashKarp<T_Equation, Nvar>::
     /*template*/ StepWithErrorEstimate /*<Real_v>*/ (
         const Real_v yInput[],
@@ -268,7 +268,7 @@ public:
 
 // -------------------------------------------------------------------------------
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline CashKarp<T_Equation, Nvar>::CashKarp(T_Equation *EqRhs,
                                             unsigned int numStateVariables)
     : fEquation_Rhs(EqRhs),
@@ -293,7 +293,7 @@ inline CashKarp<T_Equation, Nvar>::CashKarp(T_Equation *EqRhs,
 
 // -------------------------------------------------------------------------------
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 void CashKarp<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 {
   fEquation_Rhs = equation;
@@ -304,7 +304,7 @@ void CashKarp<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 
 //  Copy - Constructor
 //
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline CashKarp<T_Equation, Nvar>::CashKarp(const CashKarp &right)
     : // fEquation_Rhs( (T_Equation*) nullptr ),
       fOwnTheEquation(false)
@@ -332,7 +332,7 @@ inline CashKarp<T_Equation, Nvar>::CashKarp(const CashKarp &right)
 
 // -------------------------------------------------------------------------------
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 GEANT_FORCE_INLINE CashKarp<T_Equation, Nvar>::~CashKarp()
 {
   std::cout << "----- Vector CashKarp destructor" << std::endl;
@@ -346,7 +346,7 @@ GEANT_FORCE_INLINE CashKarp<T_Equation, Nvar>::~CashKarp()
 // -------------------------------------------------------------------------------
 
 #ifdef Inheriting_CashKarp
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 GUVVectorIntegrationStepper *CashKarp<T_Equation, Nvar>::Clone() const
 {
   // return new CashKarp( *this );
@@ -357,7 +357,7 @@ GUVVectorIntegrationStepper *CashKarp<T_Equation, Nvar>::Clone() const
 // -------------------------------------------------------------------------------
 
 #if ENABLE_CHORD_DIST
-template <class Real_v, class T_Equation, unsigned int Nvar>
+template <typename Real_v, typename T_Equation, unsigned int Nvar>
 inline geantx::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
 {
   Real_v distLine, distChord;

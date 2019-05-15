@@ -30,7 +30,7 @@
 
 #define NEWACCURATEADVANCE
 
-template <class Backend>
+template <typename Backend>
 class TemplateGUIntegrationDriver : public AlignedBase {
 public: // with description
   typedef typename Backend::precision_v Double_v;
@@ -319,20 +319,20 @@ public:
 
 // #include "GUIntegratorDriver.icc"
 
-template <class Backend>
+template <typename Backend>
 constexpr double TemplateGUIntegrationDriver<Backend>::fMaxSteppingIncrease;
 
-template <class Backend>
+template <typename Backend>
 constexpr double TemplateGUIntegrationDriver<Backend>::fMaxSteppingDecrease;
 
-template <class Backend>
+template <typename Backend>
 inline double TemplateGUIntegrationDriver<Backend>::ComputeAndSetErrcon()
 {
   fErrcon = Math::Pow(fMaxSteppingIncrease / fSafetyFactor, 1.0 / fPowerGrow);
   return fErrcon;
 }
 
-template <class Backend>
+template <typename Backend>
 inline void TemplateGUIntegrationDriver<Backend>::ReSetParameters(double new_safety)
 {
   fSafetyFactor = new_safety;
@@ -341,27 +341,27 @@ inline void TemplateGUIntegrationDriver<Backend>::ReSetParameters(double new_saf
   ComputeAndSetErrcon();
 }
 
-template <class Backend>
+template <typename Backend>
 inline void TemplateGUIntegrationDriver<Backend>::SetSafety(double val)
 {
   fSafetyFactor = val;
   ComputeAndSetErrcon();
 }
 
-template <class Backend>
+template <typename Backend>
 inline void TemplateGUIntegrationDriver<Backend>::SetPowerGrow(double val)
 {
   fPowerGrow = val;
   ComputeAndSetErrcon();
 }
 
-template <class Backend>
+template <typename Backend>
 inline void TemplateGUIntegrationDriver<Backend>::SetErrcon(double val)
 {
   fErrcon = val;
 }
 
-template <class Backend>
+template <typename Backend>
 inline void TemplateGUIntegrationDriver<Backend>::RenewStepperAndAdjust(
     TemplateVScalarIntegrationStepper<Backend> *pStepper)
 {
@@ -369,33 +369,33 @@ inline void TemplateGUIntegrationDriver<Backend>::RenewStepperAndAdjust(
   ReSetParameters();
 }
 
-template <class Backend>
+template <typename Backend>
 inline const TemplateVScalarIntegrationStepper<Backend>
     *TemplateGUIntegrationDriver<Backend>::GetStepper() const
 {
   return fpStepper;
 }
 
-template <class Backend>
+template <typename Backend>
 inline TemplateVScalarIntegrationStepper<Backend>
     *TemplateGUIntegrationDriver<Backend>::GetStepper()
 {
   return fpStepper;
 }
 
-template <class Backend>
+template <typename Backend>
 inline int TemplateGUIntegrationDriver<Backend>::GetMaxNoSteps() const
 {
   return fMaxNoSteps;
 }
 
-template <class Backend>
+template <typename Backend>
 inline void TemplateGUIntegrationDriver<Backend>::SetMaxNoSteps(int val)
 {
   fMaxNoSteps = val;
 }
 
-template <class Backend>
+template <typename Backend>
 inline void TemplateGUIntegrationDriver<Backend>::GetDerivatives(
     const TemplateGUFieldTrack<Backend> &y_curr, // const,
                                                  // INput
@@ -407,7 +407,7 @@ inline void TemplateGUIntegrationDriver<Backend>::GetDerivatives(
   fpStepper->RightHandSideVIS(tmpValArr, charge, dydx);
 }
 
-template <class Backend>
+template <typename Backend>
 const int TemplateGUIntegrationDriver<Backend>::fMaxStepBase = 250; // Was 5000
 
 #ifndef G4NO_FIELD_STATISTICS
@@ -431,7 +431,7 @@ TH1F *gHistStepsInit = 0;
 
 //  Constructor
 //
-template <class Backend>
+template <typename Backend>
 TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
     double hminimum, TemplateVScalarIntegrationStepper<Backend> *pStepper,
     int numComponents, int statisticsVerbose)
@@ -480,7 +480,7 @@ TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
 }
 
 //  Copy Constructor - used by Clone
-template <class Backend>
+template <typename Backend>
 TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
     const TemplateGUIntegrationDriver<Backend> &right)
     : fMinimumStep(right.fMinimumStep), fSmallestFraction(right.fSmallestFraction),
@@ -518,7 +518,7 @@ TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
 // ---------------------------------------------------------
 
 //  Destructor
-template <class Backend>
+template <typename Backend>
 TemplateGUIntegrationDriver<Backend>::~TemplateGUIntegrationDriver()
 {
   if (fStatisticsVerboseLevel > 1) {
@@ -532,7 +532,7 @@ TemplateGUIntegrationDriver<Backend>::~TemplateGUIntegrationDriver()
   // delete fpStepper;
 }
 
-template <class Backend>
+template <typename Backend>
 TemplateGUIntegrationDriver<Backend> *TemplateGUIntegrationDriver<Backend>::Clone() const
 {
   return new TemplateGUIntegrationDriver<Backend>(*this);
@@ -811,7 +811,7 @@ bool TemplateGUIntegrationDriver<vecgeom::kScalar>::AccurateAdvance(
 
 // ---------------------------------------------------------
 
-/*template <class Backend>
+/*template <typename Backend>
 void
 TemplateGUIntegrationDriver<Backend>
   ::WarnSmallStepSize( double hnext,
@@ -850,7 +850,7 @@ std::endl; if( (noWarningsIssued < maxNoWarnings) || fVerboseLevel > 10 )
 
 // ---------------------------------------------------------
 
-template <class Backend>
+template <typename Backend>
 void
 TemplateGUIntegrationDriver<Backend>
   ::WarnTooManySteps( double x1start,
@@ -879,7 +879,7 @@ std::endl; std::cerr << "The number of steps used in the Integration driver"
 
 // ---------------------------------------------------------
 
-template <class Backend>
+template <typename Backend>
 void
 TemplateGUIntegrationDriver<Backend>
   ::WarnEndPointTooFar( double endPointDist,
@@ -1056,7 +1056,7 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::OneGoodStep(
 #define SQR(a) ((a) * (a))
 
 // QuickAdvance just tries one Step - it does not ensure accuracy
-template <class Backend> //
+template <typename Backend> //
 typename Backend::bool_v TemplateGUIntegrationDriver<Backend>::QuickAdvance(
     TemplateGUFieldTrack<Backend> &y_posvel, // INOUT
     const typename Backend::precision_v dydx[],
@@ -1126,7 +1126,7 @@ typename Backend::bool_v TemplateGUIntegrationDriver<Backend>::QuickAdvance(
 
 // --------------------------------------------------------------------------
 #ifdef QUICK_ADV_ARRAY_IN_AND_OUT
-template <class Backend>
+template <typename Backend>
 typename Backend::bool_v TemplateGUIntegrationDriver<Backend>::QuickAdvance(
     typename Backend::precision_v yarrin[], // In
     const typename Backend::precision_v dydx[],
@@ -1149,7 +1149,7 @@ typename Backend::bool_v TemplateGUIntegrationDriver<Backend>::QuickAdvance(
 //  This method computes new step sizes - but does not limit changes to
 //  within  certain factors
 //
-template <class Backend>
+template <typename Backend>
 typename Backend::precision_v TemplateGUIntegrationDriver<Backend>::ComputeNewStepSize(
     typename Backend::precision_v errMaxNorm,   // max error  (normalised)
     typename Backend::precision_v hstepCurrent) // current step size
@@ -1188,7 +1188,7 @@ typename Backend::precision_v TemplateGUIntegrationDriver<Backend>::ComputeNewSt
 // It shares its logic with AccurateAdvance.
 // They are kept separate currently for optimisation.
 //
-template <class Backend>
+template <typename Backend>
 typename Backend::precision_v TemplateGUIntegrationDriver<Backend>::
     ComputeNewStepSize_WithinLimits(
         typename Backend::precision_v errMaxNorm,   // max error  (normalised)
@@ -1233,7 +1233,7 @@ typename Backend::precision_v TemplateGUIntegrationDriver<Backend>::
 }
 
 // ---------------------------------------------------------------------------
-/*template <class Backend>
+/*template <typename Backend>
 void
 TemplateGUIntegrationDriver<Backend>
 ::PrintStatus( const double*   StartArr,
@@ -1260,7 +1260,7 @@ TemplateGUIntegrationDriver<Backend>
 }
 
 // ---------------------------------------------------------------------------
-template <class Backend>
+template <typename Backend>
 void TemplateGUIntegrationDriver<Backend>
   ::PrintStatus( const TemplateGUFieldTrack<Backend>&  StartFT,
                  const TemplateGUFieldTrack<Backend>&  CurrentFT,
@@ -1338,7 +1338,7 @@ void TemplateGUIntegrationDriver<Backend>
 }
 
 // ---------------------------------------------------------------------------
-template <class Backend>
+template <typename Backend>
 void TemplateGUIntegrationDriver<Backend>
   ::PrintStat_Aux( const TemplateGUFieldTrack<Backend>&  aGUFieldTrack,
                    double             requestStep,
@@ -1404,7 +1404,7 @@ void TemplateGUIntegrationDriver<Backend>
 }
 
 // ---------------------------------------------------------------------------
-template <class Backend>
+template <typename Backend>
 void
 TemplateGUIntegrationDriver<Backend>
   ::PrintStatisticsReport()
@@ -1454,7 +1454,7 @@ std::endl; std::cout << "TemplateGUIntegrationDriver<Backend>: Number of Steps: 
 }*/
 
 // ---------------------------------------------------------------------------
-template <class Backend>
+template <typename Backend>
 void TemplateGUIntegrationDriver<Backend>::SetSmallestFraction(double newFraction)
 {
   if ((newFraction > 1.e-16) && (newFraction < 1e-8)) {
@@ -1467,7 +1467,7 @@ void TemplateGUIntegrationDriver<Backend>::SetSmallestFraction(double newFractio
 }
 
 // #ifdef NEWACCURATEADVANCE
-template <class Backend>
+template <typename Backend>
 void TemplateGUIntegrationDriver<Backend>::SetNTracks(int nTracks)
 // Set fNTracks
 {
@@ -2391,7 +2391,7 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
 
 // New constructor for KeepStepping method
 // Scalar stepper passed
-template <class Backend>
+template <typename Backend>
 TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
     double hminimum, TemplateVScalarIntegrationStepper<Backend> *pStepper,
     VScalarIntegrationStepper *pScalarStepper, int numComponents, int statisticsVerbose)
@@ -2401,7 +2401,7 @@ TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
 }
 
 // New constructor. Takes in a scalar driver as well
-template <class Backend>
+template <typename Backend>
 TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
     double hminimum, TemplateVScalarIntegrationStepper<Backend> *pStepper,
     VScalarIntegrationStepper *pScalarStepper, TemplateGUIntegrationDriver *pScalarDriver,
@@ -2412,13 +2412,13 @@ TemplateGUIntegrationDriver<Backend>::TemplateGUIntegrationDriver(
   fpScalarDriver  = pScalarDriver;
 }
 
-template <class Backend>
+template <typename Backend>
 void TemplateGUIntegrationDriver<Backend>::SetPartDebug(bool debugValue)
 {
   partDebug = debugValue;
 }
 
-template <class Backend>
+template <typename Backend>
 void TemplateGUIntegrationDriver<Backend>::SetSteppingMethod(bool steppingMethod)
 {
   oneStep = steppingMethod;

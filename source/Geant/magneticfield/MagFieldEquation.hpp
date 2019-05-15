@@ -15,7 +15,7 @@
 
 // #define OUTSIDE_MagFieldEquation 1
 
-template <class Field>
+template <typename Field>
 class MagFieldEquation {
 public:
   //  static const unsigned int  N   = Size;
@@ -136,7 +136,7 @@ private:
 
 #ifdef OUTSIDE_MagFieldEquation
 template <typename Real_v>
-GEANT_FORCE_INLINE void template <class Field>
+GEANT_FORCE_INLINE void template <typename Field>
 MagFieldEquation<Field>::RightHandSide(const Real_v y[], Real_v charge,
                                        Real_v dydx[]) const
 {

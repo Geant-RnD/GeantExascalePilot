@@ -22,7 +22,7 @@
 
 // #include "AlignedBase.h"  // ==> Ensures alignment of storage for Vc objects
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 class VectorCashKarpRKF45
     : public GUVVectorIntegrationStepper // <Backend>, public AlignedBase
 {
@@ -109,7 +109,7 @@ private:
   bool fDebug = false;
 };
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline VectorCashKarpRKF45<T_Equation, Nvar>::VectorCashKarpRKF45(
     T_Equation *EqRhs,
     unsigned int numStateVariables)
@@ -135,7 +135,7 @@ inline VectorCashKarpRKF45<T_Equation, Nvar>::VectorCashKarpRKF45(
   std::cout << "----end of constructor of VectorCashKarpRKF45" << std::endl;
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 void VectorCashKarpRKF45<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 {
   fEquation_Rhs = equation;
@@ -144,7 +144,7 @@ void VectorCashKarpRKF45<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equa
 
 //  Copy - Constructor
 //
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline VectorCashKarpRKF45<T_Equation, Nvar>::VectorCashKarpRKF45(
     const VectorCashKarpRKF45 &right)
     : GUVVectorIntegrationStepper((GUVVectorEquationOfMotion *)nullptr, sOrderMethod,
@@ -169,7 +169,7 @@ inline VectorCashKarpRKF45<T_Equation, Nvar>::VectorCashKarpRKF45(
               << " Own-the-Equation = " << fOwnTheEquation << std::endl;
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 GEANT_FORCE_INLINE VectorCashKarpRKF45<T_Equation, Nvar>::~VectorCashKarpRKF45()
 {
   std::cout << "----- Vector CashKarp destructor" << std::endl;
@@ -180,14 +180,14 @@ GEANT_FORCE_INLINE VectorCashKarpRKF45<T_Equation, Nvar>::~VectorCashKarpRKF45()
   std::cout << "----- VectorCashKarp destructor (ended)" << std::endl;
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 GUVVectorIntegrationStepper *VectorCashKarpRKF45<T_Equation, Nvar>::Clone() const
 {
   // return new VectorCashKarpRKF45( *this );
   return new VectorCashKarpRKF45<T_Equation, Nvar>(*this);
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline void VectorCashKarpRKF45<T_Equation, Nvar>::
 
     StepWithErrorEstimate(const Double_v yInput[], const Double_v dydx[],
@@ -272,7 +272,7 @@ inline void VectorCashKarpRKF45<T_Equation, Nvar>::
   return;
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline geantx::Double_v VectorCashKarpRKF45<T_Equation, Nvar>::DistChord() const
 {
 #if 1

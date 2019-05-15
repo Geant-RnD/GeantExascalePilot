@@ -12,14 +12,14 @@ namespace GUIntegrationNms {
 constexpr unsigned int NumVarBase = 8; //
 }
 
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 class TMagErrorStepper;
 
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 std::ostream &operator<<(std::ostream &ostr,
                          const TMagErrorStepper<T_Stepper, T_Equation, Nvar> &stepper);
 
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 class TMagErrorStepper : public VScalarIntegrationStepper {
 public: // with description
   static constexpr unsigned int NumVarStore =
@@ -53,7 +53,7 @@ public: // with description
 
   double DistChord(double charge) const;
 
-  template <class T_Stepper_, class T_Equation_, int Nvar_>
+  template <typename T_Stepper_, typename T_Equation_, int Nvar_>
   friend std::ostream &operator<<(
       std::ostream &os, const TMagErrorStepper<T_Stepper_, T_Equation_, Nvar_> &);
 
@@ -84,7 +84,7 @@ private:
 
 // ------------------------------------------------------------------
 
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(
     T_Equation *EqRhs, unsigned int integrationOrder, unsigned int numStateVariables)
     : VScalarIntegrationStepper(EqRhs, integrationOrder,
@@ -117,7 +117,7 @@ TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(
   assert(numStateVariables <= NumVarStore);
 }
 
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(
     const TMagErrorStepper &right)
     : VScalarIntegrationStepper((T_Equation *)0, right.IntegratorOrder(),
@@ -136,7 +136,7 @@ TMagErrorStepper<T_Stepper, T_Equation, Nvar>::TMagErrorStepper(
   assert(this->GetNumberOfVariables() == Nvar);
 }
 
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 std::ostream &operator<<(std::ostream &ostr,
                          const TMagErrorStepper<T_Stepper, T_Equation, Nvar> &stepper)
 {
@@ -154,7 +154,7 @@ std::ostream &operator<<(std::ostream &ostr,
   return ostr;
 }
 
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 bool TMagErrorStepper<T_Stepper, T_Equation, Nvar>::CheckInitialisation() const
 {
   bool goodNvar = (this->GetNumberOfVariables() == Nvar);
@@ -173,7 +173,7 @@ bool TMagErrorStepper<T_Stepper, T_Equation, Nvar>::CheckInitialisation() const
 }
 
 // inline
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 void TMagErrorStepper<T_Stepper, T_Equation, Nvar>::StepWithErrorEstimate(
     const double yInput[], const double dydx[], double charge, double hstep,
     double yOutput[], double yError[])
@@ -239,7 +239,7 @@ void TMagErrorStepper<T_Stepper, T_Equation, Nvar>::StepWithErrorEstimate(
 }
 
 // #ifdef OPT_CHORD_FUNCTIONALITY
-template <class T_Stepper, class T_Equation, unsigned int Nvar>
+template <typename T_Stepper, typename T_Equation, unsigned int Nvar>
 double TMagErrorStepper<T_Stepper, T_Equation, Nvar>::DistChord(double /*charge*/) const
 {
   // Estimate the maximum distance from the curve to the chord

@@ -11,7 +11,7 @@
 #include "Geant/magneticfield/VScalarEquationOfMotion.hpp"
 #include <base/Vector3D.h>
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 class ScalarMagFieldEquation : public VScalarEquationOfMotion {
 public:
   //  static const unsigned int  N   = Size;
@@ -92,7 +92,7 @@ private:
   Field *fPtrField;
 };
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 ScalarMagFieldEquation<Field, Size>::ScalarMagFieldEquation(
     const ScalarMagFieldEquation &right)
     : VScalarEquationOfMotion((VVectorField *)0),
@@ -107,7 +107,7 @@ ScalarMagFieldEquation<Field, Size>::ScalarMagFieldEquation(
       fPtrField); //  Also stored in base class ... for now
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 ScalarMagFieldEquation<Field, Size> *ScalarMagFieldEquation<Field, Size>::Clone() const
 {
   // bool safe= false;  // Field* pField= fPtrField->CloneOrSafeSelf(safe);
@@ -116,7 +116,7 @@ ScalarMagFieldEquation<Field, Size> *ScalarMagFieldEquation<Field, Size>::Clone(
   return new ScalarMagFieldEquation(cloneField);
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 ScalarMagFieldEquation<Field, Size> *ScalarMagFieldEquation<Field, Size>::CloneOrSafeSelf(
     bool &safe)
 {
@@ -142,7 +142,7 @@ ScalarMagFieldEquation<Field, Size> *ScalarMagFieldEquation<Field, Size>::CloneO
   return equation;
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 ScalarMagFieldEquation<Field, Size> *ScalarMagFieldEquation<Field, Size>::CloneOrSafeSelf(
     bool *pSafe)
 {
@@ -154,7 +154,7 @@ ScalarMagFieldEquation<Field, Size> *ScalarMagFieldEquation<Field, Size>::CloneO
   return equation;
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::EvaluateRhsGivenB(
     const double y[], const Vector3D<double> &B, double charge, double dydx[]) const
 {
@@ -174,7 +174,7 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::EvaluateRhsGivenB(
   dydx[5] = cof * (y[3] * B[1] - y[4] * B[0]); // Az = a*(Vx*By - Vy*Bx)
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::PrintAll(
     double const y[], const vecgeom::Vector3D<double> &B, double charge, double cof,
     double const dydx[]) const
@@ -202,14 +202,14 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::PrintAll(
   return;
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::FieldFromY(
     const double y[], vecgeom::Vector3D<double> &Bfield) const
 {
   fPtrField->GetFieldValue(Vector3D<double>(y[0], y[1], y[2]), Bfield);
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::RightHandSide(
     const double y[], double charge, double dydx[]) const
 {
@@ -219,7 +219,7 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::RightHandSide(
   EvaluateRhsGivenB(y, BfieldVec, charge, dydx);
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::RightHandSide(
     const double y[], double charge, double dydx[], Vector3D<double> &BfieldVec) const
 {
@@ -227,7 +227,7 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::RightHandSide(
   EvaluateRhsGivenB(y, BfieldVec, charge, dydx);
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::RightHandSide(
     const double y[], const Vector3D<double> &position, double charge, double dydx[],
     Vector3D<double> &BfieldVec) const
@@ -236,7 +236,7 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::RightHandSide(
   EvaluateRhsGivenB(y, BfieldVec, charge, dydx);
 }
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::TEvaluateRhsReturnB(
     const double y[], double dydx[], double charge,
     vecgeom::Vector3D<double> &field) const
@@ -247,7 +247,7 @@ GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::TEvaluateRhsReturnB
 
 #include <iostream> // For debuging only
 
-template <class Field, unsigned int Size>
+template <typename Field, unsigned int Size>
 GEANT_FORCE_INLINE void ScalarMagFieldEquation<Field, Size>::PrintInputFieldAndDyDx(
     const double y[], double charge, double dydx[]) const
 {
