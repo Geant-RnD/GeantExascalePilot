@@ -212,15 +212,15 @@ static struct option options[] = {{"det-number-of-absorbers", required_argument,
                                   {0, 0, 0, 0}};
 
 enum ABS_OPTIONS { ABS_INDEX_OPT = 0, ABS_MATNAME_OPT, ABS_THICK_OPT };
-char *const abs_token[] = {[ABS_OPTIONS::ABS_INDEX_OPT]   = (char *const) "absorber-index",
-                           [ABS_OPTIONS::ABS_MATNAME_OPT] = (char *const) "material-name",
-                           [ABS_OPTIONS::ABS_THICK_OPT]   = (char *const) "thickness",
+char *const abs_token[] = {[ABS_OPTIONS::ABS_INDEX_OPT]   = (char *) "absorber-index",
+                           [ABS_OPTIONS::ABS_MATNAME_OPT] = (char *) "material-name",
+                           [ABS_OPTIONS::ABS_THICK_OPT]   = (char *) "thickness",
                            NULL};
 
 enum DIR_OPTIONS { DIR_X_OPT = 0, DIR_Y_OPT, DIR_Z_OPT };
-char *const dir_token[] = {[DIR_OPTIONS::DIR_X_OPT] = (char *const) "x",
-                           [DIR_OPTIONS::DIR_Y_OPT] = (char *const) "y",
-                           [DIR_OPTIONS::DIR_Z_OPT] = (char *const) "z",
+char *const dir_token[] = {[DIR_OPTIONS::DIR_X_OPT] = (char *) "x",
+			   [DIR_OPTIONS::DIR_Y_OPT] = (char *) "y",
+			   [DIR_OPTIONS::DIR_Z_OPT] = (char *) "z",
                            NULL};
 
 void help()

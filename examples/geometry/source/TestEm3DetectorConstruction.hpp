@@ -1,6 +1,4 @@
-
-#ifndef TESTEM3DETECTORCONSTRUCTION_H
-#define TESTEM3DETECTORCONSTRUCTION_H
+#pragma once
 
 #include "Geant/geometry/UserDetectorConstruction.hpp"
 //#include "Geant/Typedefs.h"
@@ -103,7 +101,4 @@ private:
   geantphysics::Material *fWorldMaterial;
 
 }; //
-
 } // namespace userapplication
-
-#endif // TestEm3DetectorConstruction_H
