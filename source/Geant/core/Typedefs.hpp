@@ -18,6 +18,9 @@
 #endif
 #endif
 
+#include <unordered_map>
+#include <vector>
+
 // XXX: move to geantx namespace
 namespace geantphysics {
 class Particle;

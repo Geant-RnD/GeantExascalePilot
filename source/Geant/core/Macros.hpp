@@ -26,66 +26,28 @@
 
 //======================================================================================//
 //  C headers
-
+//
 #include <cassert>
-#include <cinttypes>
-#include <cmath>
-#include <cstdio>
+#include <cstdint>
 #include <cstdlib>
-#include <cstring>
-#include <ctime>
 
 //======================================================================================//
 //  C++ headers
-
-#include <algorithm>
-#include <atomic>
-#include <chrono>
-#include <complex>
-#include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <new>
-#include <numeric>
-#include <ostream>
-#include <set>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <thread>
-#include <tuple>
+//
 #include <type_traits>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-
-#include "Profiler.hpp"
-
-#include "PTL/AutoLock.hh"
-#include "PTL/TBBTaskGroup.hh"
-#include "PTL/Task.hh"
-#include "PTL/TaskGroup.hh"
-#include "PTL/TaskManager.hh"
-#include "PTL/TaskRunManager.hh"
-#include "PTL/ThreadData.hh"
-#include "PTL/ThreadPool.hh"
-#include "PTL/Threading.hh"
-#include "PTL/Types.hh"
-#include "PTL/Utility.hh"
+#include <chrono>
+#include <sstream>
 
 //--------------------------------------------------------------------------------------//
+// used for ThreadPool::GetThreadID()
+//
+#include "PTL/ThreadPool.hh"
 
-#include <cooperative_groups.h>
+//--------------------------------------------------------------------------------------//
+// cuda headers for debug macros
+//
 #include <cuda.h>
 #include <cuda_runtime_api.h>
-#include <vector_types.h>
 
 //======================================================================================//
 // this function is used by a macro -- returns a unique identifier to the thread

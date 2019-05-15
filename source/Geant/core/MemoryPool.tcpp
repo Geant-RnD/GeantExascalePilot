@@ -19,7 +19,7 @@ namespace details {
 //  a page of memory on a device
 //
 template <typename _Tp, typename _Mem>
-MemoryPage<_Tp, _Mem>::MemoryPage() : m_page(_alloc())
+MemoryPage<_Tp, _Mem>::MemoryPage() : m_page(_alloc(m_allocs_per_page))
 {
   if (m_allocs_per_page < 1) {
     std::stringstream msg;

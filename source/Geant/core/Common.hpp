@@ -26,6 +26,13 @@
 
 #include "Geant/core/Macros.hpp"
 
+#include <atomic>
+#include <string>
+#include <iostream>
+#include <ostream>
+#include <sstream>
+#include <iomanip>
+
 //======================================================================================//
 
 namespace geantx {

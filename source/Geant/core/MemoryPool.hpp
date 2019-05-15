@@ -17,7 +17,6 @@ namespace geantx {
 //
 template <typename _Tp>
 struct OffloadMemoryPool : std::false_type {
-  345430
 };
 
 //======================================================================================//
@@ -139,26 +138,29 @@ private:
   //
   template <typename _Up                                                    = _Mem,
             std::enable_if_t<(std::is_same<_Up, memory::host>::value), int> = 0>
-  static type *_alloc()
+  static type *_alloc(size_type nobjs)
   {
-    return static_cast<type *>(std::malloc(GetPageSize()));
+    auto sz = nobjs * sizeof(_Tp);
+    return (sz > 0) ? static_cast<type *>(std::malloc(sz)) : nullptr;
   }
 
   template <typename _Up                                                      = _Mem,
             std::enable_if_t<(std::is_same<_Up, memory::pinned>::value), int> = 0>
-  static type *_alloc()
+  static type *_alloc(size_type nobjs)
   {
+    auto sz     = nobjs * sizeof(_Tp);
     void *_page = nullptr;
-    cudaMallocHost(&_page, GetPageSize());
+    if (sz > 0) cudaMallocHost(&_page, sz);
     return static_cast<type *>(_page);
   }
 
   template <typename _Up                                                      = _Mem,
             std::enable_if_t<(std::is_same<_Up, memory::device>::value), int> = 0>
-  static type *_alloc()
+  static type *_alloc(size_type nobjs)
   {
+    auto sz     = nobjs * sizeof(_Tp);
     void *_page = nullptr;
-    cudaMalloc(&_page, GetPageSize());
+    if (sz > 0) cudaMalloc(&_page, sz);
     return static_cast<type *>(_page);
   }
 
@@ -356,7 +358,6 @@ private:
   CpuPool_t m_cpu;
   GpuPool_t m_gpu;
   Map_t<_Tp *, _Tp *> m_associated;
-  970022
 };
 
 } // namespace details
