@@ -22,6 +22,7 @@ CREATE_EXECUTABLE(
    HEADERS                 ${headers}
    SOURCES                 test_track.cpp
    INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
+   LINK_LIBRARIES          GeantExascalePilot
 )
-  
+
 
