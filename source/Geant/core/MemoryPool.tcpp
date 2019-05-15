@@ -185,7 +185,7 @@ typename MemoryPoolImpl<_Tp, _Mem>::tuple_type MemoryPoolImpl<_Tp, _Mem>::alloc(
 }
 
 template <typename _Tp, typename _Mem>
-void MemoryPoolImpl<_Tp, _Mem>::free(_Tp *&ptr)
+void MemoryPoolImpl<_Tp, _Mem>::free(_Tp *ptr)
 {
   if (!ptr) return;
   if (m_associated.find(ptr) == m_associated.end()) {
@@ -198,7 +198,6 @@ void MemoryPoolImpl<_Tp, _Mem>::free(_Tp *&ptr)
   auto itr = m_page_list[idx];
   if (itr->owns(ptr)) {
     itr->free(ptr);
-    ptr = nullptr;
     return;
   }
   std::stringstream msg;

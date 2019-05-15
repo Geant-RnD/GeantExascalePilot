@@ -226,7 +226,7 @@ public:
 
   tuple_type alloc();
   tuple_type alloc(const tuple_type &);
-  void free(type *&ptr);
+  void free(type *ptr);
 
   bool add_page();
   void delete_page();
@@ -259,7 +259,11 @@ public:
   MemoryPool(size_type npages = 1) : m_cpu(npages) {}
 
   _Tp *alloc() { return std::get<0>(m_cpu.alloc()); }
-  void free(_Tp *&ptr) { m_cpu.free(ptr); }
+  void free(_Tp *&ptr)
+  {
+    m_cpu.free(ptr);
+    ptr = nullptr;
+  }
   bool add_page() { return m_cpu.add_page(); }
   void delete_page() { m_cpu.delete_page(); }
 
@@ -325,6 +329,7 @@ public:
   {
     m_cpu.free(ptr);
     m_gpu.free(m_associated.find(ptr)->second);
+    ptr = nullptr;
   }
 
   bool add_page()
