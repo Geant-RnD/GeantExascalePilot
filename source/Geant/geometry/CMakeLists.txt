@@ -34,6 +34,7 @@ if(BUILD_STATIC_LIBS)
         HEADERS                 ${headers}
         SOURCES                 ${sources}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
+        LINK_LIBRARIES          core-static
     )
     set(LINK_TARGET ${LIBNAME}-static)
 endif()
@@ -48,6 +49,7 @@ if(BUILD_SHARED_LIBS)
         HEADERS                 ${headers}
         SOURCES                 ${sources}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
+        LINK_LIBRARIES          core-shared
         PROPERTIES              VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}
     )
     set(LINK_TARGET ${LIBNAME}-shared)
