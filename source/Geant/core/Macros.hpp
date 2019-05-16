@@ -45,11 +45,6 @@ inline uintmax_t GetThisThreadID()
 {
   return PTL::ThreadPool::GetThisThreadID();
 }
-//======================================================================================//
-
-#if !defined(PRAGMA_SIMD)
-#define PRAGMA_SIMD _Pragma("omp simd")
-#endif
 
 //======================================================================================//
 
@@ -163,75 +158,3 @@ inline uintmax_t GetThisThreadID()
 #define NVTX_MARK(msg) nvtxMark(name)
 #endif
 #endif
-
-//======================================================================================//
-
-#if defined(__NVCC__)
-#define GEANT_HOST __host__
-#define GEANT_DEVICE __device__
-#define GEANT_HOST_DEVICE __host__ __device__
-#define GEANT_GLOBAL __global__
-#else
-#define GEANT_HOST
-#define GEANT_DEVICE
-#define GEANT_HOST_DEVICE
-#define GEANT_GLOBAL
-#endif
-
-//======================================================================================//
-//
-//      Operating System
-//
-//======================================================================================//
-
-// machine bits
-#if defined(__x86_64__)
-#if !defined(_64BIT)
-#define _64BIT
-#endif
-#else
-#if !defined(_32BIT)
-#define _32BIT
-#endif
-#endif
-
-//--------------------------------------------------------------------------------------//
-// base operating system
-
-#if defined(_WIN32) || defined(_WIN64)
-#if !defined(_WINDOWS)
-#define _WINDOWS
-#endif
-//--------------------------------------------------------------------------------------//
-
-#elif defined(__APPLE__) || defined(__MACH__)
-#if !defined(_MACOS)
-#define _MACOS
-#endif
-#if !defined(_UNIX)
-#define _UNIX
-#endif
-//--------------------------------------------------------------------------------------//
-
-#elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
-#if !defined(_LINUX)
-#define _LINUX
-#endif
-#if !defined(_UNIX)
-#define _UNIX
-#endif
-//--------------------------------------------------------------------------------------//
-
-#elif defined(__unix__) || defined(__unix) || defined(unix) || defined(_)
-#if !defined(_UNIX)
-#define _UNIX
-#endif
-#endif
-
-//--------------------------------------------------------------------------------------//
-
-#if defined(_LINUX) || defined(_MACOS)
-#define _C_UNIX // common unix derivative (i.e. Linux or macOS)
-#endif
-
-//======================================================================================//
