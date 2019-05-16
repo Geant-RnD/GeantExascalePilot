@@ -17,6 +17,7 @@
 #include "Geant/core/Common.hpp"
 #include "Geant/core/Config.hpp"
 #include "Geant/core/Macros.hpp"
+#include <PTL/Utility.hh>
 #include <libgen.h>
 #include <string>
 

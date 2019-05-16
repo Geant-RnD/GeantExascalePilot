@@ -42,6 +42,8 @@
 #include "Geant/core/Typedefs.hpp"
 #include "Geant/core/Utils.hpp"
 
+#include "PTL/AutoLock.hh"
+
 #include <array>
 
 //======================================================================================//

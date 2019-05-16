@@ -15,6 +15,10 @@
 #pragma once
 
 #include "Geant/core/Macros.hpp"
+#include "Geant/core/Logger.hpp"
+
+#include "PTL/AutoLock.hh"
+#include "PTL/Utility.hh"
 
 #include <atomic>
 #include <string>
@@ -22,6 +26,7 @@
 #include <ostream>
 #include <sstream>
 #include <iomanip>
+#include <deque>
 
 //======================================================================================//
 

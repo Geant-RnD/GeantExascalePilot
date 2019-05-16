@@ -94,5 +94,4 @@ inline void init_run_manager(TaskRunManager *run_man,
 }
 
 } // namespace tasking
-
 } // namespace geantx

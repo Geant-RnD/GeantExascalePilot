@@ -78,7 +78,7 @@ public:
 
     void exec()
     {
-        GET_TIMER(timer);
+        GEANT_GET_TIMER(timer);
         for(uintmax_t i = 0; i < m_nitr; ++i)
         {
             m_exec(*m_generator);
@@ -88,7 +88,7 @@ public:
 
     void exec_virtual(std::vector<ObjectA*>& virtual_vector)
     {
-        GET_TIMER(timer);
+        GEANT_GET_TIMER(timer);
         for(uintmax_t i = 0; i < m_nitr; ++i)
         {
             for(const auto& itr : virtual_vector)

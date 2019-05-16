@@ -20,6 +20,7 @@
 #include <type_traits>
 #include <unistd.h>
 #include <vector>
+#include <unordered_map>
 
 #include "Geant/core/CudaUtils.hpp"
 #include "Geant/core/Tuple.hpp"
