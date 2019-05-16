@@ -3,6 +3,8 @@
  * \note   Copyright (c) 2019 Oak Ridge National Laboratory, UT-Battelle, LLC.
  */
 
+#pragma once
+
 #include <memory>
 #include <iostream>
 
