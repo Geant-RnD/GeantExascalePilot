@@ -18,6 +18,11 @@
 
 namespace geantx
 {
+template <typename ProcessType, typename ParticleType>
+struct ProcessEnabled : std::false_type
+{
+};
+
 class Process
 {
 public:

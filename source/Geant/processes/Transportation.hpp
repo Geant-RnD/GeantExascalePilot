@@ -39,11 +39,6 @@ class PionZero;
 class Positron;
 class Proton;
 
-template <typename ParticleType>
-struct TransportationEnabled : std::true_type
-{
-};
-
 class Transportation : public Process
 {
 public:
@@ -62,4 +57,10 @@ public:
     Transportation();
     ~Transportation();
 };
+
+template <typename ParticleType>
+struct ProcessEnabled<Transportation, ParticleType> : std::true_type
+{
+};
+
 }  // namespace geantx
