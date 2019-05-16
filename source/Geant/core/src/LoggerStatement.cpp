@@ -7,6 +7,8 @@
 
 #include "Geant/core/Assert.hpp"
 
+#include "PTL/ThreadPool.hh"
+
 #include <mutex>
 
 namespace geantx {
@@ -52,6 +54,15 @@ LoggerStatement::~LoggerStatement() noexcept
   } catch (const std::exception &e) {
     std::cerr << "An error occurred writing a log message: " << e.what() << std::endl;
   }
+}
+
+//---------------------------------------------------------------------------//
+/*!
+ * \brief Return the current thread id
+ */
+uintmax_t GetThisThreadID()
+{
+   return PTL::ThreadPool::GetThisThreadID();
 }
 
 //---------------------------------------------------------------------------//

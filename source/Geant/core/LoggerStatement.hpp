@@ -13,6 +13,27 @@
 
 namespace geantx {
 
+// To be moved to its own header/source file.
+uintmax_t GetThisThreadID();
+
+//========================================================= =================//
+/*!
+ * \macro GEANT_HERE
+ * \brief To be used to allocate a log with the current location, including
+ *        function name, file name and line number
+ *
+ * \code
+      geantx::Log(kInfo) << GEANT_HERE << "some message";
+ * \endcode
+ */
+
+#if !defined(GEANT_HERE)
+// Format string below "[%lu]> %s@'%s':%i "
+#define GEANT_HERE()                                                \
+    "[" << geantx::GetThisThreadID() << "> " << __FUNCTION__ << "@" \
+     << "'" << __FILE__ << "':" << __LINE__ << " "
+#endif
+
 //===========================================================================//
 /*!
  * \class LoggerStatement

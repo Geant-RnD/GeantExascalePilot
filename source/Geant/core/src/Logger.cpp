@@ -5,8 +5,9 @@
 
 #include "Geant/core/Logger.hpp"
 
-#include "PTL/ThreadPool.hh"
 #include "Geant/core/Assert.hpp"
+
+#include "PTL/ThreadPool.hh"
 
 //---------------------------------------------------------------------------//
 // ANONYMOUS HELPER FUNCTIONS
