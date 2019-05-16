@@ -71,23 +71,23 @@ bool UserDetectorConstruction::LoadVecGeomGeometry(TaskBroker *broker)
 #ifdef USE_ROOT
     vecgeom::RootGeoManager::Instance().SetMaterialConversionHook(
         CreateMaterialConversion());
-    printf("Now loading VecGeom geometry...\n");
+    geantx::LogLocal(kStatus) << "Now loading VecGeom geometry...";
     vecgeom::RootGeoManager::Instance().LoadRootGeometry();
-    printf("Loading VecGeom geometry done\n");
+    geantx::LogLocal(kStatus) << "Loading VecGeom geometry done";
     std::vector<vecgeom::LogicalVolume *> v1;
     vecgeom::GeoManager::Instance().GetAllLogicalVolumes(v1);
-    printf("--- Have logical volumes %ld\n", v1.size());
+   geantx::LogLocal(kStatus) << "--- Have logical volumes " << v1.size();
     std::vector<vecgeom::VPlacedVolume *> v2;
     vecgeom::GeoManager::Instance().getAllPlacedVolumes(v2);
-    printf("--- Have placed volumes %ld\n", v2.size());
+    geantx::LogLocal(kStatus) << "--- Have placed volumes " << v2.size();
     //    vecgeom::RootGeoManager::Instance().world()->PrintContent();
     // Create regions if any available in the ROOT geometry
     int nregions = UserDetectorConstruction::ImportRegions();
-    printf("--- Imported %d regions\n", nregions);
+    geantx::LogLocal(kStatus) << "--- Imported %d regions" << nregions;
 #endif
   }
   if (broker) {
-    printf("Now uploading VecGeom geometry to Coprocessor(s)...\n");
+    geantx::LogLocal(kStatus) << "Now uploading VecGeom geometry to Coprocessor(s)...";
     // return broker->UploadGeometry();
   }
   InitNavigators();
@@ -120,15 +120,18 @@ int UserDetectorConstruction::ImportRegions()
     }
     Region *region = new Region(std::string(region_root->GetName()), gammaCut,
                                 electronCut, positronCut, protonCut);
-    printf("Created region %s with: gammaCut = %g [cm], eleCut = %g [cm], posCut = %g "
-           "[cm], protonCut = %g [cm]\n",
-           region_root->GetName(), gammaCut, electronCut, positronCut, protonCut);
+
+     geantx::LogLocal(kStatus) << "Created region " << region_root->GetName()
+        << " with: gammaCut = " << gammaCut << " [cm], eleCut = " << electronCut
+        << " [cm], posCut = " << positronCut << " [cm], protonCut = "
+        << protonCut << " [cm]";
+
     // loop volumes in the region. Volumes should be already converted to LogicalVolume
     for (int ivol = 0; ivol < region_root->GetNvolumes(); ++ivol) {
       LogicalVolume *vol =
           vecgeom::RootGeoManager::Instance().Convert(region_root->GetVolume(ivol));
       vol->SetRegion(region);
-      // printf("   added to volume %s\n", vol->GetName());
+      // geantx::LogLocal(kStatus) << "   added to volume %s\n", vol->GetName());
     }
   }
 #endif
