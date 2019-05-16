@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 KaonShort *KaonShort::Definition()
 {
   static KaonShort instance("K_S0", 310, 16, 0.497614 * geantx::units::GeV,
@@ -11,4 +11,4 @@ KaonShort *KaonShort::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

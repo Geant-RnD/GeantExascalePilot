@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 PionPlus *PionPlus::Definition()
 {
   static PionPlus instance("pi+", 211, 10, 0.13957 * geantx::units::GeV,
@@ -11,4 +11,4 @@ PionPlus *PionPlus::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

@@ -17,8 +17,6 @@
 
 namespace geantx
 {
-using namespace geantphysics;
-
 struct OffloadTrackState : public TrackState
 {
 };

@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 KaonZero *KaonZero::Definition()
 {
   static KaonZero instance("K0", 311, 17, 0.497614 * geantx::units::GeV,
@@ -11,4 +11,4 @@ KaonZero *KaonZero::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

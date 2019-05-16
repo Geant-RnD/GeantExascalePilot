@@ -1,7 +1,7 @@
 
 #pragma once
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Strongly typed enum class to represent material states.
  * @enum    geantx::MaterialState
@@ -16,4 +16,4 @@ enum class MaterialState {
   kStateGas        /**< material is gaseous */
 };
 
-} // namespace geantphysics
+} // namespace geantx

@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 // static data member init
 Vector_t<Isotope *> Isotope::gTheIsotopeTable; // global isotope table
@@ -140,4 +140,4 @@ std::ostream &operator<<(std::ostream &flux, Vector_t<Isotope *> isotable)
 }
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

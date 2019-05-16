@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 PionZero *PionZero::Definition()
 {
   static PionZero instance("pi0", 111, 12, 0.134977 * geantx::units::GeV,
@@ -11,4 +11,4 @@ PionZero *PionZero::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

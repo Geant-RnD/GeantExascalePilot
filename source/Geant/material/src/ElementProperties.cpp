@@ -7,7 +7,7 @@
 #include "Geant/core/math_wrappers.hpp"
 #include <cmath>
 
-namespace geantphysics {
+namespace geantx {
 ElementProperties::ElementProperties(Element *elem) : fElement(elem)
 {
   InitialiseMembers();
@@ -50,4 +50,4 @@ void ElementProperties::ComputeCoulombCorrection(double z)
       mu2 * (1.0 / (1.0 + mu2) + 0.20206 - 0.0369 * mu2 + 0.0083 * mu4 - 0.002 * mu6);
 }
 
-} // namespace geantphysics
+} // namespace geantx

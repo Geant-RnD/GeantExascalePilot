@@ -3,7 +3,7 @@
 #include "Geant/material/MaterialState.hpp"
 #include "Geant/material/NISTMaterialData.hpp"
 
-namespace geantphysics {
+namespace geantx {
 void NISTMaterialData::BuildTable()
 {
   //
@@ -4818,4 +4818,4 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[315].fIsBuiltByAtomCount   = true;
 }
 
-} // namespace geantphysics
+} // namespace geantx

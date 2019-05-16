@@ -7,9 +7,9 @@
 
 #include <string>
 
-GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Element);
+GEANT_DEVICE_DECLARE_CONV(geantx, class, Element);
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 class Isotope;
 class ElementProperties;
@@ -293,4 +293,4 @@ private:
 };
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

@@ -3,7 +3,7 @@
 
 #include "Geant/core/Config.hpp"
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 /**
  * @brief   Class to represent some frequently used element/atom related variables.
@@ -80,4 +80,4 @@ private:
 };
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace geantphysics {
+namespace geantx {
 // forward declarations
 class PhysicsProcess;
 class PhysicsManagerPerParticle;
@@ -96,4 +96,4 @@ private:
   static std::map<const std::string, Particle *> gNametoParticle;
 };
 
-} // namespace geantphysics
+} // namespace geantx

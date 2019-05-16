@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Internal(singletone) database to store NIST material data.
  * @class   NISTMaterialData
@@ -209,4 +209,4 @@ private:
   Map_t<std::string, int> fMapNISTMaterialNameToIndex;
 };
 
-} // namespace geantphysics
+} // namespace geantx

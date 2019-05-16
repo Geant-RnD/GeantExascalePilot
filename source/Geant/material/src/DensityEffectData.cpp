@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-namespace geantphysics {
+namespace geantx {
 DensityEffectData &DensityEffectData::Instance()
 {
   static DensityEffectData instance;
@@ -54,4 +54,4 @@ int DensityEffectData::FindDensityEffectDataIndex(const std::string &name)
   return indx;
 }
 
-} // namespace geantphysics
+} // namespace geantx

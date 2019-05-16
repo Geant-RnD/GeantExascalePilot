@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 PionMinus *PionMinus::Definition()
 {
   static PionMinus instance(
@@ -12,4 +12,4 @@ PionMinus *PionMinus::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

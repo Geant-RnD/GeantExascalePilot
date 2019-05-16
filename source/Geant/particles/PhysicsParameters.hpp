@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Class to store some physics parameters.
  * @class   PhysicsParameters
@@ -205,4 +205,4 @@ private:
   static std::vector<PhysicsParameters *> gThePhysicsParametersTable;
 };
 
-} // namespace geantphysics
+} // namespace geantx

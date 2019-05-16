@@ -6,7 +6,7 @@
 #include <Geant/core/math_wrappers.hpp>
 #include <cmath>
 
-namespace geantphysics {
+namespace geantx {
 void NISTElementData::BuildTable()
 {
   using geantx::units::eV;
@@ -3822,5 +3822,5 @@ void NISTElementData::BuildTable()
     fNISTElementDataTable[i].fMeanAtomicMass *= kAvogadro;
   }
 
-} // namespace geantphysics
-} // namespace geantphysics
+} // namespace geantx
+} // namespace geantx

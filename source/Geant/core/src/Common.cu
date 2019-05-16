@@ -46,6 +46,16 @@
 
 //======================================================================================//
 
+namespace geantx
+{
+inline namespace cuda {
+template <typename _Tp>
+using device_info = std::unordered_map<int, _Tp>;
+} // namespace cuda
+}
+
+//======================================================================================//
+
 #if defined(GEANT_USE_NVTX)
 
 nvtxEventAttributes_t nvtx_total;

@@ -3,7 +3,7 @@
 
 //#include "Geant/core/PhysicalConstants.hpp"
 
-namespace geantphysics {
+namespace geantx {
 std::vector<Particle *> Particle::gTheParticleTable;
 std::vector<Particle *> Particle::gInternalParticleCodes;
 std::map<unsigned int, unsigned int> Particle::gPDGtoInternalCode;
@@ -27,4 +27,4 @@ Particle::Particle(const std::string &name, int pdgcode, int intcode, double mas
   gNametoParticle[name]       = this;
 }
 
-} // namespace geantphysics
+} // namespace geantx

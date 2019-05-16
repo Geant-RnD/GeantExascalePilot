@@ -9,9 +9,9 @@
 
 #include <string>
 
-GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Material);
+GEANT_DEVICE_DECLARE_CONV(geantx, class, Material);
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 class MaterialProperties;
 class Element;
@@ -357,4 +357,4 @@ private:
 };
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

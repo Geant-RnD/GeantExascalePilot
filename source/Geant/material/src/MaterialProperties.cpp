@@ -15,7 +15,7 @@
 #include <iomanip>
 #include <limits>
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 //
 // CTR
@@ -432,4 +432,4 @@ std::ostream &operator<<(std::ostream &flux, const MaterialProperties &matprop)
 }
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

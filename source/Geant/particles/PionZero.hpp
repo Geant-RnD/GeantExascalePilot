@@ -3,7 +3,7 @@
 
 #include "Geant/particles/Particle.hpp"
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Class(singletone) to store pi0 static properties.
  * @class   PionZero
@@ -25,4 +25,4 @@ private:
   }
 };
 
-} // namespace geantphysics
+} // namespace geantx

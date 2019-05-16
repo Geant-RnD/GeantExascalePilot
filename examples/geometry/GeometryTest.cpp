@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
   //     new userapplication::TestEm3PhysicsList("TestEm3PhysicsList",
   //     *runMgr->GetConfig());
   // SetupPhysicsList(userPhysList);
-  // geantphysics::PhysicsListManager::Instance().RegisterPhysicsList(userPhysList);
+  // geantx::PhysicsListManager::Instance().RegisterPhysicsList(userPhysList);
 
   // Create detector TestEm3 construction
   userapplication::TestEm3DetectorConstruction *det =
@@ -473,7 +473,7 @@ default
   runConfig->fUseVectorizedMSC = parConfigVectorizedMSC;
   if (parConfigVectorizedMSC == 2) runConfig->fUseSDMSC = true;
   // create the real physics main manager/interface object and set it in the RunManager
-  runManager->SetPhysicsInterface(new geantphysics::PhysicsProcessHandler(*runConfig));
+  runManager->SetPhysicsInterface(new geantx::PhysicsProcessHandler(*runConfig));
   runConfig->fUseStdScoring = false;
   //
   // Activate standard scoring
@@ -558,11 +558,11 @@ void SetupPhysicsList(userapplication::TestEm3PhysicsList *userPhysList)
 {
   if (parProcessMSCStepLimit != "") {
     if (parProcessMSCStepLimit == "UseSafety") {
-      userPhysList->SetMSCStepLimit(geantphysics::MSCSteppingAlgorithm::kUseSaftey);
+      userPhysList->SetMSCStepLimit(geantx::MSCSteppingAlgorithm::kUseSaftey);
     } else if (parProcessMSCStepLimit == "ErrorFree") {
-      userPhysList->SetMSCStepLimit(geantphysics::MSCSteppingAlgorithm::kErrorFree);
+      userPhysList->SetMSCStepLimit(geantx::MSCSteppingAlgorithm::kErrorFree);
     } else if (parProcessMSCStepLimit == "UseDistanceToBoundary") {
-      userPhysList->SetMSCStepLimit(geantphysics::MSCSteppingAlgorithm::kUseDistanceToBoundary);
+      userPhysList->SetMSCStepLimit(geantx::MSCSteppingAlgorithm::kUseDistanceToBoundary);
     } else {
       std::cerr << " **** ERROR TestEm3::SetupPhysicsList() \n"
                 << "   unknown MSC stepping algorithm = " << parProcessMSCStepLimit <<

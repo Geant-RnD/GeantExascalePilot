@@ -171,30 +171,30 @@ std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::
       postName       = name.substr(3);
       isNistMaterial = true;
     }
-    geantphysics::Material *gmat = nullptr;
+    geantx::Material *gmat = nullptr;
     if (isNistMaterial) {
       std::string nistName = "NIST_MAT_" + postName;
-      gmat                 = geantphysics::Material::NISTMaterial(nistName);
+      gmat                 = geantx::Material::NISTMaterial(nistName);
     } else {
       // find or create material
-      gmat = geantphysics::Material::GetMaterial(name);
+      gmat = geantx::Material::GetMaterial(name);
       if (gmat) {
         // std::cout<< " Material "<<name << " has already been created.!"<< std::endl;
         return gmat;
       }
-      gmat = new geantphysics::Material(name, density, numElem);
+      gmat = new geantx::Material(name, density, numElem);
       for (int j = 0; j < numElem; ++j) {
         double va;
         double vz;
         double vw;
         const_cast<TGeoMaterial *>(rootmat)->GetElementProp(va, vz, vw, j);
         // create NIST element
-        geantphysics::Element *elX = geantphysics::Element::NISTElement(vz);
+        geantx::Element *elX = geantx::Element::NISTElement(vz);
         // add to the Material
         gmat->AddElement(elX, vw);
       }
     }
-    // std::cout<< "  geantphysics::name = " << gmat->GetName() << std::endl;
+    // std::cout<< "  geantx::name = " << gmat->GetName() << std::endl;
     gmat->SetIsUsed(true);
     return gmat;
   };

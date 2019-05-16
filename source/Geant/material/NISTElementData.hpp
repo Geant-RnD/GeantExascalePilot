@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Internal(singletone) database to store NIST element data.
  * @class   NISTElementData
@@ -317,4 +317,4 @@ private:
   int fIndicesOfBuiltNISTElements[gNumberOfNISTElements];
 };
 
-} // namespace geantphysics
+} // namespace geantx

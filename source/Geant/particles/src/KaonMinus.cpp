@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 KaonMinus *KaonMinus::Definition()
 {
   static KaonMinus instance(
@@ -12,4 +12,4 @@ KaonMinus *KaonMinus::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

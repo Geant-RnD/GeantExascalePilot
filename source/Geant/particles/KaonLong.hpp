@@ -3,7 +3,7 @@
 
 #include "Geant/particles/Particle.hpp"
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Class(singletone) to store K_L0 static properties.
  * @class   KaonLong
@@ -25,4 +25,4 @@ private:
   }
 };
 
-} // namespace geantphysics
+} // namespace geantx

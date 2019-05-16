@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Internal(singletone) database to store density effect parameters.
  * @class   DensityEffectData
@@ -249,4 +249,4 @@ private:
   Map_t<std::string, int> fMapMaterialNameToDenistyEffectDataIndex;
 };
 
-} // namespace geantphysics
+} // namespace geantx

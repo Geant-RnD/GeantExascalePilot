@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 Positron *Positron::Definition()
 {
   static Positron instance("e+", -11, 23, geantx::units::kElectronMassC2,
@@ -11,4 +11,4 @@ Positron *Positron::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/material/MaterialState.hpp"
 
-namespace geantphysics {
+namespace geantx {
 NISTMaterialData &NISTMaterialData::Instance()
 {
   static NISTMaterialData instance;
@@ -29,4 +29,4 @@ int NISTMaterialData::FindNISTMaterialDataIndex(const std::string &name)
   return indx;
 }
 
-} // namespace geantphysics
+} // namespace geantx

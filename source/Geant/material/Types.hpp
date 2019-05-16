@@ -21,7 +21,7 @@
 #include <vector>
 #endif
 
-namespace geantphysics {
+namespace geantx {
 #ifdef USE_VECGEOM_CONTAINERS
 template <typename T>
 using Vector_t = vecgeom::Vector<T>;
@@ -34,4 +34,4 @@ template <typename KeyT, typename ValueT>
 using Map_t = std::map<KeyT, ValueT>;
 #endif
 
-} // namespace geantphysics
+} // namespace geantx

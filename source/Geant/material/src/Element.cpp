@@ -10,7 +10,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 // static data member init
 Vector_t<Element *> Element::gTheElementTable; // the global element table
@@ -407,4 +407,4 @@ std::ostream &operator<<(std::ostream &flux, Vector_t<Element *> elementtable)
 }
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

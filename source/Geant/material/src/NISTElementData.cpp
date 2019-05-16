@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace geantphysics {
+namespace geantx {
 NISTElementData &NISTElementData::Instance()
 {
   static NISTElementData instance;
@@ -113,4 +113,4 @@ void NISTElementData::PrintData(int z)
   }
 }
 
-} // namespace geantphysics
+} // namespace geantx

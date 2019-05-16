@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 Electron *Electron::Definition()
 {
   static Electron instance("e-", 11, 22, geantx::units::kElectronMassC2,
@@ -11,4 +11,4 @@ Electron *Electron::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

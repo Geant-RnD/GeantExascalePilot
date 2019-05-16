@@ -15,11 +15,11 @@ class RunManager;
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geant
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 class Material;
 }
-} // namespace geantphysics
+} // namespace geantx
 
 namespace userapplication {
 
@@ -49,7 +49,7 @@ public:
   void SetAbsorberMaterialName(int absindx, const std::string &matname);
   // get absorber material (must be used after the CreateMaterials interface method is
   // called)
-  const geantphysics::Material *GetAbsorberMaterial(int absindx) const;
+  const geantx::Material *GetAbsorberMaterial(int absindx) const;
   // set/get production cut (value in length for gamma/e-/e+)
   void SetProductionCut(double pcut) { fProductionCut = pcut; }
   double GetProductionCut() const { return fProductionCut; }
@@ -99,8 +99,8 @@ private:
   std::vector<int>
       fLayerIDToLayerIndex; // map of the layer (as VPlacedVolume) IDs to their index.
 
-  geantphysics::Material *fAbsorberMaterials[gMaxNumAbsorbers];
-  geantphysics::Material *fWorldMaterial;
+  geantx::Material *fAbsorberMaterials[gMaxNumAbsorbers];
+  geantx::Material *fWorldMaterial;
 
 }; //
 } // namespace userapplication

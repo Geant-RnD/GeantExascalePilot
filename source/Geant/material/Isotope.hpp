@@ -5,9 +5,9 @@
 
 #include <string>
 
-GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Isotope);
+GEANT_DEVICE_DECLARE_CONV(geantx, class, Isotope);
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 /**
  * @brief   Class to describe an isotope.
@@ -233,4 +233,4 @@ private:
 };
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

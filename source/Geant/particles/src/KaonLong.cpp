@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 KaonLong *KaonLong::Definition()
 {
   static KaonLong instance("K_L0", 130, 15, 0.497614 * geantx::units::GeV,
@@ -11,4 +11,4 @@ KaonLong *KaonLong::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

@@ -3,7 +3,7 @@
 #include "Geant/material/DensityEffectData.hpp"
 #include "Geant/material/MaterialState.hpp"
 
-namespace geantphysics {
+namespace geantx {
 void DensityEffectData::BuildTable()
 {
   using geantx::units::eV;
@@ -3901,4 +3901,4 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[277].fState             = MaterialState::kStateUndefined;
 }
 
-} // namespace geantphysics
+} // namespace geantx

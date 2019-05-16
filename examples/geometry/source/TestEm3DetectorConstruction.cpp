@@ -123,11 +123,11 @@ void TestEm3DetectorConstruction::SetAbsorberMaterial(int absindx,
     exit(-1);
   }
   // will report proper error msg if the material cannot be found or created
-  geantphysics::Material *mat = geantphysics::Material::NISTMaterial(matname);
+  geantx::Material *mat = geantx::Material::NISTMaterial(matname);
   fAbsorberMaterials[absindx] = mat;
 }
 
-const geantphysics::Material *TestEm3DetectorConstruction::GetAbsorberMaterial(
+const geantx::Material *TestEm3DetectorConstruction::GetAbsorberMaterial(
     int absindx) const
 {
   if (absindx >= fNumberOfAbsorbers) {
@@ -181,9 +181,9 @@ void TestEm3DetectorConstruction::DetectorInfo()
 
 void TestEm3DetectorConstruction::CreateMaterials()
 {
-  geantphysics::Element *elH  = geantphysics::Element::NISTElement(1);
-  geantphysics::Element *elC  = geantphysics::Element::NISTElement(6);
-  geantphysics::Element *elPb = geantphysics::Element::NISTElement(82);
+  geantx::Element *elH  = geantx::Element::NISTElement(1);
+  geantx::Element *elC  = geantx::Element::NISTElement(6);
+  geantx::Element *elPb = geantx::Element::NISTElement(82);
   //
   // create material Galactic
   double density     = kUniverseMeanDensity;
@@ -191,35 +191,35 @@ void TestEm3DetectorConstruction::CreateMaterials()
   double temperature = 2.73 * kelvin;
   double z           = 1.;
   double a           = 1.008 * g / mole;
-  new geantphysics::Material("Galactic", z, a, density,
-                             geantphysics::MaterialState::kStateGas, temperature,
+  new geantx::Material("Galactic", z, a, density,
+                             geantx::MaterialState::kStateGas, temperature,
                              pressure);
   //
   // create material Lead (by mass fraction)
   double massfraction = 1.;
   int ncomponents     = 1;
   density             = 11.35 * g / cm3;
-  geantphysics::Material *matLead =
-      new geantphysics::Material("Lead", density, ncomponents);
+  geantx::Material *matLead =
+      new geantx::Material("Lead", density, ncomponents);
   matLead->AddElement(elPb, massfraction = 1.0);
   //
   // create Scintillator (by atom count)
   density     = 1.032 * g / cm3;
   ncomponents = 2;
   int natoms  = 1;
-  geantphysics::Material *matSci =
-      new geantphysics::Material("Scintillator", density, ncomponents);
+  geantx::Material *matSci =
+      new geantx::Material("Scintillator", density, ncomponents);
   matSci->AddElement(elC, natoms = 9);
   matSci->AddElement(elH, natoms = 10);
   //
   // create liquidArgon (from material NIST_MAT_lAr with different density by mass
   // fraction)
-  geantphysics::Material *matlAr = geantphysics::Material::NISTMaterial("NIST_MAT_lAr");
+  geantx::Material *matlAr = geantx::Material::NISTMaterial("NIST_MAT_lAr");
   density                        = 1.390 * g / cm3;
   ncomponents                    = 1;
   massfraction                   = 1.;
-  geantphysics::Material *lArEm3 =
-      new geantphysics::Material("liquidArgon", density, ncomponents);
+  geantx::Material *lArEm3 =
+      new geantx::Material("liquidArgon", density, ncomponents);
   lArEm3->AddMaterial(matlAr, massfraction);
 }
 
@@ -228,7 +228,7 @@ void TestEm3DetectorConstruction::CreateGeometry()
   // compute possible updated calorimeter properties
   ComputeCalorimeter();
   // first set the materials that have been defined by their name
-  fWorldMaterial = geantphysics::Material::NISTMaterial(fWorldMaterialName);
+  fWorldMaterial = geantx::Material::NISTMaterial(fWorldMaterialName);
   for (int i = 0; i < fNumberOfAbsorbers; ++i) {
     SetAbsorberMaterial(i, fAbsorberMaterialNames[i]);
   }

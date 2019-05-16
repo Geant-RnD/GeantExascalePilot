@@ -5,7 +5,7 @@
 
 #include "Geant/core/Config.hpp"
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 /**
  * @brief   Class to represent derived material properties.
@@ -326,4 +326,4 @@ private:
 };
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

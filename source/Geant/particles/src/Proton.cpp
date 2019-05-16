@@ -3,7 +3,7 @@
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
 
-namespace geantphysics {
+namespace geantx {
 Proton *Proton::Definition()
 {
   static Proton instance("proton", 2212, 1, geantx::units::kProtonMassC2,
@@ -11,4 +11,4 @@ Proton *Proton::Definition()
   return &instance;
 }
 
-} // namespace geantphysics
+} // namespace geantx

@@ -35,18 +35,17 @@
 #include <vector>
 
 // XXX: move to geantx namespace
-namespace geantphysics {
+namespace geantx {
 class Particle;
 
 enum EModel_t {
   kMSC = GEANT_BIT(0)
   // others to be added
 };
-} // namespace geantphysics
+} // namespace geantx
 
 namespace geantx {
 typedef VECGEOM_NAMESPACE::NavigationState VolumePath_t;
-typedef geantphysics::Material Material_t;
 typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
 typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
 
@@ -68,12 +67,8 @@ template <typename T>
 using Vector3D    = vecgeom::Vector3D<T>;
 using ThreeVector = Vector3D<double>;
 
-typedef geantphysics::Particle Particle_t;
+typedef geantx::Particle Particle_t;
 
-inline namespace cuda {
-template <typename _Tp>
-using device_info = std::unordered_map<int, _Tp>;
-}
 } // namespace geantx
 
 // XXX: remove me once namespaces are fixed

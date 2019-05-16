@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace geantphysics {
+namespace geantx {
 std::vector<PhysicsParameters *> PhysicsParameters::gThePhysicsParametersTable;
 
 // set to default values
@@ -356,4 +356,4 @@ std::ostream &operator<<(std::ostream &flux, PhysicsParameters &physpar)
   return flux;
 }
 
-} // namespace geantphysics
+} // namespace geantx
