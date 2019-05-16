@@ -18,7 +18,7 @@
 #include "Geant/magneticfield/FieldEquationFactory.hpp"
 #include "Geant/magneticfield/ScalarIntegrationDriver.hpp"
 #include "Geant/magneticfield/ScalarMagFieldEquation.hpp"
-#include "Geant/tracking/StepperFactory.hpp"
+#include "Geant/magneticfield/StepperFactory.hpp"
 // #else
 #include "Geant/magneticfield/CashKarp.hpp"
 #include "Geant/magneticfield/FlexIntegrationDriver.hpp"
