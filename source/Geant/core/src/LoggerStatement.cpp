@@ -31,7 +31,7 @@ LoggerStatement::~LoggerStatement() noexcept
 {
   if (!fMessage) return;
 
-#ifndef VECCORE_CUDA_DEVICE_COMPILATION
+#ifndef GEANT_CUDA_DEVICE_COMPILATION
   static std::mutex prntMutex;
 #endif
 
@@ -44,7 +44,7 @@ LoggerStatement::~LoggerStatement() noexcept
 
     // Write it to all the streams
     for (auto *stream_ptr : fSinks) {
-#ifndef VECCORE_CUDA_DEVICE_COMPILATION
+#ifndef GEANT_CUDA_DEVICE_COMPILATION
      std::lock_guard<std::mutex> lock(prntMutex);
 #endif
       *stream_ptr << message << std::flush;

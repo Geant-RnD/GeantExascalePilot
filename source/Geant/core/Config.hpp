@@ -15,11 +15,19 @@
 #pragma once
 
 #if __cplusplus < 201103L && !defined(__NVCC__)
-#error "GeantV requires C++11"
+#error "GeantX requires C++14"
 #endif
 
-// Include global definitions from VecCore
+// Include global definitions from VecCore and VecGeom
 #include "base/Global.h"
+
+#if !defined(GEANT_CUDA) && defined(VECCORE_CUDA)
+#define GEANT_CUDA
+#endif
+
+#if !defined(GEANT_CUDA_DEVICE_COMPILATION) && defined(VECCORE_CUDA_DEVICE_COMPILATION)
+#define GEANT_CUDA_DEVICE_COMPILATION
+#endif
 
 // Inlining
 #ifdef __INTEL_COMPILER
@@ -55,7 +63,7 @@
 // In nvcc device code, geantx::cuda::gTolerance is aliased to
 // device_constant::gTolerance.
 
-#ifndef VECCORE_CUDA
+#ifndef GEANT_CUDA
 
 #define GEANT_IMPL_NAMESPACE cxx
 
@@ -68,7 +76,7 @@
 
 #define GEANT_IMPL_NAMESPACE cuda
 
-#ifdef VECCORE_CUDA_DEVICE_COMPILATION
+#ifdef GEANT_CUDA_DEVICE_COMPILATION
 #ifdef CUDA_SEP_COMP
 #define GEANT_DECLARE_CONSTANT(type, name) \
   namespace host_constant {                \
@@ -88,7 +96,7 @@
   }                                        \
   using device_constant::name
 #endif // CUDA_SEP_COMP
-#else  // VECCORE_CUDA_DEVICE_COMPILATION
+#else  // GEANT_CUDA_DEVICE_COMPILATION
 #ifdef CUDA_SEP_COMP
 #define GEANT_DECLARE_CONSTANT(type, name) \
   namespace host_constant {                \
@@ -111,7 +119,7 @@
 #endif // Device build or not
 #endif // gcc or nvcc
 
-#ifndef VECCORE_CUDA
+#ifndef GEANT_CUDA
 
 #define GEANT_DEVICE_DECLARE_CONV(NS, classOrStruct, X) \
   namespace NS {                                        \

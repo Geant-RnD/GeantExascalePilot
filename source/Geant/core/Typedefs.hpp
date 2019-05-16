@@ -22,7 +22,7 @@
 #include "volumes/LogicalVolume.h"
 #include "volumes/PlacedVolume.h"
 
-#ifdef VECCORE_CUDA
+#ifdef GEANT_CUDA
 #include "base/Vector.h"
 #else
 #include <vector>
@@ -49,7 +49,7 @@ typedef VECGEOM_NAMESPACE::NavigationState VolumePath_t;
 typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
 typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
 
-#ifdef VECCORE_CUDA
+#ifdef GEANT_CUDA
 template <typename T>
 using vector_t = vecgeom::Vector<T>;
 #else
