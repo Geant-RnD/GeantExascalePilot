@@ -42,7 +42,7 @@ const char *Logger::kLogPrefix[kEndLogLevel] = {
  */
 Logger::Logger()
     : fLocalLevel(kDiagnostic), fGlobalLevel(kDiagnostic),
-      fThreadId(ThreadPool::GetThisThreadID()), fScreenOutput("screen", kPrint),
+      fScreenOutput("screen", kPrint),
       fFileOutput("file", kEndLogLevel)
 {
   // Default screen output is cerr
@@ -139,7 +139,7 @@ LoggerStatement Logger::GlobalStream(LogLevel level)
   LoggerStatement::VecOstream streams;
 
   // Only add streams on node zero
-  if (fThreadId == 0 && level >= fGlobalLevel) {
+  if (level >= fGlobalLevel && ThreadPool::GetThisThreadID() == 0) {
     streams = this->BuildStreams(level);
   }
 
@@ -218,8 +218,6 @@ Logger::VecOstream Logger::BuildStreams(LogLevel level) const
 //---------------------------------------------------------------------------//
 /*!
  * \brief Access global logging instance.
- *
- * \warning This should be accessed only after threading is initialized
  */
 Logger &Logger::GetInstance()
 {

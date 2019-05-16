@@ -1,0 +1,1 @@
+add_googletest(test_Logger.cpp GeantExascalePilot)

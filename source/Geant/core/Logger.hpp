@@ -39,13 +39,13 @@ namespace geantx {
  * Example messages:
  * \code
 
-   log(kPrint) << "Nuclide " << n << " has " << r << " reactions.";
-   log_local(kDiagnostic) << "Finished transporting on thread " << thread << ".";
-   log(kStatus) << "Building solver...";
-   log(kInfo) << "Built solution vector with " << num << " unknowns.";
-   log(kWarning) << "Nuclide 1001 was remapped to 1000";
-   log_local(kError) << "Geometry error (lost particle) in history " << n;
-   log(kFatal) << "Caught exception " << e.what() << "; aborting.";
+   LogMaster(kPrint) << "Nuclide " << n << " has " << r << " reactions.";
+   Log(kDiagnostic) << "Finished transporting on thread " << thread << ".";
+   LogMaster(kStatus) << "Building solver...";
+   LogMaster(kInfo) << "Built solution vector with " << num << " unknowns.";
+   LogMaster(kWarning) << "Nuclide 1001 was remapped to 1000";
+   Log(kError) << "Geometry error (lost particle) in history " << n;
+   LogMaster(kFatal) << "Caught exception " << e.what() << "; aborting.";
 
  * \endcode
  */
@@ -68,7 +68,7 @@ enum LogLevel {
  * \class Logger
  * \brief Global parallel logging for geantx.
  *
- * This singleton class is generally accessed via the "log" free function.
+ * This singleton class is generally accessed via the "Log" free function.
  *
  * Currently the thread ID is saved whenever the logger is instantiated (first
  * called), so if the communicator is changed, the original "master" thread will
@@ -85,8 +85,8 @@ enum LogLevel {
 
  * with \code
 
-    geantx::log() << "Global message" ;
-    geantx::log_local() << "Encountered " << n << " cowboys on thread "
+    geantx::LogMaster() << "Global message" ;
+    geantx::Log() << "Encountered " << n << " cowboys on thread "
                          << thread ;
  * \endcode
  *
@@ -168,9 +168,6 @@ private:
   using VecOstream = LoggerStatement::VecOstream;
 
 private:
-  //! Thread ID, cached when Logger is first called.
-  int fThreadId;
-
   // Instead of doing something complicated like a sorted vector on name,
   // just have one sink for screen output, one for "log file" output
   Sink fScreenOutput;
@@ -185,14 +182,14 @@ private:
 
 //---------------------------------------------------------------------------//
 //! Return an ostream for global (master thread only) messages
-inline LoggerStatement Log(LogLevel level = kInfo)
+inline LoggerStatement LogMaster(LogLevel level = kInfo)
 {
   return Logger::GetInstance().GlobalStream(level);
 }
 
 //---------------------------------------------------------------------------//
 //! Return an ostream for local messages
-inline LoggerStatement LogLocal(LogLevel level = kInfo)
+inline LoggerStatement Log(LogLevel level = kInfo)
 {
   return Logger::GetInstance().LocalStream(level);
 }
