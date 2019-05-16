@@ -12,7 +12,6 @@
  */
 //===----------------------------------------------------------------------===//
 
-
 #pragma once
 
 //======================================================================================//
@@ -44,7 +43,7 @@
 // this function is used by a macro -- returns a unique identifier to the thread
 inline uintmax_t GetThisThreadID()
 {
-  return ThreadPool::GetThisThreadID();
+  return PTL::ThreadPool::GetThisThreadID();
 }
 //======================================================================================//
 

@@ -21,6 +21,8 @@
 #include "Geant/core/Utils.hpp"
 #include "PTL/TaskGroup.hh"
 
+using namespace PTL;
+
 template <typename _Tp>
 using result_of_t = typename std::result_of<_Tp>::type;
 

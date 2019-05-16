@@ -12,7 +12,6 @@
  */
 //===----------------------------------------------------------------------===//
 
-
 #pragma once
 
 #include "Geant/core/Macros.hpp"
@@ -28,6 +27,9 @@
 
 namespace geantx {
 //--------------------------------------------------------------------------------------//
+// make these available in global namespace
+using PTL::ConsumeParameters;
+using PTL::GetEnv;
 
 inline namespace cuda {
 void device_query();
@@ -182,12 +184,13 @@ public:
 template <typename _Func, typename... _Args>
 void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
 {
+  using PTL::GetEnv;
   bool use_cpu = GetEnv<bool>("GEANT_USE_CPU", false);
   if (use_cpu) {
     try {
       cpu_func(std::forward<_Args>(args)...);
     } catch (const std::exception &e) {
-      AutoLock l(TypeMutex<decltype(std::cout)>());
+      PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
       std::cerr << e.what() << '\n';
     }
     return;
@@ -195,19 +198,9 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
 
   std::deque<DeviceOption> options;
   options.push_back(DeviceOption(0, "cpu", "Run on CPU"));
-
-#if defined(GEANT_USE_GPU)
-#if defined(GEANT_USE_CUDA)
   options.push_back(DeviceOption(1, "gpu", "Run on GPU with CUDA"));
-  options.push_back(DeviceOption(2, "cuda", "Run on GPU with CUDA (deprecated)"));
-#endif
-#endif
 
-#if defined(GEANT_USE_GPU) && defined(GEANT_USE_CUDA)
   std::string default_key = "gpu";
-#else
-  std::string default_key = "cpu";
-#endif
 
   auto default_itr =
       std::find_if(options.begin(), options.end(),
@@ -230,7 +223,7 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
     }
     DeviceOption::footer(ss);
 
-    AutoLock l(TypeMutex<decltype(std::cout)>());
+    PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
     std::cout << "\n" << ss.str() << std::endl;
   };
   //------------------------------------------------------------------------//
@@ -246,7 +239,7 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
     ss << "Selected device: " << selected_opt << "\n";
     DeviceOption::spacer(ss, '-');
 
-    AutoLock l(TypeMutex<decltype(std::cout)>());
+    PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
     std::cout << ss.str() << std::endl;
   };
   //------------------------------------------------------------------------//
@@ -287,7 +280,7 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
   } catch (std::exception &e) {
     if (selection != options.end() && selection->index != 0) {
       {
-        AutoLock l(TypeMutex<decltype(std::cout)>());
+        PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
         std::cerr << "[TID: " << GetThisThreadID() << "] " << e.what() << std::endl;
         std::cerr << "[TID: " << GetThisThreadID() << "] "
                   << "Falling back to CPU algorithm..." << std::endl;
@@ -298,7 +291,7 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
         std::stringstream ss;
         ss << "\n\nError executing :: " << _e.what() << "\n\n";
         {
-          AutoLock l(TypeMutex<decltype(std::cout)>());
+          PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
           std::cerr << _e.what() << std::endl;
         }
         throw std::runtime_error(ss.str().c_str());

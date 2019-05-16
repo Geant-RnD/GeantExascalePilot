@@ -233,7 +233,7 @@ void geantx::cuda::device_query()
     return;
   }
 
-  AutoLock l(TypeMutex<decltype(std::cout)>());
+  PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
 
   if (deviceCount == 0)
     printf("No available CUDA device(s) detected\n");

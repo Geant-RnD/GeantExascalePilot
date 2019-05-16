@@ -26,7 +26,15 @@
 #include "PTL/Threading.hh"
 
 namespace geantx {
-inline namespace tasking {
+
+// make these available in global namespace
+using PTL::ConsumeParameters;
+using PTL::GetEnv;
+
+namespace tasking {
+
+using namespace PTL;
+
 inline void init_thread_data(ThreadPool *tp)
 {
   ThreadData *&thread_data = ThreadData::GetInstance();

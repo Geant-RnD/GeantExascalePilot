@@ -36,8 +36,9 @@
 #include <thread>
 #include <type_traits>
 
-typedef std::chrono::duration<double> duration_t;
-using Generator = std::mt19937_64;
+using duration_t = std::chrono::duration<double>;
+using Generator  = std::mt19937_64;
+using namespace PTL;
 
 //======================================================================================//
 

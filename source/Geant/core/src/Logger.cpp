@@ -42,8 +42,7 @@ const char *Logger::kLogPrefix[kEndLogLevel] = {
  */
 Logger::Logger()
     : fLocalLevel(kDiagnostic), fGlobalLevel(kDiagnostic),
-      fScreenOutput("screen", kPrint),
-      fFileOutput("file", kEndLogLevel)
+      fScreenOutput("screen", kPrint), fFileOutput("file", kEndLogLevel)
 {
   // Default screen output is cerr
   fScreenOutput.stream_ptr.reset(&std::cerr, null_deleter());
@@ -139,7 +138,7 @@ LoggerStatement Logger::GlobalStream(LogLevel level)
   LoggerStatement::VecOstream streams;
 
   // Only add streams on node zero
-  if (level >= fGlobalLevel && ThreadPool::GetThisThreadID() == 0) {
+  if (level >= fGlobalLevel && PTL::ThreadPool::GetThisThreadID() == 0) {
     streams = this->BuildStreams(level);
   }
 

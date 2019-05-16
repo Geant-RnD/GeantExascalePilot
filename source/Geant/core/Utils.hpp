@@ -44,14 +44,14 @@ inline namespace cuda {
 
 inline int GetNumMasterStreams(const int &init = 1)
 {
-  return std::max(GetEnv<int>("GEANT_NUM_STREAMS", init), 1);
+  return std::max(PTL::GetEnv<int>("GEANT_NUM_STREAMS", init), 1);
 }
 
 //======================================================================================//
 
 inline int GetBlockSize(const int &init = 32)
 {
-  static thread_local int _instance = GetEnv<int>("GEANT_BLOCK_SIZE", init);
+  static thread_local int _instance = PTL::GetEnv<int>("GEANT_BLOCK_SIZE", init);
   return _instance;
 }
 
@@ -60,7 +60,7 @@ inline int GetBlockSize(const int &init = 32)
 inline int GetGridSize(const int &init = 0)
 {
   // default value of zero == calculated according to block and loop size
-  static thread_local int _instance = GetEnv<int>("GEANT_GRID_SIZE", init);
+  static thread_local int _instance = PTL::GetEnv<int>("GEANT_GRID_SIZE", init);
   return _instance;
 }
 
@@ -75,9 +75,9 @@ inline int ComputeGridSize(const int &size, const int &block_size = GetBlockSize
 
 inline dim3 GetBlockDims(const dim3 &init = dim3(32, 32, 1))
 {
-  int _x = GetEnv<int>("GEANT_BLOCK_SIZE_X", init.x);
-  int _y = GetEnv<int>("GEANT_BLOCK_SIZE_Y", init.y);
-  int _z = GetEnv<int>("GEANT_BLOCK_SIZE_Z", init.z);
+  int _x = PTL::GetEnv<int>("GEANT_BLOCK_SIZE_X", init.x);
+  int _y = PTL::GetEnv<int>("GEANT_BLOCK_SIZE_Y", init.y);
+  int _z = PTL::GetEnv<int>("GEANT_BLOCK_SIZE_Z", init.z);
   return dim3(_x, _y, _z);
 }
 
@@ -86,9 +86,9 @@ inline dim3 GetBlockDims(const dim3 &init = dim3(32, 32, 1))
 inline dim3 GetGridDims(const dim3 &init = dim3(0, 0, 0))
 {
   // default value of zero == calculated according to block and loop size
-  int _x = GetEnv<int>("GEANT_GRID_SIZE_X", init.x);
-  int _y = GetEnv<int>("GEANT_GRID_SIZE_Y", init.y);
-  int _z = GetEnv<int>("GEANT_GRID_SIZE_Z", init.z);
+  int _x = PTL::GetEnv<int>("GEANT_GRID_SIZE_X", init.x);
+  int _y = PTL::GetEnv<int>("GEANT_GRID_SIZE_Y", init.y);
+  int _z = PTL::GetEnv<int>("GEANT_GRID_SIZE_Z", init.z);
   return dim3(_x, _y, _z);
 }
 
