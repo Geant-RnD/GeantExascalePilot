@@ -124,7 +124,8 @@ int UserDetectorConstruction::ImportRegions()
      geantx::LogLocal(kStatus) << "Created region " << region_root->GetName()
         << " with: gammaCut = " << gammaCut << " [cm], eleCut = " << electronCut
         << " [cm], posCut = " << positronCut << " [cm], protonCut = "
-        << protonCut << " [cm]";
+       << protonCut << " [cm]";
+
 
     // loop volumes in the region. Volumes should be already converted to LogicalVolume
     for (int ivol = 0; ivol < region_root->GetNvolumes(); ++ivol) {
@@ -162,7 +163,7 @@ std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::
     CreateMaterialConversion()
 {
   return [](TGeoMaterial const *rootmat) {
-    // std::cout<<"     -->  Creating Material  "<<rootmat->GetName();
+    // geantx::Log(geantx::kStatus) <<"     -->  Creating Material  "<<rootmat->GetName();
     int numElem = rootmat->GetNelements();
     double density =
         rootmat->GetDensity() * geant::units::g / geant::units::cm3; // in g/cm3
@@ -182,7 +183,7 @@ std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::
       // find or create material
       gmat = geantx::Material::GetMaterial(name);
       if (gmat) {
-        // std::cout<< " Material "<<name << " has already been created.!"<< std::endl;
+        // geantx::Log(geantx::kStatus) << " Material "<<name << " has already been created.!"<< std::endl;
         return gmat;
       }
       gmat = new geantx::Material(name, density, numElem);
@@ -197,7 +198,6 @@ std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::
         gmat->AddElement(elX, vw);
       }
     }
-    // std::cout<< "  geantx::name = " << gmat->GetName() << std::endl;
     gmat->SetIsUsed(true);
     return gmat;
   };

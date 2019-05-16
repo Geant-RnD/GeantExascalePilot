@@ -25,6 +25,8 @@
 #include "PTL/ThreadPool.hh"
 #include "PTL/Threading.hh"
 
+#include "Geant/core/Logger.hpp"
+
 namespace geantx {
 
 // make these available in global namespace
@@ -81,10 +83,9 @@ inline void init_run_manager(TaskRunManager *run_man,
     AutoLock lman(TypeMutex<TaskRunManager>());
     if (!run_man->IsInitialized()) {
       if (verbose > 0) {
-        AutoLock lcout(TypeMutex<decltype(std::cout)>());
-        std::cout << "\n"
+        geantx::Log(geantx::kStatus) << "\n"
                   << "[" << tid << "] Initializing tasking run manager with " << nthreads
-                  << " threads..." << std::endl;
+                  << " threads...";
       }
       run_man->Initialize(nthreads);
     }
