@@ -45,7 +45,6 @@ include(ClangFormat)
 
 add_subdirectory(source)
 add_subdirectory(examples)
-#add_subdirectory(test)
 
 ################################################################################
 #   Information

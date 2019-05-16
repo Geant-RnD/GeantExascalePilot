@@ -74,6 +74,22 @@ list(APPEND ${PROJECT_NAME}_SYSTEM_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}/TiMemory/source/cereal/include)
 
 #----------------------------------------------------------------------------------------#
+# GoogleTest submodule
+#
+if(GEANT_BUILD_TESTS)
+    checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
+        RELATIVE_PATH source/GoogleTest WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+    add_subdirectory(GoogleTest)
+    enable_testing()
+
+    mark_as_advanced(
+        BUILD_GMOCK BUILD_GTEST
+        gmock_build_tests gtest_build_samples gtest_build_tests
+        gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols
+    )
+endif()
+
+#----------------------------------------------------------------------------------------#
 # VecCore submodule
 #
 if(NOT VecCore_FOUND)
