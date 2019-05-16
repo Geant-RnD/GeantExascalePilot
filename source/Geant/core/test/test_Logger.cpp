@@ -14,9 +14,6 @@
 
 #include "../Logger.hpp"
 
-// XXX: PTL defines a ThreadLocal macro that conflicts with GoogleTest
-#undef ThreadLocal
-
 #include "gtest/gtest.h"
 #include "Geant/core/Assert.hpp"
 
