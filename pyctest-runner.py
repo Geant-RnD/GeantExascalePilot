@@ -110,6 +110,7 @@ def run_pyctest():
         "GEANT_USE_COVERAGE" : "OFF",
         "PTL_USE_TBB": "OFF",
         "GEANT_BUILD_EXAMPLES": "ON",
+        "GEANT_BUILD_TESTS": "ON",
         "PTL_BUILD_EXAMPLES": "ON"
     }
 
@@ -231,6 +232,8 @@ def run_pyctest():
     pyctest.test("bench_nvstd", construct_command(["./bench_nvstd"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("track_manager_tuple", construct_command(["./track_manager_tuple"], args),
+                 {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
+    pyctest.test("test_Logger", construct_command(["./test_Logger"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
 
     tasking_suffix = ""
