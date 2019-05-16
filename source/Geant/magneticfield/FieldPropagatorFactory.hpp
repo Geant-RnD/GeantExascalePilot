@@ -11,9 +11,6 @@
 
 #include <ostream>
 
-// #include "base/inc/Geant/core/Error.hpp"
-// #include "Geant/core/Error.hpp"
-
 #include "Geant/magneticfield/GUFieldPropagator.hpp"
 #include "Geant/magneticfield/GUFieldPropagatorPool.hpp"
 

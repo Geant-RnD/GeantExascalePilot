@@ -3,7 +3,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <unistd.h>
-#include "Geant/core/Error.hpp"
+#include "Geant/core/Logger.hpp"
 
 //#include "Geant/RunManager.h"
 //#include "Geant/TaskBroker.h"
@@ -124,9 +124,8 @@ int main(int argc, char *argv[])
     numVolumes = det->SetupGeometry(volumes);
   }
   int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
-  geantx::Info("main", "Geometry created with maxdepth %d\n", maxDepth);
-  geantx::Info("main", "Geometry created with %d volumes and maxdepth %d\n", numVolumes,
-               maxDepth);
+   geantx::Log(geantx::kInfo).From("main") << "Geometry created with maxdepth" << maxDepth;
+   geantx::Log(geantx::kInfo).From("main") << "Geometry created with " << numVolumes << " volumes and maxdepth " << maxDepth;
 
   // print detector information
   det->DetectorInfo();

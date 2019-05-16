@@ -1,7 +1,6 @@
 #include "Geant/tracking/StepChecker.hpp"
 
-// For geantx::Print,  Printf
-#include "Geant/core/Error.hpp"
+#include "Geant/core/LoggerStatement.hpp"
 #include "Geant/magneticfield/ConstBzFieldHelixStepper.hpp"
 #include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
 

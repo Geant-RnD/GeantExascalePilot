@@ -1,6 +1,5 @@
 #include "Geant/magneticfield/FieldPropagatorFactory.hpp"
 
-// #include "Geant/core/Error.hpp"
 bool FieldPropagatorFactory::fVerboseConstruct = false;
 
 // Source file is required to aid compiler/linker in placing inline methods into a

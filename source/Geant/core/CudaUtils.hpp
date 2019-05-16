@@ -20,9 +20,7 @@
 #include "Geant/core/Config.hpp"
 #endif
 
-#ifndef GEANT_ERROR_H
-#include "Geant/core/Error.hpp"
-#endif
+#include "Geant/core/Logger.hpp"
 
 #include <cuda.h>
 // #include "driver_types.h" // Required for cudaError_t type
@@ -35,8 +33,7 @@ inline namespace GEANT_IMPL_NAMESPACE {
 inline void HandleCudaError(cudaError_t err, const char *file, int line)
 {
   if (err != cudaSuccess) {
-    ::geantx::Fatal("Cuda", "%s (%d) in %s at line %d\n", cudaGetErrorString(err), err,
-                    file, line);
+     ::geantx::Log(kFatal).From("Cuda") << cudaGetErrorString(err) << "(" << err << ") in " << file << " at line " << line;
   }
 }
 

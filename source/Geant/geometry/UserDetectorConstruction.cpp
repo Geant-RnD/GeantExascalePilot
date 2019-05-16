@@ -1,6 +1,6 @@
 #include "UserDetectorConstruction.hpp"
 
-#include "Geant/core/Error.hpp"
+#include "Geant/core/Logger.hpp"
 //#include "Geant/core/Region.h"
 //#include "Geant/TaskBroker.h"
 //#include "Geant/VBconnector.h"
@@ -34,7 +34,7 @@ int UserDetectorConstruction::SetupGeometry(vector_t<Volume_t const *> &volumes,
   vecgeom::GeoManager::Instance().GetAllLogicalVolumes(volumes);
   nvolumes = volumes.size();
   if (!nvolumes) {
-    geantx::Fatal("UserDetectorConstruction::SetupGeometry", "Geometry is empty");
+    geantx::LogLocal(kFatal).From("UserDetectorConstruction::SetupGeometry") << "Geometry is empty";
     return 0;
   }
 
@@ -59,8 +59,8 @@ bool UserDetectorConstruction::LoadGeometry(const char *filename)
     return true;
   }
 #endif
-  geantx::Error("UserDetectorConstruction::LoadGeometry",
-                "Cannot load geometry from file %s", filename);
+  geantx::LogLocal(kError).From("UserDetectorConstruction::LoadGeometry") <<
+                "Cannot load geometry from file " << filename;
   return false;
 }
 
