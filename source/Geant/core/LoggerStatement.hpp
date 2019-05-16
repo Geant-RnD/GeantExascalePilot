@@ -72,6 +72,15 @@ public:
   LoggerStatement &operator=(const LoggerStatement &) = delete;
 
   /*!
+   * \brief Add a prefix to the statement.
+   *
+   */
+  This &From(const char *msg) {
+    *this << msg << " :";
+    return *this;
+  }
+
+  /*!
    * \brief Act like an ostream, but return ourself.
    *
    * This allows us to intelligently disable writing expensive operations to
