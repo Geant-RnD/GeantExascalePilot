@@ -7,6 +7,8 @@
 
 #include "Geant/core/Assert.hpp"
 
+#include <mutex>
+
 namespace geantx {
 //---------------------------------------------------------------------------//
 LoggerStatement::LoggerStatement(VecOstream streams) : fSinks(std::move(streams))
@@ -29,6 +31,10 @@ LoggerStatement::~LoggerStatement() noexcept
 {
   if (!fMessage) return;
 
+#ifndef VECCORE_CUDA_DEVICE_COMPILATION
+  static std::mutex prntMutex;
+#endif
+
   try {
     // Add a trailing newline
     *fMessage << '\n';
@@ -38,9 +44,9 @@ LoggerStatement::~LoggerStatement() noexcept
 
     // Write it to all the streams
     for (auto *stream_ptr : fSinks) {
-      // TODO: add a static mutex here to guarantee messages won't overlap.
-      // Since we print the messages with a single call to operator<<,
-      // hopefully they will generally be OK anyway.
+#ifndef VECCORE_CUDA_DEVICE_COMPILATION
+     std::lock_guard<std::mutex> lock(prntMutex);
+#endif
       *stream_ptr << message << std::flush;
     }
   } catch (const std::exception &e) {
