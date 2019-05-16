@@ -34,7 +34,7 @@ int UserDetectorConstruction::SetupGeometry(vector_t<Volume_t const *> &volumes,
   vecgeom::GeoManager::Instance().GetAllLogicalVolumes(volumes);
   nvolumes = volumes.size();
   if (!nvolumes) {
-    geantx::LogLocal(kFatal).From("UserDetectorConstruction::SetupGeometry") << "Geometry is empty";
+    geantx::Log(kFatal).From("UserDetectorConstruction::SetupGeometry") << "Geometry is empty";
     return 0;
   }
 
@@ -59,7 +59,7 @@ bool UserDetectorConstruction::LoadGeometry(const char *filename)
     return true;
   }
 #endif
-  geantx::LogLocal(kError).From("UserDetectorConstruction::LoadGeometry") <<
+  geantx::Log(kError).From("UserDetectorConstruction::LoadGeometry") <<
                 "Cannot load geometry from file " << filename;
   return false;
 }
@@ -71,7 +71,7 @@ bool UserDetectorConstruction::LoadVecGeomGeometry(TaskBroker *broker)
 #ifdef USE_ROOT
     vecgeom::RootGeoManager::Instance().SetMaterialConversionHook(
         CreateMaterialConversion());
-    geantx::LogLocal(kStatus) << "Now loading VecGeom geometry...";
+    geantx::Log(kStatus) << "Now loading VecGeom geometry...";
     vecgeom::RootGeoManager::Instance().LoadRootGeometry();
     geantx::LogLocal(kStatus) << "Loading VecGeom geometry done";
     std::vector<vecgeom::LogicalVolume *> v1;
@@ -87,7 +87,7 @@ bool UserDetectorConstruction::LoadVecGeomGeometry(TaskBroker *broker)
 #endif
   }
   if (broker) {
-    geantx::LogLocal(kStatus) << "Now uploading VecGeom geometry to Coprocessor(s)...";
+    geantx::Log(kStatus) << "Now uploading VecGeom geometry to Coprocessor(s)...";
     // return broker->UploadGeometry();
   }
   InitNavigators();
