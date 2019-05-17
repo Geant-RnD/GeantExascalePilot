@@ -67,7 +67,7 @@ struct TrackGeometryState {
   int fMaxDepth            = 0;       /** Maximum geometry depth */
   bool fIsOnBoundaryPreStp = false; /** Particle was on boundary at the pre-step point */
   bool fBoundary           = false; /** Starting from boundary */
-  bool fPending            = false; /** Track pending to be processed */
+  bool fPending            = false; /** Track pending to be processed  (???) */
 };
 
 struct TrackMaterialState {

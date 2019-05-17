@@ -44,6 +44,8 @@ public:
   double Step() const { return this->State().fStep; }
 
   ParticleId_t Id() const { return this->State().fHistoryState.fParticle; }
+  TrackStatus_t Status() const { return this->State().fStatus; }
+  bool Alive() const { return this->Status() != kKilled; }
 
 protected:
   // >>> IMPLEMENTATION DETAILS

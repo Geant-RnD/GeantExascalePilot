@@ -53,16 +53,16 @@ public:
   double Mass() const { return fParDef.fMass(); }
 
   //! Momentum
-  double P() const { return this->Pstate().fMomentum; }
+  double P() const { REQUIRE(this->Alive()); return this->Pstate().fMomentum; }
 
   //! Kinetic energy
-  double Ekin() const { return this->Pstate().fEkin; }
+  double Ekin() const { REQUIRE(this->Alive()); return this->Pstate().fEkin; }
 
   //! Total (rest mass + kinetic) energy
-  double E() const { return this->Mass() + this->Ekin(); }
+  double E() const { REQUIRE(this->Alive()); return this->Mass() + this->Ekin(); }
 
   //! Natural logarithm of kinetic energy
-  double LogEkin() const { return std::log(this->Ekin()); }
+  double LogEkin() const { REQUIRE(this->Alive()); return std::log(this->Ekin()); }
 
   MaterialId_t Material() const { return this->State().fMaterialState.fMaterial; }
 
