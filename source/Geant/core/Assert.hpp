@@ -12,6 +12,8 @@
  */
 //===----------------------------------------------------------------------===//
 
+#pragma once
+
 // Contract validation on input
 #define REQUIRE(code)
 
