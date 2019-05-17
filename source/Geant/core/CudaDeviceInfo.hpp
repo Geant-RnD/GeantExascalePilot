@@ -17,16 +17,11 @@
 #include "Geant/core/Config.hpp"
 #include "Geant/core/Logger.hpp"
 
-#include "PTL/AutoLock.hh"
-#include "PTL/Utility.hh"
-
 #include <atomic>
 #include <string>
-#include <iostream>
-#include <ostream>
 #include <sstream>
+#include <ostream>
 #include <iomanip>
-#include <deque>
 
 //======================================================================================//
 
