@@ -103,7 +103,7 @@ TEST_F(LoggerTest, logging)
     LogMaster(kStatus) << "Screen only";
 
     const std::string& log_stream = stream_sp->str();
-    if (PTL::ThreadPool::GetThisThreadID() == 0)
+    if (GetThisThreadID() == 0)
     {
         EXPECT_EQ("*** Screen and file\n!!! Screen and file\n", log_stream);
     }
