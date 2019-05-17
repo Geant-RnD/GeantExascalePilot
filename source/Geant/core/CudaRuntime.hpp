@@ -154,6 +154,127 @@ inline void destroy_streams(cudaStream_t *streams, const int nstreams)
 
 //======================================================================================//
 
+template <typename _Func, typename... _Args>
+void RunAlgorithm(_Func cpu_func, _Func cuda_func, _Args... args)
+{
+  using PTL::GetEnv;
+  bool use_cpu = GetEnv<bool>("GEANT_USE_CPU", false);
+  if (use_cpu) {
+    try {
+      cpu_func(std::forward<_Args>(args)...);
+    } catch (const std::exception &e) {
+      PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
+      std::cerr << e.what() << '\n';
+    }
+    return;
+  }
+
+  std::deque<DeviceOption> options;
+  options.push_back(DeviceOption(0, "cpu", "Run on CPU"));
+  options.push_back(DeviceOption(1, "gpu", "Run on GPU with CUDA"));
+
+  std::string default_key = "gpu";
+
+  auto default_itr =
+      std::find_if(options.begin(), options.end(),
+                   [&](const DeviceOption &itr) { return (itr == default_key); });
+
+  //------------------------------------------------------------------------//
+  auto print_options = [&]() {
+    static bool first = true;
+    if (!first)
+      return;
+    else
+      first = false;
+
+    std::stringstream ss;
+    DeviceOption::Header(ss);
+    for (const auto &itr : options) {
+      ss << itr;
+      if (itr == *default_itr) ss << "\t(default)";
+      ss << "\n";
+    }
+    DeviceOption::Footer(ss);
+
+    PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
+    std::cout << "\n" << ss.str() << std::endl;
+  };
+  //------------------------------------------------------------------------//
+  auto print_selection = [&](DeviceOption &selected_opt) {
+    static bool first = true;
+    if (!first)
+      return;
+    else
+      first = false;
+
+    std::stringstream ss;
+    DeviceOption::Spacer(ss, '-');
+    ss << "Selected device: " << selected_opt << "\n";
+    DeviceOption::Spacer(ss, '-');
+
+    PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
+    std::cout << ss.str() << std::endl;
+  };
+  //------------------------------------------------------------------------//
+
+  // Run on CPU if nothing available
+  if (options.size() <= 1) {
+    cpu_func(std::forward<_Args>(args)...);
+    return;
+  }
+
+  // print the GPU execution type options
+  print_options();
+
+  default_key = default_itr->key;
+  auto key    = GetEnv("GEANT_DEVICE", default_key);
+
+  auto selection = std::find_if(options.begin(), options.end(),
+                                [&](const DeviceOption &itr) { return (itr == key); });
+
+  if (selection == options.end())
+    selection = std::find_if(options.begin(), options.end(),
+                             [&](const DeviceOption &itr) { return itr == default_key; });
+
+  print_selection(*selection);
+
+  try {
+    switch (selection->index) {
+    case 0:
+      cpu_func(std::forward<_Args>(args)...);
+      break;
+    case 1:
+      cuda_func(std::forward<_Args>(args)...);
+      break;
+    default:
+      cpu_func(std::forward<_Args>(args)...);
+      break;
+    }
+  } catch (std::exception &e) {
+    if (selection != options.end() && selection->index != 0) {
+      {
+        PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
+        std::cerr << "[TID: " << GetThisThreadID() << "] " << e.what() << std::endl;
+        std::cerr << "[TID: " << GetThisThreadID() << "] "
+                  << "Falling back to CPU algorithm..." << std::endl;
+      }
+      try {
+        cpu_func(std::forward<_Args>(args)...);
+      } catch (std::exception &_e) {
+        std::stringstream ss;
+        ss << "\n\nError executing :: " << _e.what() << "\n\n";
+        {
+          PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
+          std::cerr << _e.what() << std::endl;
+        }
+        throw std::runtime_error(ss.str().c_str());
+      }
+    }
+  }
+}
+
+//======================================================================================//
+
 } // namespace cudaruntime
 
 } // namespace geantx
