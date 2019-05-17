@@ -12,9 +12,23 @@
 
 namespace geantx {
 
-
 // To be moved to its own header/source file.
 uintmax_t GetThisThreadID();
+
+//! Delayed evaluation of output for GEANT_HERE
+struct StreamHere {
+  const char *fFunction;
+  const char *fFile;
+  int fLine;
+};
+
+inline std::ostream &operator<<(std::ostream &os, const StreamHere &s)
+{
+  // Format string below "[%lu]> %s @ %s:%i "
+  os << '[' << geantx::GetThisThreadID() << "]> " << s.fFunction << " @ " << s.fFile
+     << ':' << s.fLine << ": ";
+  return os;
+}
 
 //========================================================= =================//
 /*!
@@ -26,12 +40,8 @@ uintmax_t GetThisThreadID();
       geantx::Log(kInfo) << GEANT_HERE << "some message";
  * \endcode
  */
-
 #if !defined(GEANT_HERE)
-// Format string below "[%lu]> %s @ %s:%i "
-#define GEANT_HERE                                                \
-    '[' << geantx::GetThisThreadID() << "]> " << __FUNCTION__ << " @ " \
-     << __FILE__ << ':' << __LINE__ << ' '
+#define GEANT_HERE StreamHere{__FUNCTION__, __FILE__, __LINE__}
 #endif
 
 //---------------------------------------------------------------------------//

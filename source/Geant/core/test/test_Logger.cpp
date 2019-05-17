@@ -58,6 +58,8 @@ TEST_F(LoggerTest, general)
     Log(kError) << "A particle died a horrible death!";
     Log() << "Thread 3 transported 10234 tracks";
 
+    Log() << GEANT_HERE << "This is a special line";
+
     // Change the level
     Logger::GetInstance().SetLocalLevel(kWarning);
     Log(kInfo) << "This shouldn't show up in stderr!";
