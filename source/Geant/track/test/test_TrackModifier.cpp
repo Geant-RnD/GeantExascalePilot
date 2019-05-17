@@ -6,19 +6,13 @@
 // For the list of contributors see CREDITS file.
 // Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
+/**
+ * @file source/Geant/core/test/test_TrackModifier.cpp
+ * @brief Test of TrackModifier
+ */
+//===----------------------------------------------------------------------===//
 
-#if defined(GEANT_USE_TIMEMORY)
-#include "timemory/timemory.hpp"
-#else
-#include <Geant/core/Profiler.hpp>
-#endif
+#include "../TrackModifier.hpp"
 
-#include <Geant/track/TrackAccessor.hpp>
-#include <Geant/track/TrackModifier.hpp>
-#include <Geant/track/TrackState.hpp>
-#include <Geant/track/TrackPhysicsAccessor.hpp>
+#include "gtest/gtest.h"
 
-int main(int, char **)
-{
-  return 0;
-}

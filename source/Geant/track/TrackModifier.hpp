@@ -43,7 +43,8 @@ public:
   }
 
   //! Move in a straight line
-  void Step(double distance) {
+  void Step(double distance)
+  {
     REQUIRE(distance <= fState.fGeometryState.fSnext);
 
     // Update particle position
@@ -55,7 +56,9 @@ public:
   }
 
   //! Move in a curved path
-  void Step(double distance, const ThreeVector& new_position, const ThreeVector& new_direction) {
+  void Step(double distance, const ThreeVector &new_position,
+            const ThreeVector &new_direction)
+  {
     REQUIRE(distance > Norm(new_position - fState.fPos));
     REQUIRE(IsUnitVector(new_direction));
 
@@ -67,11 +70,12 @@ public:
   }
 
   //! Collision: change direction and energy
-  void Collide(const ThreeVector& new_direction, double newKineticEnergy) const {
+  void Collide(const ThreeVector &new_direction, double newKineticEnergy) const
+  {
     REQUIRE(newKineticEnergy >= 0);
     REQUIRE(SoftUnitVector(newDirection));
 
-    fState.fDir = new_direction;
+    fState.fDir                = new_direction;
     fState.fPhysicsState.fEkin = newKineticEnergy;
 
     // Update momentum
@@ -80,7 +84,8 @@ public:
   }
 
   //! Multiple scattering collision: just change direction
-  void Collide(const ThreeVector& new_direction) const {
+  void Collide(const ThreeVector &new_direction) const
+  {
     REQUIRE(SoftUnitVector(newDirection));
 
     fState.fDir = new_direction;
@@ -88,7 +93,8 @@ public:
   }
 
   //! Kill the particle
-  void Kill() const {
+  void Kill() const
+  {
     fState.fStatus = kKilled;
     // XXX set ekin to zero?
   }
@@ -119,8 +125,8 @@ public:
   }
 
 private:
-
-  void StepImpl(double step) const {
+  void StepImpl(double step) const
+  {
     // Decrement distance-to-physics
     fState.fPhysicsState.fPstep -= step;
     // Increment step counter
