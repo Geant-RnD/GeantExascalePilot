@@ -38,12 +38,12 @@
 //   GEANT CUDA implementation
 
 #include "Geant/core/CudaDeviceInfo.hpp"
-#include "Geant/core/Macros.hpp"
-#include "Geant/core/Typedefs.hpp"
+#include "Geant/core/CudaRuntime.hpp"
 
 #include "PTL/AutoLock.hh"
 
 #include <array>
+#include <unordered_map>
 
 //======================================================================================//
 
@@ -398,7 +398,7 @@ void geantx::cudaruntime::DeviceQuery()
 
   printf("\n\n");
   // cudaDeviceSynchronize();
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_SYNC();
 }
 
 //======================================================================================//

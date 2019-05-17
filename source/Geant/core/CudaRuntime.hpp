@@ -15,20 +15,106 @@
 #pragma once
 
 #include "Geant/core/Config.hpp"
-#include "Geant/core/Macros.hpp"
+#include "Geant/core/CudaDeviceInfo.hpp"
+
 #include <PTL/Utility.hh>
-#include <libgen.h>
+#include <PTL/AutoLock.hh>
+
 #include <string>
+#include <deque>
+
+#include <cuda.h>
+#include <cuda_runtime_api.h>
+
+//======================================================================================//
+
+// Macros to test the cuda error code and issue an error message and throw an 
+// exception.
+//
+// GEANT_CUDA_CALL(cond) : use to check the return value of a cuda function.
+// GEANT_CUDA_CALL_FUNCTION(cond) : same as GEANT_CUDA_CALL including printing the name
+//                                  of the current function.
+// GEANT_CUDA_CHECK_LAST_ERROR() : check the 'last' error record by cuda.
+// GEANT_CUDA_CHECK_LAST_ERROR() : check the 'last' error record by cuda including 
+//                                 printing the name of the current function.
+// GEANT_CUDA_CHECK_LAST_ERROR_SYNC : synchronize cuda before calling 
+//                                    GEANT_CUDA_CHECK_LAST_ERROR
+// GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC : synchronize cuda before calling 
+//                                             GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION
+
+
+#define GEANT_CUDA_CHECK_LAST_ERROR_SYNC() \
+  {                                        \
+    cudaStreamSynchronize(0);              \
+    GEANT_CUDA_CHECK_LAST_ERROR();         \
+  }
+
+#define GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC() \
+  {                                                 \
+    cudaStreamSynchronize(0);                       \
+    GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION();         \
+  }
+
+#define GEANT_CUDA_CHECK_LAST_ERROR()                                                   \
+  {                                                                                     \
+    cudaError_t result = cudaGetLastError();                                              \
+    if (GEANT_UNLIKELY(result != cudaSuccess)) {                                        \
+      cudaGetLastError();                                                               \
+      ::geantx::cudaruntime::CudaError(cudaGetErrorString(result), __FILE__, __LINE__); \
+    }                                                                                   \
+  }
+
+#define GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION()                                       \
+  {                                                                                  \
+    cudaError_t result = cudaGetLastError();                                           \
+    if (GEANT_UNLIKELY(result != cudaSuccess)) {                                     \
+      cudaGetLastError();                                                            \
+      ::geantx::cudaruntime::CudaErrorFunc(cudaGetErrorString(result), __FUNCTION__, \
+                                           __FILE__, __LINE__);                      \
+    }                                                                                \
+  }
+
+#define GEANT_CUDA_CALL(cond)                                                       \
+  {                                                                                 \
+    cudaError_t result = (cond);                                                    \
+    if (GEANT_UNLIKELY(result != cudaSuccess)) {                                    \
+      cudaGetLastError();                                                           \
+      ::geantx::cudaruntime::CudaError(cudaGetErrorString(result), #cond, __FILE__, \
+                                       __LINE__);                                   \
+    }                                                                               \
+  }
+
+#define GEANT_CUDA_CALL_FUNCTION(cond)                                        \
+  {                                                                           \
+    cudaError_t result = (cond);                                              \
+    if (GEANT_UNLIKELY(result != cudaSuccess)) {                              \
+      cudaGetLastError();                                                     \
+      ::geantx::cudaruntime::CudaErrorFunc(cudaGetErrorString(result), #cond, \
+                                           __FUNCTION__, __FILE__, __LINE__); \
+    }                                                                         \
+  }
 
 namespace geantx {
 inline namespace cudaruntime {
 
 //======================================================================================//
 
+void CudaError(const char *err_string, const char *msg, const char *file, int line);
+
+void CudaErrorFunc(const char *err_string, const char *msg, const char *function,
+                   const char *file, int line);
+
+void CudaError(const char *err_string, const char *file, int line);
+
+void CudaErrorFunc(const char *err_string, const char *function, const char *file,
+                   int line);
+
+//======================================================================================//
+
 inline void stream_sync(cudaStream_t _stream)
 {
   cudaStreamSynchronize(_stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION();
 }
 
 //======================================================================================//
@@ -36,7 +122,7 @@ inline void stream_sync(cudaStream_t _stream)
 inline void event_sync(cudaEvent_t _event)
 {
   cudaEventSynchronize(_event);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION();
 }
 
 //======================================================================================//
@@ -45,7 +131,7 @@ template <typename _Tp>
 _Tp *gpu_malloc(uintmax_t size)
 {
   _Tp *_gpu;
-  CUDA_CHECK_CALL(cudaMalloc(&_gpu, size * sizeof(_Tp)));
+  GEANT_CUDA_CALL(cudaMalloc(&_gpu, size * sizeof(_Tp)));
   if (_gpu == nullptr) {
     int _device = 0;
     cudaGetDevice(&_device);
@@ -64,7 +150,7 @@ template <typename _Tp>
 void cpu2gpu_memcpy(_Tp *_gpu, const _Tp *_cpu, uintmax_t size, cudaStream_t stream)
 {
   cudaMemcpyAsync(_gpu, _cpu, size * sizeof(_Tp), cudaMemcpyHostToDevice, stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
 }
 
 //--------------------------------------------------------------------------------------//
@@ -73,7 +159,7 @@ template <typename _Tp>
 void gpu2cpu_memcpy(_Tp *_cpu, const _Tp *_gpu, uintmax_t size, cudaStream_t stream)
 {
   cudaMemcpyAsync(_cpu, _gpu, size * sizeof(_Tp), cudaMemcpyDeviceToHost, stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
 }
 
 //--------------------------------------------------------------------------------------//
@@ -82,7 +168,7 @@ template <typename _Tp>
 void gpu2gpu_memcpy(_Tp *_dst, const _Tp *_src, uintmax_t size, cudaStream_t stream)
 {
   cudaMemcpyAsync(_dst, _src, size * sizeof(_Tp), cudaMemcpyDeviceToDevice, stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
 }
 
 //--------------------------------------------------------------------------------------//
@@ -91,7 +177,7 @@ template <typename _Tp>
 void gpu_memset(_Tp *_gpu, int value, uintmax_t size, cudaStream_t stream)
 {
   cudaMemsetAsync(_gpu, value, size * sizeof(_Tp), stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
 }
 
 //======================================================================================//
@@ -101,7 +187,7 @@ _Tp *gpu_malloc_and_memcpy(const _Tp *_cpu, uintmax_t size, cudaStream_t stream)
 {
   _Tp *_gpu = gpu_malloc<_Tp>(size);
   cudaMemcpyAsync(_gpu, _cpu, size * sizeof(_Tp), cudaMemcpyHostToDevice, stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
   return _gpu;
 }
 
@@ -112,7 +198,7 @@ _Tp *gpu_malloc_and_memset(uintmax_t size, int value, cudaStream_t stream)
 {
   _Tp *_gpu = gpu_malloc<_Tp>(size);
   cudaMemsetAsync(_gpu, value, size * sizeof(_Tp), stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
   return _gpu;
 }
 
@@ -122,9 +208,9 @@ template <typename _Tp>
 void gpu2cpu_memcpy_and_free(_Tp *_cpu, _Tp *_gpu, uintmax_t size, cudaStream_t stream)
 {
   cudaMemcpyAsync(_cpu, _gpu, size * sizeof(_Tp), cudaMemcpyDeviceToHost, stream);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
   cudaFree(_gpu);
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
 }
 
 //======================================================================================//
@@ -135,7 +221,7 @@ inline cudaStream_t *create_streams(const int nstreams,
   cudaStream_t *streams = new cudaStream_t[nstreams];
   for (int i = 0; i < nstreams; ++i) {
     cudaStreamCreateWithFlags(&streams[i], flag);
-    CUDA_CHECK_LAST_ERROR();
+    GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
   }
   return streams;
 }
@@ -147,7 +233,7 @@ inline void destroy_streams(cudaStream_t *streams, const int nstreams)
   for (int i = 0; i < nstreams; ++i) {
     cudaStreamSynchronize(streams[i]);
     cudaStreamDestroy(streams[i]);
-    CUDA_CHECK_LAST_ERROR();
+    GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC();
   }
   delete[] streams;
 }

@@ -9,7 +9,7 @@
 
 #include "test_tuple.cuh"
 
-#include "Geant/core/Macros.hpp"
+#include "Geant/core/CudaRuntime.hpp"
 
 __global__ void kernel()
 {
@@ -21,7 +21,7 @@ void launch(TaskGroup<void>& tg)
 {
     nvstd::function<void()> func = []() {
         kernel<<<1, 1>>>();
-        CUDA_CHECK_LAST_ERROR();
+        GEANT_CUDA_CHECK_LAST_ERROR_SYNC();
     };
     tg.run(func);
 }
