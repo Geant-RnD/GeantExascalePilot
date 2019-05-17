@@ -7,7 +7,6 @@
 // Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
 
-#include "Geant/core/Common.hpp"
 #include "Geant/core/MemoryPool.hpp"
 #include "Geant/particles/Electron.hpp"
 #include "Geant/particles/Gamma.hpp"

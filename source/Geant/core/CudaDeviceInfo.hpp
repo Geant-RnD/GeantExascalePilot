@@ -31,35 +31,34 @@
 //======================================================================================//
 
 namespace geantx {
-//--------------------------------------------------------------------------------------//
-// make these available in global namespace
-
 inline namespace cuda {
-void device_query();
-int device_count();
 
-inline int &this_thread_device()
+void DeviceQuery();
+
+int DeviceCount();
+
+inline int &ThisThreadDevice()
 {
   // this creates a globally accessible function for determining the device
   // the thread is assigned to
   //
   static std::atomic<int> _ntid(0);
   static thread_local int _instance =
-      (device_count() > 0) ? ((_ntid++) % device_count()) : 0;
+      (DeviceCount() > 0) ? ((_ntid++) % DeviceCount()) : 0;
   return _instance;
 }
 
 // this functions sets "this_thread_device()" value to device number
-int set_device(int device);
+int SetDevice(int device);
 
 // the functions below use "this_thread_device()" function to get device number
-int multi_processor_count();
+int MultiProcessorCount();
 
-int max_threads_per_block();
+int MaxThreadsPerBlock();
 
-int warp_size();
+int WarpSize();
 
-int shared_memory_per_block();
+int SharedMemoryPerBlock();
 
 //--------------------------------------------------------------------------------------//
 
@@ -84,7 +83,7 @@ public:
   {
   }
 
-  static void spacer(std::ostream &os, const char c = '-')
+  static void Spacer(std::ostream &os, const char c = '-')
   {
     std::stringstream ss;
     ss.fill(c);
@@ -100,8 +99,8 @@ public:
 
   friend bool operator==(const DeviceOption &itr, crstring_t cmp)
   {
-    return (!is_numeric(cmp)) ? (itr.key == tolower(cmp))
-                              : (itr.index == from_string<int>(cmp));
+    return (!IsNumeric(cmp)) ? (itr.key == ToLower(cmp))
+                              : (itr.index == FromString<int>(cmp));
   }
 
   friend bool operator!=(const DeviceOption &lhs, const DeviceOption &rhs)
@@ -114,11 +113,11 @@ public:
     return !(itr == cmp);
   }
 
-  static void header(std::ostream &os)
+  static void Header(std::ostream &os)
   {
     std::stringstream ss;
     ss << "\n";
-    spacer(ss, '=');
+    Spacer(ss, '=');
     ss << "Available GPU options:\n";
     ss << "\t" << std::left << std::setw(5) << "INDEX"
        << "  \t" << std::left << std::setw(12) << "KEY"
@@ -127,12 +126,12 @@ public:
     os << ss.str();
   }
 
-  static void footer(std::ostream &os)
+  static void Footer(std::ostream &os)
   {
     std::stringstream ss;
     ss << "\nTo select an option for runtime, set GEANT_DEVICE_TYPE "
        << "environment variable\n  to an INDEX or KEY above\n";
-    spacer(ss, '=');
+    Spacer(ss, '=');
     os << ss.str();
   }
 
@@ -147,7 +146,7 @@ public:
   }
 
   // helper function for converting to lower-case
-  inline static std::string tolower(std::string val)
+  inline static std::string ToLower(std::string val)
   {
     for (auto &itr : val)
       itr = static_cast<char>(::tolower(itr));
@@ -156,7 +155,7 @@ public:
 
   // helper function to convert string to another type
   template <typename _Tp>
-  static _Tp from_string(const std::string &val)
+  static _Tp FromString(const std::string &val)
   {
     std::stringstream ss;
     _Tp ret;
@@ -166,7 +165,7 @@ public:
   }
 
   // helper function to determine if numeric represented as string
-  inline static bool is_numeric(const std::string &val)
+  inline static bool IsNumeric(const std::string &val)
   {
     if (val.length() > 0) {
       auto f = val.find_first_of("0123456789");
@@ -185,7 +184,7 @@ public:
 //======================================================================================//
 
 template <typename _Func, typename... _Args>
-void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
+void RunAlgorithm(_Func cpu_func, _Func cuda_func, _Args... args)
 {
   using PTL::GetEnv;
   bool use_cpu = GetEnv<bool>("GEANT_USE_CPU", false);
@@ -218,13 +217,13 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
       first = false;
 
     std::stringstream ss;
-    DeviceOption::header(ss);
+    DeviceOption::Header(ss);
     for (const auto &itr : options) {
       ss << itr;
       if (itr == *default_itr) ss << "\t(default)";
       ss << "\n";
     }
-    DeviceOption::footer(ss);
+    DeviceOption::Footer(ss);
 
     PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
     std::cout << "\n" << ss.str() << std::endl;
@@ -238,9 +237,9 @@ void run_algorithm(_Func cpu_func, _Func cuda_func, _Args... args)
       first = false;
 
     std::stringstream ss;
-    DeviceOption::spacer(ss, '-');
+    DeviceOption::Spacer(ss, '-');
     ss << "Selected device: " << selected_opt << "\n";
-    DeviceOption::spacer(ss, '-');
+    DeviceOption::Spacer(ss, '-');
 
     PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
     std::cout << ss.str() << std::endl;

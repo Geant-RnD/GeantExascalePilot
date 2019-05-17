@@ -10,6 +10,8 @@
 #include "test_tuple.cuh"
 #include "test_tuple.hpp"
 
+#include "Geant/core/CudaDeviceInfo.hpp"
+
 template <intmax_t N>
 void update_array(std::array<std::atomic_intmax_t, N>& vals)
 {
@@ -52,10 +54,10 @@ int main(int argc, char** argv)
     auto            join = []() { cudaStreamSynchronize(0); };
     TaskGroup<void> tg(join, &tp);
 
-    geantx::cuda::device_query();
+    geantx::cuda::DeviceQuery();
 
     // launches task that runs on GPU
-    if(geantx::cuda::device_count() > 0)
+    if(geantx::cuda::DeviceCount() > 0)
     {
         launch(tg);
     }
