@@ -160,6 +160,30 @@
 
 //======================================================================================//
 
+/*---- unlikely / likely expressions -----------------------------------------*/
+// These are meant to use in cases like:
+//   if (R__unlikely(expression)) { ... }
+// in performance-critical sessions.  R__unlikely / R__likely provide hints to
+// the compiler code generation to heavily optimize one side of a conditional,
+// causing the other branch to have a heavy performance cost.
+//
+// It is best to use this for conditionals that test for rare error cases or
+// backward compatibility code.
+
+#if (__GNUC__ >= 3) || defined(__INTEL_COMPILER)
+#if !defined(GEANT_UNLIKELY)
+  #define GEANT_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
+#endif
+#if !defined(GEANT_LIKELY)
+  #define GEANT_LIKELY(expr) __builtin_expect(!!(expr), 1)
+#endif
+#else
+  #define GEANT_UNLIKELY(expr) expr
+  #define GEANT_LIKELY(expr) expr
+#endif
+
+//======================================================================================//
+
 // @brief Assertion routines.
 
 // Contract validation on input
