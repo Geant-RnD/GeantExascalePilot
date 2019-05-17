@@ -5,11 +5,12 @@
 
 #pragma once
 
+#include "Geant/core/Config.hpp"
+
 #include <vector>
 #include <sstream>
 #include <iostream>
 #include <memory>
-#include "Geant/core/Macros.hpp"
 
 namespace geantx {
 

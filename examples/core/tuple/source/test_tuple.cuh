@@ -16,8 +16,8 @@
 #    include <nvfunctional>
 #endif
 
+#include "Geant/core/Config.hpp"
 #include "Geant/core/Common.hpp"
-#include "Geant/core/Macros.hpp"
 #include "Geant/core/Utils.hpp"
 #include "PTL/TaskGroup.hh"
 

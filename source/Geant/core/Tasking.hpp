@@ -16,6 +16,9 @@
 
 //============================================================================//
 
+#include "Geant/core/Config.hpp"
+#include "Geant/core/Logger.hpp"
+
 #include "PTL/TBBTaskGroup.hh"
 #include "PTL/Task.hh"
 #include "PTL/TaskGroup.hh"
@@ -24,8 +27,6 @@
 #include "PTL/ThreadData.hh"
 #include "PTL/ThreadPool.hh"
 #include "PTL/Threading.hh"
-
-#include "Geant/core/Logger.hpp"
 
 namespace geantx {
 

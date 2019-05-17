@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "Geant/core/Macros.hpp"
+#include "Geant/core/Config.hpp"
 #include "Geant/core/Logger.hpp"
 
 #include "PTL/AutoLock.hh"
@@ -33,8 +33,6 @@
 namespace geantx {
 //--------------------------------------------------------------------------------------//
 // make these available in global namespace
-using PTL::ConsumeParameters;
-using PTL::GetEnv;
 
 inline namespace cuda {
 void device_query();

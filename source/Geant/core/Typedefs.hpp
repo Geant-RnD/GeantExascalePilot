@@ -15,7 +15,6 @@
 #pragma once
 
 #include "Geant/core/Config.hpp"
-#include "Geant/core/Macros.hpp"
 #include "Geant/core/VectorTypes.hpp"
 #include "Geant/material/Material.hpp"
 #include "navigation/NavigationState.h"

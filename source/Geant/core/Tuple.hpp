@@ -15,8 +15,9 @@
 
 #pragma once
 
+#include "Geant/core/Config.hpp"
+
 #include <utility>
-#include "Geant/core/Macros.hpp"
 
 //======================================================================================//
 
