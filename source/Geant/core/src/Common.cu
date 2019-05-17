@@ -40,7 +40,6 @@
 #include "Geant/core/CudaDeviceInfo.hpp"
 #include "Geant/core/Macros.hpp"
 #include "Geant/core/Typedefs.hpp"
-#include "Geant/core/Utils.hpp"
 
 #include "PTL/AutoLock.hh"
 

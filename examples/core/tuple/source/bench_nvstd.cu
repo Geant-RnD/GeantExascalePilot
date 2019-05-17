@@ -9,6 +9,8 @@
 
 #include "test_tuple.cuh"
 
+#include "Geant/core/Macros.hpp"
+
 __global__ void kernel()
 {
     invoker([] { printf("[kernel: %s] first\n", __FUNCTION__); });

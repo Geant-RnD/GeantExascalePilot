@@ -17,7 +17,6 @@
 #endif
 
 #include "Geant/core/Config.hpp"
-#include "Geant/core/Utils.hpp"
 #include "PTL/TaskGroup.hh"
 
 using namespace PTL;
