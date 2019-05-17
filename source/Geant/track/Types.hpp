@@ -14,10 +14,6 @@
 
 #pragma once
 
-#ifndef REQUIRE
-#define REQUIRE(X)
-#endif
-
 #include <base/Vector3D.h>
 #include <navigation/NavigationState.h>
 #include <volumes/LogicalVolume.h>

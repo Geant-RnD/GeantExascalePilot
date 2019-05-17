@@ -160,3 +160,16 @@
 
 //======================================================================================//
 
+// @brief Assertion routines.
+
+// Contract validation on input
+#define REQUIRE(code)
+
+// Internal consistency checking
+#define CHECK(code)
+
+// Contract validation on output
+#define ENSURE(code)
+
+// Always-on assertion that prints message if it fails
+#define INSIST(code, msg_stream)

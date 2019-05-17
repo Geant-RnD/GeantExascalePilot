@@ -12,10 +12,11 @@
  */
 //===----------------------------------------------------------------------===//
 
+#include "Geant/core/Config.hpp"
+
 #include "../Logger.hpp"
 
 #include "gtest/gtest.h"
-#include "Geant/core/Assert.hpp"
 
 using namespace geantx;
 using std::cout;
