@@ -50,10 +50,10 @@
 
 namespace geantx
 {
-inline namespace cuda {
+inline namespace cudaruntime {
 template <typename _Tp>
 using device_info = std::unordered_map<int, _Tp>;
-} // namespace cuda
+} // namespace cudaruntime
 }
 
 //======================================================================================//
@@ -98,9 +98,9 @@ void init_nvtx()
 
 //======================================================================================//
 
-int geantx::cuda::SetDevice(int device)
+int geantx::cudaruntime::SetDevice(int device)
 {
-  int deviceCount = geantx::cuda::DeviceCount();
+  int deviceCount = geantx::cudaruntime::DeviceCount();
   if (deviceCount == 0) return -1;
 
   // don't set to higher than number of devices
@@ -115,13 +115,13 @@ int geantx::cuda::SetDevice(int device)
 
 //======================================================================================//
 
-int geantx::cuda::MultiProcessorCount()
+int geantx::cudaruntime::MultiProcessorCount()
 {
-  if (geantx::cuda::DeviceCount() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geantx::cuda::device_info<int> *_instance =
-      new geantx::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
   int device = ThisThreadDevice();
 
@@ -136,13 +136,13 @@ int geantx::cuda::MultiProcessorCount()
 
 //======================================================================================//
 
-int geantx::cuda::MaxThreadsPerBlock()
+int geantx::cudaruntime::MaxThreadsPerBlock()
 {
-  if (geantx::cuda::DeviceCount() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geantx::cuda::device_info<int> *_instance =
-      new geantx::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
   int device = ThisThreadDevice();
 
@@ -157,13 +157,13 @@ int geantx::cuda::MaxThreadsPerBlock()
 
 //======================================================================================//
 
-int geantx::cuda::WarpSize()
+int geantx::cudaruntime::WarpSize()
 {
-  if (geantx::cuda::DeviceCount() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geantx::cuda::device_info<int> *_instance =
-      new geantx::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
   int device = ThisThreadDevice();
 
@@ -178,13 +178,13 @@ int geantx::cuda::WarpSize()
 
 //======================================================================================//
 
-int geantx::cuda::SharedMemoryPerBlock()
+int geantx::cudaruntime::SharedMemoryPerBlock()
 {
-  if (geantx::cuda::DeviceCount() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geantx::cuda::device_info<int> *_instance =
-      new geantx::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
   int device = ThisThreadDevice();
 
@@ -199,7 +199,7 @@ int geantx::cuda::SharedMemoryPerBlock()
 
 //======================================================================================//
 
-int geantx::cuda::DeviceCount()
+int geantx::cudaruntime::DeviceCount()
 {
   int deviceCount      = 0;
   cudaError_t error_id = cudaGetDeviceCount(&deviceCount);
@@ -211,7 +211,7 @@ int geantx::cuda::DeviceCount()
 
 //======================================================================================//
 
-void geantx::cuda::DeviceQuery()
+void geantx::cudaruntime::DeviceQuery()
 {
   static std::atomic<int16_t> once;
   if (++once > 1) return;

@@ -22,6 +22,7 @@
 
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
+
 inline std::string GetDataFileLocation(int argc, char **argv, const char *dataFilename)
 {
   const char *dir = argc > 0 ? dirname(argv[0]) : ".";
@@ -39,7 +40,7 @@ inline std::string GetDataFileLocation(int argc, char **argv, std::string dataFi
 
 //======================================================================================//
 
-inline namespace cuda {
+inline namespace cudaruntime {
 //======================================================================================//
 
 inline int GetNumMasterStreams(const int &init = 1)
@@ -231,6 +232,6 @@ inline void destroy_streams(cudaStream_t *streams, const int nstreams)
 
 //======================================================================================//
 
-} // namespace cuda
+} // namespace cudaruntime
 
 } // namespace geantx
