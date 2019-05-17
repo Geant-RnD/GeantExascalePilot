@@ -8,7 +8,11 @@
 #include <memory>
 #include <iostream>
 
+#ifndef __NVCC__
 #include "Geant/core/LoggerStatement.hpp"
+#else
+#include "Geant/core/NullLoggerStatement.hpp"
+#endif
 
 namespace geantx {
 
@@ -97,6 +101,7 @@ enum LogLevel {
   kEndLogLevel
 };
 
+#ifndef __NVCC__
 //===========================================================================//
 /*!
  * \class Logger
@@ -227,6 +232,24 @@ inline LoggerStatement Log(LogLevel level = kInfo)
 {
   return Logger::GetInstance().LocalStream(level);
 }
+//---------------------------------------------------------------------------//
+#else // for __NVCC__ defined:
+//---------------------------------------------------------------------------//
 
+class Logger;
+
+inline NullLoggerStatement LogMaster(LogLevel level = kInfo)
+{
+  (void)sizeof(level);
+  return {};
+}
+
+inline NullLoggerStatement Log(LogLevel level = kInfo)
+{
+  (void)sizeof(level);
+  return {};
+}
+
+#endif
 //---------------------------------------------------------------------------//
 } // end namespace geantx
