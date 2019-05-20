@@ -17,22 +17,16 @@
 #include <cassert>
 #include <sstream>
 #include <stdexcept>
+#include <tuple>
 #include <type_traits>
 #include <unistd.h>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
-#include "Geant/core/CudaUtils.hpp"
-#include "Geant/core/Tuple.hpp"
+#include "cuda_runtime.h"
+#include <cuda.h>
 
 namespace geantx {
-//======================================================================================//
-//  type-trait for using cudaMallocHost or regular malloc
-//
-template <typename _Tp>
-struct OffloadMemoryPool : std::false_type {
-};
-
 //======================================================================================//
 // memory namespace for specifying the type of memory
 //
@@ -43,7 +37,6 @@ struct device {
 };
 struct pinned {
 };
-
 } // namespace memory
 
 //======================================================================================//
@@ -55,6 +48,22 @@ struct cpu {
 struct gpu {
 };
 } // namespace device
+
+//======================================================================================//
+//  type-trait for designating if the type will be offloaded
+//
+template <typename _Tp>
+struct OffloadMemoryPool : std::false_type {
+};
+
+//======================================================================================//
+//  type-trait for using pinned memory or non-pinned memory
+//
+template <typename _Tp>
+struct OffloadMemoryType {
+  // use memory::pinned or memory::host
+  using type = memory::pinned;
+};
 
 //======================================================================================//
 //  gets the size of the page
@@ -310,10 +319,15 @@ class MemoryPool<_Tp, true> {
 public:
   template <typename _Key, typename _Mapped>
   using Map_t     = std::unordered_map<_Key, _Mapped>;
-  using CpuPool_t = MemoryPoolImpl<_Tp, memory::pinned>;
+  using Memory_t  = typename OffloadMemoryType<_Tp>::type;
+  using CpuPool_t = MemoryPoolImpl<_Tp, Memory_t>;
   using GpuPool_t = MemoryPoolImpl<_Tp, memory::device>;
   using this_type = MemoryPool<_Tp, true>;
   using size_type = std::size_t;
+
+  static_assert(std::is_same<Memory_t, memory::host>::value ||
+                    std::is_same<Memory_t, memory::pinned>::value,
+                "OffloadMemoryType is only valid for modes: host and pinned");
 
 public:
   MemoryPool(size_type npages = 1) : m_cpu(npages), m_gpu(npages) {}
@@ -413,6 +427,49 @@ private:
 //
 template <typename _Tp>
 using MemoryPool = details::MemoryPool<_Tp, OffloadMemoryPool<_Tp>::value>;
+
+//======================================================================================//
+//  An allocator that can be inherit from
+//
+template <typename _Tp>
+struct MemoryPoolAllocator {
+  void *operator new(std::size_t)
+  {
+    return static_cast<void *>(get_allocator()->alloc());
+  }
+
+  void operator delete(void *ptr)
+  {
+    auto tptr = static_cast<_Tp *>(ptr);
+    get_allocator()->free(tptr);
+  }
+
+  _Tp *device_ptr() const
+  {
+    auto ptr = static_cast<_Tp *>(const_cast<MemoryPoolAllocator<_Tp> *>(this));
+    return get_allocator()->get(ptr);
+  }
+
+  template <typename _Target>
+  void transfer_to(_Target &&target, cudaStream_t stream = 0)
+  {
+    get_allocator()->transfer_to(std::forward<_Target>(target), stream);
+  }
+
+  void transfer(const cudaMemcpyKind &kind, cudaStream_t stream = 0)
+  {
+    get_allocator()->transfer(kind, stream);
+  }
+
+private:
+  using Alloc_t        = geantx::MemoryPool<_Tp>;
+  using AllocPointer_t = std::unique_ptr<Alloc_t>;
+  static AllocPointer_t &get_allocator()
+  {
+    static thread_local AllocPointer_t _instance(new Alloc_t);
+    return _instance;
+  }
+};
 
 } // namespace geantx
 

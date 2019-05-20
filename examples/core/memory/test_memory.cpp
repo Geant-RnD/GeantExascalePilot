@@ -16,17 +16,37 @@
 
 namespace geantx
 {
-struct OffloadTrackState : public TrackState
+// declarations
+struct OffloadTrackStateHost;
+struct OffloadTrackStatePinned;
+
+// customization
+template <>
+struct OffloadMemoryPool<OffloadTrackStatePinned> : std::true_type
 {
 };
 
 template <>
-struct OffloadMemoryPool<Electron> : std::true_type
+struct OffloadMemoryPool<OffloadTrackStateHost> : std::true_type
 {
 };
 
 template <>
-struct OffloadMemoryPool<OffloadTrackState> : std::true_type
+struct OffloadMemoryType<OffloadTrackStateHost>
+{
+    using type = memory::host;
+};
+
+// create the types
+struct OffloadTrackStateHost
+: public TrackState
+, public MemoryPoolAllocator<OffloadTrackStateHost>
+{
+};
+
+struct OffloadTrackStatePinned
+: public TrackState
+, public MemoryPoolAllocator<OffloadTrackStatePinned>
 {
 };
 
@@ -74,8 +94,34 @@ void test(const std::string& id)
     }
     catch(const std::exception& e)
     {
-        std::cerr << "  MemoryPool for particle type \"" << id
-                  << "\" threw an exception:\n    " << e.what() << "\n"
+        std::cerr << "  MemoryPool for type \"" << id << "\" threw an exception:\n    "
+                  << e.what() << "\n"
+                  << std::endl;
+    }
+    cudaStreamDestroy(stream);
+}
+
+template <typename Type>
+void test_operators(const std::string& id)
+{
+    cudaStream_t stream;
+    cudaStreamCreate(&stream);
+    try
+    {
+        std::cout << "\nTesting \"" << id << "\" of size " << sizeof(Type) << "...\n"
+                  << std::endl;
+        Type* obj = new Type();
+        Type* dev = obj->device_ptr();
+        obj->transfer_to(geantx::device::gpu(), stream);
+        obj->transfer_to(geantx::device::cpu(), stream);
+        printf("  > host pointer = %p\n", static_cast<void*>(obj));
+        printf("  > device pointer = %p\n", static_cast<void*>(dev));
+        delete obj;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "  MemoryPool for type \"" << id << "\" threw an exception:\n    "
+                  << e.what() << "\n"
                   << std::endl;
     }
     cudaStreamDestroy(stream);
@@ -89,7 +135,11 @@ int main()
     // test<geantx::Gamma>(geantx::Gamma::Definition()->GetName());
     // test<geantx::Neutron>(geantx::Neutron::Definition()->GetName());
     test<geantx::TrackState>("TrackState");
-    test<geantx::OffloadTrackState>("Offloaded TrackState");
+    test<geantx::OffloadTrackStatePinned>("Offloaded TrackState (Pinned)");
+    test<geantx::OffloadTrackStateHost>("Offloaded TrackState (Host)");
+
+    test_operators<geantx::OffloadTrackStatePinned>("Offloaded TrackState (Pinned)");
+    test_operators<geantx::OffloadTrackStateHost>("Offloaded TrackState (Host)");
 
     std::cout << std::endl;
 }
