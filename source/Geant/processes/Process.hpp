@@ -18,11 +18,27 @@
 
 namespace geantx
 {
+//----------------------------------------------------------------------------//
+// This trait is marked by the source code as applicable to certain type
+// of particle
+//
+template <typename ProcessType, typename ParticleType>
+struct ProcessAvailable : std::false_type
+{
+};
+
+//----------------------------------------------------------------------------//
+// This trait is marked by the user code as applicable to certain type
+// of particle
+//
 template <typename ProcessType, typename ParticleType>
 struct ProcessEnabled : std::false_type
 {
 };
 
+//----------------------------------------------------------------------------//
+// This is the base class for a process
+//
 class Process
 {
 public:

@@ -42,9 +42,14 @@ class Proton;
 class Transportation : public Process
 {
 public:
-    static constexpr bool AtRestEnable     = false;
-    static constexpr bool AlongStepEnabled = true;
-    static constexpr bool PostStepEnabled  = true;
+    // Enable/disable GetPhysicalInteractionLength (GPIL) functions
+    static constexpr bool EnableAtRestGPIL    = false;
+    static constexpr bool EnableAlongStepGPIL = true;
+    static constexpr bool EnablePostStepGPIL  = false;
+    // Enable/disable DoIt functions
+    static constexpr bool EnableAtRestDoIt    = false;
+    static constexpr bool EnableAlongStepDoIt = true;
+    static constexpr bool EnablePostStepDoIt  = true;
 
     // see TODO above
     using AllowedParticles =
@@ -56,6 +61,18 @@ public:
 public:
     Transportation();
     ~Transportation();
+
+    // here the transportation proposed a step distance
+    double AlongStepGPIL();
+    // double PostStepGPIL();
+
+    void AlongStepDoIt();
+    void PostStepDoIt();
+};
+
+template <typename ParticleType>
+struct ProcessAvailable<Transportation, ParticleType> : std::true_type
+{
 };
 
 template <typename ParticleType>

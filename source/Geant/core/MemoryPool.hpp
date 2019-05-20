@@ -21,10 +21,13 @@
 #include <type_traits>
 #include <unistd.h>
 #include <unordered_map>
+#include <memory>
 #include <vector>
 
-#include "cuda_runtime.h"
+#include <cuda_runtime.h>
 #include <cuda.h>
+
+#include "Geant/core/Memory.hpp"
 
 namespace geantx {
 //======================================================================================//
@@ -444,10 +447,10 @@ struct MemoryPoolAllocator {
     get_allocator()->free(tptr);
   }
 
-  _Tp *device_ptr() const
+  DevicePtr<_Tp> device_ptr() const
   {
     auto ptr = static_cast<_Tp *>(const_cast<MemoryPoolAllocator<_Tp> *>(this));
-    return get_allocator()->get(ptr);
+    return DevicePtr<_Tp>(get_allocator()->get(ptr));
   }
 
   template <typename _Target>
