@@ -184,10 +184,13 @@ typename MemoryPoolImpl<_Tp, _Mem>::tuple_type MemoryPoolImpl<_Tp, _Mem>::alloc(
 
   m_last_page = _last_page;
   auto ptr    = m_page_list[m_last_page]->alloc(_page_idx);
-  if (!std::get<0>(ptr)) {
+  if (std::get<0>(ptr) == nullptr) {
     std::stringstream msg;
     msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__
-        << ": something went wrong";
+        << ": Nooooooo! I'm sorry but I found a nullptr... Something went wrong when I "
+           "tried to get the matching page + offset pointer to another allocation... "
+           "It's possible there isn't a device available or you are out of memory but I "
+           "can't say for certain...";
     throw std::runtime_error(msg.str());
   }
   return _return(ptr);
@@ -196,11 +199,11 @@ typename MemoryPoolImpl<_Tp, _Mem>::tuple_type MemoryPoolImpl<_Tp, _Mem>::alloc(
 template <typename _Tp, typename _Mem>
 void MemoryPoolImpl<_Tp, _Mem>::free(_Tp *ptr)
 {
-  if (!ptr) return;
+  if (ptr == nullptr) return;
   if (m_associated.find(ptr) == m_associated.end()) {
     std::stringstream msg;
     msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__ << ": pointer " << ptr
-        << " now owned by MemoryPool::MemoryPage instance";
+        << " not owned by MemoryPool::MemoryPage instance";
     throw std::runtime_error(msg.str());
   }
   auto idx = m_associated.find(ptr)->second;
