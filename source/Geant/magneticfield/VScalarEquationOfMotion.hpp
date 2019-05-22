@@ -29,8 +29,8 @@ public: // with description
   virtual ~VScalarEquationOfMotion();
   // Constructor and virtual destructor. No operations, just checks
 
-  virtual void EvaluateRhsGivenB(const double yVec[], const vecgeom::Vector3D<double> &B, double charge,
-                                 double dydx[]) const = 0;
+  virtual void EvaluateRhsGivenB(const double yVec[], const vecgeom::Vector3D<double> &B,
+                                 double charge, double dydx[]) const = 0;
   // Given the value of the  field "B", this function
   // calculates the value of the derivative dydx.
   // --------------------------------------------------------
@@ -54,7 +54,8 @@ public: // with description
   // Same as RHS above, but also returns the value of B.
   // Should be made the new default ? after putting dydx & B in a class.
 
-  inline void GetFieldValue(const vecgeom::Vector3D<double> &position, vecgeom::Vector3D<double> &fieldValue) const;
+  inline void GetFieldValue(const vecgeom::Vector3D<double> &position,
+                            vecgeom::Vector3D<double> &fieldValue) const;
 
   const VVectorField *GetFieldObj() const { return fField; }
   VVectorField *GetFieldObj() { return fField; }
@@ -89,20 +90,25 @@ private:
 //
 // -------------------------------------------------------------------
 
-inline VScalarEquationOfMotion::VScalarEquationOfMotion(VVectorField *pField, unsigned short verbose)
-    : fField(pField), fEquationId(fNumObjectsCreated++), fVerbose(verbose), fInitialised(false)
+inline VScalarEquationOfMotion::VScalarEquationOfMotion(VVectorField *pField,
+                                                        unsigned short verbose)
+    : fField(pField), fEquationId(fNumObjectsCreated++), fVerbose(verbose),
+      fInitialised(false)
 {
-  if (fVerbose) std::cout << " Created Equation " << this << " info= " << *this << std::endl;
+  if (fVerbose)
+    std::cout << " Created Equation " << this << " info= " << *this << std::endl;
 }
 
-inline void VScalarEquationOfMotion::GetFieldValue(const vecgeom::Vector3D<double> &Position,
-                                                   vecgeom::Vector3D<double> &FieldValue) const
+inline void VScalarEquationOfMotion::GetFieldValue(
+    const vecgeom::Vector3D<double> &Position,
+    vecgeom::Vector3D<double> &FieldValue) const
 {
   fField->ObtainFieldValue(Position, FieldValue);
 }
 
 GEANT_FORCE_INLINE
-void VScalarEquationOfMotion::RightHandSide(const double y[], double charge, double dydx[]) const
+void VScalarEquationOfMotion::RightHandSide(const double y[], double charge,
+                                            double dydx[]) const
 {
   using ThreeVectorD = vecgeom::Vector3D<double>;
 
@@ -124,7 +130,8 @@ void VScalarEquationOfMotion::RightHandSide(const double y[], double charge, dou
 }
 
 GEANT_FORCE_INLINE
-void VScalarEquationOfMotion::EvaluateRhsReturnB(const double y[], double dydx[], double charge,
+void VScalarEquationOfMotion::EvaluateRhsReturnB(const double y[], double dydx[],
+                                                 double charge,
                                                  vecgeom::Vector3D<double> &field) const
 {
   GetFieldValue(ThreeVector(y[0], y[1], y[2]), field);

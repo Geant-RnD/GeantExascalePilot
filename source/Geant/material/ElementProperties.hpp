@@ -3,7 +3,7 @@
 
 #include "Geant/core/Config.hpp"
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 /**
  * @brief   Class to represent some frequently used element/atom related variables.
@@ -61,7 +61,8 @@ private:
   void ComputeCoulombCorrection(double z);
 
 private:
-  /** @brief Pointer to the element that this element parameters belong to (doesn't own the object)*/
+  /** @brief Pointer to the element that this element parameters belong to (doesn't own
+   * the object)*/
   Element *fElement;
 
   /** @brief \f$ Z^{1/3} \f$ */
@@ -79,4 +80,4 @@ private:
 };
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

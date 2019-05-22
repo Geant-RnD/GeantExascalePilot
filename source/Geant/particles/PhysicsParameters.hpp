@@ -4,15 +4,16 @@
 #include <iostream>
 #include <vector>
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Class to store some physics parameters.
  * @class   PhysicsParameters
  * @author  M Novak, A Ribon
  * @date    july 2016
  *
- * Each PhysicsList will have a PhysicsParameters object. The object will be created in the PhysicsList ctr but owned by
- * the PhysicsParameters class. Each PhysicsParameters object will store the list of its active regions.
+ * Each PhysicsList will have a PhysicsParameters object. The object will be created in
+ * the PhysicsList ctr but owned by the PhysicsParameters class. Each PhysicsParameters
+ * object will store the list of its active regions.
  */
 class PhysicsParameters {
 public:
@@ -28,17 +29,33 @@ public:
   bool IsActiveRegion(int regionindx) const { return fListActiveRegions[regionindx]; }
 
   // list of all physics parameters objects created so far
-  static const std::vector<PhysicsParameters *> &GetThePhysicsParametersTable() { return gThePhysicsParametersTable; }
-  // get physics parameters object that is active in a given region; used only at initialization
+  static const std::vector<PhysicsParameters *> &GetThePhysicsParametersTable()
+  {
+    return gThePhysicsParametersTable;
+  }
+  // get physics parameters object that is active in a given region; used only at
+  // initialization
   static const PhysicsParameters *GetPhysicsParametersForRegion(int regionindx);
 
   // secondary production kinetic energy threshold related minimum/maximum values
   static void SetMinAllowedGammaCutEnergy(double val) { gMinAllowedGammaCutEnergy = val; }
-  static void SetMinAllowedElectronCutEnergy(double val) { gMinAllowedElectronCutEnergy = val; }
-  static void SetMinAllowedPositronCutEnergy(double val) { gMinAllowedPositronCutEnergy = val; }
+  static void SetMinAllowedElectronCutEnergy(double val)
+  {
+    gMinAllowedElectronCutEnergy = val;
+  }
+  static void SetMinAllowedPositronCutEnergy(double val)
+  {
+    gMinAllowedPositronCutEnergy = val;
+  }
   static void SetMaxAllowedGammaCutEnergy(double val) { gMaxAllowedGammaCutEnergy = val; }
-  static void SetMaxAllowedElectronCutEnergy(double val) { gMaxAllowedElectronCutEnergy = val; }
-  static void SetMaxAllowedPositronCutEnergy(double val) { gMaxAllowedPositronCutEnergy = val; }
+  static void SetMaxAllowedElectronCutEnergy(double val)
+  {
+    gMaxAllowedElectronCutEnergy = val;
+  }
+  static void SetMaxAllowedPositronCutEnergy(double val)
+  {
+    gMaxAllowedPositronCutEnergy = val;
+  }
 
   static double GetMinAllowedGammaCutEnergy() { return gMinAllowedGammaCutEnergy; }
   static double GetMinAllowedElectronCutEnergy() { return gMinAllowedElectronCutEnergy; }
@@ -48,16 +65,28 @@ public:
   static double GetMaxAllowedPositronCutEnergy() { return gMaxAllowedPositronCutEnergy; }
 
   static void SetDefaultGammaCutInLength(double val) { gDefaultGammaCutInLength = val; }
-  static void SetDefaultElectronCutInLength(double val) { gDefaultElectronCutInLength = val; }
-  static void SetDefaultPositronCutInLength(double val) { gDefaultPositronCutInLength = val; }
+  static void SetDefaultElectronCutInLength(double val)
+  {
+    gDefaultElectronCutInLength = val;
+  }
+  static void SetDefaultPositronCutInLength(double val)
+  {
+    gDefaultPositronCutInLength = val;
+  }
 
   static double GetDefaultGammaCutInLength() { return gDefaultGammaCutInLength; }
   static double GetDefaultElectronCutInLength() { return gDefaultElectronCutInLength; }
   static double GetDefaultPositronCutInLength() { return gDefaultPositronCutInLength; }
 
   static void SetDefaultGammaCutInEnergy(double val) { gDefaultGammaCutInEnergy = val; }
-  static void SetDefaultElectronCutInEnergy(double val) { gDefaultElectronCutInEnergy = val; }
-  static void SetDefaultPositronCutInEnergy(double val) { gDefaultPositronCutInEnergy = val; }
+  static void SetDefaultElectronCutInEnergy(double val)
+  {
+    gDefaultElectronCutInEnergy = val;
+  }
+  static void SetDefaultPositronCutInEnergy(double val)
+  {
+    gDefaultPositronCutInEnergy = val;
+  }
 
   static double GetDefaultGammaCutInEnergy() { return gDefaultGammaCutInEnergy; }
   static double GetDefaultElectronCutInEnergy() { return gDefaultElectronCutInEnergy; }
@@ -133,12 +162,14 @@ private:
   double fMinLossTableEnergy;
   /** maximum of the kinetic energy grid of the energy loss table; (G4->maxKinEnergy) */
   double fMaxLossTableEnergy;
-  /** number of energy bins in the loss table between  fMinLossTableEnergy and fMaxLossTableEnergy */
+  /** number of energy bins in the loss table between  fMinLossTableEnergy and
+   * fMaxLossTableEnergy */
   int fNumLossTableBins;
   /** number of energy bins in the loss table per decade */
   int fNumLossTableBinsPerDecade;
 
-  bool fIsComputeCSDARange; // if true  unrestricted total (brem+ioni) range will also be computed
+  bool fIsComputeCSDARange; // if true  unrestricted total (brem+ioni) range will also be
+                            // computed
 
   //
   // Lambda tables related variables
@@ -147,26 +178,31 @@ private:
   double fMinLambdaTableEnergy;
   /** maximum of the kinetic energy grid of the lambda table; (G4->maxKinEnergy) */
   double fMaxLambdaTableEnergy;
-  /** number of energy bins in the lambda tables between  fMinLambdaTableEnergy and fMaxMaxTableEnergy */
+  /** number of energy bins in the lambda tables between  fMinLambdaTableEnergy and
+   * fMaxMaxTableEnergy */
   int fNumLambdaTableBins;
   /** number of energy bins in the lambda tables per decade */
   int fNumLambdaTableBinsPerDecade;
 
-  // EM tracking cuts for charged particles: particles with kinetic energy lower than this value will be stopped in
-  // the EnergyLoss process AlongStepDoIt.
+  // EM tracking cuts for charged particles: particles with kinetic energy lower than this
+  // value will be stopped in the EnergyLoss process AlongStepDoIt.
   double fLowestElectronTrackingEnergy;
 
-  double fLinearEnergyLossLimit; // result of linear energy loss approximation is accepted in the along
-                                 // step energy loss computation (ELossTable::GetMeanEnergyAfterAStep) if the
-                                 // (linear energy loss)/(initial kinetic energy) <= fLinearEnergyLossLimit
+  double fLinearEnergyLossLimit; // result of linear energy loss approximation is accepted
+                                 // in the along step energy loss computation
+                                 // (ELossTable::GetMeanEnergyAfterAStep) if the (linear
+                                 // energy loss)/(initial kinetic energy) <=
+                                 // fLinearEnergyLossLimit
   // continuous step limit function parameters for kEnergyLoss EMPhysicsProcess-es
   double fFinalRange;
   double fDRoverRange;
 
-  std::vector<bool> fListActiveRegions; /** is this PhysicsParameters active in the i-th region?;
-                                            will be set by the PhysicsListManager */
-  /** each created physics parameters will be registered in this table; the class DO OWN the objects  */
+  std::vector<bool>
+      fListActiveRegions; /** is this PhysicsParameters active in the i-th region?;
+                              will be set by the PhysicsListManager */
+  /** each created physics parameters will be registered in this table; the class DO OWN
+   * the objects  */
   static std::vector<PhysicsParameters *> gThePhysicsParametersTable;
 };
 
-} // namespace geantphysics
+} // namespace geantx

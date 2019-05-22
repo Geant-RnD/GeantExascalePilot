@@ -65,8 +65,9 @@ int main()
   // input file is copied to build/examples/magneticfield/simplifiedCMS using CMakeLists
   std::string inputMap("../examples/magneticfield/simplifiedCMS/cms2015.txt");
 
-  m1.ReadVectorData(inputMap);      // "../examples/magneticfield/simplifiedCMS/cms2015.txt");
-  ReadVectorData dataMap(inputMap); // "../examples/magneticfield/simplifiedCMS/cms2015.txt");
+  m1.ReadVectorData(inputMap); // "../examples/magneticfield/simplifiedCMS/cms2015.txt");
+  ReadVectorData dataMap(
+      inputMap); // "../examples/magneticfield/simplifiedCMS/cms2015.txt");
 
   const float kRDiff    = 50.;
   const float kZDiff    = 200.;
@@ -80,9 +81,10 @@ int main()
   const float halfWeight = 0.5;
   const float zero       = 0.;
 
-  //(r,0,z) corresponds exactly to (r,z) in terms that xyzField obtained is same as rzField since
-  // theta=0 in this case. Hence can check GetFieldValue<vecgeom::kScalar> in place of GetFieldValueTest
-  // Limitation however is that can't check for points with non zero y.
+  //(r,0,z) corresponds exactly to (r,z) in terms that xyzField obtained is same as
+  //rzField since
+  // theta=0 in this case. Hence can check GetFieldValue<vecgeom::kScalar> in place of
+  // GetFieldValueTest Limitation however is that can't check for points with non zero y.
   for (float r = 0; r <= kRMax; r = r + kRDiff) {
     for (float z = -kZMax; z <= kZMax; z = z + kZDiff) {
       // Checks for (r,0,z) and (r,0,z) against (r,z)
@@ -95,7 +97,8 @@ int main()
       int i = r * kRDiffInv * noZValues + halfZValues + z * kZDiffInv;
 
       // cout<<"Correct index is: "<<i<<endl;
-      vecgeom::Vector3D<float> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i], dataMap.fBz[i]);
+      vecgeom::Vector3D<float> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i],
+                                             dataMap.fBz[i]);
       // cout<<"xyzField1: "<<xyzField1<<" vs rzCheckField1: "<<rzCheckField1<<endl;
       assert(ApproxEqual(xyzField1, rzCheckField1, r, z, 0)); // Working for floats
     }
@@ -107,15 +110,16 @@ int main()
     for (float z = -kZMax; z < kZMax; z = z + kZDiff) {
       // cout<<"r: "<<r<<" and z: "<<z<<endl;
 
-      vecgeom::Vector3D<float> pos2(r + kRDiff * halfWeight, zero, z), pos3(r, zero, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<float> pos2(r + kRDiff * halfWeight, zero, z),
+          pos3(r, zero, z + kZDiff * halfWeight);
       vecgeom::Vector3D<float> xyzField2, xyzField3;
       m1.GetFieldValue<float>(pos2, xyzField2);
 
       // Say i1, i2, i3, i4
       vecgeom::Vector3D<float> rzCheckField2, rzCheckField3;
       // Now need i1, i2, i3, i4
-      // for pos2 and pos5, take i1 and i2. i4 = i3 + 161. Same z, different r. so skip through as many values of z as
-      // for one r
+      // for pos2 and pos5, take i1 and i2. i4 = i3 + 161. Same z, different r. so skip
+      // through as many values of z as for one r
       int i1 = r * kRDiffInv * noZValues + halfZValues + z * kZDiffInv;
       int i2 = i1 + noZValues;
 
@@ -129,10 +133,11 @@ int main()
       rzCheckField2.z() = (dataMap.fBz[i1] + dataMap.fBz[i2]) * halfWeight;
 
       // cout<<"Checked against: "<<endl;
-      // cout<<"B for i1 is: "<<dataMap.fBr[i1]<<" "<<dataMap.fBphi[i1]<<" "<<dataMap.fBz[i1]<<endl;
-      // cout<<"B for i3 is: "<<dataMap.fBr[i2]<<" "<<dataMap.fBphi[i2]<<" "<<dataMap.fBz[i2]<<endl;
-      // cout<<"Direct indices are: "<<i1<<" "<<i2<<" "<<i3<<" "<<i4<<endl;
-      // cout<<"xyzField2: "<<xyzField2<<" vs rzCheckField2: "<<rzCheckField2<<endl;
+      // cout<<"B for i1 is: "<<dataMap.fBr[i1]<<" "<<dataMap.fBphi[i1]<<"
+      // "<<dataMap.fBz[i1]<<endl; cout<<"B for i3 is: "<<dataMap.fBr[i2]<<"
+      // "<<dataMap.fBphi[i2]<<" "<<dataMap.fBz[i2]<<endl; cout<<"Direct indices are:
+      // "<<i1<<" "<<i2<<" "<<i3<<" "<<i4<<endl; cout<<"xyzField2: "<<xyzField2<<" vs
+      // rzCheckField2: "<<rzCheckField2<<endl;
       assert(ApproxEqual(xyzField2, rzCheckField2, r, z, 1));
 
       m1.GetFieldValue<float>(pos3, xyzField3);
@@ -150,7 +155,8 @@ int main()
   for (float r = 0; r < kRMax; r = r + kRDiff) {
     for (float z = -kZMax; z < kZMax; z = z + kZDiff) {
       // cout<<"r: "<<r<<" and z: "<<z<<endl;
-      vecgeom::Vector3D<float> pos4(r + kRDiff * halfWeight, zero, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<float> pos4(r + kRDiff * halfWeight, zero,
+                                    z + kZDiff * halfWeight);
       vecgeom::Vector3D<float> xyzField4, rzCheckField4;
       m1.GetFieldValue<float>(pos4, xyzField4);
 
@@ -161,9 +167,13 @@ int main()
       int i3 = i1 + 1;
       int i4 = i2 + 1;
 
-      rzCheckField4.x() = (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
-      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] + dataMap.fBphi[i4]) * 0.25;
-      rzCheckField4.z() = (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
+      rzCheckField4.x() =
+          (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
+      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] +
+                           dataMap.fBphi[i4]) *
+                          0.25;
+      rzCheckField4.z() =
+          (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
 
       // cout<<"Direct indices are: "<<i1<<" "<<i2<<" "<<i3<<" "<<i4<<endl;
 

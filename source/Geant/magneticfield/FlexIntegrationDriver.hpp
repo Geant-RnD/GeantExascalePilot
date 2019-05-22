@@ -10,7 +10,8 @@
 class ScalarFieldTrack;
 struct FieldTrack;
 
-//  Attempt to provide a method that works for a single track using Flex/Simple Integration Driver
+//  Attempt to provide a method that works for a single track using Flex/Simple
+//  Integration Driver
 #define EXTEND_SINGLE 1
 
 class FlexIntegrationDriver {
@@ -26,8 +27,10 @@ public:
    **/
 
   // Method for array / vector
-  virtual void AccurateAdvance(const FieldTrack yInput[], const double hstep[], const double charge[], double epsilon,
-                               FieldTrack yOutput[], int nTracks, bool succeeded[]) const = 0;
+  virtual void AccurateAdvance(const FieldTrack yInput[], const double hstep[],
+                               const double charge[], double epsilon,
+                               FieldTrack yOutput[], int nTracks,
+                               bool succeeded[]) const = 0;
   // Drive Runge-Kutta integration of ODE for several tracks (ntracks)
   // with starting values yInput, from current 's'=0 to s=h with variable
   // stepsize to control error, so that it is bounded by the relative
@@ -36,7 +39,8 @@ public:
 
 #ifdef EXTEND_SINGLE
   /** @brief Single track variant - Experimental (but planned for future use.)  */
-  virtual void AccurateAdvance(const FieldTrack &yInput, const double hstep, const double charge, double epsilon,
-                               FieldTrack &yOutput, bool succeeded) const = 0;
+  virtual void AccurateAdvance(const FieldTrack &yInput, const double hstep,
+                               const double charge, double epsilon, FieldTrack &yOutput,
+                               bool succeeded) const = 0;
 #endif
 };

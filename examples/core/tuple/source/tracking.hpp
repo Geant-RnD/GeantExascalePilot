@@ -1,3 +1,16 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Utility class to access content of tuple of heterogeneous tracks type.
+ */
+//===----------------------------------------------------------------------===//
 
 #include <array>
 #include <deque>
@@ -78,7 +91,10 @@ template <typename Type>
 struct TrackCaster : public Track
 {
     Type*       GetParticleDefinition() const { return static_cast<Type*>(m_pdef); }
-    std::string GetParticleName() const { return static_cast<Type*>(m_pdef)->Type::GetName() + "_casted"; }
+    std::string GetParticleName() const
+    {
+        return static_cast<Type*>(m_pdef)->Type::GetName() + "_casted";
+    }
     // no need to reimplement GetTrackId()
 };
 

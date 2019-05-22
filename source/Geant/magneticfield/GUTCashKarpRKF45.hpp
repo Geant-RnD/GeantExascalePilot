@@ -19,12 +19,12 @@
 #define INLINERHS 1
 
 #ifdef INLINERHS
-#define REALLY_INLINE inline __attribute__((always_inline))
+#  define REALLY_INLINE inline __attribute__((always_inline))
 #else
-#define REALLY_INLINE inline
+#  define REALLY_INLINE inline
 #endif
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 class GUTCashKarpRKF45 : public VScalarIntegrationStepper {
   using ThreeVector = vecgeom::Vector3D<double>;
 
@@ -38,7 +38,8 @@ public:
   inline void SetVerbose(bool v) { fVerbose = v; }
 
 public:
-  inline GUTCashKarpRKF45(T_Equation *EqRhs, unsigned int numStateVariables = 0, bool verbose = false);
+  inline GUTCashKarpRKF45(T_Equation *EqRhs, unsigned int numStateVariables = 0,
+                          bool verbose = false);
 
   GUTCashKarpRKF45(const GUTCashKarpRKF45 &);
 
@@ -48,7 +49,8 @@ public:
 
   REALLY_INLINE
   void StepWithErrorEstimate(const double *yInput, // Consider __restrict__
-                             const double *dydx, double charge, double Step, double *yOut, double *yErr) override final;
+                             const double *dydx, double charge, double Step, double *yOut,
+                             double *yErr) override final;
 
   double DistChord(double charge) const override;
 
@@ -59,7 +61,8 @@ public:
   }
 
   REALLY_INLINE
-  void RightHandSideInl(const double y[], double charge, double dydx[], vecgeom::Vector3D<double> &Bfield
+  void RightHandSideInl(const double y[], double charge, double dydx[],
+                        vecgeom::Vector3D<double> &Bfield
 
   )
   {
@@ -77,9 +80,11 @@ public:
 
   void SetEquationOfMotion(T_Equation *equation);
 
-  void PrintField(const char *label, const double y[6], const vecgeom::Vector3D<double> &Bfield) const;
+  void PrintField(const char *label, const double y[6],
+                  const vecgeom::Vector3D<double> &Bfield) const;
   void PrintDyDx(const char *label, const double dydx[Nvar], const double y[Nvar]) const;
-  void PrintDyDxLong(const char *label, const double dydx[Nvar], const double y[Nvar]) const;
+  void PrintDyDxLong(const char *label, const double dydx[Nvar],
+                     const double y[Nvar]) const;
 
 private:
   GUTCashKarpRKF45 &operator=(const GUTCashKarpRKF45 &) = delete;
@@ -124,14 +129,17 @@ private:
   bool fVerbose;
 };
 
-template <class T_Equation, unsigned int Nvar>
-inline GUTCashKarpRKF45<T_Equation, Nvar>::GUTCashKarpRKF45(T_Equation *EqRhs,
-                                                            // unsigned int noIntegrationVariables,
-                                                            unsigned int numStateVariables,
-                                                            bool verbose)
+template <typename T_Equation, unsigned int Nvar>
+inline GUTCashKarpRKF45<T_Equation, Nvar>::GUTCashKarpRKF45(
+    T_Equation *EqRhs,
+    // unsigned int noIntegrationVariables,
+    unsigned int numStateVariables,
+    bool verbose)
     : VScalarIntegrationStepper(EqRhs, // dynamic_cast<VScalarEquationOfMotion*>(EqRhs),
-                                sOrderMethod, Nvar, ((numStateVariables > 0) ? numStateVariables : sNstore)),
-      fEquation_Rhs(EqRhs), fOwnTheEquation(true), fAuxStepper(0), fLastStepLength(0.), fVerbose(verbose)
+                                sOrderMethod, Nvar,
+                                ((numStateVariables > 0) ? numStateVariables : sNstore)),
+      fEquation_Rhs(EqRhs), fOwnTheEquation(true), fAuxStepper(0), fLastStepLength(0.),
+      fVerbose(verbose)
 {
   assert(dynamic_cast<VScalarEquationOfMotion *>(EqRhs) != 0);
   assert((numStateVariables == 0) || (numStateVariables >= Nvar));
@@ -149,7 +157,7 @@ inline GUTCashKarpRKF45<T_Equation, Nvar>::GUTCashKarpRKF45(T_Equation *EqRhs,
               << " Nvar = " << Nvar << " Nstore= " << sNstore << std::endl;
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 void GUTCashKarpRKF45<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 {
   fEquation_Rhs = equation;
@@ -158,10 +166,12 @@ void GUTCashKarpRKF45<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equatio
 
 //  Copy - Constructor
 //
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline GUTCashKarpRKF45<T_Equation, Nvar>::GUTCashKarpRKF45(const GUTCashKarpRKF45 &right)
-    : VScalarIntegrationStepper((VScalarEquationOfMotion *)0, sOrderMethod, Nvar, right.GetNumberOfStateVariables()),
-      fEquation_Rhs((T_Equation *)0), fOwnTheEquation(true), fAuxStepper(0), //  May overwrite below
+    : VScalarIntegrationStepper((VScalarEquationOfMotion *)0, sOrderMethod, Nvar,
+                                right.GetNumberOfStateVariables()),
+      fEquation_Rhs((T_Equation *)0), fOwnTheEquation(true),
+      fAuxStepper(0), //  May overwrite below
       fLastStepLength(0.), fVerbose(right.fVerbose)
 {
   SetEquationOfMotion(new T_Equation(*(right.fEquation_Rhs)));
@@ -180,7 +190,8 @@ inline GUTCashKarpRKF45<T_Equation, Nvar>::GUTCashKarpRKF45(const GUTCashKarpRKF
 
   if (fVerbose)
     std::cout << " GUTCashKarpRKF45 - copy constructor: " << std::endl
-              << " Nvar = " << Nvar << " Nstore= " << sNstore << " Own-the-Equation = " << fOwnTheEquation << std::endl;
+              << " Nvar = " << Nvar << " Nstore= " << sNstore
+              << " Own-the-Equation = " << fOwnTheEquation << std::endl;
 
   if (right.fAuxStepper) {
     // Reuse the Equation of motion in the Auxiliary Stepper
@@ -188,7 +199,7 @@ inline GUTCashKarpRKF45<T_Equation, Nvar>::GUTCashKarpRKF45(const GUTCashKarpRKF
   }
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 // inline
 REALLY_INLINE GUTCashKarpRKF45<T_Equation, Nvar>::~GUTCashKarpRKF45()
 {
@@ -200,22 +211,24 @@ REALLY_INLINE GUTCashKarpRKF45<T_Equation, Nvar>::~GUTCashKarpRKF45()
 
   delete fAuxStepper;
   if (fOwnTheEquation)
-    delete fEquation_Rhs; // Expect to own the equation, except if auxiliary (then sharing the equation)
+    delete fEquation_Rhs; // Expect to own the equation, except if auxiliary (then sharing
+                          // the equation)
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 VScalarIntegrationStepper *GUTCashKarpRKF45<T_Equation, Nvar>::Clone() const
 {
   // return new GUTCashKarpRKF45( *this );
   return new GUTCashKarpRKF45<T_Equation, Nvar>(*this);
 }
 
-template <class T_Equation, unsigned int Nvar>
-inline void GUTCashKarpRKF45<T_Equation, Nvar>::StepWithErrorEstimate(const double *yInput, // [],
-                                                                      const double *dydx,   // [],
-                                                                      double charge, double Step,
-                                                                      double *yOut, // [],
-                                                                      double *yErr) // [])
+template <typename T_Equation, unsigned int Nvar>
+inline void GUTCashKarpRKF45<T_Equation, Nvar>::StepWithErrorEstimate(
+    const double *yInput, // [],
+    const double *dydx,   // [],
+    double charge, double Step,
+    double *yOut, // [],
+    double *yErr) // [])
 {
   // const int nvar = 6 ;
   // const double a2 = 0.2 , a3 = 0.3 , a4 = 0.6 , a5 = 1.0 , a6 = 0.875;
@@ -223,16 +236,19 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::StepWithErrorEstimate(const doub
 
   unsigned int i;
 
-  const double b21 = 0.2, b31 = 3.0 / 40.0, b32 = 9.0 / 40.0, b41 = 0.3, b42 = -0.9, b43 = 1.2,
+  const double b21 = 0.2, b31 = 3.0 / 40.0, b32 = 9.0 / 40.0, b41 = 0.3, b42 = -0.9,
+               b43 = 1.2,
 
                b51 = -11.0 / 54.0, b52 = 2.5, b53 = -70.0 / 27.0, b54 = 35.0 / 27.0,
 
-               b61 = 1631.0 / 55296.0, b62 = 175.0 / 512.0, b63 = 575.0 / 13824.0, b64 = 44275.0 / 110592.0,
-               b65 = 253.0 / 4096.0,
+               b61 = 1631.0 / 55296.0, b62 = 175.0 / 512.0, b63 = 575.0 / 13824.0,
+               b64 = 44275.0 / 110592.0, b65 = 253.0 / 4096.0,
 
-               c1 = 37.0 / 378.0, c3 = 250.0 / 621.0, c4 = 125.0 / 594.0, c6 = 512.0 / 1771.0, dc5 = -277.0 / 14336.0;
+               c1 = 37.0 / 378.0, c3 = 250.0 / 621.0, c4 = 125.0 / 594.0,
+               c6 = 512.0 / 1771.0, dc5 = -277.0 / 14336.0;
 
-  const double dc1 = c1 - 2825.0 / 27648.0, dc3 = c3 - 18575.0 / 48384.0, dc4 = c4 - 13525.0 / 55296.0, dc6 = c6 - 0.25;
+  const double dc1 = c1 - 2825.0 / 27648.0, dc3 = c3 - 18575.0 / 48384.0,
+               dc4 = c4 - 13525.0 / 55296.0, dc6 = c6 - 0.25;
 
   // std::cout<< " constants declared " <<std::endl;
 
@@ -284,7 +300,8 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::StepWithErrorEstimate(const doub
   // PrintDyDx("ak4", ak4, yTemp4);
 
   for (i = 0; i < Nvar; i++) {
-    yTemp5[i] = yIn[i] + Step * (b51 * dydx[i] + b52 * ak2[i] + b53 * ak3[i] + b54 * ak4[i]);
+    yTemp5[i] =
+        yIn[i] + Step * (b51 * dydx[i] + b52 * ak2[i] + b53 * ak3[i] + b54 * ak4[i]);
   }
   RightHandSideInl(yTemp5, charge, ak5
                    //         , Bfield5
@@ -293,7 +310,8 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::StepWithErrorEstimate(const doub
   // PrintDyDx("ak5", ak5, yTemp5);
 
   for (i = 0; i < Nvar; i++) {
-    yTemp6[i] = yIn[i] + Step * (b61 * dydx[i] + b62 * ak2[i] + b63 * ak3[i] + b64 * ak4[i] + b65 * ak5[i]);
+    yTemp6[i] = yIn[i] + Step * (b61 * dydx[i] + b62 * ak2[i] + b63 * ak3[i] +
+                                 b64 * ak4[i] + b65 * ak5[i]);
   }
   RightHandSideInl(yTemp6, charge, ak6
                    // , Bfield6
@@ -309,7 +327,8 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::StepWithErrorEstimate(const doub
     // Estimate error as difference between 4th and
     // 5th order methods
 
-    yErr[i] = Step * (dc1 * dydx[i] + dc3 * ak3[i] + dc4 * ak4[i] + dc5 * ak5[i] + dc6 * ak6[i]);
+    yErr[i] = Step *
+              (dc1 * dydx[i] + dc3 * ak3[i] + dc4 * ak4[i] + dc5 * ak5[i] + dc6 * ak6[i]);
   }
   for (i = 0; i < Nvar; i++) {
     // Store Input and Final values, for possible use in calculating chord
@@ -323,19 +342,21 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::StepWithErrorEstimate(const doub
   return;
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline double GUTCashKarpRKF45<T_Equation, Nvar>::DistChord(double charge) const
 {
   double distLine, distChord;
   ThreeVector initialPoint, finalPoint, midPoint;
 
   // Store last initial and final points (they will be overwritten in self-Stepper call!)
-  initialPoint = ThreeVector(fLastInitialVector[0], fLastInitialVector[1], fLastInitialVector[2]);
-  finalPoint   = ThreeVector(fLastFinalVector[0], fLastFinalVector[1], fLastFinalVector[2]);
+  initialPoint =
+      ThreeVector(fLastInitialVector[0], fLastInitialVector[1], fLastInitialVector[2]);
+  finalPoint = ThreeVector(fLastFinalVector[0], fLastFinalVector[1], fLastFinalVector[2]);
 
   // Do half a step using StepNoErr
 
-  fAuxStepper->GUTCashKarpRKF45::StepWithErrorEstimate(fLastInitialVector, fLastDyDx, charge, 0.5 * fLastStepLength,
+  fAuxStepper->GUTCashKarpRKF45::StepWithErrorEstimate(fLastInitialVector, fLastDyDx,
+                                                       charge, 0.5 * fLastStepLength,
                                                        fMidVector, fMidError);
 
   midPoint = ThreeVector(fMidVector[0], fMidVector[1], fMidVector[2]);
@@ -352,9 +373,10 @@ inline double GUTCashKarpRKF45<T_Equation, Nvar>::DistChord(double charge) const
   return distChord;
 }
 
-template <class T_Equation, unsigned int Nvar>
-inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintField(const char *label, const double y[Nvar],
-                                                           const vecgeom::Vector3D<double> &Bfield) const
+template <typename T_Equation, unsigned int Nvar>
+inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintField(
+    const char *label, const double y[Nvar],
+    const vecgeom::Vector3D<double> &Bfield) const
 {
   std::cout << " PrintField/Stepper>  Field " << label << " "
             << "at x,y,z= ( " << y[0] << " , " << y[1] << " , " << y[2] << " ) "
@@ -362,8 +384,9 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintField(const char *label, co
             << " ) kGauss - mag = " << Bfield.Mag() << std::endl;
 }
 
-template <class T_Equation, unsigned int Nvar>
-inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintDyDx(const char *label, const double dydx[Nvar],
+template <typename T_Equation, unsigned int Nvar>
+inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintDyDx(const char *label,
+                                                          const double dydx[Nvar],
                                                           const double y[Nvar]) const
 {
   using std::cout;
@@ -374,33 +397,39 @@ inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintDyDx(const char *label, con
     vecgeom::Vector3D<double> p(y[3], y[4], y[5]);
     int oldPrec = cout.precision(3);
     cout << " DyDx " << std::setw(4) << label << "> "
-         << " xyz: " << std::setw(12) << dydx[0] << " , " << std::setw(12) << dydx[1] << " , " << std::setw(12)
-         << dydx[2] << " ) "
-         << " - mag = " << std::setw(12) << dir.Mag() << " dp/ds: " << std::setw(12) << dydx[3] << " , "
-         << std::setw(12) << dydx[4] << " , " << std::setw(12) << dydx[5] << " "
-         << " - mag = " << std::setw(5) << dpds.Mag() << " p-mag= " << p.Mag() << std::endl;
+         << " xyz: " << std::setw(12) << dydx[0] << " , " << std::setw(12) << dydx[1]
+         << " , " << std::setw(12) << dydx[2] << " ) "
+         << " - mag = " << std::setw(12) << dir.Mag() << " dp/ds: " << std::setw(12)
+         << dydx[3] << " , " << std::setw(12) << dydx[4] << " , " << std::setw(12)
+         << dydx[5] << " "
+         << " - mag = " << std::setw(5) << dpds.Mag() << " p-mag= " << p.Mag()
+         << std::endl;
     cout.precision(oldPrec);
   }
 }
 
-template <class T_Equation, unsigned int Nvar>
-inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintDyDxLong(const char *label, const double dydx[Nvar],
+template <typename T_Equation, unsigned int Nvar>
+inline void GUTCashKarpRKF45<T_Equation, Nvar>::PrintDyDxLong(const char *label,
+                                                              const double dydx[Nvar],
                                                               const double y[Nvar]) const
 {
   vecgeom::Vector3D<double> dir(dydx[0], dydx[1], dydx[2]);
   vecgeom::Vector3D<double> dpds(dydx[3], dydx[4], dydx[5]);
   std::cout << " PrintDyDx/Stepper>  dy/dx '" << std::setw(4) << label << "' "
-            << " for x,y,z= ( " << dydx[0] << " , " << dydx[1] << " , " << dydx[2] << " ) "
+            << " for x,y,z= ( " << dydx[0] << " , " << dydx[1] << " , " << dydx[2]
+            << " ) "
             << " - mag = " << dir.Mag() << std::endl
             << "                              "
-            << " dp/ds(x,y,z) = ( " << dydx[3] << " , " << dydx[4] << " , " << dydx[5] << " ) "
+            << " dp/ds(x,y,z) = ( " << dydx[3] << " , " << dydx[4] << " , " << dydx[5]
+            << " ) "
             << " ) - mag = " << dpds.Mag() << std::endl;
   vecgeom::Vector3D<double> p(y[3], y[4], y[5]);
   double pMag = p.Mag();
   if (pMag == 0.0) pMag = 1.0;
   std::cout << "                                 "
-            << " 1/p dp/ds = " << dydx[3] / pMag << " , " << dydx[4] / pMag << " , " << dydx[5] / pMag << " ) "
-            << std::endl;
+            << " 1/p dp/ds = " << dydx[3] / pMag << " , " << dydx[4] / pMag << " , "
+            << dydx[5] / pMag << " ) " << std::endl;
   std::cout << "                                 "
-            << "         p = " << y[3] << " , " << y[4] << " , " << y[5] << " ) " << std::endl;
+            << "         p = " << y[3] << " , " << y[4] << " , " << y[5] << " ) "
+            << std::endl;
 }

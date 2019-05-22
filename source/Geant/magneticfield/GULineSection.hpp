@@ -26,7 +26,8 @@ public: // with description
 
   inline double GetABdistanceSq() const;
 
-  inline static double Distline(const ThreeVector &OtherPnt, const ThreeVector &LinePntA, const ThreeVector &LinePntB);
+  inline static double Distline(const ThreeVector &OtherPnt, const ThreeVector &LinePntA,
+                                const ThreeVector &LinePntB);
 
 private:
   ThreeVector EndpointA;
@@ -47,7 +48,8 @@ inline double GULineSection::GetABdistanceSq() const
   return fABdistanceSq;
 }
 
-inline double GULineSection::Distline(const ThreeVector &OtherPnt, const ThreeVector &LinePntA,
+inline double GULineSection::Distline(const ThreeVector &OtherPnt,
+                                      const ThreeVector &LinePntA,
                                       const ThreeVector &LinePntB)
 {
   GULineSection LineAB(LinePntA, LinePntB); // Line from A to B

@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-namespace geantphysics {
+namespace geantx {
 DensityEffectData &DensityEffectData::Instance()
 {
   static DensityEffectData instance;
@@ -15,7 +15,8 @@ DensityEffectData &DensityEffectData::Instance()
 DensityEffectData::DensityEffectData()
 {
   BuildTable();
-  // Add all material name from the density effect data DB to the name -> index internal map
+  // Add all material name from the density effect data DB to the name -> index internal
+  // map
   for (int i = 0; i < gNumberOfDensityEffectData; ++i) {
     fMapMaterialNameToDenistyEffectDataIndex[fDensityEffectDataTable[i].fName] = i;
   }
@@ -38,16 +39,19 @@ int DensityEffectData::GetElementalIndex(int z, MaterialState state) const
   // state the same as requested:
   // - if the stored state = requested or the requested = undefined we are fine
   // - retrun -1 otherwise because the state are diferent
-  if (state == MaterialState::kStateUndefined || state == fDensityEffectDataTable[indx].fState) return indx;
+  if (state == MaterialState::kStateUndefined ||
+      state == fDensityEffectDataTable[indx].fState)
+    return indx;
   return -1;
 }
 
 int DensityEffectData::FindDensityEffectDataIndex(const std::string &name)
 {
-  int indx                                    = -1;
-  const Map_t<std::string, int>::iterator itr = fMapMaterialNameToDenistyEffectDataIndex.find(name);
+  int indx = -1;
+  const Map_t<std::string, int>::iterator itr =
+      fMapMaterialNameToDenistyEffectDataIndex.find(name);
   if (itr != fMapMaterialNameToDenistyEffectDataIndex.end()) indx = itr->second;
   return indx;
 }
 
-} // namespace geantphysics
+} // namespace geantx

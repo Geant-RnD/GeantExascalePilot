@@ -16,7 +16,7 @@
 #include <base/Vector3D.h>
 
 class GUVectorLineSection {
-  using Double_v = geant::Double_v;
+  using Double_v = geantx::Double_v;
 
 public: // with description
   template <typename T>
@@ -29,7 +29,8 @@ public: // with description
 
   inline Double_v GetABdistanceSq() const;
 
-  inline static Double_v Distline(const ThreeVectorSimd &OtherPnt, const ThreeVectorSimd &LinePntA,
+  inline static Double_v Distline(const ThreeVectorSimd &OtherPnt,
+                                  const ThreeVectorSimd &LinePntA,
                                   const ThreeVectorSimd &LinePntB);
 
 private:
@@ -40,25 +41,27 @@ private:
 
 // Inline methods implementations
 
-inline GUVectorLineSection::GUVectorLineSection(const ThreeVectorSimd &PntA, const ThreeVectorSimd &PntB)
+inline GUVectorLineSection::GUVectorLineSection(const ThreeVectorSimd &PntA,
+                                                const ThreeVectorSimd &PntB)
     : EndpointA(PntA), VecAtoB(PntB - PntA)
 {
   fABdistanceSq = VecAtoB.Mag2();
 }
 
-inline geant::Double_v GUVectorLineSection::GetABdistanceSq() const
+inline geantx::Double_v GUVectorLineSection::GetABdistanceSq() const
 {
   return fABdistanceSq;
 }
 
-inline geant::Double_v GUVectorLineSection::Distline(const ThreeVectorSimd &OtherPnt, const ThreeVectorSimd &LinePntA,
-                                                     const ThreeVectorSimd &LinePntB)
+inline geantx::Double_v GUVectorLineSection::Distline(const ThreeVectorSimd &OtherPnt,
+                                                      const ThreeVectorSimd &LinePntA,
+                                                      const ThreeVectorSimd &LinePntB)
 {
   GUVectorLineSection LineAB(LinePntA, LinePntB); // Line from A to B
   return LineAB.Dist(OtherPnt);
 }
 
-inline geant::Double_v GUVectorLineSection::Dist(ThreeVectorSimd OtherPnt) const
+inline geantx::Double_v GUVectorLineSection::Dist(ThreeVectorSimd OtherPnt) const
 {
   Double_v dist_sq;
   ThreeVectorSimd VecAZ;
@@ -71,27 +74,31 @@ inline geant::Double_v GUVectorLineSection::Dist(ThreeVectorSimd OtherPnt) const
 
   //  Determine  Projection(AZ on AB) / Length(AB)
 
-  // veccore::MaskedAssign( fABdistanceSq != 0.0, inner_prod/fABdistanceSq, &unit_projection );
-  vecCore::MaskedAssign(unit_projection, fABdistanceSq != 0.0, inner_prod / fABdistanceSq);
+  // veccore::MaskedAssign( fABdistanceSq != 0.0, inner_prod/fABdistanceSq,
+  // &unit_projection );
+  vecCore::MaskedAssign(unit_projection, fABdistanceSq != 0.0,
+                        inner_prod / fABdistanceSq);
 
-  // vecCore::MaskedAssign( (0. <= unit_projection ) && (unit_projection <= 1.0 ), sq_VecAZ -
-  // unit_projection*inner_prod, &dist_sq );
-  // Mask<geant::Double_v> goodProjection = (0. <= unit_projection ) && (unit_projection <= 1.0 );
+  // vecCore::MaskedAssign( (0. <= unit_projection ) && (unit_projection <= 1.0 ),
+  // sq_VecAZ - unit_projection*inner_prod, &dist_sq ); Mask<geantx::Double_v>
+  // goodProjection = (0. <= unit_projection ) && (unit_projection <= 1.0 );
   vecCore::MaskedAssign(dist_sq,
                         // goodProjection,
-                        (0. <= unit_projection) && (unit_projection <= 1.0), sq_VecAZ - unit_projection * inner_prod);
+                        (0. <= unit_projection) && (unit_projection <= 1.0),
+                        sq_VecAZ - unit_projection * inner_prod);
 
   // -- vecCore::MaskedAssign( unit_projection < 0.0, sq_VecAZ, &dist_sq);
-  // Mask<geant::Double_v> negativeProj = unit_projection < 0.0 ;
+  // Mask<geantx::Double_v> negativeProj = unit_projection < 0.0 ;
   // vecCore::MaskedAssign( dist_sq, negativeProj, sq_VecAZ );
   vecCore::MaskedAssign(dist_sq, unit_projection < 0.0, sq_VecAZ);
 
-  // vecCore::MaskedAssign( (fABdistanceSq != 0.0) && (unit_projection > 1.0), (OtherPnt -(EndpointA +
-  // VecAtoB)).Mag2(), &dist_sq); Mask<geant::Double_v> condDistProj=  (fABdistanceSq != 0.0) && (unit_projection
-  // > 1.0),;
+  // vecCore::MaskedAssign( (fABdistanceSq != 0.0) && (unit_projection > 1.0), (OtherPnt
+  // -(EndpointA + VecAtoB)).Mag2(), &dist_sq); Mask<geantx::Double_v> condDistProj=
+  // (fABdistanceSq != 0.0) && (unit_projection > 1.0),;
   vecCore::MaskedAssign(dist_sq,
                         // condDistProj,
-                        (fABdistanceSq != 0.0) && (unit_projection > 1.0), (OtherPnt - (EndpointA + VecAtoB)).Mag2());
+                        (fABdistanceSq != 0.0) && (unit_projection > 1.0),
+                        (OtherPnt - (EndpointA + VecAtoB)).Mag2());
 
   // if( fABdistanceSq != 0.0 )
   // {

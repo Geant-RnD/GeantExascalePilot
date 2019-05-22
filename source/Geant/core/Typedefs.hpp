@@ -1,54 +1,76 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Declaration of physics related typedefs.
+ */
+//===----------------------------------------------------------------------===//
 
 #pragma once
 
 #include "Geant/core/Config.hpp"
 #include "Geant/core/VectorTypes.hpp"
-#include "Geant/core/Macros.hpp"
+#include "Geant/material/Material.hpp"
+#include "navigation/NavigationState.h"
+#include "volumes/LogicalVolume.h"
+#include "volumes/PlacedVolume.h"
 
-#ifdef VECCORE_CUDA
-#include "base/Vector.h"
-template <class T>
-using vector_t = vecgeom::Vector<T>;
+#ifdef GEANT_CUDA
+#  include "base/Vector.h"
 #else
+#  include <vector>
+#  ifdef GEANT_USE_NUMA
+#    include <GeantNuma.h>
+#  endif
+#endif
+
+#include <unordered_map>
 #include <vector>
-#ifdef GEANT_USE_NUMA
-#include <GeantNuma.h>
-template <class T>
-using vector_t = std::vector<T, geant::NumaAllocator<T>>;
-#else
-template <class T>
-using vector_t = std::vector<T>;
-#endif
-#endif
 
-// three vector types
-using ThreeVector = vecgeom::Vector3D<double>;
-template <typename T>
-using Vector3D = vecgeom::Vector3D<T>;
-
-namespace geantphysics {
+// XXX: move to geantx namespace
+namespace geantx {
 class Particle;
 
 enum EModel_t {
   kMSC = GEANT_BIT(0)
   // others to be added
 };
-} // namespace geantphysics
-typedef geantphysics::Particle Particle_t;
+} // namespace geantx
 
-#include "navigation/NavigationState.h"
+namespace geantx {
 typedef VECGEOM_NAMESPACE::NavigationState VolumePath_t;
-#include "Geant/material/Material.hpp"
-typedef geantphysics::Material Material_t;
-#include "volumes/LogicalVolume.h"
 typedef VECGEOM_NAMESPACE::LogicalVolume Volume_t;
-#include "volumes/PlacedVolume.h"
 typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
 
-namespace geant {
-inline namespace cuda {
-template <typename _Tp>
-using device_info = std::unordered_map<int, _Tp>;
+#ifdef GEANT_CUDA
+template <typename T>
+using vector_t = vecgeom::Vector<T>;
+#else
+#  ifdef GEANT_USE_NUMA
+template <typename T>
+using vector_t = std::vector<T, geantx::NumaAllocator<T>>;
+#  else
+template <typename T>
+using vector_t = std::vector<T>;
+#  endif
+#endif
 
-}
-} // namespace geant
+// three vector types
+template <typename T>
+using Vector3D    = vecgeom::Vector3D<T>;
+using ThreeVector = Vector3D<double>;
+
+typedef geantx::Particle Particle_t;
+
+} // namespace geantx
+
+// XXX: remove me once namespaces are fixed
+using geantx::Particle_t;
+using geantx::ThreeVector;
+using geantx::Vector3D;

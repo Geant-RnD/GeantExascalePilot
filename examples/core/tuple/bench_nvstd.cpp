@@ -1,6 +1,16 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
 
 #include "test_tuple.cuh"
 #include "test_tuple.hpp"
+
+#include "Geant/core/CudaDeviceInfo.hpp"
 
 template <intmax_t N>
 void update_array(std::array<std::atomic_intmax_t, N>& vals)
@@ -12,7 +22,8 @@ void update_array(std::array<std::atomic_intmax_t, N>& vals)
 }
 
 template <intmax_t N>
-void loop_update_array(const intmax_t& beg, const intmax_t& end, std::array<std::atomic_intmax_t, N>& vals)
+void loop_update_array(const intmax_t& beg, const intmax_t& end,
+                       std::array<std::atomic_intmax_t, N>& vals)
 {
     printf("[%20s@%i]> beg = %li, end = %li\n", __FUNCTION__, __LINE__, beg, end);
     for(auto i = beg; i < end; ++i)
@@ -33,9 +44,9 @@ int main(int argc, char** argv)
     write_app_info(argc, argv);
 
     // create thread-pool with two threads
-    intmax_t                  num_threads = GetEnv<intmax_t>("NUM_THREADS", 2);
-    ThreadPool                 tp(num_threads);
-    static constexpr intmax_t N = 10;
+    intmax_t                            num_threads = GetEnv<intmax_t>("NUM_THREADS", 2);
+    ThreadPool                          tp(num_threads);
+    static constexpr intmax_t           N = 10;
     std::array<std::atomic_intmax_t, N> vals;
     for(intmax_t i = 0; i < N; ++i)
         vals[i].store(-N + i);
@@ -43,10 +54,10 @@ int main(int argc, char** argv)
     auto            join = []() { cudaStreamSynchronize(0); };
     TaskGroup<void> tg(join, &tp);
 
-    geant::cuda::device_query();
+    geantx::cudaruntime::DeviceQuery();
 
     // launches task that runs on GPU
-    if(geant::cuda::device_count() > 0)
+    if(geantx::cudaruntime::DeviceCount() > 0)
     {
         launch(tg);
     }
@@ -63,7 +74,8 @@ int main(int argc, char** argv)
     tg.join();
     print_array<N>(vals);
 
-    auto loop_update_args = [&](const intmax_t& beg, const intmax_t& end, std::array<std::atomic_intmax_t, N>& _vals) {
+    auto loop_update_args = [&](const intmax_t& beg, const intmax_t& end,
+                                std::array<std::atomic_intmax_t, N>& _vals) {
         printf("[%20s@%i]> beg = %li, end = %li\n", __FUNCTION__, __LINE__, beg, end);
         for(auto i = beg; i < end; ++i)
             update_array<N>(_vals);

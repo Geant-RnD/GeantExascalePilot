@@ -1,10 +1,23 @@
+//===------------------ GeantX --------------------------------------------===//
 //
-// created by jrmadsen on Fri Mar  8 13:30:31 2019
+// Geant Exascale Pilot
 //
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Tasking helper routine.
+ */
+//===----------------------------------------------------------------------===//
 
 #pragma once
 
 //============================================================================//
+
+#include "Geant/core/Config.hpp"
+#include "Geant/core/Logger.hpp"
 
 #include "PTL/TBBTaskGroup.hh"
 #include "PTL/Task.hh"
@@ -15,8 +28,16 @@
 #include "PTL/ThreadPool.hh"
 #include "PTL/Threading.hh"
 
-namespace geant {
-inline namespace tasking {
+namespace geantx {
+
+// make these available in global namespace
+using PTL::ConsumeParameters;
+using PTL::GetEnv;
+
+namespace tasking {
+
+using namespace PTL;
+
 inline void init_thread_data(ThreadPool *tp)
 {
   ThreadData *&thread_data = ThreadData::GetInstance();
@@ -30,8 +51,8 @@ inline void init_thread_data(ThreadPool *tp)
 inline TaskRunManager *cpu_run_manager()
 {
   typedef std::shared_ptr<TaskRunManager> pointer;
-  static thread_local pointer _instance =
-      pointer(new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
+  static thread_local pointer _instance = pointer(
+      new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
   return _instance.get();
 }
 
@@ -40,17 +61,17 @@ inline TaskRunManager *cpu_run_manager()
 inline TaskRunManager *gpu_run_manager()
 {
   typedef std::shared_ptr<TaskRunManager> pointer;
-  static thread_local pointer _instance =
-      pointer(new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
+  static thread_local pointer _instance = pointer(
+      new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
   return _instance.get();
 }
 
 //======================================================================================//
 
 inline void init_run_manager(TaskRunManager *run_man,
-                             uintmax_t nthreads = GetEnv<uintmax_t>("GEANT_NUM_THREADS",
-                                                                    std::thread::hardware_concurrency(),
-                                                                    "Number of threads"))
+                             uintmax_t nthreads = GetEnv<uintmax_t>(
+                                 "GEANT_NUM_THREADS", std::thread::hardware_concurrency(),
+                                 "Number of threads"))
 {
   // register thread-id
   auto tid = ThreadPool::GetThisThreadID();
@@ -63,9 +84,10 @@ inline void init_run_manager(TaskRunManager *run_man,
     AutoLock lman(TypeMutex<TaskRunManager>());
     if (!run_man->IsInitialized()) {
       if (verbose > 0) {
-        AutoLock lcout(TypeMutex<decltype(std::cout)>());
-        std::cout << "\n"
-                  << "[" << tid << "] Initializing tasking run manager with " << nthreads << " threads..." << std::endl;
+        geantx::Log(geantx::kStatus)
+            << "\n"
+            << "[" << tid << "] Initializing tasking run manager with " << nthreads
+            << " threads...";
       }
       run_man->Initialize(nthreads);
     }
@@ -74,5 +96,4 @@ inline void init_run_manager(TaskRunManager *run_man,
 }
 
 } // namespace tasking
-
-} // namespace geant
+} // namespace geantx

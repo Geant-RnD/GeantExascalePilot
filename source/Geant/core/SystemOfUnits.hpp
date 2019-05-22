@@ -1,3 +1,16 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief System of units.
+ */
+//===----------------------------------------------------------------------===//
 
 /**
  * @brief   System of units.
@@ -32,7 +45,7 @@
 
 #pragma once
 
-namespace geant {
+namespace geantx {
 namespace units {
 //
 // (kPi is used here (degree) so we declare here and not among the constants.)
@@ -215,7 +228,7 @@ static constexpr double ohm = volt / ampere; // ohm = 1.60217e-18*(GeV/eplus)/(e
 //
 // Electric capacitance [Q^2][E^-1]
 //
-static constexpr double farad      = coulomb / volt; // farad = 6.24150e+27 * eplus/gigavolt
+static constexpr double farad = coulomb / volt; // farad = 6.24150e+27 * eplus/gigavolt
 static constexpr double millifarad = 1.e-3 * farad;
 static constexpr double microfarad = 1.e-6 * farad;
 static constexpr double nanofarad  = 1.e-9 * farad;
@@ -299,4 +312,4 @@ static constexpr double perThousand = 0.001;
 static constexpr double perMillion  = 0.000001;
 
 } // namespace units
-} // namespace geant
+} // namespace geantx

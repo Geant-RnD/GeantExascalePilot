@@ -39,25 +39,25 @@ int main()
   vecgeom::Vector3D<double> diff = v2 - v3;
   cout << "diff of v2: " << v2 << " and v3: " << v3 << " is: " << diff << endl;
 
-/*  typedef vecgeom::Vector3D<double> ThreeVectorD;
-  typedef vecgeom::Vector3D<float> ThreeVectorF;
-  ThreeVectorD v5 = (ThreeVectorD) v3;
-  ThreeVectorD v4 = v5 - v2 ;
-  cout<<v4<<endl;*/
+  /*  typedef vecgeom::Vector3D<double> ThreeVectorD;
+    typedef vecgeom::Vector3D<float> ThreeVectorF;
+    ThreeVectorD v5 = (ThreeVectorD) v3;
+    ThreeVectorD v4 = v5 - v2 ;
+    cout<<v4<<endl;*/
 
-// v1.push_back(10);
-// cout<<v1[0]<<endl;
+  // v1.push_back(10);
+  // cout<<v1[0]<<endl;
 
-// Vc::SimdArray<double,4> a;
+  // Vc::SimdArray<double,4> a;
 
-/*  vecgeom::kVc::precision_v   Br[2];
-  Br[0] = 1;
-  Br[1] = 2;
-  //Br[2] = 3;
-  cout<<Br[0]<<" "<<Br[1]<<" "<<Br[2]<<endl;
+  /*  vecgeom::kVc::precision_v   Br[2];
+    Br[0] = 1;
+    Br[1] = 2;
+    //Br[2] = 3;
+    cout<<Br[0]<<" "<<Br[1]<<" "<<Br[2]<<endl;
 
-  //cout<<Br[10]<<endl;
-  cout<<Br[1][3]<<endl;*/
+    //cout<<Br[10]<<endl;
+    cout<<Br[1][3]<<endl;*/
 
 #ifdef USE_ROOT
   // TRandom1::TRandom1  (   UInt_t seed,Int_t   lux = 3 )

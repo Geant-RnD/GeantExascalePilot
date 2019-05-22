@@ -5,7 +5,8 @@
 
 #include "Geant/magneticfield/ScalarFieldTrack.hpp"
 
-ScalarFieldTrack::ScalarFieldTrack(const ThreeVector &pPosition, const ThreeVector &pMomentum,
+ScalarFieldTrack::ScalarFieldTrack(const ThreeVector &pPosition,
+                                   const ThreeVector &pMomentum,
                                    // double       restMass_c2,
                                    double charge,
                                    // double       LaboratoryTimeOfFlight,
@@ -14,15 +15,16 @@ ScalarFieldTrack::ScalarFieldTrack(const ThreeVector &pPosition, const ThreeVect
     // double       magnetic_dipole_moment,
     // double       curve_length,
     // double       pdgSpin )
-    : fDistanceAlongCurve(curve_length) // ,
-                                        // fMomentumMag(pMomentum.Mag()),
-                                        // fKineticEnergy(kineticEnergy), fRestMass_c2(restMass_c2),
-                                        // fLabTimeOfFlight(LaboratoryTimeOfFlight),
-                                        // fProperTimeOfFlight(0.) // ,
-                                        // fMomentumDir(pMomentum.Unit()),
-                                        // fChargeState(  charge, magnetic_dipole_moment, pdgSpin )
-                                        // fPDGSpin( pdgSpin )
-                                        // fCharge( charge )
+    : fDistanceAlongCurve(
+          curve_length) // ,
+                        // fMomentumMag(pMomentum.Mag()),
+                        // fKineticEnergy(kineticEnergy), fRestMass_c2(restMass_c2),
+                        // fLabTimeOfFlight(LaboratoryTimeOfFlight),
+                        // fProperTimeOfFlight(0.) // ,
+                        // fMomentumDir(pMomentum.Unit()),
+                        // fChargeState(  charge, magnetic_dipole_moment, pdgSpin )
+                        // fPDGSpin( pdgSpin )
+                        // fCharge( charge )
 {
   SetMomentum(pMomentum);
 
@@ -56,7 +58,8 @@ ScalarFieldTrack::ScalarFieldTrack(char) //  Nothing is set !!
 //
 //   note that momentum direction must-be/is normalised
 
-void ScalarFieldTrack::LoadFromArray(const double valArrIn[ncompSVEC], int noVarsIntegrated)
+void ScalarFieldTrack::LoadFromArray(const double valArrIn[ncompSVEC],
+                                     int noVarsIntegrated)
 {
   int i;
 
@@ -70,7 +73,8 @@ void ScalarFieldTrack::LoadFromArray(const double valArrIn[ncompSVEC], int noVar
   }
 
 #if 1
-  SetCurvePnt(ThreeVector(valArr[0], valArr[1], valArr[2]), ThreeVector(valArr[3], valArr[4], valArr[5]),
+  SetCurvePnt(ThreeVector(valArr[0], valArr[1], valArr[2]),
+              ThreeVector(valArr[3], valArr[4], valArr[5]),
               0); // DistanceAlongCurve
 #else
   SixVector[0] = valArr[0];

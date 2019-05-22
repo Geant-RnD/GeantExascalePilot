@@ -314,6 +314,18 @@ FUNCTION(CREATE_EXECUTABLE)
 
 ENDFUNCTION()
 
+#------------------------------------------------------------------------------#
+# macro add_googletest()
+#
+# Adds a unit test and links against googletest. Additional arguments are linked
+# against the test.
+#
+function(add_googletest _FILENAME)
+    get_filename_component(_NAME "${_FILENAME}" NAME_WE)
+    create_executable(TARGET_NAME ${_NAME} SOURCES ${_FILENAME})
+    target_link_libraries(${_NAME} gtest gmock gtest_main ${ARGN})
+    add_test(NAME ${_NAME} COMMAND ${_NAME})
+endfunction()
 
 #------------------------------------------------------------------------------#
 # macro CHECKOUT_GIT_SUBMODULE()

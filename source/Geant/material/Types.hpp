@@ -7,30 +7,31 @@
  * @author  M Novak
  * @date    March 2017
  *
- * Makes possible to switch between vecgeom and std containers with a -DUSE_VECGEOM_CONTAINERS cmake option.
+ * Makes possible to switch between vecgeom and std containers with a
+ * -DUSE_VECGEOM_CONTAINERS cmake option.
  *
  */
 #include "Geant/core/Config.hpp"
 
 #ifdef USE_VECGEOM_CONTAINERS
-#include "base/Map.h"
-#include "base/Vector.h"
+#  include "base/Map.h"
+#  include "base/Vector.h"
 #else
-#include <map>
-#include <vector>
+#  include <map>
+#  include <vector>
 #endif
 
-namespace geantphysics {
+namespace geantx {
 #ifdef USE_VECGEOM_CONTAINERS
-template <class T>
+template <typename T>
 using Vector_t = vecgeom::Vector<T>;
-template <class KeyT, class ValueT>
+template <typename KeyT, typename ValueT>
 using Map_t = vecgeom::map<KeyT, ValueT>;
 #else
-template <class T>
+template <typename T>
 using Vector_t = std::vector<T>;
-template <class KeyT, class ValueT>
+template <typename KeyT, typename ValueT>
 using Map_t = std::map<KeyT, ValueT>;
 #endif
 
-} // namespace geantphysics
+} // namespace geantx

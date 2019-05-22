@@ -8,10 +8,12 @@
 
 // #define  INTEGRATOR_CORRECTION   (1./((1<<2)-1))
 
-// template <class T> inline constexpr const T& MaxConst (const T& a, const T& b) { return (a<b)?b:a;  }
+// template <typename T> inline constexpr const T& MaxConst (const T& a, const T& b) {
+// return (a<b)?b:a;  }
 
-template <class T_Equation, unsigned int Nvar>
-class TClassicalRK4 : public TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation, Nvar> {
+template <typename T_Equation, unsigned int Nvar>
+class TClassicalRK4
+    : public TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation, Nvar> {
 public: // with description
   static constexpr unsigned int OrderRK4 = 4;
   static constexpr unsigned int NumVarStore =
@@ -20,10 +22,10 @@ public: // with description
   // std::max( GUIntegrationNms::NumVarBase,  Nvar);
 
   TClassicalRK4(T_Equation *EqRhs) // , int numberOfVariables = 8)
-      : TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation, Nvar>(EqRhs, OrderRK4, Nvar)
+      : TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation, Nvar>(
+            EqRhs, OrderRK4, Nvar)
   // fEquation_Rhs(EqRhs)
-  {
-  }
+  {}
 
   TClassicalRK4(const TClassicalRK4 &right);
 
@@ -38,8 +40,9 @@ public: // with description
 
   // A stepper that does not know about errors.
   // It is used by the MagErrorStepper stepper.
-  inline void StepWithoutErrorEst(const double yIn[], double charge, const double dydx[], double h,
-                                  double yOut[]); // override final;  => Not virtual method, must exist though!
+  inline void StepWithoutErrorEst(
+      const double yIn[], double charge, const double dydx[], double h,
+      double yOut[]); // override final;  => Not virtual method, must exist though!
 
 public:
   // __attribute__((always_inline))
@@ -65,7 +68,7 @@ private:
 };
 
 /*
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
    void TClassicalRK4<T_Equation,Nvar>::
      SetOurEquationOfMotion(T_Equation* equation)
 {
@@ -77,10 +80,12 @@ template <class T_Equation, unsigned int Nvar>
 }
 */
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 TClassicalRK4<T_Equation, Nvar>::TClassicalRK4(const TClassicalRK4 &right)
-    : TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation, Nvar>( // (T_Equation*) 0,
-          new T_Equation(*(right.fEquation_Rhs)), OrderRK4, right.GetNumberOfStateVariables())
+    : TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation,
+                       Nvar>( // (T_Equation*) 0,
+          new T_Equation(*(right.fEquation_Rhs)), OrderRK4,
+          right.GetNumberOfStateVariables())
 // TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation, Nvar>( right ),
 
 //  right.fEquation_Rhs->Clone())
@@ -94,7 +99,7 @@ TClassicalRK4<T_Equation, Nvar>::TClassicalRK4(const TClassicalRK4 &right)
   // TMagErrorStepper::SetEquationOfMotion(fEquation_Rhs);
 }
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 VScalarIntegrationStepper *TClassicalRK4<T_Equation, Nvar>::Clone() const
 {
   // return new TClassicalRK4<T_Equation,Nvar>( *this );
@@ -108,15 +113,17 @@ static constexpr double inv6 = 1. / 6;
 
 #define INLINEDUMBSTEPPER 1
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 #ifdef INLINEDUMBSTEPPER
 GEANT_FORCE_INLINE
 #else
 // __attribute__((noinline))
 #endif
     void
-    TClassicalRK4<T_Equation, Nvar>::StepWithoutErrorEst(const double yIn[], double charge, const double dydx[],
-                                                         double h, double yOut[])
+    TClassicalRK4<T_Equation, Nvar>::StepWithoutErrorEst(const double yIn[],
+                                                         double charge,
+                                                         const double dydx[], double h,
+                                                         double yOut[])
 // Given values for the variables y[0,..,n-1] and their derivatives
 // dydx[0,...,n-1] known at x, use the classical 4th Runge-Kutta
 // method to advance the solution over an interval h and return the

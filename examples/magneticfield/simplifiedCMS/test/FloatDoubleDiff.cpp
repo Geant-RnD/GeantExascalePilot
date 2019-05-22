@@ -68,7 +68,8 @@ private:
 
 ThreeVectorD diff(ThreeVectorD doubleVec, ThreeVectorF floatVec)
 {
-  ThreeVectorD floatToDouble((double)floatVec.x(), (double)floatVec.y(), (double)floatVec.z());
+  ThreeVectorD floatToDouble((double)floatVec.x(), (double)floatVec.y(),
+                             (double)floatVec.z());
   ThreeVectorD diff = doubleVec - floatToDouble;
 
   // Calculate relative error:
@@ -113,9 +114,10 @@ int main()
   myfile2.open("vRelDiffZ.txt");
   myfile3.open("vRelDiffRZ.txt");
 
-  //(r,0,z) corresponds exactly to (r,z) in terms that xyzField obtained is same as rzField since
-  // theta=0 in this case. Hence can check GetFieldValue<vecgeom::kScalar> in place of GetFieldValueTest
-  // Limitation however is that can't check for points with non zero y.
+  //(r,0,z) corresponds exactly to (r,z) in terms that xyzField obtained is same as
+  //rzField since
+  // theta=0 in this case. Hence can check GetFieldValue<vecgeom::kScalar> in place of
+  // GetFieldValueTest Limitation however is that can't check for points with non zero y.
   for (float r = 0; r <= kRMax; r = r + kRDiff) {
     for (float z = -kZMax; z <= kZMax; z = z + kZDiff) {
       // Checks for (r,0,z) and (r,0,z) against (r,z)
@@ -125,7 +127,8 @@ int main()
 
       int i = r * kRDiffInv * noZValues + halfZValues + z * kZDiffInv;
 
-      vecgeom::Vector3D<float> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i], dataMap.fBz[i]);
+      vecgeom::Vector3D<float> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i],
+                                             dataMap.fBz[i]);
       assert(ApproxEqual(xyzField1, rzCheckField1, r, z, 0)); // Working for floats
     }
   }
@@ -136,18 +139,21 @@ int main()
     for (float z = -kZMax; z < kZMax; z = z + kZDiff) {
       // cout<<"r: "<<r<<" and z: "<<z<<endl;
 
-      vecgeom::Vector3D<float> pos2(r + kRDiff * halfWeight, zero, z), pos3(r, zero, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<float> pos2(r + kRDiff * halfWeight, zero, z),
+          pos3(r, zero, z + kZDiff * halfWeight);
       vecgeom::Vector3D<float> xyzField2, xyzField3;
       m1.GetFieldValue<vecgeom::kScalarFloat>(pos2, xyzField2);
 
       vecgeom::Vector3D<double> xyzField2d, xyzField3d;
-      vecgeom::Vector3D<double> pos2d(r + kRDiff * halfWeight, zero, z), pos3d(r, zero, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<double> pos2d(r + kRDiff * halfWeight, zero, z),
+          pos3d(r, zero, z + kZDiff * halfWeight);
       m2.GetFieldValue<vecgeom::kScalar>(pos2d, xyzField2d);
 
       ThreeVectorD relDiffR;
       relDiffR = diff(xyzField2d, xyzField2);
       vRelDiffR.push_back(relDiffR);
-      myfile1 << "For r= " << r << " and z= " << z << " , rel. diff. is: " << relDiffR << "\n";
+      myfile1 << "For r= " << r << " and z= " << z << " , rel. diff. is: " << relDiffR
+              << "\n";
 
       vecgeom::Vector3D<float> rzCheckField2, rzCheckField3;
 
@@ -169,7 +175,8 @@ int main()
       ThreeVectorD relDiffZ;
       relDiffZ = diff(xyzField3d, xyzField3);
       vRelDiffZ.push_back(relDiffZ);
-      myfile2 << "For r= " << r << " and z= " << z << " , rel. diff. is: " << relDiffZ << "\n";
+      myfile2 << "For r= " << r << " and z= " << z << " , rel. diff. is: " << relDiffZ
+              << "\n";
 
       rzCheckField3.x() = (dataMap.fBr[i3] + dataMap.fBr[i4]) * halfWeight;
       rzCheckField3.y() = (dataMap.fBphi[i3] + dataMap.fBphi[i4]) * halfWeight;
@@ -181,18 +188,21 @@ int main()
   // For point in middle of cell
   for (float r = 0; r < kRMax; r = r + kRDiff) {
     for (float z = -kZMax; z < kZMax; z = z + kZDiff) {
-      vecgeom::Vector3D<float> pos4(r + kRDiff * halfWeight, zero, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<float> pos4(r + kRDiff * halfWeight, zero,
+                                    z + kZDiff * halfWeight);
       vecgeom::Vector3D<float> xyzField4, rzCheckField4;
       m1.GetFieldValue<vecgeom::kScalarFloat>(pos4, xyzField4);
 
-      vecgeom::Vector3D<double> pos4d(r + kRDiff * halfWeight, zero, z + kZDiff * halfWeight);
+      vecgeom::Vector3D<double> pos4d(r + kRDiff * halfWeight, zero,
+                                      z + kZDiff * halfWeight);
       vecgeom::Vector3D<double> xyzField4d;
       m2.GetFieldValue<vecgeom::kScalar>(pos4d, xyzField4d);
 
       ThreeVectorD relDiffRZ;
       relDiffRZ = diff(xyzField4d, xyzField4);
       vRelDiffRZ.push_back(relDiffRZ);
-      myfile3 << "For r= " << r << " and z= " << z << " , rel. diff. is: " << relDiffRZ << "\n";
+      myfile3 << "For r= " << r << " and z= " << z << " , rel. diff. is: " << relDiffRZ
+              << "\n";
 
       // need to get rzcheckfield4
       // going to be average of 4 points
@@ -201,9 +211,13 @@ int main()
       int i3 = i1 + 1;
       int i4 = i2 + 1;
 
-      rzCheckField4.x() = (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
-      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] + dataMap.fBphi[i4]) * 0.25;
-      rzCheckField4.z() = (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
+      rzCheckField4.x() =
+          (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
+      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] +
+                           dataMap.fBphi[i4]) *
+                          0.25;
+      rzCheckField4.z() =
+          (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
 
       assert(ApproxEqual(xyzField4, rzCheckField4, r, z, 3));
     }

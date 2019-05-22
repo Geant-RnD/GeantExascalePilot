@@ -21,7 +21,7 @@
 
 // #define Outside_CashKarp     1
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 class CashKarp
 // : public VVectorIntegrationStepper
 {
@@ -29,13 +29,14 @@ public:
   template <typename T>
   using Vector3D = vecgeom::Vector3D<T>;
 
-  using Double_v        = geant::Double_v;
+  using Double_v        = geantx::Double_v;
   using ThreeVectorSimd = Vector3D<Double_v>;
 
   static constexpr unsigned int sOrderMethod = 4;
   static constexpr unsigned int sNstore // How many variables the full state entails
       = Nvar > 6 ? Nvar : 6;            // = std::max( 6, Nvar );
-                                        // (GUIntegrationNms::NumVarBase > Nvar) ? GUIntegrationNms::NumVarBase : Nvar;
+                                        // (GUIntegrationNms::NumVarBase > Nvar) ?
+                                        // GUIntegrationNms::NumVarBase : Nvar;
   // std::max( GUIntegrationNms::NumVarBase,  Nvar);
   // static const double IntegratorCorrection = 1./((1<<4)-1);
   inline static constexpr int GetIntegratorOrder() { return sOrderMethod; }
@@ -57,8 +58,8 @@ public:
   template <typename Real_v>
   // GEANT_FORCE_INLINE -- large method => do not force inline
   void StepWithErrorEstimate(const Real_v yInput[], // Consider __restrict__
-                             const Real_v dydx[], const Real_v &charge, const Real_v &hStep, Real_v yOut[],
-                             Real_v yErr[]
+                             const Real_v dydx[], const Real_v &charge,
+                             const Real_v &hStep, Real_v yOut[], Real_v yErr[]
                              //, ScratchSpaceCashKarp<Real_v>* sp
   );
 #endif
@@ -67,8 +68,8 @@ public:
   //  To continue to inherit (for now) need to define:
   GEANT_FORCE_INLINE
   void StepWithErrorEstimate(const Double_v yInput[], // Consider __restrict__
-                             const Double_v dydx[], const Double_v &charge, const Double_v &hStep, Double_v yOut[],
-                             Double_v yErr[])
+                             const Double_v dydx[], const Double_v &charge,
+                             const Double_v &hStep, Double_v yOut[], Double_v yErr[])
   {
     StepWithErrorEstimate<Double_v>(yInput, dydx, charge, hStep, yOut, yErr);
   }
@@ -82,7 +83,8 @@ public:
 #endif
 
   template <typename Real_v>
-  GEANT_FORCE_INLINE void RightHandSideInl(Real_v y[], const Real_v &charge, Real_v dydx[])
+  GEANT_FORCE_INLINE void RightHandSideInl(Real_v y[], const Real_v &charge,
+                                           Real_v dydx[])
   {
     assert(fEquation_Rhs != nullptr);
     fEquation_Rhs->T_Equation::template RightHandSide<Real_v>(y, charge, dydx);
@@ -156,21 +158,23 @@ private:
 // -------------------------------------------------------------------------------
 
 #ifdef Outside_CashKarp
-// template <class Real_v, class T_Equation, unsigned int Nvar>
-template <class Real_v>
-template <class T_Equation, unsigned int Nvar>
+// template <typename Real_v, typename T_Equation, unsigned int Nvar>
+template <typename Real_v>
+template <typename T_Equation, unsigned int Nvar>
 void CashKarp<T_Equation, Nvar>::
-    /*template*/ StepWithErrorEstimate /*<Real_v>*/ (const Real_v yInput[],
+    /*template*/ StepWithErrorEstimate /*<Real_v>*/ (
+        const Real_v yInput[],
 #else
 public:
   template <typename Real_v>
-  void StepWithErrorEstimate(const Real_v yInput[],
+  void StepWithErrorEstimate(
+      const Real_v yInput[],
 #endif
 
-                                                     const Real_v dydx[], const Real_v &charge, const Real_v &Step,
-                                                     Real_v yOut[], Real_v yErr[]
-                                                     //, CashKarp<T_Equation,Nvar>::template
-                                                     // ScratchSpaceCashKarp<Real_v>& sp
+        const Real_v dydx[], const Real_v &charge, const Real_v &Step, Real_v yOut[],
+        Real_v yErr[]
+        //, CashKarp<T_Equation,Nvar>::template
+        // ScratchSpaceCashKarp<Real_v>& sp
     )
 {
   // const double a2 = 0.2 , a3 = 0.3 , a4 = 0.6 , a5 = 1.0 , a6 = 0.875;
@@ -178,16 +182,19 @@ public:
 
   unsigned int i;
 
-  const double b21 = 0.2, b31 = 3.0 / 40.0, b32 = 9.0 / 40.0, b41 = 0.3, b42 = -0.9, b43 = 1.2,
+  const double b21 = 0.2, b31 = 3.0 / 40.0, b32 = 9.0 / 40.0, b41 = 0.3, b42 = -0.9,
+               b43 = 1.2,
 
                b51 = -11.0 / 54.0, b52 = 2.5, b53 = -70.0 / 27.0, b54 = 35.0 / 27.0,
 
-               b61 = 1631.0 / 55296.0, b62 = 175.0 / 512.0, b63 = 575.0 / 13824.0, b64 = 44275.0 / 110592.0,
-               b65 = 253.0 / 4096.0,
+               b61 = 1631.0 / 55296.0, b62 = 175.0 / 512.0, b63 = 575.0 / 13824.0,
+               b64 = 44275.0 / 110592.0, b65 = 253.0 / 4096.0,
 
-               c1 = 37.0 / 378.0, c3 = 250.0 / 621.0, c4 = 125.0 / 594.0, c6 = 512.0 / 1771.0, dc5 = -277.0 / 14336.0;
+               c1 = 37.0 / 378.0, c3 = 250.0 / 621.0, c4 = 125.0 / 594.0,
+               c6 = 512.0 / 1771.0, dc5 = -277.0 / 14336.0;
 
-  const double dc1 = c1 - 2825.0 / 27648.0, dc3 = c3 - 18575.0 / 48384.0, dc4 = c4 - 13525.0 / 55296.0, dc6 = c6 - 0.25;
+  const double dc1 = c1 - 2825.0 / 27648.0, dc3 = c3 - 18575.0 / 48384.0,
+               dc4 = c4 - 13525.0 / 55296.0, dc6 = c6 - 0.25;
 
   // Initialise time to t0, needed when it is not updated by the integration.
   //       [ Note: Only for time dependent fields (usually electric)
@@ -216,24 +223,27 @@ public:
   this->RightHandSideInl(sp.yTemp4, charge, sp.ak4); // 4th Step
 
   for (i = 0; i < Nvar; i++) {
-    sp.yTemp5[i] = sp.yIn[i] + Step * (b51 * dydx[i] + b52 * sp.ak2[i] + b53 * sp.ak3[i] + b54 * sp.ak4[i]);
+    sp.yTemp5[i] = sp.yIn[i] + Step * (b51 * dydx[i] + b52 * sp.ak2[i] + b53 * sp.ak3[i] +
+                                       b54 * sp.ak4[i]);
   }
   this->RightHandSideInl(sp.yTemp5, charge, sp.ak5); // 5th Step
 
   for (i = 0; i < Nvar; i++) {
-    sp.yTemp6[i] =
-        sp.yIn[i] + Step * (b61 * dydx[i] + b62 * sp.ak2[i] + b63 * sp.ak3[i] + b64 * sp.ak4[i] + b65 * sp.ak5[i]);
+    sp.yTemp6[i] = sp.yIn[i] + Step * (b61 * dydx[i] + b62 * sp.ak2[i] + b63 * sp.ak3[i] +
+                                       b64 * sp.ak4[i] + b65 * sp.ak5[i]);
   }
   this->RightHandSideInl(sp.yTemp6, charge, sp.ak6); // 6th Step
 
   for (i = 0; i < Nvar; i++) {
     // Accumulate increments with correct weights
-    yOut[i] = sp.yIn[i] + Step * (c1 * dydx[i] + c3 * sp.ak3[i] + c4 * sp.ak4[i] + c6 * sp.ak6[i]);
+    yOut[i] = sp.yIn[i] +
+              Step * (c1 * dydx[i] + c3 * sp.ak3[i] + c4 * sp.ak4[i] + c6 * sp.ak6[i]);
   }
   for (i = 0; i < Nvar; i++) {
     // Estimate error as difference between 4th and 5th order methods
     //
-    yErr[i] = Step * (dc1 * dydx[i] + dc3 * sp.ak3[i] + dc4 * sp.ak4[i] + dc5 * sp.ak5[i] + dc6 * sp.ak6[i]);
+    yErr[i] = Step * (dc1 * dydx[i] + dc3 * sp.ak3[i] + dc4 * sp.ak4[i] +
+                      dc5 * sp.ak5[i] + dc6 * sp.ak6[i]);
     // std::cout<< "----In Stepper, yerrr is: "<<yErr[i]<<std::endl;
   }
 #if ENABLE_CHORD_DIST
@@ -258,8 +268,9 @@ public:
 
 // -------------------------------------------------------------------------------
 
-template <class T_Equation, unsigned int Nvar>
-inline CashKarp<T_Equation, Nvar>::CashKarp(T_Equation *EqRhs, unsigned int numStateVariables)
+template <typename T_Equation, unsigned int Nvar>
+inline CashKarp<T_Equation, Nvar>::CashKarp(T_Equation *EqRhs,
+                                            unsigned int numStateVariables)
     : fEquation_Rhs(EqRhs),
       // fLastStepLength(0.),
       fOwnTheEquation(false)
@@ -282,7 +293,7 @@ inline CashKarp<T_Equation, Nvar>::CashKarp(T_Equation *EqRhs, unsigned int numS
 
 // -------------------------------------------------------------------------------
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 void CashKarp<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 {
   fEquation_Rhs = equation;
@@ -293,7 +304,7 @@ void CashKarp<T_Equation, Nvar>::SetEquationOfMotion(T_Equation *equation)
 
 //  Copy - Constructor
 //
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 inline CashKarp<T_Equation, Nvar>::CashKarp(const CashKarp &right)
     : // fEquation_Rhs( (T_Equation*) nullptr ),
       fOwnTheEquation(false)
@@ -305,7 +316,8 @@ inline CashKarp<T_Equation, Nvar>::CashKarp(const CashKarp &right)
   assert(fEquation_Rhs != nullptr);
   // fEquation_Rhs= right.GetEquationOfMotion()->Clone());
 
-  // assert( dynamic_cast<GUVVectorEquationOfMotion*>(fEquation_Rhs) != 0 );   // No longer Deriving
+  // assert( dynamic_cast<GUVVectorEquationOfMotion*>(fEquation_Rhs) != 0 );   // No
+  // longer Deriving
   assert(this->GetNumberOfStateVariables() >= Nvar);
 
 #if ENABLE_CHORD_DIST
@@ -314,17 +326,19 @@ inline CashKarp<T_Equation, Nvar>::CashKarp(const CashKarp &right)
 
   if (fDebug)
     std::cout << " CashKarp - copy constructor: " << std::endl
-              << " Nvar = " << Nvar << " Nstore= " << sNstore << " Own-the-Equation = " << fOwnTheEquation << std::endl;
+              << " Nvar = " << Nvar << " Nstore= " << sNstore
+              << " Own-the-Equation = " << fOwnTheEquation << std::endl;
 }
 
 // -------------------------------------------------------------------------------
 
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 GEANT_FORCE_INLINE CashKarp<T_Equation, Nvar>::~CashKarp()
 {
   std::cout << "----- Vector CashKarp destructor" << std::endl;
   if (fOwnTheEquation)
-    delete fEquation_Rhs; // Expect to own the equation, except if auxiliary (then sharing the equation)
+    delete fEquation_Rhs; // Expect to own the equation, except if auxiliary (then sharing
+                          // the equation)
   fEquation_Rhs = nullptr;
   std::cout << "----- VectorCashKarp destructor (ended)" << std::endl;
 }
@@ -332,7 +346,7 @@ GEANT_FORCE_INLINE CashKarp<T_Equation, Nvar>::~CashKarp()
 // -------------------------------------------------------------------------------
 
 #ifdef Inheriting_CashKarp
-template <class T_Equation, unsigned int Nvar>
+template <typename T_Equation, unsigned int Nvar>
 GUVVectorIntegrationStepper *CashKarp<T_Equation, Nvar>::Clone() const
 {
   // return new CashKarp( *this );
@@ -343,18 +357,21 @@ GUVVectorIntegrationStepper *CashKarp<T_Equation, Nvar>::Clone() const
 // -------------------------------------------------------------------------------
 
 #if ENABLE_CHORD_DIST
-template <class Real_v, class T_Equation, unsigned int Nvar>
-inline geant::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
+template <typename Real_v, typename T_Equation, unsigned int Nvar>
+inline geantx::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
 {
   Real_v distLine, distChord;
   ThreeVectorSimd initialPoint, finalPoint, midPoint;
 
   // Store last initial and final points (they will be overwritten in self-Stepper call!)
-  initialPoint = ThreeVectorSimd(fLastInitialVector[0], fLastInitialVector[1], fLastInitialVector[2]);
-  finalPoint   = ThreeVectorSimd(fLastFinalVector[0], fLastFinalVector[1], fLastFinalVector[2]);
+  initialPoint = ThreeVectorSimd(fLastInitialVector[0], fLastInitialVector[1],
+                                 fLastInitialVector[2]);
+  finalPoint =
+      ThreeVectorSimd(fLastFinalVector[0], fLastFinalVector[1], fLastFinalVector[2]);
 
   // Do half a step using StepNoErr
-  fAuxStepper->StepWithErrorEstimate(fLastInitialVector, fLastDyDx, 0.5 * fLastStepLength, fMidVector, fMidError);
+  fAuxStepper->StepWithErrorEstimate(fLastInitialVector, fLastDyDx, 0.5 * fLastStepLength,
+                                     fMidVector, fMidError);
 
   midPoint = ThreeVectorSimd(fMidVector[0], fMidVector[1], fMidVector[2]);
 
@@ -369,5 +386,5 @@ inline geant::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
 // -------------------------------------------------------------------------------
 
 #ifdef Outside_CashKarp
-#undef Outside_CashKarp
+#  undef Outside_CashKarp
 #endif

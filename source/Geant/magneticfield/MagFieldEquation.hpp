@@ -15,14 +15,14 @@
 
 // #define OUTSIDE_MagFieldEquation 1
 
-template <class Field>
+template <typename Field>
 class MagFieldEquation {
 public:
   //  static const unsigned int  N   = Size;
-  using Double_v = geant::Double_v;
-  using Float_v  = geant::Float_v;
+  using Double_v = geantx::Double_v;
+  using Float_v  = geantx::Float_v;
 
-  static constexpr double gCof = geant::units::kCLight; //   / fieldUnits::meter ;
+  static constexpr double gCof = geantx::units::kCLight; //   / fieldUnits::meter ;
 
   // Expected constant value:
   // static constexpr double gCof    = Constants::c_light * fieldUnits::second /
@@ -38,7 +38,8 @@ public:
   Field *GetField() const { return fPtrField; }
 
   template <typename Real_v>
-  GEANT_FORCE_INLINE void RightHandSide(const Real_v y[], Real_v charge, Real_v dydx[]) const
+  GEANT_FORCE_INLINE void RightHandSide(const Real_v y[], Real_v charge,
+                                        Real_v dydx[]) const
 #ifdef OUTSIDE_MagFieldEquation
       ;
 #else
@@ -49,8 +50,8 @@ public:
   }
 #endif
   template <typename Real_v>
-  GEANT_FORCE_INLINE void EvaluateRhsGivenB(const Real_v y[], const Vector3D<Real_v> &B, const Real_v &charge,
-                                            Real_v dydx[]) const
+  GEANT_FORCE_INLINE void EvaluateRhsGivenB(const Real_v y[], const Vector3D<Real_v> &B,
+                                            const Real_v &charge, Real_v dydx[]) const
   {
     // ThreeVectorD momentum( y[3], y[4], y[5]);
     Real_v momentum_mag_square    = y[3] * y[3] + y[4] * y[4] + y[5] * y[5];
@@ -90,32 +91,40 @@ public:
     std::cout.setf(std::ios_base::scientific);
     std::cout << " Position = " << y[0] << " " << y[1] << " " << y[2] << std::endl;
     std::cout << " Momentum = " << y[3] << " " << y[4] << " " << y[5] << std::endl;
-    std::cout << " B-field  = " << Bfield[0] << " " << Bfield[1] << " " << Bfield[2] << std::endl;
+    std::cout << " B-field  = " << Bfield[0] << " " << Bfield[1] << " " << Bfield[2]
+              << std::endl;
     std::cout.unsetf(std::ios_base::scientific);
 
     std::cout << "\n# 'Force' from B field \n";
     std::cout.setf(std::ios_base::fixed);
-    std::cout << " dy/dx [0-2] (=dX/ds) = " << dydx[0] << " " << dydx[1] << " " << dydx[2] << std::endl;
-    std::cout << " dy/dx [3-5] (=dP/ds) = " << dydx[3] << " " << dydx[4] << " " << dydx[5] << std::endl;
+    std::cout << " dy/dx [0-2] (=dX/ds) = " << dydx[0] << " " << dydx[1] << " " << dydx[2]
+              << std::endl;
+    std::cout << " dy/dx [3-5] (=dP/ds) = " << dydx[3] << " " << dydx[4] << " " << dydx[5]
+              << std::endl;
     std::cout.unsetf(std::ios_base::fixed);
   }
 
   template <typename Real_v>
-  void PrintAll(Real_v const y[], const Vector3D<Real_v> &B, Real_v charge, Real_v cof, Real_v const dydx[]) const
+  void PrintAll(Real_v const y[], const Vector3D<Real_v> &B, Real_v charge, Real_v cof,
+                Real_v const dydx[]) const
   {
-    using geant::units::kilogauss;
+    using geantx::units::kilogauss;
 
     std::cout.precision(8);
-    std::cout << "Equation:  gCof= " << gCof << " charge= " << charge << " cof= " << cof << " Bfield= " << B
-              << std::endl;
+    std::cout << "Equation:  gCof= " << gCof << " charge= " << charge << " cof= " << cof
+              << " Bfield= " << B << std::endl;
     std::cout << "            dx/ds  = " << dydx[0] << " " << dydx[1] << " " << dydx[2]
-              << " - mag= " << std::sqrt(dydx[0] * dydx[0] + dydx[1] * dydx[1] + dydx[2] * dydx[2]) << std::endl;
+              << " - mag= "
+              << std::sqrt(dydx[0] * dydx[0] + dydx[1] * dydx[1] + dydx[2] * dydx[2])
+              << std::endl;
     std::cout << "            dp/ds  = " << dydx[3] << " " << dydx[4] << " " << dydx[5]
-              << " - mag= " << std::sqrt(dydx[3] * dydx[3] + dydx[4] * dydx[4] + dydx[5] * dydx[5]) << std::endl;
+              << " - mag= "
+              << std::sqrt(dydx[3] * dydx[3] + dydx[4] * dydx[4] + dydx[5] * dydx[5])
+              << std::endl;
 
     Real_v Bmag = Vector3D<Real_v>(B[0], B[1], B[2]).Mag();
-    std::cout << "            B-field= " << B[0] / kilogauss << " " << B[1] / kilogauss << " " << B[2] / kilogauss
-              << "  ( KGaus ) mag= " << Bmag << std::endl;
+    std::cout << "            B-field= " << B[0] / kilogauss << " " << B[1] / kilogauss
+              << " " << B[2] / kilogauss << "  ( KGaus ) mag= " << Bmag << std::endl;
     std::cout << "               P  = " << y[3] << " " << y[4] << " " << y[5]
               << " = mag= " << ThreeVectorD(y[3], y[4], y[5]).Mag() << std::endl;
   }
@@ -127,8 +136,9 @@ private:
 
 #ifdef OUTSIDE_MagFieldEquation
 template <typename Real_v>
-GEANT_FORCE_INLINE void template <class Field>
-MagFieldEquation<Field>::RightHandSide(const Real_v y[], Real_v charge, Real_v dydx[]) const
+GEANT_FORCE_INLINE void template <typename Field>
+MagFieldEquation<Field>::RightHandSide(const Real_v y[], Real_v charge,
+                                       Real_v dydx[]) const
 {
   Vector3D<Real_v> Bfield;
   FieldFromY(y, Bfield);

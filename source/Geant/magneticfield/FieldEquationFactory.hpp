@@ -24,15 +24,17 @@ public:
 };
 
 template <typename FieldType>
-ScalarMagFieldEquation<FieldType, FieldEquationFactory::Nposmom> * // VScalarEquationOfMotion*
-FieldEquationFactory::CreateMagEquation(FieldType *pField)
+ScalarMagFieldEquation<FieldType, FieldEquationFactory::Nposmom>
+    * // VScalarEquationOfMotion*
+    FieldEquationFactory::CreateMagEquation(FieldType *pField)
 {
   return new ScalarMagFieldEquation<FieldType, Nposmom>(pField);
 }
 
 template <typename FieldType>
-ScalarMagFieldEquation<FieldType, FieldEquationFactory::Nposmom> * // VScalarEquationOfMotion*
-FieldEquationFactory::CreateMagEquation(FieldType &field)
+ScalarMagFieldEquation<FieldType, FieldEquationFactory::Nposmom>
+    * // VScalarEquationOfMotion*
+    FieldEquationFactory::CreateMagEquation(FieldType &field)
 {
   return new ScalarMagFieldEquation<FieldType, Nposmom>(&field);
 }

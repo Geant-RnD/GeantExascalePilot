@@ -34,8 +34,8 @@
 
 using namespace std;
 
-using Double_v = geant::Double_v;
-using Float_v  = geant::Float_v;
+using Double_v = geantx::Double_v;
+using Float_v  = geantx::Float_v;
 
 typedef vecgeom::Vector3D<double> ThreeVector; // normal Vector3D
 typedef vecgeom::Vector3D<Double_v> ThreeVecSimd_t;
@@ -46,9 +46,9 @@ typedef vecgeom::Vector3D<Float_v> ThreeVecSimdF_t;
 
 using MagField = CMSmagField;
 
-// constexpr float tesla = geant::units::tesla;
-// constexpr float kilogauss = geant::units::kilogauss;
-constexpr float millimeter = geant::units::millimeter;
+// constexpr float tesla = geantx::units::tesla;
+// constexpr float kilogauss = geantx::units::kilogauss;
+constexpr float millimeter = geantx::units::millimeter;
 
 const float kRMax = 9000 * millimeter;
 const float kZMax = 16000 * millimeter;
@@ -85,7 +85,8 @@ void GenVecCart(vector<ThreeVector> &posVec, const size_t &n)
   }
 }
 
-float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVector> &outputVec, const size_t &n)
+float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec,
+                 vector<ThreeVector> &outputVec, const size_t &n)
 {
   ThreeVector xyzField, sumField(0.);
   vector<float> scaTimePerRepitition;
@@ -122,11 +123,14 @@ float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
   scaTimePerRepitition.erase(scaTimePerRepitition.begin() + std::max(imin, imax));
   scaTimePerRepitition.erase(scaTimePerRepitition.begin() + std::min(imin, imax));
 
-  float timeSum  = std::accumulate(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), 0.0);
+  float timeSum =
+      std::accumulate(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), 0.0);
   float timeMean = timeSum / scaTimePerRepitition.size();
   float timeSqSum =
-      std::inner_product(scaTimePerRepitition.begin(), scaTimePerRepitition.end(), scaTimePerRepitition.begin(), 0.0);
-  float timeStDev = std::sqrt(timeSqSum / scaTimePerRepitition.size() - timeMean * timeMean);
+      std::inner_product(scaTimePerRepitition.begin(), scaTimePerRepitition.end(),
+                         scaTimePerRepitition.begin(), 0.0);
+  float timeStDev =
+      std::sqrt(timeSqSum / scaTimePerRepitition.size() - timeMean * timeMean);
 
   cout << "   Scalar sumField is: " << sumField << endl;
   cout << "   totScaTime is: " << timeSum << endl;
@@ -136,7 +140,8 @@ float TimeScalar(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
   return timeSum;
 }
 
-float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVector> &outputVec, const size_t &n)
+float TimeVector(MagField &m1, const vector<ThreeVector> &posVec,
+                 vector<ThreeVector> &outputVec, const size_t &n)
 {
   cout << "\n=== Vector field start: " << endl;
   float tmin  = FLT_MAX;
@@ -149,7 +154,7 @@ float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
   vector<float> vecTimePerRepitition;
   size_t noRunsAvg = 16;
 
-  size_t inputVcLen = ceil(((float)n) / geant::kVecLenF);
+  size_t inputVcLen = ceil(((float)n) / geantx::kVecLenF);
   ThreeVecSimdF_t inputForVec;
   // We read the field in float
   ThreeVecSimdF_t xyzField;
@@ -160,10 +165,10 @@ float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
     clock_t clock1 = clock();
     for (size_t i = 0; i < inputVcLen; ++i) {
       // We benchmark also the AOS->SOA
-      for (size_t lane = 0; lane < geant::kVecLenF; ++lane) {
-        vecCore::Set(inputForVec.x(), lane, posVec[i * geant::kVecLenF + lane].x());
-        vecCore::Set(inputForVec.y(), lane, posVec[i * geant::kVecLenF + lane].y());
-        vecCore::Set(inputForVec.z(), lane, posVec[i * geant::kVecLenF + lane].z());
+      for (size_t lane = 0; lane < geantx::kVecLenF; ++lane) {
+        vecCore::Set(inputForVec.x(), lane, posVec[i * geantx::kVecLenF + lane].x());
+        vecCore::Set(inputForVec.y(), lane, posVec[i * geantx::kVecLenF + lane].y());
+        vecCore::Set(inputForVec.z(), lane, posVec[i * geantx::kVecLenF + lane].z());
       }
 
       // We need the field in Double_v for further computations. We do a trick:
@@ -171,13 +176,15 @@ float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
       m1.GetFieldValue(inputForVec, xyzField);
       // std::cout << i << ": " << inputForVec << " => " << xyzField << std::endl;
       // We benchmark also writing to the Double_v
-      geant::CopyFltToDbl(xyzField, xyzField1, xyzField2);
-      for (size_t lane = 0; lane < geant::kVecLenD; ++lane) {
-        xyzFieldS.Set(vecCore::Get(xyzField1.x(), lane), vecCore::Get(xyzField1.y(), lane),
+      geantx::CopyFltToDbl(xyzField, xyzField1, xyzField2);
+      for (size_t lane = 0; lane < geantx::kVecLenD; ++lane) {
+        xyzFieldS.Set(vecCore::Get(xyzField1.x(), lane),
+                      vecCore::Get(xyzField1.y(), lane),
                       vecCore::Get(xyzField1.z(), lane));
         sumField += xyzFieldS;
         outputVec.push_back(xyzFieldS);
-        xyzFieldS.Set(vecCore::Get(xyzField2.x(), lane), vecCore::Get(xyzField2.y(), lane),
+        xyzFieldS.Set(vecCore::Get(xyzField2.x(), lane),
+                      vecCore::Get(xyzField2.y(), lane),
                       vecCore::Get(xyzField2.z(), lane));
         sumField += xyzFieldS;
         outputVec.push_back(xyzFieldS);
@@ -200,11 +207,14 @@ float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
   // Remove imin and imax measurements from the sample
   vecTimePerRepitition.erase(vecTimePerRepitition.begin() + std::max(imin, imax));
   vecTimePerRepitition.erase(vecTimePerRepitition.begin() + std::min(imin, imax));
-  float timeSum  = std::accumulate(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), 0.0);
+  float timeSum =
+      std::accumulate(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), 0.0);
   float timeMean = timeSum / vecTimePerRepitition.size();
   float timeSqSum =
-      std::inner_product(vecTimePerRepitition.begin(), vecTimePerRepitition.end(), vecTimePerRepitition.begin(), 0.0);
-  float timeStDev = std::sqrt(timeSqSum / vecTimePerRepitition.size() - timeMean * timeMean);
+      std::inner_product(vecTimePerRepitition.begin(), vecTimePerRepitition.end(),
+                         vecTimePerRepitition.begin(), 0.0);
+  float timeStDev =
+      std::sqrt(timeSqSum / vecTimePerRepitition.size() - timeMean * timeMean);
 
   cout << "   Vector sumField is: " << sumField << endl;
   cout << "   totVecTime is: " << timeSum << endl;
@@ -215,7 +225,7 @@ float TimeVector(MagField &m1, const vector<ThreeVector> &posVec, vector<ThreeVe
 
 int main(int argc, char **argv)
 {
-  std::string datafile(geant::GetDataFileLocation(argc, argv, "cmsmagfield2015.txt"));
+  std::string datafile(geantx::GetDataFileLocation(argc, argv, "cmsmagfield2015.txt"));
 
   CMSmagField m1(datafile.c_str());
   // m1.ReadVectorData("/home/ananya/Work/MagFieldRoutine/cms2015.txt");

@@ -5,11 +5,10 @@
 #pragma once
 
 #include "base/Vector3D.h"
-
 #include "Geant/core/Config.hpp"
+#include "Geant/core/Typedefs.hpp"
 
-// namespace geant {
-// inline namespace MagField {
+namespace geantx {
 
 class StepChecker {
 public:
@@ -18,19 +17,20 @@ public:
 
   /** @brief Compare two different 'solutions' - each provides a endpoint
    * position/direction */
-  bool CompareStep(vecgeom::Vector3D<double> const &position, vecgeom::Vector3D<double> const &direction, double charge,
-                   double momentum, double step, vecgeom::Vector3D<double> const &endPosition1,
-                   vecgeom::Vector3D<double> const &endDirection1, vecgeom::Vector3D<double> const &endPositionRef,
-                   vecgeom::Vector3D<double> const &endDirectionRef) const;
+  bool CompareStep(ThreeVector const &position, ThreeVector const &direction,
+                   double charge, double momentum, double step,
+                   ThreeVector const &endPosition1, ThreeVector const &endDirection1,
+                   ThreeVector const &endPositionRef,
+                   ThreeVector const &endDirectionRef) const;
 
   /** @brief Check against helical solution */
-  bool CheckStep(vecgeom::Vector3D<double> const &position, vecgeom::Vector3D<double> const &direction, double charge,
-                 double momentum, double step, vecgeom::Vector3D<double> const &endPosition,
-                 vecgeom::Vector3D<double> const &endDirection, vecgeom::Vector3D<double> const &BfieldVec) const;
+  bool CheckStep(ThreeVector const &position, ThreeVector const &direction, double charge,
+                 double momentum, double step, ThreeVector const &endPosition,
+                 ThreeVector const &endDirection, ThreeVector const &BfieldVec) const;
 
   // Potential to generalise methods above using template:
   // template<typename VectorType, typename BaseFltType, typename BaseIntType>
-  //  in place of i) vecgeom::Vector3D<double> , ii) double,  iii) int
+  //  in place of i) ThreeVector , ii) double,  iii) int
 private:
   double fMaxRelDiff;  /** max relative difference accepted - displacement or direction
                         */
@@ -45,5 +45,4 @@ inline StepChecker::StepChecker(double eps, double maxLengthDiff, bool verbose)
   fVerbose     = verbose;
 }
 
-//  } // End inline namespace MagField
-// } // namespace geant
+} // namespace geantx

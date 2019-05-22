@@ -1,3 +1,16 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Declaration of the vector (instructions) types.
+ */
+//===----------------------------------------------------------------------===//
 
 #pragma once
 
@@ -5,19 +18,19 @@
 #include <base/Global.h>
 #include <base/Vector3D.h>
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 using VectorBackend = vecgeom::VectorBackend;
-typedef VectorBackend::Float_v Float_v;
-typedef VectorBackend::Double_v Double_v;
-typedef VectorBackend::Int_v Int_v;
+using Float_v       = VectorBackend::Float_v;
+using Double_v      = VectorBackend::Double_v;
+using Int_v         = VectorBackend::Int_v;
 
-typedef vecCore::Mask_v<Float_v> MaskF_v;
-typedef vecCore::Mask_v<Double_v> MaskD_v;
-typedef vecCore::Mask_v<Int_v> MaskI_v;
+using MaskF_v = vecCore::Mask_v<Float_v>;
+using MaskD_v = vecCore::Mask_v<Double_v>;
+using MaskI_v = vecCore::Mask_v<Int_v>;
 
-typedef vecCore::Index<Double_v> IndexD_v;
-typedef vecCore::Index<Float_v> IndexF_v;
+using IndexD_v = vecCore::Index<Double_v>;
+using IndexF_v = vecCore::Index<Float_v>;
 
 const int kVecLenF = vecCore::VectorSize<Float_v>();
 const int kVecLenD = vecCore::VectorSize<Double_v>();
@@ -36,7 +49,8 @@ void CopyFltToDbl(Float_v const &flt_v, Double_v &dbl1_v, Double_v &dbl2_v)
 }
 
 GEANT_FORCE_INLINE
-void CopyFltToDbl(vecgeom::Vector3D<Float_v> const &flt_v, vecgeom::Vector3D<Double_v> &dbl1_v,
+void CopyFltToDbl(vecgeom::Vector3D<Float_v> const &flt_v,
+                  vecgeom::Vector3D<Double_v> &dbl1_v,
                   vecgeom::Vector3D<Double_v> &dbl2_v)
 {
   // Copy the float SIMD lanes into 2 Double_v variables
@@ -59,7 +73,8 @@ void CopyDblToFlt(Double_v const &dbl1_v, Double_v const &dbl2_v, Float_v &flt_v
 }
 
 GEANT_FORCE_INLINE
-void CopyDblToFlt(vecgeom::Vector3D<Double_v> const &dbl1_v, vecgeom::Vector3D<Double_v> const &dbl2_v,
+void CopyDblToFlt(vecgeom::Vector3D<Double_v> const &dbl1_v,
+                  vecgeom::Vector3D<Double_v> const &dbl2_v,
                   vecgeom::Vector3D<Float_v> &flt_v)
 {
   // Copy the 2 Double_v SIMD lanes into one Float_v variable
@@ -72,4 +87,4 @@ void CopyDblToFlt(vecgeom::Vector3D<Double_v> const &dbl1_v, vecgeom::Vector3D<D
 }
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx

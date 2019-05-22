@@ -110,6 +110,7 @@ def run_pyctest():
         "GEANT_USE_COVERAGE" : "OFF",
         "PTL_USE_TBB": "OFF",
         "GEANT_BUILD_EXAMPLES": "ON",
+        "GEANT_BUILD_TESTS": "ON",
         "PTL_BUILD_EXAMPLES": "ON"
     }
 
@@ -172,7 +173,6 @@ def run_pyctest():
     else:
         pyctest.BUILD_COMMAND = "{} -- /MP -A x64".format(pyctest.BUILD_COMMAND)
 
-
     #--------------------------------------------------------------------------#
     # how to update the code
     #
@@ -220,19 +220,20 @@ def run_pyctest():
         return "PTL_NUM_THREADS={};{}".format(
             mp.cpu_count(), extra)
 
-    #pyctest.set("ENV{GCOV_PREFIX}", pyctest.BINARY_DIRECTORY)
-    #pyctest.set("ENV{GCOV_PREFIX_STRIP}", "4")
-
     #--------------------------------------------------------------------------#
     # create tests
     #
     pyctest.test("test_tuple", construct_command(["./test_tuple"], args, clobber=True),
                  {"WORKING_DIRECTORY" : pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
+    pyctest.test("test_memory", construct_command(["./test_memory"], args),
+                 {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("bench_tuple", construct_command(["./bench_tuple"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("bench_nvstd", construct_command(["./bench_nvstd"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("track_manager_tuple", construct_command(["./track_manager_tuple"], args),
+                 {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
+    pyctest.test("test_Logger", construct_command(["./test_Logger"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
 
     tasking_suffix = ""

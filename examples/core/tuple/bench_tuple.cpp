@@ -1,3 +1,11 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
 
 #include "test_tuple.hpp"
 
@@ -50,7 +58,8 @@ public:
     }
 
     template <typename _Funct>
-    Executor(std::string label, uintmax_t nloop, uintmax_t nitr, _Funct&& func, Generator* gen)
+    Executor(std::string label, uintmax_t nloop, uintmax_t nitr, _Funct&& func,
+             Generator* gen)
     : m_nloop(nloop)
     , m_nitr(nitr)
     , m_label(label)
@@ -69,7 +78,7 @@ public:
 
     void exec()
     {
-        GET_TIMER(timer);
+        GEANT_GET_TIMER(timer);
         for(uintmax_t i = 0; i < m_nitr; ++i)
         {
             m_exec(*m_generator);
@@ -79,7 +88,7 @@ public:
 
     void exec_virtual(std::vector<ObjectA*>& virtual_vector)
     {
-        GET_TIMER(timer);
+        GEANT_GET_TIMER(timer);
         for(uintmax_t i = 0; i < m_nitr; ++i)
         {
             for(const auto& itr : virtual_vector)
@@ -120,11 +129,12 @@ void run_reference(uintmax_t nloop, uintmax_t nitr)
 void run_functional(uintmax_t nloop, uintmax_t nitr)
 {
     auto func = [&](Generator& gen) {
-        using GeneratorFunc                       = std::function<void()>;
-        auto                          b_funct     = [&]() { AccessA(obj_a).generate(gen); };
-        auto                          d_funct     = [&]() { AccessB(obj_b).generate(gen); };
-        std::array<GeneratorFunc, 10> funct_funct { { b_funct, d_funct, b_funct, d_funct, b_funct,
-                                                    d_funct, b_funct, d_funct, b_funct, d_funct } };
+        using GeneratorFunc                   = std::function<void()>;
+        auto                          b_funct = [&]() { AccessA(obj_a).generate(gen); };
+        auto                          d_funct = [&]() { AccessB(obj_b).generate(gen); };
+        std::array<GeneratorFunc, 10> funct_funct{ { b_funct, d_funct, b_funct, d_funct,
+                                                     b_funct, d_funct, b_funct, d_funct,
+                                                     b_funct, d_funct } };
         for(const auto& itr : funct_funct)
             itr();
     };
@@ -177,15 +187,20 @@ void run_virtual_lambda(uintmax_t nloop, uintmax_t nitr)
 void run_function_access(uintmax_t nloop, uintmax_t nitr)
 {
     // create tuple of accessors
-    auto array_access = MakeTuple(AccessA(obj_a), AccessB(obj_b), AccessA(obj_a), AccessB(obj_b), AccessA(obj_a),
-                                  AccessB(obj_b), AccessA(obj_a), AccessB(obj_b), AccessA(obj_a), AccessB(obj_b));
+    auto array_access =
+        MakeTuple(AccessA(obj_a), AccessB(obj_b), AccessA(obj_a), AccessB(obj_b),
+                  AccessA(obj_a), AccessB(obj_b), AccessA(obj_a), AccessB(obj_b),
+                  AccessA(obj_a), AccessB(obj_b));
     auto array_funct =
-        MakeTuple(&AccessA::template generate<A>, &AccessB::template generate<B>, &AccessA::template generate<A>,
-                  &AccessB::template generate<B>, &AccessA::template generate<A>, &AccessB::template generate<B>,
-                  &AccessA::template generate<A>, &AccessB::template generate<B>, &AccessA::template generate<A>,
-                  &AccessB::template generate<B>);
+        MakeTuple(&AccessA::template generate<A>, &AccessB::template generate<B>,
+                  &AccessA::template generate<A>, &AccessB::template generate<B>,
+                  &AccessA::template generate<A>, &AccessB::template generate<B>,
+                  &AccessA::template generate<A>, &AccessB::template generate<B>,
+                  &AccessA::template generate<A>, &AccessB::template generate<B>);
 
-    auto func = [&](Generator& gen) { Apply<void>::apply_functions(array_access, array_funct, std::ref(gen)); };
+    auto func = [&](Generator& gen) {
+        Apply<void>::apply_functions(array_access, array_funct, std::ref(gen));
+    };
 
     Executor executor("Funct Access", nloop, nitr, func, &generator);
     TIMEMORY_BASIC_AUTO_TIMER("");
@@ -198,11 +213,15 @@ void run_function_access(uintmax_t nloop, uintmax_t nitr)
 void run_ctors_base(uintmax_t nloop, uintmax_t nitr)
 {
     auto func = [&](Generator& gen) {
-        auto object_tuple = MakeTuple(obj_a, obj_b, obj_a, obj_b, obj_a, obj_b, obj_a, obj_b, obj_a, obj_b);
-        typedef Tuple<ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor,
-                      ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor>
+        auto object_tuple = MakeTuple(obj_a, obj_b, obj_a, obj_b, obj_a, obj_b, obj_a,
+                                      obj_b, obj_a, obj_b);
+        typedef Tuple<ConstructAccessor, ConstructAccessor, ConstructAccessor,
+                      ConstructAccessor, ConstructAccessor, ConstructAccessor,
+                      ConstructAccessor, ConstructAccessor, ConstructAccessor,
+                      ConstructAccessor>
             ctors_tuple;
-        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(object_tuple, std::ref(gen));
+        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(
+            object_tuple, std::ref(gen));
     };
 
     Executor executor("Ctors Base", nloop, nitr, func, &generator);
@@ -216,11 +235,15 @@ void run_ctors_base(uintmax_t nloop, uintmax_t nitr)
 void run_ctors_virtual(uintmax_t nloop, uintmax_t nitr)
 {
     auto func = [&](Generator& gen) {
-        auto object_tuple = MakeTuple(virt_a, virt_b, virt_a, virt_b, virt_a, virt_b, virt_a, virt_b, virt_a, virt_b);
-        typedef Tuple<ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor,
-                      ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor, ConstructAccessor>
+        auto object_tuple = MakeTuple(virt_a, virt_b, virt_a, virt_b, virt_a, virt_b,
+                                      virt_a, virt_b, virt_a, virt_b);
+        typedef Tuple<ConstructAccessor, ConstructAccessor, ConstructAccessor,
+                      ConstructAccessor, ConstructAccessor, ConstructAccessor,
+                      ConstructAccessor, ConstructAccessor, ConstructAccessor,
+                      ConstructAccessor>
             ctors_tuple;
-        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(object_tuple, std::ref(gen));
+        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(
+            object_tuple, std::ref(gen));
     };
 
     Executor executor("Ctors Virtual", nloop, nitr, func, &generator);
@@ -234,12 +257,15 @@ void run_ctors_virtual(uintmax_t nloop, uintmax_t nitr)
 void run_ctors_base_ab(uintmax_t nloop, uintmax_t nitr)
 {
     auto func = [&](Generator& gen) {
-        auto object_tuple = MakeTuple(obj_a, obj_b, obj_a, obj_b, obj_a, obj_b, obj_a, obj_b, obj_a, obj_b);
-        typedef Tuple<ConstructAccessorA, ConstructAccessorB, ConstructAccessorA, ConstructAccessorB,
-                      ConstructAccessorA, ConstructAccessorB, ConstructAccessorA, ConstructAccessorB,
-                      ConstructAccessorA, ConstructAccessorB>
+        auto object_tuple = MakeTuple(obj_a, obj_b, obj_a, obj_b, obj_a, obj_b, obj_a,
+                                      obj_b, obj_a, obj_b);
+        typedef Tuple<ConstructAccessorA, ConstructAccessorB, ConstructAccessorA,
+                      ConstructAccessorB, ConstructAccessorA, ConstructAccessorB,
+                      ConstructAccessorA, ConstructAccessorB, ConstructAccessorA,
+                      ConstructAccessorB>
             ctors_tuple;
-        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(object_tuple, std::ref(gen));
+        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(
+            object_tuple, std::ref(gen));
     };
 
     Executor executor("Ctors Base AB", nloop, nitr, func, &generator);
@@ -253,12 +279,15 @@ void run_ctors_base_ab(uintmax_t nloop, uintmax_t nitr)
 void run_ctors_virtual_ab(uintmax_t nloop, uintmax_t nitr)
 {
     auto func = [&](Generator& gen) {
-        auto object_tuple = MakeTuple(virt_a, virt_b, virt_a, virt_b, virt_a, virt_b, virt_a, virt_b, virt_a, virt_b);
-        typedef Tuple<ConstructAccessorA, ConstructAccessorB, ConstructAccessorA, ConstructAccessorB,
-                      ConstructAccessorA, ConstructAccessorB, ConstructAccessorA, ConstructAccessorB,
-                      ConstructAccessorA, ConstructAccessorB>
+        auto object_tuple = MakeTuple(virt_a, virt_b, virt_a, virt_b, virt_a, virt_b,
+                                      virt_a, virt_b, virt_a, virt_b);
+        typedef Tuple<ConstructAccessorA, ConstructAccessorB, ConstructAccessorA,
+                      ConstructAccessorB, ConstructAccessorA, ConstructAccessorB,
+                      ConstructAccessorA, ConstructAccessorB, ConstructAccessorA,
+                      ConstructAccessorB>
             ctors_tuple;
-        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(object_tuple, std::ref(gen));
+        Apply<void>::apply_access<ctors_tuple, decltype(object_tuple), Generator&>(
+            object_tuple, std::ref(gen));
     };
 
     Executor executor("Ctors Virtual AB", nloop, nitr, func, &generator);
@@ -275,8 +304,8 @@ void run_tuple(uintmax_t nloop, uintmax_t nitr)
     auto func = [&](Generator& gen) {
         auto a_tuple = [&]() { AccessA(obj_a).generate(gen); };
         auto b_tuple = [&]() { AccessB(obj_b).generate(gen); };
-        Apply<void>::apply_loop(
-            MakeTuple(a_tuple, b_tuple, a_tuple, b_tuple, a_tuple, b_tuple, a_tuple, b_tuple, a_tuple, b_tuple));
+        Apply<void>::apply_loop(MakeTuple(a_tuple, b_tuple, a_tuple, b_tuple, a_tuple,
+                                          b_tuple, a_tuple, b_tuple, a_tuple, b_tuple));
     };
 
     Executor executor("Tuple", nloop, nitr, func, &generator);
@@ -330,8 +359,9 @@ void run(uintmax_t nloop, uintmax_t nitr)
     std::cout << "\n+ Random seed = " << seed << std::endl;
     for(auto& itr : results)
     {
-        std::cout << "      " << std::fixed << std::setw(8) << std::setprecision(2) << itr.first << ", " << std::setw(8)
-                  << std::setprecision(2) << itr.second << std::endl;
+        std::cout << "      " << std::fixed << std::setw(8) << std::setprecision(2)
+                  << itr.first << ", " << std::setw(8) << std::setprecision(2)
+                  << itr.second << std::endl;
     }
     results.clear();
     ref_timer().reset();
@@ -348,8 +378,9 @@ int main(int argc, char** argv)
     // initialize
     tim::timemory_init(argc, argv);
 
-    typedef tim::auto_tuple<tim::current_rss, tim::peak_rss, tim::num_swap, tim::num_minor_page_faults,
-                            tim::num_major_page_faults, tim::num_msg_sent, tim::voluntary_context_switch,
+    typedef tim::auto_tuple<tim::current_rss, tim::peak_rss, tim::num_swap,
+                            tim::num_minor_page_faults, tim::num_major_page_faults,
+                            tim::num_msg_sent, tim::voluntary_context_switch,
                             tim::priority_context_switch>
         auto_usage_t;
 

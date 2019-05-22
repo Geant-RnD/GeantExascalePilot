@@ -15,7 +15,8 @@ std::vector<GUFieldPropagator *> // GUFieldPropagation:: // namespace ...
     GUFieldPropagatorPool::fFieldPropagatorVec;
 
 /// --------------  GUFieldPropagatorPool ------------------------------------
-// #include "Geant/magneticfield/GUFieldPropagatorPool.hpp"   // For now, not a separate file
+// #include "Geant/magneticfield/GUFieldPropagatorPool.hpp"   // For now, not a separate
+// file
 
 // static
 GUFieldPropagatorPool *GUFieldPropagatorPool::Instance()
@@ -27,7 +28,8 @@ GUFieldPropagatorPool *GUFieldPropagatorPool::Instance()
 }
 
 GUFieldPropagatorPool::GUFieldPropagatorPool(GUFieldPropagator *prototype)
-    : fInitialisedRKIntegration(false), fNumberPropagators(0), fPrototype(prototype), fFieldPrototype(nullptr)
+    : fInitialisedRKIntegration(false), fNumberPropagators(0), fPrototype(prototype),
+      fFieldPrototype(nullptr)
 {
   // prototype can be null initially
 }
@@ -42,9 +44,10 @@ bool GUFieldPropagatorPool::RegisterPrototype(GUFieldPropagator *prototype)
   bool ok = ((fNumberPropagators == 0) && (!fPrototype) && (prototype != fPrototype));
   if (!ok) {
     std::cerr << "WARNING from GUFieldPropagatorPool:  "
-              << "Overwriting prototype propagator after having created " << fNumberPropagators << " instances. "
+              << "Overwriting prototype propagator after having created "
+              << fNumberPropagators << " instances. " << std::endl;
+    std::cerr << "     prototype =   " << prototype << " old-prototype= " << fPrototype
               << std::endl;
-    std::cerr << "     prototype =   " << prototype << " old-prototype= " << fPrototype << std::endl;
     if (!prototype) exit(1);
   }
   assert(prototype);
@@ -62,8 +65,10 @@ bool GUFieldPropagatorPool::Initialize(unsigned int numThreads)
   // std::cout << methodName << " called with " << numThreads << " threads." << std::endl;
   if (!fPrototype) {
     std::cerr << "ERROR> from GUFieldPropagatorPool::Initialize:  "
-              << "Must register prototype propagator before calling Initialize. " << std::endl
-              << "    # propagators= " << fNumberPropagators << " instances. " << std::endl;
+              << "Must register prototype propagator before calling Initialize. "
+              << std::endl
+              << "    # propagators= " << fNumberPropagators << " instances. "
+              << std::endl;
     exit(1);
   }
   bool goodExpansion = true;
@@ -75,8 +80,8 @@ bool GUFieldPropagatorPool::Initialize(unsigned int numThreads)
 
   size_t revSize = fFieldPropagatorVec.size();
 
-  // std::cout << " (GU Field Propagator) Pool:  revised size= " << revSize << " requested= " << numThreads <<
-  // std::endl;
+  // std::cout << " (GU Field Propagator) Pool:  revised size= " << revSize << "
+  // requested= " << numThreads << std::endl;
 
   goodExpansion = (fFieldPropagatorVec.size() >= numThreads);
   assert(goodExpansion);
@@ -104,8 +109,9 @@ void GUFieldPropagatorPool::Extend(size_t noNeeded)
 
     num++;
 
-    // std::cout << methodName << ": Created propagator " << prop << " for slot " << num << std::endl;
-    // printf("            Created propagator %p for slot %ld\n", prop, num );
+    // std::cout << methodName << ": Created propagator " << prop << " for slot " << num
+    // << std::endl; printf("            Created propagator %p for slot %ld\n", prop, num
+    // );
 
     // fFieldVec.push_back( fFieldPrototype->CloneOrSafeSelf() );
 
@@ -115,7 +121,8 @@ void GUFieldPropagatorPool::Extend(size_t noNeeded)
   }
   // printf("%s method ended.  Created %ld propagators.  New total= %ld\n", methodName,
   //     num - originalNum, num );
-  // std::cout << methodName << " method ended.  Created " << num - originalNum << " propagators.  New total = "
+  // std::cout << methodName << " method ended.  Created " << num - originalNum << "
+  // propagators.  New total = "
   //           << num << std::endl;
 }
 

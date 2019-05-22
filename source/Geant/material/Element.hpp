@@ -7,9 +7,9 @@
 
 #include <string>
 
-GEANT_DEVICE_DECLARE_CONV(geantphysics, class, Element);
+GEANT_DEVICE_DECLARE_CONV(geantx, class, Element);
 
-namespace geantphysics {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 class Isotope;
 class ElementProperties;
@@ -66,7 +66,8 @@ public:
    * @param[in] aeff Effective atomic mass of this element in internal [weight/
    *            amount of substance] units if given.
    */
-  Element(const std::string &name, const std::string &symbol, double zeff, double aeff = 0.0);
+  Element(const std::string &name, const std::string &symbol, double zeff,
+          double aeff = 0.0);
 
   /**
    * @brief Constructor to build an element from isotopes via AddIsotope() method.
@@ -192,7 +193,10 @@ public:
    * @return Relative abundance of each isotope constituting this element.
    *         (The size of the array is GetNumberOfIsotopes().)
    */
-  const double *GetRelativeAbundanceVector() const { return fRelativeIsotopeAbundanceVector; }
+  const double *GetRelativeAbundanceVector() const
+  {
+    return fRelativeIsotopeAbundanceVector;
+  }
 
   // Get vector of pointers to isotopes constituting this element
   /**
@@ -216,8 +220,8 @@ public:
   /**
    * @brief Public method to delete all Element objects that has been created.
    *
-   * This method is called by the PhysicsProcessHandler when it is deleted to clean all Element objects.
-   * Users should never call this method!
+   * This method is called by the PhysicsProcessHandler when it is deleted to clean all
+   * Element objects. Users should never call this method!
    */
   static void ClearAllElements();
   // Get number of elements in the static element table
@@ -230,7 +234,8 @@ public:
   static int GetNumberOfElements() { return gTheElementTable.size(); }
   //@}
 
-  // @brief Public method to obtain the element properties object pointer of this element */
+  // @brief Public method to obtain the element properties object pointer of this element
+  // */
   const ElementProperties *GetElementProperties() const { return fElementProperties; }
 
   /**
@@ -262,25 +267,30 @@ private:
   std::string fSymbol;
   /** @brief Effective atomic number of this element. */
   double fZeff;
-  /** @brief Effective atomic mass of this element in internal [weight/amount of substance] units. */
+  /** @brief Effective atomic mass of this element in internal [weight/amount of
+   * substance] units. */
   double fAeff;
   /** @brief Number of isotopes added to this element so far. */
   int fCurNumOfIsotopes;
   /** @brief Index of this element in the global element table. */
   int fIndex;
-  /** @brief Flag to indicate is natural isotope abundances were used in case of this element. */
+  /** @brief Flag to indicate is natural isotope abundances were used in case of this
+   * element. */
   bool fIsNaturalAbundance;
-  /** @brief Relative abundances for each isotope constituting this element [GetNumberOfIsotopes()]. */
+  /** @brief Relative abundances for each isotope constituting this element
+   * [GetNumberOfIsotopes()]. */
   double *fRelativeIsotopeAbundanceVector;
   /** @brief List of pointers to the isotope objects constituting this element. */
   Vector_t<Isotope *> fIsotopeVector;
 
-  /** @brief The global element table that contains all elements that has been created so far. */
+  /** @brief The global element table that contains all elements that has been created so
+   * far. */
   static Vector_t<Element *> gTheElementTable; // the global element table
 
-  /** @brief Object to store additional properties realted to this element (the class owns the object)*/
+  /** @brief Object to store additional properties realted to this element (the class owns
+   * the object)*/
   ElementProperties *fElementProperties;
 };
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geantphysics
+} // namespace geantx

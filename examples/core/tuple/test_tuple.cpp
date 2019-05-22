@@ -1,3 +1,11 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
 
 #include "test_tuple.hpp"
 
@@ -38,7 +46,8 @@ int main(int argc, char** argv)
     std::vector<std::pair<double, double>> results;
 
     auto record = [&](ObjectA* obj_a, ObjectB* obj_b) {
-        results.push_back(std::make_pair(obj_a->GetRandomValue(), obj_b->GetRandomValue()));
+        results.push_back(
+            std::make_pair(obj_a->GetRandomValue(), obj_b->GetRandomValue()));
         obj_a->Reset();
         obj_b->Reset();
         r_generator = Generator(seed);
@@ -48,8 +57,9 @@ int main(int argc, char** argv)
     auto report = [&]() {
         for(auto& itr : results)
         {
-            std::cout << "      " << std::fixed << std::setw(8) << std::setprecision(2) << itr.first << ", "
-                      << std::setw(8) << std::setprecision(2) << itr.second << std::endl;
+            std::cout << "      " << std::fixed << std::setw(8) << std::setprecision(2)
+                      << itr.first << ", " << std::setw(8) << std::setprecision(2)
+                      << itr.second << std::endl;
         }
         std::cout << std::endl;
     };
@@ -61,20 +71,24 @@ int main(int argc, char** argv)
     // here I make a tuple of doubles
     Tuple<double, double, double> three_vec = MakeTuple(1.0, 2.0, 3.0);
     // here I make a tuple of structs that are NOT polymorphic
-    HeterogeneousArray _ops = MakeTuple(dAdd(2.0), dMult(1.0), dSub(0.0), dMult(-2.0), dAdd(-1.0));
+    HeterogeneousArray _ops =
+        MakeTuple(dAdd(2.0), dMult(1.0), dSub(0.0), dMult(-2.0), dAdd(-1.0));
 
     // here I just demonstrate expanding a tuple into arguments, e.g.
     // Tuple<double, double, double> expands to print(double, double, double)
     auto _print = [&]() { Apply<void>::apply_all<print_func_t>(print, three_vec); };
 
     // this prints out the tuple of heterogeneous structs
-    auto _print_info = [](const double& start, const HeterogeneousArray& lhs, const HeterogeneousArray& rhs) {
+    auto _print_info = [](const double& start, const HeterogeneousArray& lhs,
+                          const HeterogeneousArray& rhs) {
         std::stringstream ss;
-        ss << std::right << std::setw(16) << "+ result of applying " << std::setw(4) << std::setprecision(1)
-           << std::fixed << start << ":\n"
+        ss << std::right << std::setw(16) << "+ result of applying " << std::setw(4)
+           << std::setprecision(1) << std::fixed << start << ":\n"
            << std::endl
-           << std::make_pair(Get<0>(lhs), Get<0>(rhs)) << std::make_pair(Get<1>(lhs), Get<1>(rhs))
-           << std::make_pair(Get<2>(lhs), Get<2>(rhs)) << std::make_pair(Get<3>(lhs), Get<3>(rhs))
+           << std::make_pair(Get<0>(lhs), Get<0>(rhs))
+           << std::make_pair(Get<1>(lhs), Get<1>(rhs))
+           << std::make_pair(Get<2>(lhs), Get<2>(rhs))
+           << std::make_pair(Get<3>(lhs), Get<3>(rhs))
            << std::make_pair(Get<4>(lhs), Get<4>(rhs));
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << ss.str() << std::flush;
@@ -94,8 +108,12 @@ int main(int argc, char** argv)
     // base class object (not derived)
     ObjectA obj_a;
 
-    std::function<void(ObjectA&, Generator&)> op_a = [&](ObjectA& m_obj, Generator& gen) { m_obj.generate(gen); };
-    std::function<void(ObjectB&, Generator&)> op_b = [&](ObjectB& m_obj, Generator& gen) { m_obj.generate(gen); };
+    std::function<void(ObjectA&, Generator&)> op_a = [&](ObjectA& m_obj, Generator& gen) {
+        m_obj.generate(gen);
+    };
+    std::function<void(ObjectB&, Generator&)> op_b = [&](ObjectB& m_obj, Generator& gen) {
+        m_obj.generate(gen);
+    };
 
     auto access_a = AccessA(obj_a, op_a);
     auto access_b = AccessB(obj_b, op_b);
@@ -123,7 +141,8 @@ int main(int argc, char** argv)
         record(&(access_a.object()), &(access_b.object()));
     };
 
-    // apply doSomething(std::string) to all tuple objects (e.g. loop over objects calling doSomething)
+    // apply doSomething(std::string) to all tuple objects (e.g. loop over objects calling
+    // doSomething)
     auto _exec_member_function = [&](const std::string& msg) {
         // defined in source/Geant/core/Tuple.hpp (towards end of file)
         Apply<void>::apply_functions(access_array, funct_array, msg);

@@ -42,27 +42,27 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-SteppingAction::SteppingAction(DetectorConstruction* DET,
-                               EventAction* EA)
-:G4UserSteppingAction(),fDetector(DET), fEventAction(EA)
-{}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-SteppingAction::~SteppingAction()
-{}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void SteppingAction::UserSteppingAction(const G4Step* aStep)
+SteppingAction::SteppingAction(DetectorConstruction *DET, EventAction *EA)
+    : G4UserSteppingAction(), fDetector(DET), fEventAction(EA)
 {
-  if (aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume() 
-    != fDetector->GetAbsorber()) return;
-    
-  fEventAction->AddEnergy (aStep->GetTotalEnergyDeposit());
-   
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+SteppingAction::~SteppingAction() {}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void SteppingAction::UserSteppingAction(const G4Step *aStep)
+{
+  if (aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume() !=
+      fDetector->GetAbsorber())
+    return;
+
+  fEventAction->AddEnergy(aStep->GetTotalEnergyDeposit());
+
   G4double charge = aStep->GetTrack()->GetDefinition()->GetPDGCharge();
-  if (charge != 0.) { 
+  if (charge != 0.) {
     fEventAction->AddTrakLenCharg(aStep->GetStepLength());
     fEventAction->CountStepsCharg();
   } else {
@@ -72,4 +72,3 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-

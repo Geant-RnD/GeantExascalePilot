@@ -1,3 +1,12 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+
 #include "backend/cuda/Interface.h"
 #include "base/Map.h"
 class MyClass {
@@ -22,7 +31,8 @@ __global__ void testNew(vecgeom::map<double, MyClass> *devMap, double *key, int 
   }
 }
 
-__global__ void rebuildMap(vecgeom::map<double, MyClass> *devMap, double *key, MyClass *value, int N)
+__global__ void rebuildMap(vecgeom::map<double, MyClass> *devMap, double *key,
+                           MyClass *value, int N)
 {
   //  vecgeom::map<double,double> *myDevMap = new vecgeom::map<double, double>;
   // for (int i=0;i<N;i++)
@@ -30,9 +40,11 @@ __global__ void rebuildMap(vecgeom::map<double, MyClass> *devMap, double *key, M
 
   for (int i = 0; i < N; i++) {
     (*devMap)[key[i]] = value[i];
-    printf(" REBUILDING key %f and value %f from op[]\n ", key[i], ((*devMap)[key[i]]).getData());
+    printf(" REBUILDING key %f and value %f from op[]\n ", key[i],
+           ((*devMap)[key[i]]).getData());
     auto search = devMap->find(key[i]);
-    printf(" REBUILDING key %f and value %f from find\n ", key[i], (search->second).getData());
+    printf(" REBUILDING key %f and value %f from find\n ", key[i],
+           (search->second).getData());
   }
 }
 
@@ -44,8 +56,8 @@ template void DevicePtr<MyClass>::Construct() const;
 template size_t DevicePtr<cuda::map<double, MyClass>>::SizeOf();
 template void DevicePtr<cuda::map<double, MyClass>>::Construct() const;
 
-} // End cxx namespace
-}
+} // namespace cxx
+} // namespace vecgeom
 
 void launchTestNew(vecgeom::cxx::DevicePtr<vecgeom::cuda::map<double, MyClass>> &devMap,
                    vecgeom::cxx::DevicePtr<double> key, int N, int nBlocks, int nThreads)
@@ -55,9 +67,10 @@ void launchTestNew(vecgeom::cxx::DevicePtr<vecgeom::cuda::map<double, MyClass>> 
   testNew<<<blocksPerGrid, threadsPerBlock>>>(devMap, key, N);
 }
 
-void launchRebuildMap(vecgeom::cxx::DevicePtr<vecgeom::cuda::map<double, MyClass>> &devMap,
-                      vecgeom::cxx::DevicePtr<double> key, vecgeom::cxx::DevicePtr<MyClass> value, int N, int nBlocks,
-                      int nThreads)
+void launchRebuildMap(
+    vecgeom::cxx::DevicePtr<vecgeom::cuda::map<double, MyClass>> &devMap,
+    vecgeom::cxx::DevicePtr<double> key, vecgeom::cxx::DevicePtr<MyClass> value, int N,
+    int nBlocks, int nThreads)
 {
   int threadsPerBlock = nThreads;
   int blocksPerGrid   = nBlocks;

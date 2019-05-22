@@ -21,8 +21,6 @@ install:
   - DEBUG_FLAGS="--num-tasks=64  --pyctest-build-type=Debug"
   - CMD="python ./pyctest-runner.py ${ARGS} --gperf ${OPTIM_FLAGS}"
   - docker run -it -v ~/.tokens:/root/.tokens -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
-  - CMD="python ./pyctest-runner.py ${ARGS} --sanitizer ${OPTIM_FLAGS}"
-  - docker run -it -v ~/.tokens:/root/.tokens -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
   - CMD="python ./pyctest-runner.py ${ARGS} --coverage ${DEBUG_FLAGS}"
   - docker run -it -v ~/.tokens:/root/.tokens -v ${PWD}:/home/geantx geantx/geantx-dev /bin/bash -c "pwd; cd /home/geantx; ${CMD};"
 

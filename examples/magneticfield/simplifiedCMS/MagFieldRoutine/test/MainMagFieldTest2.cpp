@@ -72,7 +72,8 @@ int main()
   const int halfZValues   = 80;
   const double halfWeight = 0.5;
 
-  //(r,0,z) corresponds exactly to (r,z) in terms that xyzField obtained is same as rzField since
+  //(r,0,z) corresponds exactly to (r,z) in terms that xyzField obtained is same as
+  //rzField since
   // theta=0 in this case. Hence can check GetFieldValueXYZ in place of GetFieldValueTest
   // Limitation however is that can't check for points with non zero y.
   for (double r = 0.; r <= kRMax; r = r + kRDiff) {
@@ -84,7 +85,8 @@ int main()
 
       int i = r * kRDiffInv * noZValues + halfZValues + z * kZDiffInv;
 
-      vecgeom::Vector3D<double> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i], dataMap.fBz[i]);
+      vecgeom::Vector3D<double> rzCheckField1(dataMap.fBr[i], dataMap.fBphi[i],
+                                              dataMap.fBz[i]);
 
       assert(ApproxEqual(xyzField1, rzCheckField1));
     }
@@ -93,7 +95,8 @@ int main()
   // Check for points on mid of cell lines i.e. (r/2,0,z) , (r,0,z/2)
   for (double r = 0.; r < kRMax; r = r + kRDiff) {
     for (double z = -kZMax; z < kZMax; z = z + kZDiff) {
-      vecgeom::Vector3D<double> pos2(r + kRDiff * halfWeight, 0., z), pos3(r, 0., z + kZDiff * halfWeight);
+      vecgeom::Vector3D<double> pos2(r + kRDiff * halfWeight, 0., z),
+          pos3(r, 0., z + kZDiff * halfWeight);
       vecgeom::Vector3D<double> xyzField2, xyzField3;
       m1.GetFieldValueXYZ(pos2, xyzField2);
       m1.GetFieldValueXYZ(pos3, xyzField3);
@@ -101,8 +104,8 @@ int main()
       // Say i1, i2, i3, i4
       vecgeom::Vector3D<double> rzCheckField2, rzCheckField3;
       // Now need i1, i2, i3, i4
-      // for pos2 and pos5, take i1 and i2. i4 = i3 + 161. Same z, different r. so skip through as many values of z as
-      // for one r
+      // for pos2 and pos5, take i1 and i2. i4 = i3 + 161. Same z, different r. so skip
+      // through as many values of z as for one r
       int i1 = r * kRDiffInv * noZValues + halfZValues + z * kZDiffInv;
       int i2 = i1 + noZValues;
 
@@ -127,7 +130,8 @@ int main()
   // For point in middle of cell
   for (double r = 0.; r < kRMax; r = r + kRDiff) {
     for (double z = -kZMax; z < kZMax; z = z + kZDiff) {
-      vecgeom::Vector3D<double> pos4(r + kRDiff * halfWeight, 0., z + kZDiff * halfWeight);
+      vecgeom::Vector3D<double> pos4(r + kRDiff * halfWeight, 0.,
+                                     z + kZDiff * halfWeight);
       vecgeom::Vector3D<double> xyzField4, rzCheckField4;
       m1.GetFieldValueXYZ(pos4, xyzField4);
 
@@ -138,9 +142,13 @@ int main()
       int i3 = i1 + 1;
       int i4 = i2 + 1;
 
-      rzCheckField4.x() = (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
-      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] + dataMap.fBphi[i4]) * 0.25;
-      rzCheckField4.z() = (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
+      rzCheckField4.x() =
+          (dataMap.fBr[i1] + dataMap.fBr[i2] + dataMap.fBr[i3] + dataMap.fBr[i4]) * 0.25;
+      rzCheckField4.y() = (dataMap.fBphi[i1] + dataMap.fBphi[i2] + dataMap.fBphi[i3] +
+                           dataMap.fBphi[i4]) *
+                          0.25;
+      rzCheckField4.z() =
+          (dataMap.fBz[i1] + dataMap.fBz[i2] + dataMap.fBz[i3] + dataMap.fBz[i4]) * 0.25;
 
       assert(ApproxEqual(xyzField4, rzCheckField4)); // this works
     }

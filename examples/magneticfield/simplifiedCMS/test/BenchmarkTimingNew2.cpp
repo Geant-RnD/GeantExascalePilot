@@ -92,7 +92,8 @@ void CalculateMeanStDev(const vector<float> timeVec, float &mean, float &stDev)
 }
 
 template <class MagField>
-float TimeScalar(MagField m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n, const int &nRepetitions)
+float TimeScalar(MagField m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n,
+                 const int &nRepetitions)
 {
   ThreeVector sumXYZField(0., 0., 0.), xyzField;
   float totScaTime = 0.;
@@ -121,7 +122,8 @@ float TimeScalar(MagField m1, const vecgeom::Vector<ThreeVector> &posVec, const 
   CalculateMeanStDev(scaTimePerRepitition, timeMean, timeStDev);
 
   cout << "\nScalar: " << endl;
-  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns "<<endl;
+  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns
+  // "<<endl;
   cout << "totScaTime is: " << totScaTime << endl;
   cout << "Mean time is: " << timeMean * 1e+9 << "ns" << endl;
   cout << "Standard devi. is: " << timeStDev * 1e+9 << "ns" << endl;
@@ -129,7 +131,8 @@ float TimeScalar(MagField m1, const vecgeom::Vector<ThreeVector> &posVec, const 
 }
 
 template <class MagField>
-float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n, const int &nRepetitions)
+float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n,
+                 const int &nRepetitions)
 {
   cout << "\nVector fields start: " << endl;
   vecgeom::kVcFloat::precision_v vX;
@@ -185,7 +188,8 @@ float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const
   cout << sumXYZField << endl;
 
   cout << "\nVector: " << endl;
-  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns "<<endl;
+  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns
+  // "<<endl;
   cout << "totVecTime is: " << totVecTime << endl;
   cout << "Mean time is: " << timeMean * 1e+9 << "ns" << endl;
   cout << "Standard devi. is: " << timeStDev * 1e+9 << "ns" << endl;

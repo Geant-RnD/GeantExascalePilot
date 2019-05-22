@@ -1,7 +1,22 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Accessor to the physics related data field of a Track.
+ */
+//===----------------------------------------------------------------------===//
+
 #pragma once
 
 #include "Geant/track/TrackAccessor.hpp"
 #include "Geant/track/TrackState.hpp"
+#include "Geant/track/ParticleDefinitions.hpp"
 
 namespace geantx {
 
@@ -13,30 +28,81 @@ namespace geantx {
  * This currently takes just a track state, but if the data layout changes, it
  * could take e.g. some abstract multi-particle state *plus* a particle index.
  */
+template <typename PD>
 class TrackPhysicsAccessor : public TrackAccessor {
-    using Base = TrackAccessor;
-public:
-  explicit TrackPhysicsAccessor(const TrackState &track) : Base(track) {}
+  using Base = TrackAccessor;
 
-  /* EXAMPLE alternate constructor:
-   *
-   TrackPhysicsAccessor(const TrackPool &pool, int threadIdx) : fTrack(pool[threadIdx]) {}
-   */
+public:
+  using ParticleDef_t = PD;
+
+private:
+  const ParticleDef_t &fParDef;
+
+public:
+  TrackPhysicsAccessor(const TrackCollection &tracks, TrackId_t track_id,
+                       const ParticleDefinitions &pdefs)
+      : Base(tracks, track_id), fParDef(GetParticleDef(pdefs, Base::State()))
+  {}
 
   // >>> ACCESSORS
 
-  double Mass() const { return this->Pstate().fMass; }
-  double Charge() const { return this->Pstate().fCharge; }
-  // TODO: replace some of these with calculated quantities?
-  double P() const { return this->Pstate().fMomentum; }
-  double E() const { return this->Pstate().fEnergy; }
-  double LogEkin() const { return this->Pstate().fLogEkin; }
-  double Ekin() const { return this->Pstate().fEnergy - this->Pstate().fMass; }
+  double Charge() const { return fParDef.Charge(); }
+  Species_t Species() const { return fParDef.Species(); }
+  //! Rest mass (* c^2: same units as energy, since c=1)
+  double Mass() const { return fParDef.fMass(); }
 
-  MaterialId_t Material() const { return Track().fMaterialState.fMaterial; }
+  //! Momentum
+  double P() const
+  {
+    REQUIRE(this->Alive());
+    return this->Pstate().fMomentum;
+  }
 
-private:
-  inline const TrackPhysicsState &Pstate() const { return Track().fPhysicsState; }
+  //! Kinetic energy
+  double Ekin() const
+  {
+    REQUIRE(this->Alive());
+    return this->Pstate().fEkin;
+  }
+
+  //! Total (rest mass + kinetic) energy
+  double E() const
+  {
+    REQUIRE(this->Alive());
+    return this->Mass() + this->Ekin();
+  }
+
+  //! Natural logarithm of kinetic energy
+  double LogEkin() const
+  {
+    REQUIRE(this->Alive());
+    return std::log(this->Ekin());
+  }
+
+  MaterialId_t Material() const { return this->State().fMaterialState.fMaterial; }
+
+protected:
+  // >>> IMPLEMENTATION DETAILS
+
+  static const ParticleDef_t &GetParticleDef(const ParticleDefinitions &pdefs,
+                                             const TrackState &state)
+  {
+    return *static_cast<const ParticleDef_t *>(
+        pdefs.Get(state.fPhysicsState.fParticleDefId));
+  }
+
+  TrackPhysicsAccessor(const TrackState &track, const ParticleDefinitions &pdefs)
+      : Base(track), fParDef(GetParticleDef(pdefs, Base::State()))
+  {}
+
+  TrackPhysicsAccessor(const TrackState &track, const ParticleDef_t &type)
+      : Base(track), fParDef(type)
+  {}
+
+  const TrackPhysicsState &Pstate() const { return this->State().fPhysicsState; }
+
+  template <typename PT>
+  friend class TrackModifier;
 };
 
 } // namespace geantx

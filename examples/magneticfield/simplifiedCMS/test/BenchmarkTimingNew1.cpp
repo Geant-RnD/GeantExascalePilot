@@ -154,8 +154,8 @@ void GenVecCartContinuous(vecgeom::Vector<ThreeVector> &posVec, int &n)
   n = n * 8;
 }
 
-float TimeScalar(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n, const int &nRepetitions,
-                 ThreeVector &sumXYZField)
+float TimeScalar(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n,
+                 const int &nRepetitions, ThreeVector &sumXYZField)
 {
   ThreeVector xyzField; // sumXYZField(0., 0., 0.),
 
@@ -175,13 +175,14 @@ float TimeScalar(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const
 
   /*    cout<<"\nScalar: "<<endl;
       cout<<"Total time is: "<<clock1InFloat <<endl;
-      cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns "<<endl;*/
+      cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns
+     "<<endl;*/
 
   return clock1InFloat / (n * nRepetitions) * 1e+9;
 }
 
-float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n, const int &nRepetitions,
-                 ThreeVecSimd_t &sumXYZField)
+float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const int &n,
+                 const int &nRepetitions, ThreeVecSimd_t &sumXYZField)
 {
   // cout<<"\nVector fields start: "<<endl;
   vecgeom::kVcFloat::precision_v vX;
@@ -227,7 +228,8 @@ float TimeVector(MagField &m1, const vecgeom::Vector<ThreeVector> &posVec, const
 
   // cout<<"\nVector: "<<endl;
   // cout<<"Total time is: "<<clock1InFloat<<endl;
-  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns "<<endl;
+  // cout<<"Time per field value is : "<<clock1InFloat/(n*nRepetitions)*1e+9 << " ns
+  // "<<endl;
 
   return clock1InFloat / (n * nRepetitions) * 1e+9;
 }

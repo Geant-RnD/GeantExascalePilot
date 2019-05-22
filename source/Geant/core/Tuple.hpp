@@ -1,24 +1,22 @@
-//  MIT License
-//  Copyright (c) 2019 Jonathan R. Madsen
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//  SOFTWARE.
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Reimplementation of std::tuple for use in device code.
+ */
+//===----------------------------------------------------------------------===//
 
 #pragma once
 
-#include "Geant/core/Macros.hpp"
+#include "Geant/core/Config.hpp"
+
+#include <utility>
 
 //======================================================================================//
 
@@ -31,8 +29,7 @@ using _Void_t = void;
 // Stores a tuple of indices.  Used by tuple and pair, and by bind() to
 // extract the elements in a tuple.
 template <size_t... _Indexes>
-struct _IndexTuple {
-};
+struct _IndexTuple {};
 
 // Concatenates two _IndexTuples.
 template <typename _Itup1, typename _Itup2>
@@ -45,8 +42,8 @@ struct ITupleCat<_IndexTuple<_Ind1...>, _IndexTuple<_Ind2...>> {
 
 // Builds an _IndexTuple<0, 1, 2, ..., _Num-1>.
 template <size_t _Num>
-struct _BuildIndexTuple
-    : ITupleCat<typename _BuildIndexTuple<_Num / 2>::__type, typename _BuildIndexTuple<_Num - _Num / 2>::__type> {
+struct _BuildIndexTuple : ITupleCat<typename _BuildIndexTuple<_Num / 2>::__type,
+                                    typename _BuildIndexTuple<_Num - _Num / 2>::__type> {
 };
 
 template <>
@@ -68,39 +65,33 @@ struct TupleSize;
 
 #if __cplusplus <= 201402L
 template <typename _Tp, typename = void>
-struct __TupleSize_cv_impl {
-};
+struct __TupleSize_cv_impl {};
 
 template <typename _Tp>
 struct __TupleSize_cv_impl<_Tp, _Void_t<decltype(TupleSize<_Tp>::value)>>
-    : std::integral_constant<size_t, TupleSize<_Tp>::value> {
-};
+    : std::integral_constant<size_t, TupleSize<_Tp>::value> {};
 
 // _GLIBCXX_RESOLVE_LIB_DEFECTS
 // 2313. TupleSize should always derive from integral_constant<size_t, N>
 template <typename _Tp>
-struct TupleSize<const _Tp> : __TupleSize_cv_impl<_Tp> {
-};
+struct TupleSize<const _Tp> : __TupleSize_cv_impl<_Tp> {};
 
 template <typename _Tp>
-struct TupleSize<volatile _Tp> : __TupleSize_cv_impl<_Tp> {
-};
+struct TupleSize<volatile _Tp> : __TupleSize_cv_impl<_Tp> {};
 
 template <typename _Tp>
-struct TupleSize<const volatile _Tp> : __TupleSize_cv_impl<_Tp> {
-};
+struct TupleSize<const volatile _Tp> : __TupleSize_cv_impl<_Tp> {};
 #else
 template <typename _Tp, typename _Up = typename remove_cv<_Tp>::type,
-          typename = typename enable_if<is_same<_Tp, _Up>::value>::type, size_t = TupleSize<_Tp>::value>
+          typename = typename enable_if<is_same<_Tp, _Up>::value>::type,
+          size_t   = TupleSize<_Tp>::value>
 using __enable_if_has_TupleSize = _Tp;
 
 template <typename _Tp>
-struct TupleSize<const __enable_if_has_TupleSize<_Tp>> : public TupleSize<_Tp> {
-};
+struct TupleSize<const __enable_if_has_TupleSize<_Tp>> : public TupleSize<_Tp> {};
 
 template <typename _Tp>
-struct TupleSize<volatile __enable_if_has_TupleSize<_Tp>> : public TupleSize<_Tp> {
-};
+struct TupleSize<volatile __enable_if_has_TupleSize<_Tp>> : public TupleSize<_Tp> {};
 
 template <typename _Tp>
 struct TupleSize<const volatile __enable_if_has_TupleSize<_Tp>> : public TupleSize<_Tp> {
@@ -131,7 +122,7 @@ struct TupleElement<__i, const volatile _Tp> {
 };
 
 #if __cplusplus > 201103L
-#define __cpp_lib_TupleElement_t 201402
+#  define __cpp_lib_TupleElement_t 201402
 
 template <std::size_t __i, typename _Tp>
 using TupleElement_t = typename TupleElement<__i, _Tp>::type;
@@ -143,21 +134,21 @@ template <typename... _Elements>
 class Tuple;
 
 template <typename _Tp>
-struct _IsEmptyNonTuple : std::is_empty<_Tp> {
-};
+struct _IsEmptyNonTuple : std::is_empty<_Tp> {};
 
 // Using EBO for elements that are tuples causes ambiguous base errors.
 template <typename _El0, typename... _El>
-struct _IsEmptyNonTuple<Tuple<_El0, _El...>> : std::false_type {
-};
+struct _IsEmptyNonTuple<Tuple<_El0, _El...>> : std::false_type {};
 
 // Use the Empty Base-class Optimization for empty, non-final types.
 // template <typename _Tp>
-// using _EmptyNotFinal = typename std::conditional<std::is_final<_Tp>, std::false_type, _IsEmptyNonTuple<_Tp>>::type;
-// Use the Empty Base-class Optimization for empty, non-final types.
+// using _EmptyNotFinal = typename std::conditional<std::is_final<_Tp>, std::false_type,
+// _IsEmptyNonTuple<_Tp>>::type; Use the Empty Base-class Optimization for empty,
+// non-final types.
 template <typename _Tp>
 using _EmptyNotFinal =
-    typename std::conditional<std::is_final<_Tp>::value, std::false_type, _IsEmptyNonTuple<_Tp>>::type;
+    typename std::conditional<std::is_final<_Tp>::value, std::false_type,
+                              _IsEmptyNonTuple<_Tp>>::type;
 
 template <std::size_t _Idx, typename _Head, bool = _EmptyNotFinal<_Head>::value>
 struct _HeadBase;
@@ -192,8 +183,7 @@ struct _HeadBase<_Idx, _Head, true> : public _Head {
 
   template <typename _UHead>
   constexpr _HeadBase(_UHead &&__h) : _Head(std::forward<_UHead>(__h))
-  {
-  }
+  {}
 
   /*
       _HeadBase(allocator_arg_t, __uses_alloc0)
@@ -247,8 +237,7 @@ struct _HeadBase<_Idx, _Head, false> {
 
   template <typename _UHead>
   constexpr _HeadBase(_UHead &&__h) : _M_head_impl(std::forward<_UHead>(__h))
-  {
-  }
+  {}
 
   /*
       _HeadBase(allocator_arg_t, __uses_alloc0)
@@ -287,7 +276,10 @@ struct _HeadBase<_Idx, _Head, false> {
       }
   */
   static constexpr _Head &_M_head(_HeadBase &__b) noexcept { return __b._M_head_impl; }
-  static constexpr const _Head &_M_head(const _HeadBase &__b) noexcept { return __b._M_head_impl; }
+  static constexpr const _Head &_M_head(const _HeadBase &__b) noexcept
+  {
+    return __b._M_head_impl;
+  }
 
   _Head _M_head_impl;
 };
@@ -296,33 +288,29 @@ template <typename...>
 struct _And;
 
 template <>
-struct _And<> : public std::true_type {
-};
+struct _And<> : public std::true_type {};
 
 template <typename _B1>
-struct _And<_B1> : public _B1 {
-};
+struct _And<_B1> : public _B1 {};
 
 template <typename _B1, typename _B2>
-struct _And<_B1, _B2> : public std::conditional<_B1::value, _B2, _B1>::type {
-};
+struct _And<_B1, _B2> : public std::conditional<_B1::value, _B2, _B1>::type {};
 
 template <typename _B1, typename _B2, typename _B3, typename... _Bn>
-struct _And<_B1, _B2, _B3, _Bn...> : public std::conditional<_B1::value, _And<_B2, _B3, _Bn...>, _B1>::type {
-};
+struct _And<_B1, _B2, _B3, _Bn...>
+    : public std::conditional<_B1::value, _And<_B2, _B3, _Bn...>, _B1>::type {};
 
 template <bool __v>
 using _BoolConstant = std::integral_constant<bool, __v>;
 
 #if __cplusplus > 201402L
-#define __cpp_lib_bool_constant 201505
+#  define __cpp_lib_bool_constant 201505
 template <bool __v>
 using bool_constant = integral_constant<bool, __v>;
 #endif
 
 template <typename _Pp>
-struct _Not : public _BoolConstant<!bool(_Pp::value)> {
-};
+struct _Not : public _BoolConstant<!bool(_Pp::value)> {};
 
 /**
  * Contains the actual implementation of the @c tuple template, stored
@@ -341,50 +329,60 @@ struct _TupleImpl;
  * (which contains the @c Tail).
  */
 template <std::size_t _Idx, typename _Head, typename... _Tail>
-struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>, private _HeadBase<_Idx, _Head> {
+struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>,
+                                           private _HeadBase<_Idx, _Head> {
   template <std::size_t, typename...>
   friend struct _TupleImpl;
 
   typedef _TupleImpl<_Idx + 1, _Tail...> _Inherited;
   typedef _HeadBase<_Idx, _Head> _Base;
 
-  static constexpr _Head &_M_head(_TupleImpl &__t) noexcept { return _Base::_M_head(__t); }
-  static constexpr const _Head &_M_head(const _TupleImpl &__t) noexcept { return _Base::_M_head(__t); }
+  static constexpr _Head &_M_head(_TupleImpl &__t) noexcept
+  {
+    return _Base::_M_head(__t);
+  }
+  static constexpr const _Head &_M_head(const _TupleImpl &__t) noexcept
+  {
+    return _Base::_M_head(__t);
+  }
   static constexpr _Inherited &_M_tail(_TupleImpl &__t) noexcept { return __t; }
-  static constexpr const _Inherited &_M_tail(const _TupleImpl &__t) noexcept { return __t; }
+  static constexpr const _Inherited &_M_tail(const _TupleImpl &__t) noexcept
+  {
+    return __t;
+  }
 
   constexpr _TupleImpl() : _Inherited(), _Base() {}
 
-  explicit constexpr _TupleImpl(const _Head &__head, const _Tail &... __tail) : _Inherited(__tail...), _Base(__head) {}
+  explicit constexpr _TupleImpl(const _Head &__head, const _Tail &... __tail)
+      : _Inherited(__tail...), _Base(__head)
+  {}
 
-  template <typename _UHead, typename... _UTail,
-            typename = typename std::enable_if<sizeof...(_Tail) == sizeof...(_UTail)>::type>
+  template <
+      typename _UHead, typename... _UTail,
+      typename = typename std::enable_if<sizeof...(_Tail) == sizeof...(_UTail)>::type>
   explicit constexpr _TupleImpl(_UHead &&__head, _UTail &&... __tail)
       : _Inherited(std::forward<_UTail>(__tail)...), _Base(std::forward<_UHead>(__head))
-  {
-  }
+  {}
 
   constexpr _TupleImpl(const _TupleImpl &) = default;
 
   constexpr _TupleImpl(_TupleImpl &&__in) noexcept(
-      _And<std::is_nothrow_move_constructible<_Head>, std::is_nothrow_move_constructible<_Inherited>>::value)
+      _And<std::is_nothrow_move_constructible<_Head>,
+           std::is_nothrow_move_constructible<_Inherited>>::value)
       : _Inherited(std::move(_M_tail(__in))), _Base(std::forward<_Head>(_M_head(__in)))
-  {
-  }
+  {}
 
   template <typename... _UElements>
   constexpr _TupleImpl(const _TupleImpl<_Idx, _UElements...> &__in)
       : _Inherited(_TupleImpl<_Idx, _UElements...>::_M_tail(__in)),
         _Base(_TupleImpl<_Idx, _UElements...>::_M_head(__in))
-  {
-  }
+  {}
 
   template <typename _UHead, typename... _UTails>
   constexpr _TupleImpl(_TupleImpl<_Idx, _UHead, _UTails...> &&__in)
       : _Inherited(std::move(_TupleImpl<_Idx, _UHead, _UTails...>::_M_tail(__in))),
         _Base(std::forward<_UHead>(_TupleImpl<_Idx, _UHead, _UTails...>::_M_head(__in)))
-  {
-  }
+  {}
 
   /*
       template <typename _Alloc>
@@ -395,17 +393,18 @@ struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>
       }
 
       template <typename _Alloc>
-      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _Head& __head, const _Tail&... __tail)
-      : _Inherited(__tag, __a, __tail...)
-      , _Base(__use_alloc<_Head, _Alloc, _Head>(__a), __head)
+      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _Head& __head, const
+     _Tail&... __tail) : _Inherited(__tag, __a, __tail...) , _Base(__use_alloc<_Head,
+     _Alloc, _Head>(__a), __head)
       {
       }
 
       template <typename _Alloc, typename _UHead, typename... _UTail,
-                typename = typename std::enable_if<sizeof...(_Tail) == sizeof...(_UTail)>::type>
-      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, _UHead&& __head, _UTail&&... __tail)
-      : _Inherited(__tag, __a, std::forward<_UTail>(__tail)...)
-      , _Base(__use_alloc<_Head, _Alloc, _UHead>(__a), std::forward<_UHead>(__head))
+                typename = typename std::enable_if<sizeof...(_Tail) ==
+     sizeof...(_UTail)>::type> _TupleImpl(allocator_arg_t __tag, const _Alloc& __a,
+     _UHead&& __head, _UTail&&... __tail) : _Inherited(__tag, __a,
+     std::forward<_UTail>(__tail)...) , _Base(__use_alloc<_Head, _Alloc, _UHead>(__a),
+     std::forward<_UHead>(__head))
       {
       }
 
@@ -424,16 +423,17 @@ struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>
       }
 
       template <typename _Alloc, typename... _UElements>
-      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _TupleImpl<_Idx, _UElements...>& __in)
-      : _Inherited(__tag, __a, _TupleImpl<_Idx, _UElements...>::_M_tail(__in))
-      , _Base(__use_alloc<_Head, _Alloc, _Head>(__a), _TupleImpl<_Idx, _UElements...>::_M_head(__in))
+      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _TupleImpl<_Idx,
+     _UElements...>& __in) : _Inherited(__tag, __a, _TupleImpl<_Idx,
+     _UElements...>::_M_tail(__in)) , _Base(__use_alloc<_Head, _Alloc, _Head>(__a),
+     _TupleImpl<_Idx, _UElements...>::_M_head(__in))
       {
       }
 
       template <typename _Alloc, typename _UHead, typename... _UTails>
-      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, _TupleImpl<_Idx, _UHead, _UTails...>&& __in)
-      : _Inherited(__tag, __a, std::move(_TupleImpl<_Idx, _UHead, _UTails...>::_M_tail(__in)))
-      , _Base(__use_alloc<_Head, _Alloc, _UHead>(__a),
+      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, _TupleImpl<_Idx, _UHead,
+     _UTails...>&& __in) : _Inherited(__tag, __a, std::move(_TupleImpl<_Idx, _UHead,
+     _UTails...>::_M_tail(__in))) , _Base(__use_alloc<_Head, _Alloc, _UHead>(__a),
               std::forward<_UHead>(_TupleImpl<_Idx, _UHead, _UTails...>::_M_head(__in)))
       {
       }
@@ -446,7 +446,8 @@ struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>
   }
 
   _TupleImpl &operator=(_TupleImpl &&__in) noexcept(
-      _And<std::is_nothrow_move_assignable<_Head>, std::is_nothrow_move_assignable<_Inherited>>::value)
+      _And<std::is_nothrow_move_assignable<_Head>,
+           std::is_nothrow_move_assignable<_Inherited>>::value)
   {
     _M_head(*this) = std::forward<_Head>(_M_head(__in));
     _M_tail(*this) = std::move(_M_tail(__in));
@@ -464,14 +465,16 @@ struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>
   template <typename _UHead, typename... _UTails>
   _TupleImpl &operator=(_TupleImpl<_Idx, _UHead, _UTails...> &&__in)
   {
-    _M_head(*this) = std::forward<_UHead>(_TupleImpl<_Idx, _UHead, _UTails...>::_M_head(__in));
+    _M_head(*this) =
+        std::forward<_UHead>(_TupleImpl<_Idx, _UHead, _UTails...>::_M_head(__in));
     _M_tail(*this) = std::move(_TupleImpl<_Idx, _UHead, _UTails...>::_M_tail(__in));
     return *this;
   }
   /*
   protected:
       void _M_swap(_TupleImpl& __in) noexcept(
-          __is_nothrow_swappable<_Head>::value&& noexcept(_M_tail(__in)._M_swap(_M_tail(__in))))
+          __is_nothrow_swappable<_Head>::value&&
+  noexcept(_M_tail(__in)._M_swap(_M_tail(__in))))
       {
           using std::swap;
           swap(_M_head(*this), _M_head(__in));
@@ -488,9 +491,15 @@ struct _TupleImpl<_Idx, _Head> : private _HeadBase<_Idx, _Head> {
 
   typedef _HeadBase<_Idx, _Head> _Base;
 
-  static constexpr _Head &_M_head(_TupleImpl &__t) noexcept { return _Base::_M_head(__t); }
+  static constexpr _Head &_M_head(_TupleImpl &__t) noexcept
+  {
+    return _Base::_M_head(__t);
+  }
 
-  static constexpr const _Head &_M_head(const _TupleImpl &__t) noexcept { return _Base::_M_head(__t); }
+  static constexpr const _Head &_M_head(const _TupleImpl &__t) noexcept
+  {
+    return _Base::_M_head(__t);
+  }
 
   constexpr _TupleImpl() : _Base() {}
 
@@ -498,26 +507,24 @@ struct _TupleImpl<_Idx, _Head> : private _HeadBase<_Idx, _Head> {
 
   template <typename _UHead>
   explicit constexpr _TupleImpl(_UHead &&__head) : _Base(std::forward<_UHead>(__head))
-  {
-  }
+  {}
 
   constexpr _TupleImpl(const _TupleImpl &) = default;
 
-  constexpr _TupleImpl(_TupleImpl &&__in) noexcept(std::is_nothrow_move_constructible<_Head>::value)
+  constexpr _TupleImpl(_TupleImpl &&__in) noexcept(
+      std::is_nothrow_move_constructible<_Head>::value)
       : _Base(std::forward<_Head>(_M_head(__in)))
-  {
-  }
+  {}
 
   template <typename _UHead>
-  constexpr _TupleImpl(const _TupleImpl<_Idx, _UHead> &__in) : _Base(_TupleImpl<_Idx, _UHead>::_M_head(__in))
-  {
-  }
+  constexpr _TupleImpl(const _TupleImpl<_Idx, _UHead> &__in)
+      : _Base(_TupleImpl<_Idx, _UHead>::_M_head(__in))
+  {}
 
   template <typename _UHead>
   constexpr _TupleImpl(_TupleImpl<_Idx, _UHead> &&__in)
       : _Base(std::forward<_UHead>(_TupleImpl<_Idx, _UHead>::_M_head(__in)))
-  {
-  }
+  {}
 
   /*
       template <typename _Alloc>
@@ -551,14 +558,16 @@ struct _TupleImpl<_Idx, _Head> : private _HeadBase<_Idx, _Head> {
       }
 
       template <typename _Alloc, typename _UHead>
-      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _TupleImpl<_Idx, _UHead>& __in)
-      : _Base(__use_alloc<_Head, _Alloc, _Head>(__a), _TupleImpl<_Idx, _UHead>::_M_head(__in))
+      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _TupleImpl<_Idx, _UHead>&
+     __in) : _Base(__use_alloc<_Head, _Alloc, _Head>(__a), _TupleImpl<_Idx,
+     _UHead>::_M_head(__in))
       {
       }
 
       template <typename _Alloc, typename _UHead>
-      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, _TupleImpl<_Idx, _UHead>&& __in)
-      : _Base(__use_alloc<_Head, _Alloc, _UHead>(__a), std::forward<_UHead>(_TupleImpl<_Idx, _UHead>::_M_head(__in)))
+      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, _TupleImpl<_Idx, _UHead>&&
+     __in) : _Base(__use_alloc<_Head, _Alloc, _UHead>(__a),
+     std::forward<_UHead>(_TupleImpl<_Idx, _UHead>::_M_head(__in)))
       {
       }
   */
@@ -568,7 +577,8 @@ struct _TupleImpl<_Idx, _Head> : private _HeadBase<_Idx, _Head> {
     return *this;
   }
 
-  _TupleImpl &operator=(_TupleImpl &&__in) noexcept(std::is_nothrow_move_assignable<_Head>::value)
+  _TupleImpl &operator=(_TupleImpl &&__in) noexcept(
+      std::is_nothrow_move_assignable<_Head>::value)
   {
     _M_head(*this) = std::forward<_Head>(_M_head(__in));
     return *this;
@@ -630,16 +640,17 @@ struct _TC {
   static constexpr bool _NonNestedTuple()
   {
     return _And<_Not<std::is_same<Tuple<_Elements...>,
-                                  typename std::remove_cv<typename std::remove_reference<_SrcTuple>::type>::type>>,
+                                  typename std::remove_cv<typename std::remove_reference<
+                                      _SrcTuple>::type>::type>>,
                 _Not<std::is_convertible<_SrcTuple, _Elements...>>,
                 _Not<std::is_constructible<_Elements..., _SrcTuple>>>::value;
   }
   template <typename... _UElements>
   static constexpr bool __NotSameTuple()
   {
-    return _Not<
-        std::is_same<Tuple<_Elements...>,
-                     typename std::remove_const<typename std::remove_reference<_UElements...>::type>::type>>::value;
+    return _Not<std::is_same<Tuple<_Elements...>,
+                             typename std::remove_const<typename std::remove_reference<
+                                 _UElements...>::type>::type>>::value;
   }
 };
 
@@ -701,47 +712,49 @@ class Tuple : public _TupleImpl<0, _Elements...> {
   };
 
 public:
-  template <typename _Dummy                                                                           = void,
-            typename std::enable_if<_TC2<_Dummy>::_ImplicitlyDefaultConstructibleTuple(), bool>::type = true>
+  template <typename _Dummy                     = void,
+            typename std::enable_if<_TC2<_Dummy>::_ImplicitlyDefaultConstructibleTuple(),
+                                    bool>::type = true>
   constexpr Tuple() : _Inherited()
-  {
-  }
+  {}
 
-  template <typename _Dummy = void, typename std::enable_if<_TC2<_Dummy>::_DefaultConstructibleTuple() &&
-                                                                !_TC2<_Dummy>::_ImplicitlyDefaultConstructibleTuple(),
-                                                            bool>::type = false>
+  template <
+      typename _Dummy                     = void,
+      typename std::enable_if<_TC2<_Dummy>::_DefaultConstructibleTuple() &&
+                                  !_TC2<_Dummy>::_ImplicitlyDefaultConstructibleTuple(),
+                              bool>::type = false>
   explicit constexpr Tuple() : _Inherited()
-  {
-  }
+  {}
 
   // Shortcut for the cases where constructors taking _Elements...
   // need to be constrained.
   template <typename _Dummy>
   using _TCC = _TC<std::is_same<_Dummy, void>::value, _Elements...>;
 
-  template <typename _Dummy                     = void,
-            typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_Elements...>() &&
-                                        _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_Elements...>() &&
-                                        (sizeof...(_Elements) >= 1),
-                                    bool>::type = true>
+  template <typename _Dummy = void,
+            typename std::enable_if<
+                _TCC<_Dummy>::template _ConstructibleTuple<_Elements...>() &&
+                    _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_Elements...>() &&
+                    (sizeof...(_Elements) >= 1),
+                bool>::type = true>
   constexpr Tuple(const _Elements &... __elements) : _Inherited(__elements...)
-  {
-  }
+  {}
 
-  template <typename _Dummy                     = void,
-            typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_Elements...>() &&
-                                        !_TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_Elements...>() &&
-                                        (sizeof...(_Elements) >= 1),
-                                    bool>::type = false>
+  template <typename _Dummy = void,
+            typename std::enable_if<
+                _TCC<_Dummy>::template _ConstructibleTuple<_Elements...>() &&
+                    !_TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_Elements...>() &&
+                    (sizeof...(_Elements) >= 1),
+                bool>::type = false>
   explicit constexpr Tuple(const _Elements &... __elements) : _Inherited(__elements...)
-  {
-  }
+  {}
 
   // Shortcut for the cases where constructors taking _UElements...
   // need to be constrained.
   template <typename... _UElements>
   using _TMC = _TC<(sizeof...(_Elements) == sizeof...(_UElements)) &&
-                       (_TC<(sizeof...(_UElements) == 1), _Elements...>::template __NotSameTuple<_UElements...>()),
+                       (_TC<(sizeof...(_UElements) == 1),
+                            _Elements...>::template __NotSameTuple<_UElements...>()),
                    _Elements...>;
 
   // Shortcut for the cases where constructors taking Tuple<_UElements...>
@@ -751,25 +764,27 @@ public:
                         !std::is_same<Tuple<_Elements...>, Tuple<_UElements...>>::value,
                     _Elements...>;
 
-  template <
-      typename... _UElements,
-      typename std::enable_if<_TMC<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
-                                  _TMC<_UElements...>::template _ImplicitlyMoveConvertibleTuple<_UElements...>() &&
-                                  (sizeof...(_Elements) >= 1),
-                              bool>::type = true>
-  constexpr Tuple(_UElements &&... __elements) : _Inherited(std::forward<_UElements>(__elements)...)
-  {
-  }
+  template <typename... _UElements,
+            typename std::enable_if<
+                _TMC<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
+                    _TMC<_UElements...>::template _ImplicitlyMoveConvertibleTuple<
+                        _UElements...>() &&
+                    (sizeof...(_Elements) >= 1),
+                bool>::type = true>
+  constexpr Tuple(_UElements &&... __elements)
+      : _Inherited(std::forward<_UElements>(__elements)...)
+  {}
 
-  template <
-      typename... _UElements,
-      typename std::enable_if<_TMC<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
-                                  !_TMC<_UElements...>::template _ImplicitlyMoveConvertibleTuple<_UElements...>() &&
-                                  (sizeof...(_Elements) >= 1),
-                              bool>::type = false>
-  explicit constexpr Tuple(_UElements &&... __elements) : _Inherited(std::forward<_UElements>(__elements)...)
-  {
-  }
+  template <typename... _UElements,
+            typename std::enable_if<
+                _TMC<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
+                    !_TMC<_UElements...>::template _ImplicitlyMoveConvertibleTuple<
+                        _UElements...>() &&
+                    (sizeof...(_Elements) >= 1),
+                bool>::type = false>
+  explicit constexpr Tuple(_UElements &&... __elements)
+      : _Inherited(std::forward<_UElements>(__elements)...)
+  {}
 
   constexpr Tuple(const Tuple &) = default;
 
@@ -778,47 +793,54 @@ public:
   // Shortcut for the cases where constructors taking Tuples
   // must avoid creating temporaries.
   template <typename _Dummy>
-  using _TNTC = _TC<std::is_same<_Dummy, void>::value && sizeof...(_Elements) == 1, _Elements...>;
+  using _TNTC =
+      _TC<std::is_same<_Dummy, void>::value && sizeof...(_Elements) == 1, _Elements...>;
 
-  template <typename... _UElements, typename _Dummy = void,
-            typename std::enable_if<_TMCT<_UElements...>::template _ConstructibleTuple<_UElements...>() &&
-                                        _TMCT<_UElements...>::template _ImplicitlyConvertibleTuple<_UElements...>() &&
-                                        _TNTC<_Dummy>::template _NonNestedTuple<const Tuple<_UElements...> &>(),
-                                    bool>::type = true>
+  template <
+      typename... _UElements, typename _Dummy = void,
+      typename std::enable_if<
+          _TMCT<_UElements...>::template _ConstructibleTuple<_UElements...>() &&
+              _TMCT<_UElements...>::template _ImplicitlyConvertibleTuple<
+                  _UElements...>() &&
+              _TNTC<_Dummy>::template _NonNestedTuple<const Tuple<_UElements...> &>(),
+          bool>::type = true>
   constexpr Tuple(const Tuple<_UElements...> &__in)
       : _Inherited(static_cast<const _TupleImpl<0, _UElements...> &>(__in))
-  {
-  }
+  {}
 
-  template <typename... _UElements, typename _Dummy = void,
-            typename std::enable_if<_TMCT<_UElements...>::template _ConstructibleTuple<_UElements...>() &&
-                                        !_TMCT<_UElements...>::template _ImplicitlyConvertibleTuple<_UElements...>() &&
-                                        _TNTC<_Dummy>::template _NonNestedTuple<const Tuple<_UElements...> &>(),
-                                    bool>::type = false>
+  template <
+      typename... _UElements, typename _Dummy = void,
+      typename std::enable_if<
+          _TMCT<_UElements...>::template _ConstructibleTuple<_UElements...>() &&
+              !_TMCT<_UElements...>::template _ImplicitlyConvertibleTuple<
+                  _UElements...>() &&
+              _TNTC<_Dummy>::template _NonNestedTuple<const Tuple<_UElements...> &>(),
+          bool>::type = false>
   explicit constexpr Tuple(const Tuple<_UElements...> &__in)
       : _Inherited(static_cast<const _TupleImpl<0, _UElements...> &>(__in))
-  {
-  }
+  {}
 
-  template <
-      typename... _UElements, typename _Dummy = void,
-      typename std::enable_if<_TMCT<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
-                                  _TMCT<_UElements...>::template _ImplicitlyMoveConvertibleTuple<_UElements...>() &&
-                                  _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...> &&>(),
-                              bool>::type = true>
-  constexpr Tuple(Tuple<_UElements...> &&__in) : _Inherited(static_cast<_TupleImpl<0, _UElements...> &&>(__in))
-  {
-  }
+  template <typename... _UElements, typename _Dummy = void,
+            typename std::enable_if<
+                _TMCT<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
+                    _TMCT<_UElements...>::template _ImplicitlyMoveConvertibleTuple<
+                        _UElements...>() &&
+                    _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...> &&>(),
+                bool>::type = true>
+  constexpr Tuple(Tuple<_UElements...> &&__in)
+      : _Inherited(static_cast<_TupleImpl<0, _UElements...> &&>(__in))
+  {}
 
-  template <
-      typename... _UElements, typename _Dummy = void,
-      typename std::enable_if<_TMCT<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
-                                  !_TMCT<_UElements...>::template _ImplicitlyMoveConvertibleTuple<_UElements...>() &&
-                                  _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...> &&>(),
-                              bool>::type = false>
-  explicit constexpr Tuple(Tuple<_UElements...> &&__in) : _Inherited(static_cast<_TupleImpl<0, _UElements...> &&>(__in))
-  {
-  }
+  template <typename... _UElements, typename _Dummy = void,
+            typename std::enable_if<
+                _TMCT<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
+                    !_TMCT<_UElements...>::template _ImplicitlyMoveConvertibleTuple<
+                        _UElements...>() &&
+                    _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...> &&>(),
+                bool>::type = false>
+  explicit constexpr Tuple(Tuple<_UElements...> &&__in)
+      : _Inherited(static_cast<_TupleImpl<0, _UElements...> &&>(__in))
+  {}
 
   // Allocator-extended constructors.
   /*
@@ -829,37 +851,40 @@ public:
       }
 
       template <typename _Alloc, typename _Dummy = void,
-                typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_Elements...>() &&
-                                       _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_Elements...>(),
-                                   bool>::type = true>
+                typename std::enable_if<_TCC<_Dummy>::template
+     _ConstructibleTuple<_Elements...>() && _TCC<_Dummy>::template
+     _ImplicitlyConvertibleTuple<_Elements...>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, const _Elements&... __elements)
       : _Inherited(__tag, __a, __elements...)
       {
       }
 
       template <typename _Alloc, typename _Dummy = void,
-                typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_Elements...>() &&
-                                       !_TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_Elements...>(),
-                                   bool>::type = false>
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const _Elements&... __elements)
-      : _Inherited(__tag, __a, __elements...)
+                typename std::enable_if<_TCC<_Dummy>::template
+     _ConstructibleTuple<_Elements...>() &&
+                                       !_TCC<_Dummy>::template
+     _ImplicitlyConvertibleTuple<_Elements...>(), bool>::type = false> explicit
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, const _Elements&... __elements) :
+     _Inherited(__tag, __a, __elements...)
       {
       }
 
       template <typename _Alloc, typename... _UElements,
-                typename std::enable_if<_TMC<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
-                                       _TMC<_UElements...>::template _ImplicitlyMoveConvertibleTuple<_UElements...>(),
-                                   bool>::type = true>
+                typename std::enable_if<_TMC<_UElements...>::template
+     _MoveConstructibleTuple<_UElements...>() && _TMC<_UElements...>::template
+     _ImplicitlyMoveConvertibleTuple<_UElements...>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, _UElements&&... __elements)
       : _Inherited(__tag, __a, std::forward<_UElements>(__elements)...)
       {
       }
 
       template <typename _Alloc, typename... _UElements,
-                typename std::enable_if<_TMC<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
+                typename std::enable_if<_TMC<_UElements...>::template
+     _MoveConstructibleTuple<_UElements...>() &&
                                        !_TMC<_UElements...>::template
-     _ImplicitlyMoveConvertibleTuple<_UElements...>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag,
-     const _Alloc& __a, _UElements&&... __elements) : _Inherited(__tag, __a, std::forward<_UElements>(__elements)...)
+     _ImplicitlyMoveConvertibleTuple<_UElements...>(), bool>::type = false> explicit
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, _UElements&&... __elements) :
+     _Inherited(__tag, __a, std::forward<_UElements>(__elements)...)
       {
       }
 
@@ -876,41 +901,45 @@ public:
       }
 
       template <typename _Alloc, typename _Dummy = void, typename... _UElements,
-                typename std::enable_if<_TMCT<_UElements...>::template _ConstructibleTuple<_UElements...>() &&
-                                       _TMCT<_UElements...>::template _ImplicitlyConvertibleTuple<_UElements...>() &&
-                                       _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...>&&>(),
-                                   bool>::type = true>
-      Tuple(allocator_arg_t __tag, const _Alloc& __a, const Tuple<_UElements...>& __in)
-      : _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _UElements...>&>(__in))
+                typename std::enable_if<_TMCT<_UElements...>::template
+     _ConstructibleTuple<_UElements...>() && _TMCT<_UElements...>::template
+     _ImplicitlyConvertibleTuple<_UElements...>() && _TNTC<_Dummy>::template
+     _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type = true> Tuple(allocator_arg_t
+     __tag, const _Alloc& __a, const Tuple<_UElements...>& __in) : _Inherited(__tag, __a,
+     static_cast<const _TupleImpl<0, _UElements...>&>(__in))
       {
       }
 
       template <typename _Alloc, typename _Dummy = void, typename... _UElements,
-                typename std::enable_if<_TMCT<_UElements...>::template _ConstructibleTuple<_UElements...>() &&
-                                       !_TMCT<_UElements...>::template _ImplicitlyConvertibleTuple<_UElements...>() &&
-                                       _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...>&&>(),
-                                   bool>::type = false>
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const Tuple<_UElements...>& __in)
-      : _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _UElements...>&>(__in))
+                typename std::enable_if<_TMCT<_UElements...>::template
+     _ConstructibleTuple<_UElements...>() &&
+                                       !_TMCT<_UElements...>::template
+     _ImplicitlyConvertibleTuple<_UElements...>() && _TNTC<_Dummy>::template
+     _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type = false> explicit
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, const Tuple<_UElements...>& __in) :
+     _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _UElements...>&>(__in))
       {
       }
 
       template <typename _Alloc, typename _Dummy = void, typename... _UElements,
-                typename std::enable_if<_TMCT<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
-                                       _TMCT<_UElements...>::template _ImplicitlyMoveConvertibleTuple<_UElements...>()
-     && _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type = true> Tuple(allocator_arg_t
-     __tag, const _Alloc& __a, Tuple<_UElements...>&& __in) : _Inherited(__tag, __a, static_cast<_TupleImpl<0,
-     _UElements...>&&>(__in))
+                typename std::enable_if<_TMCT<_UElements...>::template
+     _MoveConstructibleTuple<_UElements...>() && _TMCT<_UElements...>::template
+     _ImplicitlyMoveConvertibleTuple<_UElements...>()
+     && _TNTC<_Dummy>::template _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type =
+     true> Tuple(allocator_arg_t
+     __tag, const _Alloc& __a, Tuple<_UElements...>&& __in) : _Inherited(__tag, __a,
+     static_cast<_TupleImpl<0, _UElements...>&&>(__in))
       {
       }
 
       template <typename _Alloc, typename _Dummy = void, typename... _UElements,
-                typename std::enable_if<_TMCT<_UElements...>::template _MoveConstructibleTuple<_UElements...>() &&
+                typename std::enable_if<_TMCT<_UElements...>::template
+     _MoveConstructibleTuple<_UElements...>() &&
                                        !_TMCT<_UElements...>::template
      _ImplicitlyMoveConvertibleTuple<_UElements...>() && _TNTC<_Dummy>::template
-     _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag, const
-     _Alloc& __a, Tuple<_UElements...>&& __in) : _Inherited(__tag, __a, static_cast<_TupleImpl<0,
-     _UElements...>&&>(__in))
+     _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type = false> explicit
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, Tuple<_UElements...>&& __in) :
+     _Inherited(__tag, __a, static_cast<_TupleImpl<0, _UElements...>&&>(__in))
       {
       }
   */
@@ -920,29 +949,33 @@ public:
     return *this;
   }
 
-  Tuple &operator=(Tuple &&__in) noexcept(std::is_nothrow_move_assignable<_Inherited>::value)
+  Tuple &operator=(Tuple &&__in) noexcept(
+      std::is_nothrow_move_assignable<_Inherited>::value)
   {
     static_cast<_Inherited &>(*this) = std::move(__in);
     return *this;
   }
 
   template <typename... _UElements>
-  typename std::enable_if<sizeof...(_UElements) == sizeof...(_Elements), Tuple &>::type operator=(
-      const Tuple<_UElements...> &__in)
+  typename std::enable_if<sizeof...(_UElements) == sizeof...(_Elements), Tuple &>::type
+  operator=(const Tuple<_UElements...> &__in)
   {
     static_cast<_Inherited &>(*this) = __in;
     return *this;
   }
 
   template <typename... _UElements>
-  typename std::enable_if<sizeof...(_UElements) == sizeof...(_Elements), Tuple &>::type operator=(
-      Tuple<_UElements...> &&__in)
+  typename std::enable_if<sizeof...(_UElements) == sizeof...(_Elements), Tuple &>::type
+  operator=(Tuple<_UElements...> &&__in)
   {
     static_cast<_Inherited &>(*this) = std::move(__in);
     return *this;
   }
 
-  void swap(Tuple &__in) noexcept(noexcept(__in._M_swap(__in))) { _Inherited::_M_swap(__in); }
+  void swap(Tuple &__in) noexcept(noexcept(__in._M_swap(__in)))
+  {
+    _Inherited::_M_swap(__in);
+  }
 };
 
 #if __cpp_deduction_guides >= 201606
@@ -988,45 +1021,46 @@ class Tuple<_T1, _T2> : public _TupleImpl<0, _T1, _T2> {
   typedef _TupleImpl<0, _T1, _T2> _Inherited;
 
 public:
-  template <typename _U1 = _T1, typename _U2 = _T2,
-            typename std::enable_if<
-                _And<std::is_trivially_default_constructible<_U1>, std::is_trivially_default_constructible<_U2>>::value,
-                bool>::type = true>
+  template <
+      typename _U1 = _T1, typename _U2 = _T2,
+      typename std::enable_if<_And<std::is_trivially_default_constructible<_U1>,
+                                   std::is_trivially_default_constructible<_U2>>::value,
+                              bool>::type = true>
 
   constexpr Tuple() : _Inherited()
-  {
-  }
+  {}
 
-  template <typename _U1 = _T1, typename _U2 = _T2,
-            typename std::enable_if<_And<std::is_default_constructible<_U1>, std::is_default_constructible<_U2>,
-                                         _Not<_And<std::is_trivially_default_constructible<_U1>,
-                                                   std::is_trivially_default_constructible<_U2>>>>::value,
-                                    bool>::type = false>
+  template <
+      typename _U1 = _T1, typename _U2 = _T2,
+      typename std::enable_if<
+          _And<std::is_default_constructible<_U1>, std::is_default_constructible<_U2>,
+               _Not<_And<std::is_trivially_default_constructible<_U1>,
+                         std::is_trivially_default_constructible<_U2>>>>::value,
+          bool>::type = false>
 
   explicit constexpr Tuple() : _Inherited()
-  {
-  }
+  {}
 
   // Shortcut for the cases where constructors taking _T1, _T2
   // need to be constrained.
   template <typename _Dummy>
   using _TCC = _TC<std::is_same<_Dummy, void>::value, _T1, _T2>;
 
-  template <typename _Dummy                     = void,
-            typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_T1, _T2>() &&
-                                        _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(),
-                                    bool>::type = true>
+  template <typename _Dummy = void,
+            typename std::enable_if<
+                _TCC<_Dummy>::template _ConstructibleTuple<_T1, _T2>() &&
+                    _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(),
+                bool>::type = true>
   constexpr Tuple(const _T1 &__a1, const _T2 &__a2) : _Inherited(__a1, __a2)
-  {
-  }
+  {}
 
-  template <typename _Dummy                     = void,
-            typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_T1, _T2>() &&
-                                        !_TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(),
-                                    bool>::type = false>
+  template <typename _Dummy = void,
+            typename std::enable_if<
+                _TCC<_Dummy>::template _ConstructibleTuple<_T1, _T2>() &&
+                    !_TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(),
+                bool>::type = false>
   explicit constexpr Tuple(const _T1 &__a1, const _T2 &__a2) : _Inherited(__a1, __a2)
-  {
-  }
+  {}
 
   // Shortcut for the cases where constructors taking _U1, _U2
   // need to be constrained.
@@ -1034,22 +1068,22 @@ public:
 
   /*
       template <typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                            _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>() &&
-                                            !std::is_same<typename std::decay<_U1>::type, allocator_arg_t>::value,
-                                        bool>::type = true>
-      constexpr Tuple(_U1&& __a1, _U2&& __a2)
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>() &&
+                                            !std::is_same<typename std::decay<_U1>::type,
+     allocator_arg_t>::value, bool>::type = true> constexpr Tuple(_U1&& __a1, _U2&& __a2)
       : _Inherited(std::forward<_U1>(__a1), std::forward<_U2>(__a2))
       {
       }
 
       template <typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                            !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>() &&
-                                            !std::is_same<typename decay<_U1>::type, allocator_arg_t>::value,
-                                        bool>::type = false>
-      explicit constexpr Tuple(_U1&& __a1, _U2&& __a2)
-      : _Inherited(std::forward<_U1>(__a1), std::forward<_U2>(__a2))
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     &&
+                                            !_TMC::template
+     _ImplicitlyMoveConvertibleTuple<_U1, _U2>() && !std::is_same<typename
+     decay<_U1>::type, allocator_arg_t>::value, bool>::type = false> explicit constexpr
+     Tuple(_U1&& __a1, _U2&& __a2) : _Inherited(std::forward<_U1>(__a1),
+     std::forward<_U2>(__a2))
       {
       }
   */
@@ -1057,71 +1091,76 @@ public:
 
   constexpr Tuple(Tuple &&) = default;
 
-  template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                        _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = true>
-  constexpr Tuple(const Tuple<_U1, _U2> &__in) : _Inherited(static_cast<const _TupleImpl<0, _U1, _U2> &>(__in))
-  {
-  }
+  template <
+      typename _U1, typename _U2,
+      typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
+                                  _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
+                              bool>::type = true>
+  constexpr Tuple(const Tuple<_U1, _U2> &__in)
+      : _Inherited(static_cast<const _TupleImpl<0, _U1, _U2> &>(__in))
+  {}
+
+  template <
+      typename _U1, typename _U2,
+      typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
+                                  !_TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
+                              bool>::type = false>
+  explicit constexpr Tuple(const Tuple<_U1, _U2> &__in)
+      : _Inherited(static_cast<const _TupleImpl<0, _U1, _U2> &>(__in))
+  {}
 
   template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                        !_TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = false>
-  explicit constexpr Tuple(const Tuple<_U1, _U2> &__in) : _Inherited(static_cast<const _TupleImpl<0, _U1, _U2> &>(__in))
-  {
-  }
+            typename std::enable_if<
+                _TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
+                    _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
+                bool>::type = true>
+  constexpr Tuple(Tuple<_U1, _U2> &&__in)
+      : _Inherited(static_cast<_TupleImpl<0, _U1, _U2> &&>(__in))
+  {}
 
   template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                        _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = true>
-  constexpr Tuple(Tuple<_U1, _U2> &&__in) : _Inherited(static_cast<_TupleImpl<0, _U1, _U2> &&>(__in))
-  {
-  }
+            typename std::enable_if<
+                _TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
+                    !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
+                bool>::type = false>
+  explicit constexpr Tuple(Tuple<_U1, _U2> &&__in)
+      : _Inherited(static_cast<_TupleImpl<0, _U1, _U2> &&>(__in))
+  {}
 
-  template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                        !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = false>
-  explicit constexpr Tuple(Tuple<_U1, _U2> &&__in) : _Inherited(static_cast<_TupleImpl<0, _U1, _U2> &&>(__in))
-  {
-  }
-
-  template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                        _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = true>
+  template <
+      typename _U1, typename _U2,
+      typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
+                                  _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
+                              bool>::type = true>
   constexpr Tuple(const std::pair<_U1, _U2> &__in) : _Inherited(__in.first, __in.second)
-  {
-  }
+  {}
+
+  template <
+      typename _U1, typename _U2,
+      typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
+                                  !_TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
+                              bool>::type = false>
+  explicit constexpr Tuple(const std::pair<_U1, _U2> &__in)
+      : _Inherited(__in.first, __in.second)
+  {}
 
   template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                        !_TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = false>
-  explicit constexpr Tuple(const std::pair<_U1, _U2> &__in) : _Inherited(__in.first, __in.second)
-  {
-  }
-
-  template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                        _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = true>
+            typename std::enable_if<
+                _TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
+                    _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
+                bool>::type = true>
   constexpr Tuple(std::pair<_U1, _U2> &&__in)
       : _Inherited(std::forward<_U1>(__in.first), std::forward<_U2>(__in.second))
-  {
-  }
+  {}
 
   template <typename _U1, typename _U2,
-            typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                        !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                    bool>::type = false>
+            typename std::enable_if<
+                _TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
+                    !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
+                bool>::type = false>
   explicit constexpr Tuple(std::pair<_U1, _U2> &&__in)
       : _Inherited(std::forward<_U1>(__in.first), std::forward<_U2>(__in.second))
-  {
-  }
+  {}
 
   // Allocator-extended constructors.
   /*
@@ -1132,9 +1171,9 @@ public:
       }
 
       template <typename _Alloc, typename _Dummy = void,
-                typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_T1, _T2>() &&
-                                       _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(),
-                                   bool>::type = true>
+                typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_T1,
+     _T2>() && _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(), bool>::type
+     = true>
 
       Tuple(allocator_arg_t __tag, const _Alloc& __a, const _T1& __a1, const _T2& __a2)
       : _Inherited(__tag, __a, __a1, __a2)
@@ -1142,30 +1181,31 @@ public:
       }
 
       template <typename _Alloc, typename _Dummy = void,
-                typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_T1, _T2>() &&
-                                       !_TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(),
-                                   bool>::type = false>
+                typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_T1,
+     _T2>() &&
+                                       !_TCC<_Dummy>::template
+     _ImplicitlyConvertibleTuple<_T1, _T2>(), bool>::type = false>
 
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const _T1& __a1, const _T2& __a2)
-      : _Inherited(__tag, __a, __a1, __a2)
+      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const _T1& __a1, const _T2&
+     __a2) : _Inherited(__tag, __a, __a1, __a2)
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                       _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = true>
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, _U1&& __a1, _U2&& __a2)
       : _Inherited(__tag, __a, std::forward<_U1>(__a1), std::forward<_U2>(__a2))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                       !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = false>
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, _U1&& __a1, _U2&& __a2)
-      : _Inherited(__tag, __a, std::forward<_U1>(__a1), std::forward<_U2>(__a2))
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     &&
+                                       !_TMC::template
+     _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = false> explicit
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, _U1&& __a1, _U2&& __a2) :
+     _Inherited(__tag, __a, std::forward<_U1>(__a1), std::forward<_U2>(__a2))
       {
       }
 
@@ -1183,73 +1223,72 @@ public:
 
       template <typename _Alloc, typename _U1, typename _U2,
                 typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                       _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = true>
-      Tuple(allocator_arg_t __tag, const _Alloc& __a, const Tuple<_U1, _U2>& __in)
-      : _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _U1, _U2>&>(__in))
+                                       _TMC::template _ImplicitlyConvertibleTuple<_U1,
+     _U2>(), bool>::type = true> Tuple(allocator_arg_t __tag, const _Alloc& __a, const
+     Tuple<_U1, _U2>& __in) : _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _U1,
+     _U2>&>(__in))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
                 typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                       !_TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = false>
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const Tuple<_U1, _U2>& __in)
-      : _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _U1, _U2>&>(__in))
+                                       !_TMC::template _ImplicitlyConvertibleTuple<_U1,
+     _U2>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag, const _Alloc& __a,
+     const Tuple<_U1, _U2>& __in) : _Inherited(__tag, __a, static_cast<const _TupleImpl<0,
+     _U1, _U2>&>(__in))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                       _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = true>
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, Tuple<_U1, _U2>&& __in)
       : _Inherited(__tag, __a, static_cast<_TupleImpl<0, _U1, _U2>&&>(__in))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                       !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = false>
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, Tuple<_U1, _U2>&& __in)
-      : _Inherited(__tag, __a, static_cast<_TupleImpl<0, _U1, _U2>&&>(__in))
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     &&
+                                       !_TMC::template
+     _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = false> explicit
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, Tuple<_U1, _U2>&& __in) :
+     _Inherited(__tag, __a, static_cast<_TupleImpl<0, _U1, _U2>&&>(__in))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
                 typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                       _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = true>
-      Tuple(allocator_arg_t __tag, const _Alloc& __a, const pair<_U1, _U2>& __in)
-      : _Inherited(__tag, __a, __in.first, __in.second)
+                                       _TMC::template _ImplicitlyConvertibleTuple<_U1,
+     _U2>(), bool>::type = true> Tuple(allocator_arg_t __tag, const _Alloc& __a, const
+     pair<_U1, _U2>& __in) : _Inherited(__tag, __a, __in.first, __in.second)
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
                 typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                       !_TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = false>
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const pair<_U1, _U2>& __in)
-      : _Inherited(__tag, __a, __in.first, __in.second)
+                                       !_TMC::template _ImplicitlyConvertibleTuple<_U1,
+     _U2>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag, const _Alloc& __a,
+     const pair<_U1, _U2>& __in) : _Inherited(__tag, __a, __in.first, __in.second)
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                       _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = true>
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, pair<_U1, _U2>&& __in)
-      : _Inherited(__tag, __a, std::forward<_U1>(__in.first), std::forward<_U2>(__in.second))
+      : _Inherited(__tag, __a, std::forward<_U1>(__in.first),
+     std::forward<_U2>(__in.second))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>() &&
-                                       !_TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(),
-                                   bool>::type = false>
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, pair<_U1, _U2>&& __in)
-      : _Inherited(__tag, __a, std::forward<_U1>(__in.first), std::forward<_U2>(__in.second))
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+     &&
+                                       !_TMC::template
+     _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = false> explicit
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, pair<_U1, _U2>&& __in) :
+     _Inherited(__tag, __a, std::forward<_U1>(__in.first), std::forward<_U2>(__in.second))
       {
       }
   */
@@ -1259,7 +1298,8 @@ public:
     return *this;
   }
 
-  Tuple &operator=(Tuple &&__in) noexcept(std::is_nothrow_move_assignable<_Inherited>::value)
+  Tuple &operator=(Tuple &&__in) noexcept(
+      std::is_nothrow_move_assignable<_Inherited>::value)
   {
     static_cast<_Inherited &>(*this) = std::move(__in);
     return *this;
@@ -1295,13 +1335,16 @@ public:
     return *this;
   }
 
-  void swap(Tuple &__in) noexcept(noexcept(__in._M_swap(__in))) { _Inherited::_M_swap(__in); }
+  void swap(Tuple &__in) noexcept(noexcept(__in._M_swap(__in)))
+  {
+    _Inherited::_M_swap(__in);
+  }
 };
 
 /// class TupleSize
 template <typename... _Elements>
-struct TupleSize<Tuple<_Elements...>> : public std::integral_constant<std::size_t, sizeof...(_Elements)> {
-};
+struct TupleSize<Tuple<_Elements...>>
+    : public std::integral_constant<std::size_t, sizeof...(_Elements)> {};
 
 #if __cplusplus > 201402L
 template <typename _Tp>
@@ -1313,8 +1356,8 @@ inline constexpr size_t TupleSize_v = TupleSize<_Tp>::value;
  * the Tuple and retrieve the (i-1)th element of the remaining Tuple.
  */
 template <std::size_t __i, typename _Head, typename... _Tail>
-struct TupleElement<__i, Tuple<_Head, _Tail...>> : TupleElement<__i - 1, Tuple<_Tail...>> {
-};
+struct TupleElement<__i, Tuple<_Head, _Tail...>>
+    : TupleElement<__i - 1, Tuple<_Tail...>> {};
 
 /**
  * Basis case for TupleElement: The first element is the one we're seeking.
@@ -1346,21 +1389,24 @@ constexpr const _Head &_GetHelper(const _TupleImpl<__i, _Head, _Tail...> &__t) n
 
 /// Return a reference to the ith element of a Tuple.
 template <std::size_t __i, typename... _Elements>
-constexpr __TupleElement_t<__i, Tuple<_Elements...>> &Get(Tuple<_Elements...> &__t) noexcept
+constexpr __TupleElement_t<__i, Tuple<_Elements...>> &Get(
+    Tuple<_Elements...> &__t) noexcept
 {
   return _GetHelper<__i>(__t);
 }
 
 /// Return a const reference to the ith element of a const Tuple.
 template <std::size_t __i, typename... _Elements>
-constexpr const __TupleElement_t<__i, Tuple<_Elements...>> &Get(const Tuple<_Elements...> &__t) noexcept
+constexpr const __TupleElement_t<__i, Tuple<_Elements...>> &Get(
+    const Tuple<_Elements...> &__t) noexcept
 {
   return _GetHelper<__i>(__t);
 }
 
 /// Return an rvalue reference to the ith element of a Tuple rvalue.
 template <std::size_t __i, typename... _Elements>
-constexpr __TupleElement_t<__i, Tuple<_Elements...>> &&Get(Tuple<_Elements...> &&__t) noexcept
+constexpr __TupleElement_t<__i, Tuple<_Elements...>> &&Get(
+    Tuple<_Elements...> &&__t) noexcept
 {
   typedef __TupleElement_t<__i, Tuple<_Elements...>> __element_type;
   return std::forward<__element_type &&>(Get<__i>(__t));
@@ -1404,13 +1450,15 @@ template <typename _Tp, typename _Up, size_t __i, size_t __size>
 struct _TupleCompare {
   static constexpr bool __eq(const _Tp &__t, const _Up &__u)
   {
-    return bool(Get<__i>(__t) == Get<__i>(__u)) && _TupleCompare<_Tp, _Up, __i + 1, __size>::__eq(__t, __u);
+    return bool(Get<__i>(__t) == Get<__i>(__u)) &&
+           _TupleCompare<_Tp, _Up, __i + 1, __size>::__eq(__t, __u);
   }
 
   static constexpr bool __less(const _Tp &__t, const _Up &__u)
   {
     return bool(Get<__i>(__t) < Get<__i>(__u)) ||
-           (!bool(Get<__i>(__u) < Get<__i>(__t)) && _TupleCompare<_Tp, _Up, __i + 1, __size>::__less(__t, __u));
+           (!bool(Get<__i>(__u) < Get<__i>(__t)) &&
+            _TupleCompare<_Tp, _Up, __i + 1, __size>::__less(__t, __u));
   }
 };
 
@@ -1422,11 +1470,13 @@ struct _TupleCompare<_Tp, _Up, __size, __size> {
 };
 
 template <typename... _TElements, typename... _UElements>
-constexpr bool operator==(const Tuple<_TElements...> &__t, const Tuple<_UElements...> &__u)
+constexpr bool operator==(const Tuple<_TElements...> &__t,
+                          const Tuple<_UElements...> &__u)
 {
   static_assert(sizeof...(_TElements) == sizeof...(_UElements),
                 "Tuple objects can only be compared if they have equal sizes.");
-  using __compare = _TupleCompare<Tuple<_TElements...>, Tuple<_UElements...>, 0, sizeof...(_TElements)>;
+  using __compare =
+      _TupleCompare<Tuple<_TElements...>, Tuple<_UElements...>, 0, sizeof...(_TElements)>;
   return __compare::__eq(__t, __u);
 }
 
@@ -1435,12 +1485,14 @@ constexpr bool operator<(const Tuple<_TElements...> &__t, const Tuple<_UElements
 {
   static_assert(sizeof...(_TElements) == sizeof...(_UElements),
                 "Tuple objects can only be compared if they have equal sizes.");
-  using __compare = _TupleCompare<Tuple<_TElements...>, Tuple<_UElements...>, 0, sizeof...(_TElements)>;
+  using __compare =
+      _TupleCompare<Tuple<_TElements...>, Tuple<_UElements...>, 0, sizeof...(_TElements)>;
   return __compare::__less(__t, __u);
 }
 
 template <typename... _TElements, typename... _UElements>
-constexpr bool operator!=(const Tuple<_TElements...> &__t, const Tuple<_UElements...> &__u)
+constexpr bool operator!=(const Tuple<_TElements...> &__t,
+                          const Tuple<_UElements...> &__u)
 {
   return !(__t == __u);
 }
@@ -1452,20 +1504,23 @@ constexpr bool operator>(const Tuple<_TElements...> &__t, const Tuple<_UElements
 }
 
 template <typename... _TElements, typename... _UElements>
-constexpr bool operator<=(const Tuple<_TElements...> &__t, const Tuple<_UElements...> &__u)
+constexpr bool operator<=(const Tuple<_TElements...> &__t,
+                          const Tuple<_UElements...> &__u)
 {
   return !(__u < __t);
 }
 
 template <typename... _TElements, typename... _UElements>
-constexpr bool operator>=(const Tuple<_TElements...> &__t, const Tuple<_UElements...> &__u)
+constexpr bool operator>=(const Tuple<_TElements...> &__t,
+                          const Tuple<_UElements...> &__u)
 {
   return !(__t < __u);
 }
 
 // NB: DR 705.
 template <typename... _Elements>
-constexpr Tuple<typename _DecayAndStrip<_Elements>::__type...> MakeTuple(_Elements &&... __args)
+constexpr Tuple<typename _DecayAndStrip<_Elements>::__type...> MakeTuple(
+    _Elements &&... __args)
 {
   typedef Tuple<typename _DecayAndStrip<_Elements>::__type...> __result_type;
   return __result_type(std::forward<_Elements>(__args)...);
@@ -1484,8 +1539,8 @@ struct _MakeTupleImpl;
 
 template <size_t _Idx, typename _Tuple, typename... _Tp, size_t _Nm>
 struct _MakeTupleImpl<_Idx, Tuple<_Tp...>, _Tuple, _Nm>
-    : _MakeTupleImpl<_Idx + 1, Tuple<_Tp..., __TupleElement_t<_Idx, _Tuple>>, _Tuple, _Nm> {
-};
+    : _MakeTupleImpl<_Idx + 1, Tuple<_Tp..., __TupleElement_t<_Idx, _Tuple>>, _Tuple,
+                     _Nm> {};
 
 template <std::size_t _Nm, typename _Tuple, typename... _Tp>
 struct _MakeTupleImpl<_Nm, Tuple<_Tp...>, _Tuple, _Nm> {
@@ -1493,13 +1548,13 @@ struct _MakeTupleImpl<_Nm, Tuple<_Tp...>, _Tuple, _Nm> {
 };
 
 template <typename _Tuple>
-struct _DoMakeTuple : _MakeTupleImpl<0, Tuple<>, _Tuple, TupleSize<_Tuple>::value> {
-};
+struct _DoMakeTuple : _MakeTupleImpl<0, Tuple<>, _Tuple, TupleSize<_Tuple>::value> {};
 
 // Returns the std::Tuple equivalent of a Tuple-like type.
 template <typename _Tuple>
-struct __MakeTuple : public _DoMakeTuple<typename std::remove_cv<typename std::remove_reference<_Tuple>::type>::type> {
-};
+struct __MakeTuple
+    : public _DoMakeTuple<
+          typename std::remove_cv<typename std::remove_reference<_Tuple>::type>::type> {};
 
 // Combines several std::Tuple's into a single one.
 template <typename...>
@@ -1538,7 +1593,8 @@ struct _Make1stIndices<> {
 
 template <typename _Tp, typename... _Tpls>
 struct _Make1stIndices<_Tp, _Tpls...> {
-  typedef typename _BuildIndexTuple<TupleSize<typename std::remove_reference<_Tp>::type>::value>::__type __type;
+  typedef typename _BuildIndexTuple<
+      TupleSize<typename std::remove_reference<_Tp>::type>::value>::__type __type;
 };
 
 // Performs the actual concatenation by step-wise expanding Tuple-like
@@ -1569,21 +1625,19 @@ struct TupleConcater<_Ret, _IndexTuple<>> {
 };
 
 template <typename>
-struct IsTupleLikeImpl : std::false_type {
-};
+struct IsTupleLikeImpl : std::false_type {};
 
 template <typename... _Tps>
-struct IsTupleLikeImpl<Tuple<_Tps...>> : std::true_type {
-};
+struct IsTupleLikeImpl<Tuple<_Tps...>> : std::true_type {};
 
 // Internal type trait that allows us to sfinae-protect TupleCat.
 template <typename _Tp>
-struct IsTupleLike
-    : public IsTupleLikeImpl<typename std::remove_cv<typename std::remove_reference<_Tp>::type>::type>::type {
-};
+struct IsTupleLike : public IsTupleLikeImpl<typename std::remove_cv<
+                         typename std::remove_reference<_Tp>::type>::type>::type {};
 
 /// TupleCat
-template <typename... _Tpls, typename = typename std::enable_if<_And<IsTupleLike<_Tpls>...>::value>::type>
+template <typename... _Tpls,
+          typename = typename std::enable_if<_And<IsTupleLike<_Tpls>...>::value>::type>
 constexpr auto TupleCat(_Tpls &&... __tpls) -> typename TupleCatResult<_Tpls...>::__type
 {
   typedef typename TupleCatResult<_Tpls...>::__type __ret;
@@ -1610,15 +1664,18 @@ inline
     //#else
     void
     //#endif
-    swap(Tuple<_Elements...> &__x, Tuple<_Elements...> &__y) noexcept(noexcept(__x.swap(__y)))
+    swap(Tuple<_Elements...> &__x,
+         Tuple<_Elements...> &__y) noexcept(noexcept(__x.swap(__y)))
 {
   __x.swap(__y);
 }
 
 //#if __cplusplus > 201402L || !defined(__STRICT_ANSI__)  // c++1z or gnu++11
 // template <typename... _Elements>
-// typename std::enable_if<!_And<__is_swappable<_Elements>...>::value>::type swap(Tuple<_Elements...>&,
-//                                                                            Tuple<_Elements...>&) = delete;
+// typename std::enable_if<!_And<__is_swappable<_Elements>...>::value>::type
+// swap(Tuple<_Elements...>&,
+//                                                                            Tuple<_Elements...>&)
+//                                                                            = delete;
 //#endif
 
 // A class (and instance) which can be used in 'tie' when an element
@@ -1626,7 +1683,7 @@ inline
 // _GLIBCXX14_CONSTEXPR
 // 2933. PR for LWG 2773 could be clearer
 struct _Swallow_assign {
-  template <class _Tp>
+  template <typename _Tp>
   const _Swallow_assign &operator=(const _Tp &) const
   {
     return *this;
@@ -1648,20 +1705,21 @@ struct uses_allocator<Tuple<_Types...>, _Alloc> : true_type
 };
 
 // See stl_pair.h...
-template <class _T1, class _T2>
+template <typename _T1, typename _T2>
 template <typename... _Args1, typename... _Args2>
-inline pair<_T1, _T2>::pair(piecewise_construct_t, Tuple<_Args1...> __first, Tuple<_Args2...> __second)
-: pair(__first, __second, typename _BuildIndexTuple<sizeof...(_Args1)>::__type(),
-       typename _BuildIndexTuple<sizeof...(_Args2)>::__type())
+inline pair<_T1, _T2>::pair(piecewise_construct_t, Tuple<_Args1...> __first,
+Tuple<_Args2...> __second) : pair(__first, __second, typename
+_BuildIndexTuple<sizeof...(_Args1)>::__type(), typename
+_BuildIndexTuple<sizeof...(_Args2)>::__type())
 {
 }
 
-template <class _T1, class _T2>
-template <typename... _Args1, std::size_t... _Indexes1, typename... _Args2, std::size_t... _Indexes2>
-inline pair<_T1, _T2>::pair(Tuple<_Args1...>& __Tuple1, Tuple<_Args2...>& __Tuple2, _IndexTuple<_Indexes1...>,
-                            _IndexTuple<_Indexes2...>)
-: first(std::forward<_Args1>(Get<_Indexes1>(__Tuple1))...)
-, second(std::forward<_Args2>(Get<_Indexes2>(__Tuple2))...)
+template <typename _T1, typename _T2>
+template <typename... _Args1, std::size_t... _Indexes1, typename... _Args2, std::size_t...
+_Indexes2> inline pair<_T1, _T2>::pair(Tuple<_Args1...>& __Tuple1, Tuple<_Args2...>&
+__Tuple2, _IndexTuple<_Indexes1...>, _IndexTuple<_Indexes2...>) :
+first(std::forward<_Args1>(Get<_Indexes1>(__Tuple1))...) ,
+second(std::forward<_Args2>(Get<_Indexes2>(__Tuple2))...)
 {
 }
 */
@@ -1693,7 +1751,8 @@ constexpr _Tp __make_from_TupleImpl(_Tuple&& __t, index_sequence<_Idx...>)
 template <typename _Tp, typename _Tuple>
 constexpr _Tp make_from_Tuple(_Tuple&& __t)
 {
-    return __make_from_TupleImpl<_Tp>(std::forward<_Tuple>(__t), make_index_sequence<TupleSize_v<decay_t<_Tuple>>>{});
+    return __make_from_TupleImpl<_Tp>(std::forward<_Tuple>(__t),
+make_index_sequence<TupleSize_v<decay_t<_Tuple>>>{});
 }
 #endif  // C++17
 */
@@ -1715,7 +1774,8 @@ auto tail_impl(std::index_sequence<Ns...>, Tuple<Ts...> t)
 template <typename... Ts>
 auto tail(Tuple<Ts...> t)
 {
-  return tail_impl(std::make_index_sequence<sizeof...(Ts) - 1u>(), std::forward<Tuple<Ts...>>(t));
+  return tail_impl(std::make_index_sequence<sizeof...(Ts) - 1u>(),
+                   std::forward<Tuple<Ts...>>(t));
 }
 
 //======================================================================================//
@@ -1790,27 +1850,31 @@ struct _ApplyImpl<void> {
 
   //--------------------------------------------------------------------------------------------//
 
-  template <typename _Tuple, typename _Obj, typename _Next = PopFront<_Tuple>, std::size_t _N = TupleSize<_Next>::value,
-            typename _Indices               = std::make_index_sequence<_N>, size_t Idx, size_t... _Idx,
+  template <typename _Tuple, typename _Obj, typename _Next = PopFront<_Tuple>,
+            std::size_t _N    = TupleSize<_Next>::value,
+            typename _Indices = std::make_index_sequence<_N>, size_t Idx, size_t... _Idx,
             std::enable_if_t<(_N < 1), int> = 0>
   static void apply_once(_Tuple &&__t, _Obj &&__o, std::index_sequence<Idx, _Idx...>)
   {
     Get<Idx>(__t)(__o);
   }
 
-  template <typename _Tuple, typename _Obj, typename _Next = PopFront<std::decay_t<_Tuple>>,
-            std::size_t _N = TupleSize<_Next>::value, typename _Indices = std::make_index_sequence<_N>, size_t Idx,
-            size_t... _Idx, std::enable_if_t<(_N > 0), int>             = 0>
+  template <typename _Tuple, typename _Obj,
+            typename _Next    = PopFront<std::decay_t<_Tuple>>,
+            std::size_t _N    = TupleSize<_Next>::value,
+            typename _Indices = std::make_index_sequence<_N>, size_t Idx, size_t... _Idx,
+            std::enable_if_t<(_N > 0), int> = 0>
   static void apply_once(_Tuple &&__t, _Obj &&__o, std::index_sequence<Idx, _Idx...>)
   {
     Get<Idx>(__t)(__o);
-    apply_once<_Obj, _Next>(std::forward<_Next>(_Next(Get<_Idx>(__t)...)), std::forward<_Obj>(__o), _Indices{});
+    apply_once<_Obj, _Next>(std::forward<_Next>(_Next(Get<_Idx>(__t)...)),
+                            std::forward<_Obj>(__o), _Indices{});
   }
 
   //----------------------------------------------------------------------------------//
 
-  template <std::size_t _N, std::size_t _Nt, typename _Access, typename _Tuple, typename... _Args,
-            std::enable_if_t<(_N == _Nt), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename _Tuple,
+            typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
   static void apply_access(_Tuple &&__t, _Args &&... __args)
   {
     // call constructor
@@ -1819,8 +1883,8 @@ struct _ApplyImpl<void> {
     AccessType(std::forward<Type>(Get<_N>(__t)), std::forward<_Args>(__args)...);
   }
 
-  template <std::size_t _N, std::size_t _Nt, typename _Access, typename _Tuple, typename... _Args,
-            std::enable_if_t<(_N < _Nt), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename _Tuple,
+            typename... _Args, std::enable_if_t<(_N < _Nt), int> = 0>
   static void apply_access(_Tuple &&__t, _Args &&... __args)
   {
     // call constructor
@@ -1828,30 +1892,35 @@ struct _ApplyImpl<void> {
     using AccessType = typename TupleElement<_N, _Access>::type;
     AccessType(std::forward<Type>(Get<_N>(__t)), std::forward<_Args>(__args)...);
     // recursive call
-    apply_access<_N + 1, _Nt, _Access, _Tuple, _Args...>(std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
+    apply_access<_N + 1, _Nt, _Access, _Tuple, _Args...>(std::forward<_Tuple>(__t),
+                                                         std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
 
-  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename... _Args,
+            std::enable_if_t<(_N == _Nt), int> = 0>
   static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
     // call operator()
     Get<_N>(__t)(std::forward<_Args>(__args)...);
   }
 
-  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename... _Args, std::enable_if_t<(_N < _Nt), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename... _Args,
+            std::enable_if_t<(_N < _Nt), int> = 0>
   static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
     // call operator()
     Get<_N>(__t)(std::forward<_Args>(__args)...);
     // recursive call
-    apply_loop<_N + 1, _Nt, _Tuple, _Args...>(std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
+    apply_loop<_N + 1, _Nt, _Tuple, _Args...>(std::forward<_Tuple>(__t),
+                                              std::forward<_Args>(__args)...);
   }
 
   //----------------------------------------------------------------------------------//
 
-  template <typename _Tp, typename _Funct, typename... _Args, std::enable_if_t<std::is_pointer<_Tp>::value, int> = 0>
+  template <typename _Tp, typename _Funct, typename... _Args,
+            std::enable_if_t<std::is_pointer<_Tp>::value, int> = 0>
   static void apply_function(_Tp &&__t, _Funct &&__f, _Args &&... __args)
   {
     (__t->*__f)(std::forward<_Args>(__args)...);
@@ -1859,7 +1928,8 @@ struct _ApplyImpl<void> {
 
   //----------------------------------------------------------------------------------//
 
-  template <typename _Tp, typename _Funct, typename... _Args, std::enable_if_t<!std::is_pointer<_Tp>::value, int> = 0>
+  template <typename _Tp, typename _Funct, typename... _Args,
+            std::enable_if_t<!std::is_pointer<_Tp>::value, int> = 0>
   static void apply_function(_Tp &&__t, _Funct &&__f, _Args &&... __args)
   {
     (__t.*__f)(std::forward<_Args>(__args)...);
@@ -1867,59 +1937,66 @@ struct _ApplyImpl<void> {
 
   //--------------------------------------------------------------------------------------------//
 
-  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
-            std::enable_if_t<(_N == _Nt), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct,
+            typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     // call member function at index _N
     using __T = decltype(Get<_N>(__t));
     using __F = decltype(Get<_N>(__f));
-    apply_function(std::forward<__T>(Get<_N>(__t)), std::forward<__F>(Get<_N>(__f)), std::forward<_Args>(__args)...);
+    apply_function(std::forward<__T>(Get<_N>(__t)), std::forward<__F>(Get<_N>(__f)),
+                   std::forward<_Args>(__args)...);
   }
 
-  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
-            std::enable_if_t<(_N < _Nt), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct,
+            typename... _Args, std::enable_if_t<(_N < _Nt), int> = 0>
   static void apply_functions(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     // call member function at index _N
     using __T = decltype(Get<_N>(__t));
     using __F = decltype(Get<_N>(__f));
-    apply_function(std::forward<__T>(Get<_N>(__t)), std::forward<__F>(Get<_N>(__f)), std::forward<_Args>(__args)...);
+    apply_function(std::forward<__T>(Get<_N>(__t)), std::forward<__F>(Get<_N>(__f)),
+                   std::forward<_Args>(__args)...);
     // recursive call
-    apply_functions<_N + 1, _Nt, _Tuple, _Funct, _Args...>(std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
-                                                           std::forward<_Args>(__args)...);
+    apply_functions<_N + 1, _Nt, _Tuple, _Funct, _Args...>(
+        std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
+        std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
 
-  template <std::size_t _N, std::size_t _Nt, typename _Funct, typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
-  static void unroll(_Funct &&__f, _Args &&... __args)
-  {
-    (__f)(std::forward<_Args>(__args)...);
-  }
-
-  template <std::size_t _N, std::size_t _Nt, typename _Funct, typename... _Args, std::enable_if_t<(_N < _Nt), int> = 0>
-  static void unroll(_Funct &&__f, _Args &&... __args)
-  {
-    (__f)(std::forward<_Args>(__args)...);
-    unroll<_N + 1, _Nt, _Funct, _Args...>(std::forward<_Funct>(__f), std::forward<_Args>(__args)...);
-  }
-
-  //--------------------------------------------------------------------------------------------//
-
-  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
+  template <std::size_t _N, std::size_t _Nt, typename _Funct, typename... _Args,
             std::enable_if_t<(_N == _Nt), int> = 0>
+  static void unroll(_Funct &&__f, _Args &&... __args)
+  {
+    (__f)(std::forward<_Args>(__args)...);
+  }
+
+  template <std::size_t _N, std::size_t _Nt, typename _Funct, typename... _Args,
+            std::enable_if_t<(_N < _Nt), int> = 0>
+  static void unroll(_Funct &&__f, _Args &&... __args)
+  {
+    (__f)(std::forward<_Args>(__args)...);
+    unroll<_N + 1, _Nt, _Funct, _Args...>(std::forward<_Funct>(__f),
+                                          std::forward<_Args>(__args)...);
+  }
+
+  //--------------------------------------------------------------------------------------------//
+
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct,
+            typename... _Args, std::enable_if_t<(_N == _Nt), int> = 0>
   static void unroll_members(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     (Get<_N>(__t)).*(Get<_N>(__f))(std::forward<_Args>(__args)...);
   }
 
-  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct, typename... _Args,
-            std::enable_if_t<(_N < _Nt), int> = 0>
+  template <std::size_t _N, std::size_t _Nt, typename _Tuple, typename _Funct,
+            typename... _Args, std::enable_if_t<(_N < _Nt), int> = 0>
   static void unroll_members(_Tuple &&__t, _Funct &&__f, _Args &&... __args)
   {
     (Get<_N>(__t)).*(Get<_N>(__f))(std::forward<_Args>(__args)...);
-    unroll_members<_N + 1, _Nt, _Tuple, _Funct, _Args...>(std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
+    unroll_members<_N + 1, _Nt, _Tuple, _Funct, _Args...>(std::forward<_Tuple>(__t),
+                                                          std::forward<_Funct>(__f),
                                                           std::forward<_Args>(__args)...);
   }
 
@@ -1930,12 +2007,13 @@ struct _ApplyImpl<void> {
 
 template <typename _Ret>
 struct Apply {
-  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
+  template <typename _Fn, typename _Tuple,
+            std::size_t _N    = TupleSize<std::decay_t<_Tuple>>::value,
             typename _Indices = std::make_index_sequence<_N>>
   static _Ret apply_all(_Fn &&__f, _Tuple &&__t)
   {
-    return _ApplyImpl<_Ret>::template apply_all<_Fn, _Tuple>(std::forward<_Fn>(__f), std::forward<_Tuple>(__t),
-                                                             _Indices{});
+    return _ApplyImpl<_Ret>::template apply_all<_Fn, _Tuple>(
+        std::forward<_Fn>(__f), std::forward<_Tuple>(__t), _Indices{});
   }
 };
 
@@ -1945,20 +2023,24 @@ template <>
 struct Apply<void> {
   //--------------------------------------------------------------------------------------------//
 
-  template <typename _Fn, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
+  template <typename _Fn, typename _Tuple,
+            std::size_t _N    = TupleSize<std::decay_t<_Tuple>>::value,
             typename _Indices = std::make_index_sequence<_N>>
   static void apply_all(_Fn &&__f, _Tuple &&__t)
   {
-    _ApplyImpl<void>::template apply_all<_Fn, _Tuple>(std::forward<_Fn>(__f), std::forward<_Tuple>(__t), _Indices{});
+    _ApplyImpl<void>::template apply_all<_Fn, _Tuple>(
+        std::forward<_Fn>(__f), std::forward<_Tuple>(__t), _Indices{});
   }
 
   //--------------------------------------------------------------------------------------------//
 
-  template <typename _Tuple, typename _Obj, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value,
+  template <typename _Tuple, typename _Obj,
+            std::size_t _N    = TupleSize<std::decay_t<_Tuple>>::value,
             typename _Indices = std::make_index_sequence<_N>>
   static void apply_once(_Tuple &&__t, _Obj &&__o)
   {
-    _ApplyImpl<void>::template apply_once<_Tuple, _Obj>(std::forward<_Tuple>(__t), std::forward<_Obj>(__o), _Indices{});
+    _ApplyImpl<void>::template apply_once<_Tuple, _Obj>(
+        std::forward<_Tuple>(__t), std::forward<_Obj>(__o), _Indices{});
   }
 
   //----------------------------------------------------------------------------------//
@@ -1967,8 +2049,8 @@ struct Apply<void> {
             std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
   static void apply_access(_Tuple &__t, _Args &&... __args)
   {
-    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple, _Args...>(std::forward<_Tuple>(__t),
-                                                                                  std::forward<_Args>(__args)...);
+    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple, _Args...>(
+        std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
   }
 
   //----------------------------------------------------------------------------------//
@@ -1977,25 +2059,28 @@ struct Apply<void> {
             std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
   static void apply_access(_Tuple &&__t, _Args &&... __args)
   {
-    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple, _Args...>(std::forward<_Tuple>(__t),
-                                                                                  std::forward<_Args>(__args)...);
+    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple, _Args...>(
+        std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
   }
 
   //----------------------------------------------------------------------------------//
 
-  template <typename _Access, typename _Tuple, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+  template <typename _Access, typename _Tuple,
+            std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
   static void apply_access(_Tuple &&__t)
   {
-    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple>(std::forward<_Tuple>(__t));
+    _ApplyImpl<void>::template apply_access<0, _N - 1, _Access, _Tuple>(
+        std::forward<_Tuple>(__t));
   }
 
   //--------------------------------------------------------------------------------------------//
 
-  template <typename _Tuple, typename... _Args, std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
+  template <typename _Tuple, typename... _Args,
+            std::size_t _N = TupleSize<std::decay_t<_Tuple>>::value>
   static void apply_loop(_Tuple &&__t, _Args &&... __args)
   {
-    _ApplyImpl<void>::template apply_loop<0, _N - 1, _Tuple, _Args...>(std::forward<_Tuple>(__t),
-                                                                       std::forward<_Args>(__args)...);
+    _ApplyImpl<void>::template apply_loop<0, _N - 1, _Tuple, _Args...>(
+        std::forward<_Tuple>(__t), std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
@@ -2007,7 +2092,8 @@ struct Apply<void> {
   {
     static_assert(_Nt == _Nf, "tuple_size of objects must match tuple_size of functions");
     _ApplyImpl<void>::template apply_functions<0, _Nt - 1, _Tuple, _Funct, _Args...>(
-        std::forward<_Tuple>(__t), std::forward<_Funct>(__f), std::forward<_Args>(__args)...);
+        std::forward<_Tuple>(__t), std::forward<_Funct>(__f),
+        std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
@@ -2015,8 +2101,8 @@ struct Apply<void> {
   template <std::size_t _N, typename _Func, typename... _Args>
   static void unroll(_Func &&__f, _Args &&... __args)
   {
-    _ApplyImpl<void>::template unroll<0, _N - 1, _Func, _Args...>(std::forward<_Func>(__f),
-                                                                  std::forward<_Args>(__args)...);
+    _ApplyImpl<void>::template unroll<0, _N - 1, _Func, _Args...>(
+        std::forward<_Func>(__f), std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//
@@ -2025,7 +2111,8 @@ struct Apply<void> {
   static void unroll_members(_Tuple &&__t, _Func &&__f, _Args &&... __args)
   {
     _ApplyImpl<void>::template unroll_members<0, _N - 1, _Tuple, _Func, _Args...>(
-        std::forward<_Tuple>(__t), std::forward<_Func>(__f), std::forward<_Args>(__args)...);
+        std::forward<_Tuple>(__t), std::forward<_Func>(__f),
+        std::forward<_Args>(__args)...);
   }
 
   //--------------------------------------------------------------------------------------------//

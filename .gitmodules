@@ -13,3 +13,6 @@
 [submodule "source/TiMemory"]
 	path = source/TiMemory
 	url = https://github.com/jrmadsen/TiMemory.git
+[submodule "source/GoogleTest"]
+	path = source/GoogleTest
+	url = https://github.com/google/googletest.git

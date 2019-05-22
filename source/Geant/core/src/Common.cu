@@ -37,12 +37,22 @@
 //  ---------------------------------------------------------------
 //   GEANT CUDA implementation
 
-#include "Geant/core/Macros.hpp"
-#include "Geant/core/Utils.hpp"
-#include "Geant/core/Common.hpp"
-#include "Geant/core/Typedefs.hpp"
+#include "Geant/core/CudaDeviceInfo.hpp"
+#include "Geant/core/CudaRuntime.hpp"
+
+#include "PTL/AutoLock.hh"
 
 #include <array>
+#include <unordered_map>
+
+//======================================================================================//
+
+namespace geantx {
+inline namespace cudaruntime {
+template <typename _Tp>
+using device_info = std::unordered_map<int, _Tp>;
+} // namespace cudaruntime
+} // namespace geantx
 
 //======================================================================================//
 
@@ -86,15 +96,15 @@ void init_nvtx()
 
 //======================================================================================//
 
-int geant::cuda::set_device(int device)
+int geantx::cudaruntime::SetDevice(int device)
 {
-  int deviceCount = geant::cuda::device_count();
+  int deviceCount = geantx::cudaruntime::DeviceCount();
   if (deviceCount == 0) return -1;
 
   // don't set to higher than number of devices
   device = device % deviceCount;
   // update thread-static variable
-  this_thread_device() = device;
+  ThisThreadDevice() = device;
   // actually set the device
   cudaSetDevice(device);
   // return the modulus
@@ -103,14 +113,15 @@ int geant::cuda::set_device(int device)
 
 //======================================================================================//
 
-int geant::cuda::multi_processor_count()
+int geantx::cudaruntime::MultiProcessorCount()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
-  int device = this_thread_device();
+  int device = ThisThreadDevice();
 
   if (_instance->find(device) != _instance->end()) return _instance->find(device)->second;
 
@@ -123,14 +134,15 @@ int geant::cuda::multi_processor_count()
 
 //======================================================================================//
 
-int geant::cuda::max_threads_per_block()
+int geantx::cudaruntime::MaxThreadsPerBlock()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
-  int device = this_thread_device();
+  int device = ThisThreadDevice();
 
   if (_instance->find(device) != _instance->end()) return _instance->find(device)->second;
 
@@ -143,14 +155,15 @@ int geant::cuda::max_threads_per_block()
 
 //======================================================================================//
 
-int geant::cuda::warp_size()
+int geantx::cudaruntime::WarpSize()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
-  int device = this_thread_device();
+  int device = ThisThreadDevice();
 
   if (_instance->find(device) != _instance->end()) return _instance->find(device)->second;
 
@@ -163,14 +176,15 @@ int geant::cuda::warp_size()
 
 //======================================================================================//
 
-int geant::cuda::shared_memory_per_block()
+int geantx::cudaruntime::SharedMemoryPerBlock()
 {
-  if (geant::cuda::device_count() == 0) return 0;
+  if (geantx::cudaruntime::DeviceCount() == 0) return 0;
 
   // keep from querying device
-  static thread_local geant::cuda::device_info<int> *_instance = new geant::cuda::device_info<int>();
+  static thread_local geantx::cudaruntime::device_info<int> *_instance =
+      new geantx::cudaruntime::device_info<int>();
   // use the thread assigned devices
-  int device = this_thread_device();
+  int device = ThisThreadDevice();
 
   if (_instance->find(device) != _instance->end()) return _instance->find(device)->second;
 
@@ -183,7 +197,7 @@ int geant::cuda::shared_memory_per_block()
 
 //======================================================================================//
 
-int geant::cuda::device_count()
+int geantx::cudaruntime::DeviceCount()
 {
   int deviceCount      = 0;
   cudaError_t error_id = cudaGetDeviceCount(&deviceCount);
@@ -195,7 +209,7 @@ int geant::cuda::device_count()
 
 //======================================================================================//
 
-void geant::cuda::device_query()
+void geantx::cudaruntime::DeviceQuery()
 {
   static std::atomic<int16_t> once;
   if (++once > 1) return;
@@ -206,8 +220,8 @@ void geant::cuda::device_query()
   cudaError_t error_id = cudaGetDeviceCount(&deviceCount);
 
   if (error_id != cudaSuccess) {
-    printf("cudaGetDeviceCount returned error code %d\n--> %s\n", static_cast<int>(error_id),
-           cudaGetErrorString(error_id));
+    printf("cudaGetDeviceCount returned error code %d\n--> %s\n",
+           static_cast<int>(error_id), cudaGetErrorString(error_id));
 
     if (deviceCount > 0) {
       cudaSetDevice(0);
@@ -220,14 +234,16 @@ void geant::cuda::device_query()
       cudaRuntimeGetVersion(&runtimeVersion);
       printf("  CUDA Driver Version / Runtime Version          %d.%d / "
              "%d.%d\n",
-             driverVersion / 1000, (driverVersion % 100) / 10, runtimeVersion / 1000, (runtimeVersion % 100) / 10);
-      printf("  CUDA Capability Major/Minor version number:    %d.%d\n", deviceProp.major, deviceProp.minor);
+             driverVersion / 1000, (driverVersion % 100) / 10, runtimeVersion / 1000,
+             (runtimeVersion % 100) / 10);
+      printf("  CUDA Capability Major/Minor version number:    %d.%d\n", deviceProp.major,
+             deviceProp.minor);
     }
 
     return;
   }
 
-  AutoLock l(TypeMutex<decltype(std::cout)>());
+  PTL::AutoLock l(PTL::TypeMutex<decltype(std::cout)>());
 
   if (deviceCount == 0)
     printf("No available CUDA device(s) detected\n");
@@ -244,10 +260,12 @@ void geant::cuda::device_query()
     cudaDriverGetVersion(&driverVersion);
     cudaRuntimeGetVersion(&runtimeVersion);
 
-    printf("  CUDA Driver Version / Runtime Version          %d.%d / %d.%d\n", driverVersion / 1000,
-           (driverVersion % 100) / 10, runtimeVersion / 1000, (runtimeVersion % 100) / 10);
+    printf("  CUDA Driver Version / Runtime Version          %d.%d / %d.%d\n",
+           driverVersion / 1000, (driverVersion % 100) / 10, runtimeVersion / 1000,
+           (runtimeVersion % 100) / 10);
 
-    printf("  CUDA Capability Major/Minor version number:    %d.%d\n", deviceProp.major, deviceProp.minor);
+    printf("  CUDA Capability Major/Minor version number:    %d.%d\n", deviceProp.major,
+           deviceProp.minor);
 
     char msg[256];
 #if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
@@ -260,7 +278,8 @@ void geant::cuda::device_query()
     snprintf(msg, sizeof(msg),
              "  Total amount of global memory:                 %.0f MBytes "
              "(%llu bytes)\n",
-             static_cast<float>(deviceProp.totalGlobalMem / 1048576.0f), (unsigned long long)deviceProp.totalGlobalMem);
+             static_cast<float>(deviceProp.totalGlobalMem / 1048576.0f),
+             (unsigned long long)deviceProp.totalGlobalMem);
 #endif
     printf("%s", msg);
 
@@ -270,11 +289,14 @@ void geant::cuda::device_query()
 
 #if CUDART_VERSION >= 5000
     // This is supported in CUDA 5.0 (runtime API device properties)
-    printf("  Memory Clock rate:                             %.0f Mhz\n", deviceProp.memoryClockRate * 1e-3f);
-    printf("  Memory Bus Width:                              %d-bit\n", deviceProp.memoryBusWidth);
+    printf("  Memory Clock rate:                             %.0f Mhz\n",
+           deviceProp.memoryClockRate * 1e-3f);
+    printf("  Memory Bus Width:                              %d-bit\n",
+           deviceProp.memoryBusWidth);
 
     if (deviceProp.l2CacheSize) {
-      printf("  L2 Cache Size:                                 %d bytes\n", deviceProp.l2CacheSize);
+      printf("  L2 Cache Size:                                 %d bytes\n",
+             deviceProp.l2CacheSize);
     }
 
 #else
@@ -284,64 +306,89 @@ void geant::cuda::device_query()
     int memBusWidth;
     int L2CacheSize;
     getCudaAttribute<int>(&memoryClock, CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE, dev);
-    printf("  Memory Clock rate:                             %.0f Mhz\n", memoryClock * 1e-3f);
+    printf("  Memory Clock rate:                             %.0f Mhz\n",
+           memoryClock * 1e-3f);
     getCudaAttribute<int>(&memBusWidth, CU_DEVICE_ATTRIBUTE_GLOBAL_MEMORY_BUS_WIDTH, dev);
     printf("  Memory Bus Width:                              %d-bit\n", memBusWidth);
     getCudaAttribute<int>(&L2CacheSize, CU_DEVICE_ATTRIBUTE_L2_CACHE_SIZE, dev);
 
-    if (L2CacheSize) printf("  L2 Cache Size:                                 %d bytes\n", L2CacheSize);
+    if (L2CacheSize)
+      printf("  L2 Cache Size:                                 %d bytes\n", L2CacheSize);
 #endif
 
     printf("  Maximum Texture Dimension Size (x,y,z)         1D=(%d), 2D=(%d, "
            "%d), 3D=(%d, %d, %d)\n",
-           deviceProp.maxTexture1D, deviceProp.maxTexture2D[0], deviceProp.maxTexture2D[1], deviceProp.maxTexture3D[0],
+           deviceProp.maxTexture1D, deviceProp.maxTexture2D[0],
+           deviceProp.maxTexture2D[1], deviceProp.maxTexture3D[0],
            deviceProp.maxTexture3D[1], deviceProp.maxTexture3D[2]);
     printf("  Maximum Layered 1D Texture Size, (num) layers  1D=(%d), %d "
            "layers\n",
            deviceProp.maxTexture1DLayered[0], deviceProp.maxTexture1DLayered[1]);
     printf("  Maximum Layered 2D Texture Size, (num) layers  2D=(%d, %d), %d "
            "layers\n",
-           deviceProp.maxTexture2DLayered[0], deviceProp.maxTexture2DLayered[1], deviceProp.maxTexture2DLayered[2]);
+           deviceProp.maxTexture2DLayered[0], deviceProp.maxTexture2DLayered[1],
+           deviceProp.maxTexture2DLayered[2]);
 
-    printf("  Total amount of constant memory:               %lu bytes\n", deviceProp.totalConstMem);
-    printf("  Total amount of shared memory per block:       %lu bytes\n", deviceProp.sharedMemPerBlock);
-    printf("  Total number of registers available per block: %d\n", deviceProp.regsPerBlock);
+    printf("  Total amount of constant memory:               %lu bytes\n",
+           deviceProp.totalConstMem);
+    printf("  Total amount of shared memory per block:       %lu bytes\n",
+           deviceProp.sharedMemPerBlock);
+    printf("  Total number of registers available per block: %d\n",
+           deviceProp.regsPerBlock);
     printf("  Warp size:                                     %d\n", deviceProp.warpSize);
-    printf("  Multiprocessor count:                          %d\n", deviceProp.multiProcessorCount);
-    printf("  Maximum number of threads per multiprocessor:  %d\n", deviceProp.maxThreadsPerMultiProcessor);
-    printf("  Maximum number of threads per block:           %d\n", deviceProp.maxThreadsPerBlock);
-    printf("  Max dimension size of a thread block (x,y,z): (%d, %d, %d)\n", deviceProp.maxThreadsDim[0],
-           deviceProp.maxThreadsDim[1], deviceProp.maxThreadsDim[2]);
-    printf("  Max dimension size of a grid size    (x,y,z): (%d, %d, %d)\n", deviceProp.maxGridSize[0],
-           deviceProp.maxGridSize[1], deviceProp.maxGridSize[2]);
-    printf("  Maximum memory pitch:                          %lu bytes\n", deviceProp.memPitch);
-    printf("  Texture alignment:                             %lu bytes\n", deviceProp.textureAlignment);
+    printf("  Multiprocessor count:                          %d\n",
+           deviceProp.multiProcessorCount);
+    printf("  Maximum number of threads per multiprocessor:  %d\n",
+           deviceProp.maxThreadsPerMultiProcessor);
+    printf("  Maximum number of threads per block:           %d\n",
+           deviceProp.maxThreadsPerBlock);
+    printf("  Max dimension size of a thread block (x,y,z): (%d, %d, %d)\n",
+           deviceProp.maxThreadsDim[0], deviceProp.maxThreadsDim[1],
+           deviceProp.maxThreadsDim[2]);
+    printf("  Max dimension size of a grid size    (x,y,z): (%d, %d, %d)\n",
+           deviceProp.maxGridSize[0], deviceProp.maxGridSize[1],
+           deviceProp.maxGridSize[2]);
+    printf("  Maximum memory pitch:                          %lu bytes\n",
+           deviceProp.memPitch);
+    printf("  Texture alignment:                             %lu bytes\n",
+           deviceProp.textureAlignment);
     printf("  Concurrent copy and kernel execution:          %s with %d copy "
            "engine(s)\n",
            (deviceProp.deviceOverlap ? "Yes" : "No"), deviceProp.asyncEngineCount);
-    printf("  Run time limit on kernels:                     %s\n", deviceProp.kernelExecTimeoutEnabled ? "Yes" : "No");
-    printf("  Integrated GPU sharing Host Memory:            %s\n", deviceProp.integrated ? "Yes" : "No");
-    printf("  Support host page-locked memory mapping:       %s\n", deviceProp.canMapHostMemory ? "Yes" : "No");
-    printf("  Alignment requirement for Surfaces:            %s\n", deviceProp.surfaceAlignment ? "Yes" : "No");
-    printf("  Device has ECC support:                        %s\n", deviceProp.ECCEnabled ? "Enabled" : "Disabled");
+    printf("  Run time limit on kernels:                     %s\n",
+           deviceProp.kernelExecTimeoutEnabled ? "Yes" : "No");
+    printf("  Integrated GPU sharing Host Memory:            %s\n",
+           deviceProp.integrated ? "Yes" : "No");
+    printf("  Support host page-locked memory mapping:       %s\n",
+           deviceProp.canMapHostMemory ? "Yes" : "No");
+    printf("  Alignment requirement for Surfaces:            %s\n",
+           deviceProp.surfaceAlignment ? "Yes" : "No");
+    printf("  Device has ECC support:                        %s\n",
+           deviceProp.ECCEnabled ? "Enabled" : "Disabled");
 #if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
     printf("  CUDA Device Driver Mode (TCC or WDDM):         %s\n",
-           deviceProp.tccDriver ? "TCC (Tesla Compute Cluster Driver)" : "WDDM (Windows Display Driver Model)");
+           deviceProp.tccDriver ? "TCC (Tesla Compute Cluster Driver)"
+                                : "WDDM (Windows Display Driver Model)");
 #endif
-    printf("  Device supports Unified Addressing (UVA):      %s\n", deviceProp.unifiedAddressing ? "Yes" : "No");
+    printf("  Device supports Unified Addressing (UVA):      %s\n",
+           deviceProp.unifiedAddressing ? "Yes" : "No");
     printf("  Device supports Compute Preemption:            %s\n",
            deviceProp.computePreemptionSupported ? "Yes" : "No");
-    printf("  Supports Cooperative Kernel Launch:            %s\n", deviceProp.cooperativeLaunch ? "Yes" : "No");
+    printf("  Supports Cooperative Kernel Launch:            %s\n",
+           deviceProp.cooperativeLaunch ? "Yes" : "No");
     printf("  Supports MultiDevice Co-op Kernel Launch:      %s\n",
            deviceProp.cooperativeMultiDeviceLaunch ? "Yes" : "No");
-    printf("  Device PCI Domain ID / Bus ID / location ID:   %d / %d / %d\n", deviceProp.pciDomainID,
-           deviceProp.pciBusID, deviceProp.pciDeviceID);
+    printf("  Device PCI Domain ID / Bus ID / location ID:   %d / %d / %d\n",
+           deviceProp.pciDomainID, deviceProp.pciBusID, deviceProp.pciDeviceID);
 
     std::array<const char *, 6> sComputeMode = {
-        "Default (multiple host threads can use ::cudaSetDevice() with device simultaneously)",
-        "Exclusive (only one host thread in one process is able to use ::cudaSetDevice() with this device)",
+        "Default (multiple host threads can use ::cudaSetDevice() with device "
+        "simultaneously)",
+        "Exclusive (only one host thread in one process is able to use ::cudaSetDevice() "
+        "with this device)",
         "Prohibited (no host thread can use ::cudaSetDevice() with this device)",
-        "Exclusive Process (many threads in one process is able to use ::cudaSetDevice() with this device)",
+        "Exclusive Process (many threads in one process is able to use ::cudaSetDevice() "
+        "with this device)",
         "Unknown",
         nullptr};
     printf("  Compute Mode:\n");
@@ -350,7 +397,7 @@ void geant::cuda::device_query()
 
   printf("\n\n");
   // cudaDeviceSynchronize();
-  CUDA_CHECK_LAST_ERROR();
+  GEANT_CUDA_CHECK_LAST_ERROR_SYNC();
 }
 
 //======================================================================================//

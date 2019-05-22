@@ -1,3 +1,16 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Test for GeantX's tuple.
+ */
+//===----------------------------------------------------------------------===//
 
 #pragma once
 
@@ -23,8 +36,9 @@
 #include <thread>
 #include <type_traits>
 
-typedef std::chrono::duration<double> duration_t;
-using Generator = std::mt19937_64;
+using duration_t = std::chrono::duration<double>;
+using Generator  = std::mt19937_64;
+using namespace PTL;
 
 //======================================================================================//
 
@@ -56,17 +70,18 @@ void write_app_info(int argc, char** argv)
 //======================================================================================//
 // macro for reporting the duration between a previous time point and the current time
 #if !defined(REPORT_TEST_TIMER)
-#    define REPORT_TEST_TIMER(start_time, note, counter, total_count, ref)                                             \
-        {                                                                                                              \
-            auto       end_time        = std::chrono::high_resolution_clock::now();                                    \
-            duration_t elapsed_seconds = end_time - start_time;                                                        \
-            if(!ref)                                                                                                   \
-            {                                                                                                          \
-                ref.reset(new duration_t(elapsed_seconds));                                                            \
-            }                                                                                                          \
-            auto speed_up = ref->count() / elapsed_seconds.count();                                                    \
-            printf("> %-16s :: loop #%lu with %3lu iterations... %10.6f seconds. Speed-up: %5.3f\n", note, counter,    \
-                   total_count, elapsed_seconds.count(), speed_up);                                                    \
+#    define REPORT_TEST_TIMER(start_time, note, counter, total_count, ref)               \
+        {                                                                                \
+            auto       end_time        = std::chrono::high_resolution_clock::now();      \
+            duration_t elapsed_seconds = end_time - start_time;                          \
+            if(!ref)                                                                     \
+            {                                                                            \
+                ref.reset(new duration_t(elapsed_seconds));                              \
+            }                                                                            \
+            auto speed_up = ref->count() / elapsed_seconds.count();                      \
+            printf("> %-16s :: loop #%lu with %3lu iterations... %10.6f seconds. "       \
+                   "Speed-up: %5.3f\n",                                                  \
+                   note, counter, total_count, elapsed_seconds.count(), speed_up);       \
         }
 #endif
 
@@ -76,7 +91,8 @@ template <typename _Tp1, typename _Tp2, typename _Tp3>
 void print(_Tp1 val1, _Tp2 val2, _Tp3 val3)
 {
     AutoLock l(TypeMutex<decltype(std::cout)>());
-    std::cout << "+ values = " << val1 << ", " << val2 << ", " << val3 << "\n" << std::endl;
+    std::cout << "+ values = " << val1 << ", " << val2 << ", " << val3 << "\n"
+              << std::endl;
 }
 
 //======================================================================================//
@@ -116,18 +132,21 @@ struct Printer
         std::stringstream ss;
         ss.precision(1);
         ss << std::fixed;
-        ss << "\t" << std::setw(6) << obj.m_name << " = " << std::setw(6) << (obj.m_value) << std::endl;
+        ss << "\t" << std::setw(6) << obj.m_name << " = " << std::setw(6) << (obj.m_value)
+           << std::endl;
         os << ss.str();
         return os;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const std::pair<Printer, Printer>& obj)
+    friend std::ostream& operator<<(std::ostream&                      os,
+                                    const std::pair<Printer, Printer>& obj)
     {
         std::stringstream ss;
         ss.precision(1);
         ss << std::fixed;
-        ss << "  " << std::setw(6) << obj.first.m_name << " : " << std::setw(6) << obj.first.m_value << "   ==> "
-           << std::setw(6) << obj.second.m_value << std::endl;
+        ss << "  " << std::setw(6) << obj.first.m_name << " : " << std::setw(6)
+           << obj.first.m_value << "   ==> " << std::setw(6) << obj.second.m_value
+           << std::endl;
         os << ss.str();
         return os;
     }
@@ -212,7 +231,8 @@ public:
     virtual void doSomething(const std::string& msg)
     {
         std::stringstream ss;
-        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << ". Message = \"" << msg << "\"\n";
+        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << ". Message = \""
+           << msg << "\"\n";
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << ss.str() << std::flush;
     }
@@ -281,7 +301,8 @@ public:
     virtual void doSomething(const std::string& msg)
     {
         std::stringstream ss;
-        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << ". Message = \"" << msg << "\"\n";
+        ss << "+ I am the " << m_class_id << " :: " << __FUNCTION__ << ". Message = \""
+           << msg << "\"\n";
         AutoLock l(TypeMutex<decltype(std::cout)>());
         std::cout << ss.str() << std::flush;
     }
@@ -332,14 +353,16 @@ struct ConstructAccessor
     {
         int _nquery = (obj->nquery++) % 10;
         if(_nquery == 9)
-            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+            obj->m_random_value +=
+                -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
     }
 
     ConstructAccessor(VirtualA* obj, Generator& gen)
     {
         int _nquery = (obj->nquery++) % 10;
         if(_nquery == 9)
-            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+            obj->m_random_value +=
+                -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
     }
 
     ConstructAccessor(ObjectB* obj, Generator& gen)
@@ -363,14 +386,16 @@ struct ConstructAccessorA
     {
         int _nquery = (obj->nquery++) % 10;
         if(_nquery == 9)
-            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+            obj->m_random_value +=
+                -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
     }
 
     ConstructAccessorA(VirtualA* obj, Generator& gen)
     {
         int _nquery = (obj->nquery++) % 10;
         if(_nquery == 9)
-            obj->m_random_value += -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
+            obj->m_random_value +=
+                -0.5 * (std::generate_canonical<double, 12>(gen) - 0.5);
     }
 };
 
@@ -424,7 +449,10 @@ public:
     {
     }
 
-    void operator()(_Args&&... args) { m_func(std::forward<_Tp&>(m_obj), std::forward<_Args>(args)...); }
+    void operator()(_Args&&... args)
+    {
+        m_func(std::forward<_Tp&>(m_obj), std::forward<_Args>(args)...);
+    }
 
     // this demonstrates a way to customize
     void doSomething(const std::string& msg)
@@ -435,7 +463,8 @@ public:
     }
 
     // when generate(...) is called by ObjectAccessor<ObjectA>, this function is called
-    template <typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectA>::value), int> = 0>
+    template <typename U                                               = _Tp,
+              std::enable_if_t<(std::is_same<U, ObjectA>::value), int> = 0>
     void generate(Generator& gen)
     {
         int _nquery = (m_obj.nquery++) % 10;
@@ -444,7 +473,8 @@ public:
     }
 
     // when generate(...) is called by ObjectAccessor<ObjectB>, this function is called
-    template <typename U = _Tp, std::enable_if_t<(std::is_same<U, ObjectB>::value), int> = 0>
+    template <typename U                                               = _Tp,
+              std::enable_if_t<(std::is_same<U, ObjectB>::value), int> = 0>
     void generate(Generator& gen)
     {
         int _nquery = (m_obj.nquery++) % 10;

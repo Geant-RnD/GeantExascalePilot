@@ -1,5 +1,15 @@
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
 
 #include "test_tuple.cuh"
+
+#include "Geant/core/CudaRuntime.hpp"
 
 __global__ void kernel()
 {
@@ -11,7 +21,7 @@ void launch(TaskGroup<void>& tg)
 {
     nvstd::function<void()> func = []() {
         kernel<<<1, 1>>>();
-        CUDA_CHECK_LAST_ERROR();
+        GEANT_CUDA_CHECK_LAST_ERROR_SYNC();
     };
     tg.run(func);
 }

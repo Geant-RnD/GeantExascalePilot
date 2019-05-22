@@ -29,19 +29,23 @@ double GUFieldPropagator::fEpsilon                      = 1.0e-4;
 bool GUFieldPropagator::fVerboseConstruct               = false;
 
 //------------------------------------------------------------------------------------
-GUFieldPropagator::GUFieldPropagator(ScalarIntegrationDriver *driver, double eps, FlexIntegrationDriver *flexDriver)
+GUFieldPropagator::GUFieldPropagator(ScalarIntegrationDriver *driver, double eps,
+                                     FlexIntegrationDriver *flexDriver)
     : fScalarDriver(driver)
 // fEpsilon(eps)
 {
-  const char *methodName = "GUFieldPropagator constructor (scalarDriver, eps, *flex - with default = null)";
+  const char *methodName =
+      "GUFieldPropagator constructor (scalarDriver, eps, *flex - with default = null)";
 
   fEpsilon = eps;
 
   if (fVerboseConstruct) {
-    std::cout << "------------------------------------------------------------------------------------" << std::endl;
-    std::cout << methodName << std::endl
-              << "  Arguments:  scalarDrv= " << driver << " eps = " << eps << " flexDriver = " << flexDriver
+    std::cout << "-----------------------------------------------------------------------"
+                 "-------------"
               << std::endl;
+    std::cout << methodName << std::endl
+              << "  Arguments:  scalarDrv= " << driver << " eps = " << eps
+              << " flexDriver = " << flexDriver << std::endl;
     std::cout << "  Existing vectorDriver (static) = " << fVectorDriver << std::endl;
   }
 
@@ -49,16 +53,24 @@ GUFieldPropagator::GUFieldPropagator(ScalarIntegrationDriver *driver, double eps
     SetFlexIntegrationDriver(flexDriver);
     if (fVerboseConstruct) {
       std::cout << " Installing flex/vectorDriver = " << flexDriver << std::endl;
-      std::cout << " Confirmed  address           = " << GetFlexibleIntegrationDriver() << std::endl;
+      std::cout << " Confirmed  address           = " << GetFlexibleIntegrationDriver()
+                << std::endl;
     }
     assert(flexDriver == GetFlexibleIntegrationDriver());
   } else {
     if (fVectorDriver && flexDriver)
-      std::cout << "GUFieldPropagator> Not overwriting Vector/Flexible Driver" << std::endl;
+      std::cout << "GUFieldPropagator> Not overwriting Vector/Flexible Driver"
+                << std::endl;
     if (!fVectorDriver && !flexDriver) {
-      std::cout << "==============================================================================" << std::endl;
-      std::cout << "WARNING: Gufieldpropagator> Not setting Vector/Flexible Driver: none provided." << std::endl;
-      std::cout << "==============================================================================" << std::endl;
+      std::cout << "====================================================================="
+                   "========="
+                << std::endl;
+      std::cout << "WARNING: Gufieldpropagator> Not setting Vector/Flexible Driver: none "
+                   "provided."
+                << std::endl;
+      std::cout << "====================================================================="
+                   "========="
+                << std::endl;
     }
   }
 
@@ -76,7 +88,8 @@ GUFieldPropagator::GUFieldPropagator(ScalarIntegrationDriver *driver, double eps
 //------------------------------------------------------------------------------------
 GUFieldPropagator::~GUFieldPropagator()
 {
-  if (fVerboseConstruct) std::cout << "GUFieldPropagator destructor called for ptr= " << this << std::endl;
+  if (fVerboseConstruct)
+    std::cout << "GUFieldPropagator destructor called for ptr= " << this << std::endl;
 }
 
 //------------------------------------------------------------------------------------
@@ -88,7 +101,9 @@ void GUFieldPropagator::SetFlexIntegrationDriver(FlexIntegrationDriver *flexDriv
 
     if (fVerboseConstruct) std::cout << "Replacing Vector/Flexible Driver" << std::endl;
   } else if (fVectorDriver && flexDriver) {
-    std::cout << methodName << "> Not overwriting with Vector/Flexible Driver: already set!" << std::endl;
+    std::cout << methodName
+              << "> Not overwriting with Vector/Flexible Driver: already set!"
+              << std::endl;
   }
 }
 
@@ -100,7 +115,8 @@ template <typename FieldType> // , typename StepperType>
 GUFieldPropagator::GUFieldPropagator(FieldType *magField, double eps, double hminimum)
 // : fEpsilon(eps)
 {
-  constexpr unsigned int Nposmom = 6; // Number of Integration variables - 3 position, 3 momentum
+  constexpr unsigned int Nposmom =
+      6; // Number of Integration variables - 3 position, 3 momentum
 
   if (0.0 < eps && eps < 1.0) fEpsilon = eps;
 
@@ -113,8 +129,9 @@ GUFieldPropagator::GUFieldPropagator(FieldType *magField, double eps, double hmi
   // auto stepper = new StepperType<ScalarEquationType,Nposmom>(gvEquation);
   auto scalarStepper = new // ScalarCashKarp
       GUTCashKarpRKF45<ScalarEquationType, Nposmom>(pEquation);
-  auto scalarDriver = new ScalarIntegrationDriver(hminimum, scalarStepper, Nposmom, statVerbose);
-  fScalarDriver     = scalarDriver;
+  auto scalarDriver =
+      new ScalarIntegrationDriver(hminimum, scalarStepper, Nposmom, statVerbose);
+  fScalarDriver = scalarDriver;
   // #else
   //    fScalarDriver= nullptr;
   // #endif
@@ -127,8 +144,8 @@ GUFieldPropagator::GUFieldPropagator(FieldType *magField, double eps, double hmi
     using FlexStepperType  = CashKarp<FlexEquationType, Nposmom>;
     auto myFlexStepper     = new FlexStepperType(gvEquation);
     int statsVerbose       = 1;
-    auto flexDriver =
-        new SimpleIntegrationDriver<FlexStepperType, Nposmom>(hminimum, myFlexStepper, Nposmom, statsVerbose);
+    auto flexDriver        = new SimpleIntegrationDriver<FlexStepperType, Nposmom>(
+        hminimum, myFlexStepper, Nposmom, statsVerbose);
     fVectorDriver = flexDriver;
   }
 
@@ -142,11 +159,12 @@ GUFieldPropagator *GUFieldPropagator::Clone() const
 }
 // #endif
 
-// Make a step from current point along the path and compute new point, direction and angle
-// VECCORE_ATT_HOST_DEVICE
-bool GUFieldPropagator::DoStep(ThreeVector const &startPosition, ThreeVector const &startDirection, int const &charge,
-                               double const &startMomentumMag, double const &step, ThreeVector &endPosition,
-                               ThreeVector &endDirection)
+// Make a step from current point along the path and compute new point, direction and
+// angle VECCORE_ATT_HOST_DEVICE
+bool GUFieldPropagator::DoStep(ThreeVector const &startPosition,
+                               ThreeVector const &startDirection, int const &charge,
+                               double const &startMomentumMag, double const &step,
+                               ThreeVector &endPosition, ThreeVector &endDirection)
 {
   const char *methodName = "GUFieldPropagator::DoStep";
   bool goodAdvance       = false;
@@ -175,24 +193,31 @@ bool GUFieldPropagator::DoStep(ThreeVector const &startPosition, ThreeVector con
     std::cout << "   yTrackInFT = " << yTrackInFT << std::endl;
   }
 
-#ifdef EXTEND_SINGLE
+#  ifdef EXTEND_SINGLE
   if (verbose && !infoPrinted) {
-    std::cout << methodName << " > Using Flexible/Vector Driver - for 1 track " << fScalarDriver << std::endl;
+    std::cout << methodName << " > Using Flexible/Vector Driver - for 1 track "
+              << fScalarDriver << std::endl;
     infoPrinted = true;
   }
 
-  // Using the capabiity of the flexible driver to integrate a single track -- New 25.01.2018
-  fVectorDriver->AccurateAdvance(yTrackInFT, step, chargeFlt, fEpsilon, yTrackOutFT, okFlex);
-#else
+  // Using the capabiity of the flexible driver to integrate a single track --
+  // New 25.01.2018
+  fVectorDriver->AccurateAdvance(yTrackInFT, step, chargeFlt, fEpsilon, yTrackOutFT,
+                                 okFlex);
+#  else
   if (verbose && !infoPrinted) {
-    std::cout << methodName << " > Using VectorDriver ( Real_v ) with 1 track" << fScalarDriver << std::endl;
+    std::cout << methodName << " > Using VectorDriver ( Real_v ) with 1 track"
+              << fScalarDriver << std::endl;
     infoPrinted = true;
   }
 
   // Harnessing the vector driver to integrate just a single track -- MIS-USE
-  fVectorDriver->AccurateAdvance(&yTrackInFT, &step, &chargeFlt, fEpsilon, &yTrackOutFT, 1, &okFlex);
-#endif
-  if (verbose) std::cout << " Results:  good = " << okFlex << " track out= " << yTrackOutFT << std::endl;
+  fVectorDriver->AccurateAdvance(&yTrackInFT, &step, &chargeFlt, fEpsilon, &yTrackOutFT,
+                                 1, &okFlex);
+#  endif
+  if (verbose)
+    std::cout << " Results:  good = " << okFlex << " track out= " << yTrackOutFT
+              << std::endl;
   // #endif
 
   // std::cout << "   Epsilon    = " << fEpsilon   << std::endl;
@@ -212,12 +237,14 @@ bool GUFieldPropagator::DoStep(ThreeVector const &startPosition, ThreeVector con
     infoPrinted = true;
   }
 
-  ScalarFieldTrack yTrackIn(startPosition, startDirection * startMomentumMag, charge, 0.0); // s_0  xo
+  ScalarFieldTrack yTrackIn(startPosition, startDirection * startMomentumMag, charge,
+                            0.0); // s_0  xo
   ScalarFieldTrack yTrackOut(yTrackIn);
 
   assert(fScalarDriver);
   // Simple call
-  goodAdvance = fScalarDriver->AccurateAdvance(yTrackIn, step, fEpsilon, yTrackOut); // , hInitial );
+  goodAdvance = fScalarDriver->AccurateAdvance(yTrackIn, step, fEpsilon,
+                                               yTrackOut); // , hInitial );
   endPosition = yTrackOut.GetPosition();
   endDirection = yTrackOut.GetMomentumDirection();
 #endif

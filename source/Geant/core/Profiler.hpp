@@ -1,27 +1,73 @@
-// MIT License
+//===------------------ GeantX --------------------------------------------===//
 //
-// Copyright (c) 2018, The Regents of the University of California,
-// through Lawrence Berkeley National Laboratory (subject to receipt of any
-// required approvals from the U.S. Dept. of Energy).  All rights reserved.
+// Geant Exascale Pilot
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
+/**
+ * @file
+ * @brief Profiler interface(s)
+ */
+//===----------------------------------------------------------------------===//
 
 #pragma once
 
 #include <timemory/timemory.hpp>
+
+#include "Geant/core/Logger.hpp"
+
+//--------------------------------------------------------------------------------------//
+// used for ThreadPool::GetThreadID()
+//
+#include "PTL/ThreadPool.hh"
+
+//======================================================================================//
+// macro for recording a time point
+#if !defined(GEANT_GET_TIMER)
+#  define GEANT_GET_TIMER(var) auto var = std::chrono::high_resolution_clock::now()
+#endif
+
+//======================================================================================//
+
+#if !defined(GEANT_REPORT_TIMER)
+// Format string below is: "[%li]> %-16s :: %3i of %3i... %5.2f seconds\n"
+#  define GEANT_REPORT_TIMER(start_time, note, counter, total_count)                  \
+    {                                                                                 \
+      auto end_time = std::chrono::high_resolution_clock::now();                      \
+                                                                                      \
+      std::chrono::duration<double> elapsed_seconds = end_time - start_time;          \
+      geantx::Log(kInfo) << "[" << ThreadPool::GetThisThreadID() << "]> "             \
+                         << std::setw(16) << std::setiosflags(ios::left) << note      \
+                         << " :: " << std::setiosflags(ios::right) << std::setw(3)    \
+                         << counter << " of " << total_count << "..." << std::setw(5) \
+                         << std::setprecision(2) << elapsed_seconds.count()           \
+                         << "seconds ";                                               \
+    }
+#endif
+
+//======================================================================================//
+//
+//      NVTX macros
+//
+//======================================================================================//
+
+#if defined(GEANT_USE_NVTX)
+#  include <nvToolsExt.h>
+
+#  ifndef NVTX_RANGE_PUSH
+#    define NVTX_RANGE_PUSH(obj) nvtxRangePushEx(obj)
+#  endif
+#  ifndef NVTX_RANGE_POP
+#    define NVTX_RANGE_POP(obj)   \
+      cudaStreamSynchronize(obj); \
+      nvtxRangePop()
+#  endif
+#  ifndef NVTX_NAME_THREAD
+#    define NVTX_NAME_THREAD(num, name) nvtxNameOsThread(num, name)
+#  endif
+#  ifndef NVTX_MARK
+#    define NVTX_MARK(msg) nvtxMark(name)
+#  endif
+#endif

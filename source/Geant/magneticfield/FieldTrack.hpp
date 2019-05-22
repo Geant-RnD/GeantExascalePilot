@@ -19,11 +19,13 @@ public:
 
   // Constructors
   FieldTrack() : fDistanceAlongCurve(0.0) { LoadZeroes(); }
-  FieldTrack(double PositionMomentum[NumCompFT], double length = 0.0) : fDistanceAlongCurve(length)
+  FieldTrack(double PositionMomentum[NumCompFT], double length = 0.0)
+      : fDistanceAlongCurve(length)
   {
     LoadFromArray(PositionMomentum);
   }
-  FieldTrack(std::vector<double> &PositionMomentumVec, double length = 0.0) : fDistanceAlongCurve(length)
+  FieldTrack(std::vector<double> &PositionMomentumVec, double length = 0.0)
+      : fDistanceAlongCurve(length)
   {
     LoadFromVector(PositionMomentumVec);
   }
@@ -85,17 +87,23 @@ private:
   double fDistanceAlongCurve = 0.0;
 
 public:
-  double operator[](size_t i) const { return (i < NumCompFT) ? fPosMomArr[i] : fDistanceAlongCurve; }
+  double operator[](size_t i) const
+  {
+    return (i < NumCompFT) ? fPosMomArr[i] : fDistanceAlongCurve;
+  }
 
-  double operator[](size_t i) { return (i < NumCompFT) ? fPosMomArr[i] : fDistanceAlongCurve; }
+  double operator[](size_t i)
+  {
+    return (i < NumCompFT) ? fPosMomArr[i] : fDistanceAlongCurve;
+  }
 
   friend std::ostream &operator<<(std::ostream &os, const FieldTrack &fieldTrack)
   {
     os << " ( ";
-    os << " X= " << fieldTrack.fPosMomArr[0] << " " << fieldTrack.fPosMomArr[1] << " " << fieldTrack.fPosMomArr[2]
-       << " "; // Position
-    os << " P= " << fieldTrack.fPosMomArr[3] << " " << fieldTrack.fPosMomArr[4] << " " << fieldTrack.fPosMomArr[5]
-       << " "; // Momentum
+    os << " X= " << fieldTrack.fPosMomArr[0] << " " << fieldTrack.fPosMomArr[1] << " "
+       << fieldTrack.fPosMomArr[2] << " "; // Position
+    os << " P= " << fieldTrack.fPosMomArr[3] << " " << fieldTrack.fPosMomArr[4] << " "
+       << fieldTrack.fPosMomArr[5] << " "; // Momentum
     os << " ) ";
 
     return os;

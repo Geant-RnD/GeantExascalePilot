@@ -3,12 +3,13 @@
 #include "Geant/material/DensityEffectData.hpp"
 #include "Geant/material/MaterialState.hpp"
 
-namespace geantphysics {
+namespace geantx {
 void DensityEffectData::BuildTable()
 {
-  using geant::units::eV;
+  using geantx::units::eV;
 
-  // NIST_MAT_lH2 --------------------------------------------------------------------------
+  // NIST_MAT_lH2
+  // --------------------------------------------------------------------------
   fDensityEffectDataTable[0].fName              = "NIST_MAT_lH2";
   fDensityEffectDataTable[0].fPlasmaEnergy      = 7.031 * eV;
   fDensityEffectDataTable[0].fSternheimerFactor = 1.546;
@@ -21,7 +22,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[0].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[0].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_H ----------------------------------------------------------------------------
+  // NIST_MAT_H
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[1].fName              = "NIST_MAT_H";
   fDensityEffectDataTable[1].fPlasmaEnergy      = 0.263 * eV;
   fDensityEffectDataTable[1].fSternheimerFactor = 1.412;
@@ -34,7 +36,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[1].fDeltaErrorMax     = 0.024;
   fDensityEffectDataTable[1].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_He ---------------------------------------------------------------------------
+  // NIST_MAT_He
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[2].fName              = "NIST_MAT_He";
   fDensityEffectDataTable[2].fPlasmaEnergy      = 0.263 * eV;
   fDensityEffectDataTable[2].fSternheimerFactor = 1.7;
@@ -47,7 +50,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[2].fDeltaErrorMax     = 0.024;
   fDensityEffectDataTable[2].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Li ---------------------------------------------------------------------------
+  // NIST_MAT_Li
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[3].fName              = "NIST_MAT_Li";
   fDensityEffectDataTable[3].fPlasmaEnergy      = 13.844 * eV;
   fDensityEffectDataTable[3].fSternheimerFactor = 1.535;
@@ -60,7 +64,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[3].fDeltaErrorMax     = 0.062;
   fDensityEffectDataTable[3].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Be ---------------------------------------------------------------------------
+  // NIST_MAT_Be
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[4].fName              = "NIST_MAT_Be";
   fDensityEffectDataTable[4].fPlasmaEnergy      = 26.096 * eV;
   fDensityEffectDataTable[4].fSternheimerFactor = 1.908;
@@ -73,7 +78,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[4].fDeltaErrorMax     = 0.029;
   fDensityEffectDataTable[4].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_B ----------------------------------------------------------------------------
+  // NIST_MAT_B
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[5].fName              = "NIST_MAT_B";
   fDensityEffectDataTable[5].fPlasmaEnergy      = 30.17 * eV;
   fDensityEffectDataTable[5].fSternheimerFactor = 2.32;
@@ -86,7 +92,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[5].fDeltaErrorMax     = 0.024;
   fDensityEffectDataTable[5].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_C ----------------------------------------------------------------------------
+  // NIST_MAT_C
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[6].fName              = "NIST_MAT_C";
   fDensityEffectDataTable[6].fPlasmaEnergy      = 28.803 * eV;
   fDensityEffectDataTable[6].fSternheimerFactor = 2.376;
@@ -99,7 +106,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[6].fDeltaErrorMax     = 0.038;
   fDensityEffectDataTable[6].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_N ----------------------------------------------------------------------------
+  // NIST_MAT_N
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[7].fName              = "NIST_MAT_N";
   fDensityEffectDataTable[7].fPlasmaEnergy      = 0.695 * eV;
   fDensityEffectDataTable[7].fSternheimerFactor = 1.984;
@@ -112,7 +120,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[7].fDeltaErrorMax     = 0.086;
   fDensityEffectDataTable[7].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_O ----------------------------------------------------------------------------
+  // NIST_MAT_O
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[8].fName              = "NIST_MAT_O";
   fDensityEffectDataTable[8].fPlasmaEnergy      = 0.744 * eV;
   fDensityEffectDataTable[8].fSternheimerFactor = 2.314;
@@ -125,7 +134,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[8].fDeltaErrorMax     = 0.101;
   fDensityEffectDataTable[8].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_F ----------------------------------------------------------------------------
+  // NIST_MAT_F
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[9].fName              = "NIST_MAT_F";
   fDensityEffectDataTable[9].fPlasmaEnergy      = 0.788 * eV;
   fDensityEffectDataTable[9].fSternheimerFactor = 2.45;
@@ -138,7 +148,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[9].fDeltaErrorMax     = 0.121;
   fDensityEffectDataTable[9].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Ne ---------------------------------------------------------------------------
+  // NIST_MAT_Ne
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[10].fName              = "NIST_MAT_Ne";
   fDensityEffectDataTable[10].fPlasmaEnergy      = 0.587 * eV;
   fDensityEffectDataTable[10].fSternheimerFactor = 2.577;
@@ -151,7 +162,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[10].fDeltaErrorMax     = 0.11;
   fDensityEffectDataTable[10].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Na ---------------------------------------------------------------------------
+  // NIST_MAT_Na
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[11].fName              = "NIST_MAT_Na";
   fDensityEffectDataTable[11].fPlasmaEnergy      = 19.641 * eV;
   fDensityEffectDataTable[11].fSternheimerFactor = 2.648;
@@ -164,7 +176,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[11].fDeltaErrorMax     = 0.098;
   fDensityEffectDataTable[11].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Mg ---------------------------------------------------------------------------
+  // NIST_MAT_Mg
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[12].fName              = "NIST_MAT_Mg";
   fDensityEffectDataTable[12].fPlasmaEnergy      = 26.708 * eV;
   fDensityEffectDataTable[12].fSternheimerFactor = 2.331;
@@ -177,7 +190,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[12].fDeltaErrorMax     = 0.073;
   fDensityEffectDataTable[12].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Al ---------------------------------------------------------------------------
+  // NIST_MAT_Al
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[13].fName              = "NIST_MAT_Al";
   fDensityEffectDataTable[13].fPlasmaEnergy      = 32.86 * eV;
   fDensityEffectDataTable[13].fSternheimerFactor = 2.18;
@@ -190,7 +204,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[13].fDeltaErrorMax     = 0.061;
   fDensityEffectDataTable[13].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Si ---------------------------------------------------------------------------
+  // NIST_MAT_Si
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[14].fName              = "NIST_MAT_Si";
   fDensityEffectDataTable[14].fPlasmaEnergy      = 31.055 * eV;
   fDensityEffectDataTable[14].fSternheimerFactor = 2.103;
@@ -203,7 +218,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[14].fDeltaErrorMax     = 0.059;
   fDensityEffectDataTable[14].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_P ----------------------------------------------------------------------------
+  // NIST_MAT_P
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[15].fName              = "NIST_MAT_P";
   fDensityEffectDataTable[15].fPlasmaEnergy      = 29.743 * eV;
   fDensityEffectDataTable[15].fSternheimerFactor = 2.056;
@@ -216,7 +232,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[15].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[15].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_S ----------------------------------------------------------------------------
+  // NIST_MAT_S
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[16].fName              = "NIST_MAT_S";
   fDensityEffectDataTable[16].fPlasmaEnergy      = 28.789 * eV;
   fDensityEffectDataTable[16].fSternheimerFactor = 2.131;
@@ -229,7 +246,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[16].fDeltaErrorMax     = 0.059;
   fDensityEffectDataTable[16].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Cl ---------------------------------------------------------------------------
+  // NIST_MAT_Cl
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[17].fName              = "NIST_MAT_Cl";
   fDensityEffectDataTable[17].fPlasmaEnergy      = 1.092 * eV;
   fDensityEffectDataTable[17].fSternheimerFactor = 1.734;
@@ -242,7 +260,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[17].fDeltaErrorMax     = 0.041;
   fDensityEffectDataTable[17].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Ar ---------------------------------------------------------------------------
+  // NIST_MAT_Ar
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[18].fName              = "NIST_MAT_Ar";
   fDensityEffectDataTable[18].fPlasmaEnergy      = 0.789 * eV;
   fDensityEffectDataTable[18].fSternheimerFactor = 1.753;
@@ -255,7 +274,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[18].fDeltaErrorMax     = 0.037;
   fDensityEffectDataTable[18].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_K ----------------------------------------------------------------------------
+  // NIST_MAT_K
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[19].fName              = "NIST_MAT_K";
   fDensityEffectDataTable[19].fPlasmaEnergy      = 18.65 * eV;
   fDensityEffectDataTable[19].fSternheimerFactor = 1.83;
@@ -268,7 +288,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[19].fDeltaErrorMax     = 0.035;
   fDensityEffectDataTable[19].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ca ---------------------------------------------------------------------------
+  // NIST_MAT_Ca
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[20].fName              = "NIST_MAT_Ca";
   fDensityEffectDataTable[20].fPlasmaEnergy      = 25.342 * eV;
   fDensityEffectDataTable[20].fSternheimerFactor = 1.666;
@@ -281,7 +302,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[20].fDeltaErrorMax     = 0.031;
   fDensityEffectDataTable[20].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Sc ---------------------------------------------------------------------------
+  // NIST_MAT_Sc
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[21].fName              = "NIST_MAT_Sc";
   fDensityEffectDataTable[21].fPlasmaEnergy      = 34.05 * eV;
   fDensityEffectDataTable[21].fSternheimerFactor = 1.826;
@@ -294,7 +316,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[21].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[21].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ti ---------------------------------------------------------------------------
+  // NIST_MAT_Ti
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[22].fName              = "NIST_MAT_Ti";
   fDensityEffectDataTable[22].fPlasmaEnergy      = 41.619 * eV;
   fDensityEffectDataTable[22].fSternheimerFactor = 1.969;
@@ -307,7 +330,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[22].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[22].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_V ----------------------------------------------------------------------------
+  // NIST_MAT_V
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[23].fName              = "NIST_MAT_V";
   fDensityEffectDataTable[23].fPlasmaEnergy      = 47.861 * eV;
   fDensityEffectDataTable[23].fSternheimerFactor = 2.07;
@@ -320,7 +344,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[23].fDeltaErrorMax     = 0.024;
   fDensityEffectDataTable[23].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Cr ---------------------------------------------------------------------------
+  // NIST_MAT_Cr
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[24].fName              = "NIST_MAT_Cr";
   fDensityEffectDataTable[24].fPlasmaEnergy      = 52.458 * eV;
   fDensityEffectDataTable[24].fSternheimerFactor = 2.181;
@@ -333,7 +358,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[24].fDeltaErrorMax     = 0.023;
   fDensityEffectDataTable[24].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Mn ---------------------------------------------------------------------------
+  // NIST_MAT_Mn
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[25].fName              = "NIST_MAT_Mn";
   fDensityEffectDataTable[25].fPlasmaEnergy      = 53.022 * eV;
   fDensityEffectDataTable[25].fSternheimerFactor = 2.347;
@@ -346,7 +372,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[25].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[25].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Fe ---------------------------------------------------------------------------
+  // NIST_MAT_Fe
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[26].fName              = "NIST_MAT_Fe";
   fDensityEffectDataTable[26].fPlasmaEnergy      = 55.172 * eV;
   fDensityEffectDataTable[26].fSternheimerFactor = 2.504;
@@ -359,7 +386,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[26].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[26].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Co ---------------------------------------------------------------------------
+  // NIST_MAT_Co
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[27].fName              = "NIST_MAT_Co";
   fDensityEffectDataTable[27].fPlasmaEnergy      = 58.188 * eV;
   fDensityEffectDataTable[27].fSternheimerFactor = 2.626;
@@ -372,7 +400,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[27].fDeltaErrorMax     = 0.019;
   fDensityEffectDataTable[27].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ni ---------------------------------------------------------------------------
+  // NIST_MAT_Ni
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[28].fName              = "NIST_MAT_Ni";
   fDensityEffectDataTable[28].fPlasmaEnergy      = 59.385 * eV;
   fDensityEffectDataTable[28].fSternheimerFactor = 2.889;
@@ -385,7 +414,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[28].fDeltaErrorMax     = 0.02;
   fDensityEffectDataTable[28].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Cu ---------------------------------------------------------------------------
+  // NIST_MAT_Cu
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[29].fName              = "NIST_MAT_Cu";
   fDensityEffectDataTable[29].fPlasmaEnergy      = 58.27 * eV;
   fDensityEffectDataTable[29].fSternheimerFactor = 2.956;
@@ -398,7 +428,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[29].fDeltaErrorMax     = 0.019;
   fDensityEffectDataTable[29].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Zn ---------------------------------------------------------------------------
+  // NIST_MAT_Zn
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[30].fName              = "NIST_MAT_Zn";
   fDensityEffectDataTable[30].fPlasmaEnergy      = 52.132 * eV;
   fDensityEffectDataTable[30].fSternheimerFactor = 3.142;
@@ -411,7 +442,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[30].fDeltaErrorMax     = 0.019;
   fDensityEffectDataTable[30].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ga ---------------------------------------------------------------------------
+  // NIST_MAT_Ga
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[31].fName              = "NIST_MAT_Ga";
   fDensityEffectDataTable[31].fPlasmaEnergy      = 46.688 * eV;
   fDensityEffectDataTable[31].fSternheimerFactor = 2.747;
@@ -424,7 +456,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[31].fDeltaErrorMax     = 0.019;
   fDensityEffectDataTable[31].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ge ---------------------------------------------------------------------------
+  // NIST_MAT_Ge
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[32].fName              = "NIST_MAT_Ge";
   fDensityEffectDataTable[32].fPlasmaEnergy      = 44.141 * eV;
   fDensityEffectDataTable[32].fSternheimerFactor = 2.461;
@@ -437,7 +470,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[32].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[32].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_As ---------------------------------------------------------------------------
+  // NIST_MAT_As
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[33].fName              = "NIST_MAT_As";
   fDensityEffectDataTable[33].fPlasmaEnergy      = 45.779 * eV;
   fDensityEffectDataTable[33].fSternheimerFactor = 2.219;
@@ -450,7 +484,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[33].fDeltaErrorMax     = 0.03;
   fDensityEffectDataTable[33].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Se ---------------------------------------------------------------------------
+  // NIST_MAT_Se
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[34].fName              = "NIST_MAT_Se";
   fDensityEffectDataTable[34].fPlasmaEnergy      = 40.112 * eV;
   fDensityEffectDataTable[34].fSternheimerFactor = 2.104;
@@ -463,7 +498,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[34].fDeltaErrorMax     = 0.024;
   fDensityEffectDataTable[34].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Br ---------------------------------------------------------------------------
+  // NIST_MAT_Br
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[35].fName              = "NIST_MAT_Br";
   fDensityEffectDataTable[35].fPlasmaEnergy      = 1.604 * eV;
   fDensityEffectDataTable[35].fSternheimerFactor = 1.845;
@@ -476,7 +512,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[35].fDeltaErrorMax     = 0.022;
   fDensityEffectDataTable[35].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Kr ---------------------------------------------------------------------------
+  // NIST_MAT_Kr
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[36].fName              = "NIST_MAT_Kr";
   fDensityEffectDataTable[36].fPlasmaEnergy      = 1.114 * eV;
   fDensityEffectDataTable[36].fSternheimerFactor = 1.77;
@@ -489,7 +526,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[36].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[36].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Ru ---------------------------------------------------------------------------
+  // NIST_MAT_Ru
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[37].fName              = "NIST_MAT_Ru";
   fDensityEffectDataTable[37].fPlasmaEnergy      = 23.467 * eV;
   fDensityEffectDataTable[37].fSternheimerFactor = 1.823;
@@ -502,7 +540,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[37].fDeltaErrorMax     = 0.026;
   fDensityEffectDataTable[37].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Sr ---------------------------------------------------------------------------
+  // NIST_MAT_Sr
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[38].fName              = "NIST_MAT_Sr";
   fDensityEffectDataTable[38].fPlasmaEnergy      = 30.244 * eV;
   fDensityEffectDataTable[38].fSternheimerFactor = 1.707;
@@ -515,7 +554,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[38].fDeltaErrorMax     = 0.026;
   fDensityEffectDataTable[38].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Y ----------------------------------------------------------------------------
+  // NIST_MAT_Y
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[39].fName              = "NIST_MAT_Y";
   fDensityEffectDataTable[39].fPlasmaEnergy      = 40.346 * eV;
   fDensityEffectDataTable[39].fSternheimerFactor = 1.649;
@@ -528,7 +568,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[39].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[39].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Zr ---------------------------------------------------------------------------
+  // NIST_MAT_Zr
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[40].fName              = "NIST_MAT_Zr";
   fDensityEffectDataTable[40].fPlasmaEnergy      = 48.671 * eV;
   fDensityEffectDataTable[40].fSternheimerFactor = 1.638;
@@ -541,7 +582,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[40].fDeltaErrorMax     = 0.028;
   fDensityEffectDataTable[40].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Nb ---------------------------------------------------------------------------
+  // NIST_MAT_Nb
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[41].fName              = "NIST_MAT_Nb";
   fDensityEffectDataTable[41].fPlasmaEnergy      = 56.039 * eV;
   fDensityEffectDataTable[41].fSternheimerFactor = 1.734;
@@ -554,7 +596,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[41].fDeltaErrorMax     = 0.036;
   fDensityEffectDataTable[41].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Mo ---------------------------------------------------------------------------
+  // NIST_MAT_Mo
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[42].fName              = "NIST_MAT_Mo";
   fDensityEffectDataTable[42].fPlasmaEnergy      = 60.951 * eV;
   fDensityEffectDataTable[42].fSternheimerFactor = 1.658;
@@ -567,7 +610,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[42].fDeltaErrorMax     = 0.03;
   fDensityEffectDataTable[42].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Tc ---------------------------------------------------------------------------
+  // NIST_MAT_Tc
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[43].fName              = "NIST_MAT_Tc";
   fDensityEffectDataTable[43].fPlasmaEnergy      = 64.76 * eV;
   fDensityEffectDataTable[43].fSternheimerFactor = 1.727;
@@ -580,7 +624,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[43].fDeltaErrorMax     = 0.04;
   fDensityEffectDataTable[43].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ru ---------------------------------------------------------------------------
+  // NIST_MAT_Ru
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[44].fName              = "NIST_MAT_Ru";
   fDensityEffectDataTable[44].fPlasmaEnergy      = 66.978 * eV;
   fDensityEffectDataTable[44].fSternheimerFactor = 1.78;
@@ -593,7 +638,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[44].fDeltaErrorMax     = 0.046;
   fDensityEffectDataTable[44].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Rh ---------------------------------------------------------------------------
+  // NIST_MAT_Rh
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[45].fName              = "NIST_MAT_Rh";
   fDensityEffectDataTable[45].fPlasmaEnergy      = 67.128 * eV;
   fDensityEffectDataTable[45].fSternheimerFactor = 1.804;
@@ -606,7 +652,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[45].fDeltaErrorMax     = 0.046;
   fDensityEffectDataTable[45].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Pd ---------------------------------------------------------------------------
+  // NIST_MAT_Pd
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[46].fName              = "NIST_MAT_Pd";
   fDensityEffectDataTable[46].fPlasmaEnergy      = 65.683 * eV;
   fDensityEffectDataTable[46].fSternheimerFactor = 1.911;
@@ -619,7 +666,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[46].fDeltaErrorMax     = 0.047;
   fDensityEffectDataTable[46].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ag ---------------------------------------------------------------------------
+  // NIST_MAT_Ag
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[47].fName              = "NIST_MAT_Ag";
   fDensityEffectDataTable[47].fPlasmaEnergy      = 61.635 * eV;
   fDensityEffectDataTable[47].fSternheimerFactor = 1.933;
@@ -632,7 +680,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[47].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[47].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Cd ---------------------------------------------------------------------------
+  // NIST_MAT_Cd
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[48].fName              = "NIST_MAT_Cd";
   fDensityEffectDataTable[48].fPlasmaEnergy      = 55.381 * eV;
   fDensityEffectDataTable[48].fSternheimerFactor = 1.895;
@@ -645,7 +694,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[48].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[48].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_In ---------------------------------------------------------------------------
+  // NIST_MAT_In
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[49].fName              = "NIST_MAT_In";
   fDensityEffectDataTable[49].fPlasmaEnergy      = 50.896 * eV;
   fDensityEffectDataTable[49].fSternheimerFactor = 1.851;
@@ -658,7 +708,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[49].fDeltaErrorMax     = 0.044;
   fDensityEffectDataTable[49].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Sn ---------------------------------------------------------------------------
+  // NIST_MAT_Sn
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[50].fName              = "NIST_MAT_Sn";
   fDensityEffectDataTable[50].fPlasmaEnergy      = 50.567 * eV;
   fDensityEffectDataTable[50].fSternheimerFactor = 1.732;
@@ -671,7 +722,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[50].fDeltaErrorMax     = 0.037;
   fDensityEffectDataTable[50].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Sb ---------------------------------------------------------------------------
+  // NIST_MAT_Sb
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[51].fName              = "NIST_MAT_Sb";
   fDensityEffectDataTable[51].fPlasmaEnergy      = 48.242 * eV;
   fDensityEffectDataTable[51].fSternheimerFactor = 1.645;
@@ -684,7 +736,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[51].fDeltaErrorMax     = 0.034;
   fDensityEffectDataTable[51].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Te ---------------------------------------------------------------------------
+  // NIST_MAT_Te
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[52].fName              = "NIST_MAT_Te";
   fDensityEffectDataTable[52].fPlasmaEnergy      = 45.952 * eV;
   fDensityEffectDataTable[52].fSternheimerFactor = 1.577;
@@ -697,7 +750,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[52].fDeltaErrorMax     = 0.033;
   fDensityEffectDataTable[52].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_I ----------------------------------------------------------------------------
+  // NIST_MAT_I
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[53].fName              = "NIST_MAT_I";
   fDensityEffectDataTable[53].fPlasmaEnergy      = 41.348 * eV;
   fDensityEffectDataTable[53].fSternheimerFactor = 1.498;
@@ -710,7 +764,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[53].fDeltaErrorMax     = 0.045;
   fDensityEffectDataTable[53].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Xe ---------------------------------------------------------------------------
+  // NIST_MAT_Xe
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[54].fName              = "NIST_MAT_Xe";
   fDensityEffectDataTable[54].fPlasmaEnergy      = 1.369 * eV;
   fDensityEffectDataTable[54].fSternheimerFactor = 1.435;
@@ -723,7 +778,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[54].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[54].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Cs ---------------------------------------------------------------------------
+  // NIST_MAT_Cs
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[55].fName              = "NIST_MAT_Cs";
   fDensityEffectDataTable[55].fPlasmaEnergy      = 25.37 * eV;
   fDensityEffectDataTable[55].fSternheimerFactor = 1.462;
@@ -736,7 +792,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[55].fDeltaErrorMax     = 0.035;
   fDensityEffectDataTable[55].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ba ---------------------------------------------------------------------------
+  // NIST_MAT_Ba
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[56].fName              = "NIST_MAT_Ba";
   fDensityEffectDataTable[56].fPlasmaEnergy      = 34.425 * eV;
   fDensityEffectDataTable[56].fSternheimerFactor = 1.41;
@@ -749,7 +806,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[56].fDeltaErrorMax     = 0.035;
   fDensityEffectDataTable[56].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_La ---------------------------------------------------------------------------
+  // NIST_MAT_La
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[57].fName              = "NIST_MAT_La";
   fDensityEffectDataTable[57].fPlasmaEnergy      = 45.792 * eV;
   fDensityEffectDataTable[57].fSternheimerFactor = 1.392;
@@ -762,7 +820,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[57].fDeltaErrorMax     = 0.036;
   fDensityEffectDataTable[57].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ce ---------------------------------------------------------------------------
+  // NIST_MAT_Ce
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[58].fName              = "NIST_MAT_Ce";
   fDensityEffectDataTable[58].fPlasmaEnergy      = 47.834 * eV;
   fDensityEffectDataTable[58].fSternheimerFactor = 1.461;
@@ -775,7 +834,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[58].fDeltaErrorMax     = 0.04;
   fDensityEffectDataTable[58].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Pr ---------------------------------------------------------------------------
+  // NIST_MAT_Pr
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[59].fName              = "NIST_MAT_Pr";
   fDensityEffectDataTable[59].fPlasmaEnergy      = 48.301 * eV;
   fDensityEffectDataTable[59].fSternheimerFactor = 1.52;
@@ -788,7 +848,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[59].fDeltaErrorMax     = 0.041;
   fDensityEffectDataTable[59].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ne ---------------------------------------------------------------------------
+  // NIST_MAT_Ne
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[60].fName              = "NIST_MAT_Ne";
   fDensityEffectDataTable[60].fPlasmaEnergy      = 48.819 * eV;
   fDensityEffectDataTable[60].fSternheimerFactor = 1.588;
@@ -801,7 +862,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[60].fDeltaErrorMax     = 0.044;
   fDensityEffectDataTable[60].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Pr ---------------------------------------------------------------------------
+  // NIST_MAT_Pr
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[61].fName              = "NIST_MAT_Pr";
   fDensityEffectDataTable[61].fPlasmaEnergy      = 50.236 * eV;
   fDensityEffectDataTable[61].fSternheimerFactor = 1.672;
@@ -814,7 +876,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[61].fDeltaErrorMax     = 0.048;
   fDensityEffectDataTable[61].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Sa ---------------------------------------------------------------------------
+  // NIST_MAT_Sa
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[62].fName              = "NIST_MAT_Sa";
   fDensityEffectDataTable[62].fPlasmaEnergy      = 50.54 * eV;
   fDensityEffectDataTable[62].fSternheimerFactor = 1.749;
@@ -827,7 +890,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[62].fDeltaErrorMax     = 0.053;
   fDensityEffectDataTable[62].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Eu ---------------------------------------------------------------------------
+  // NIST_MAT_Eu
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[63].fName              = "NIST_MAT_Eu";
   fDensityEffectDataTable[63].fPlasmaEnergy      = 42.484 * eV;
   fDensityEffectDataTable[63].fSternheimerFactor = 1.838;
@@ -840,7 +904,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[63].fDeltaErrorMax     = 0.06;
   fDensityEffectDataTable[63].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Gd ---------------------------------------------------------------------------
+  // NIST_MAT_Gd
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[64].fName              = "NIST_MAT_Gd";
   fDensityEffectDataTable[64].fPlasmaEnergy      = 51.672 * eV;
   fDensityEffectDataTable[64].fSternheimerFactor = 1.882;
@@ -853,7 +918,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[64].fDeltaErrorMax     = 0.061;
   fDensityEffectDataTable[64].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Tb ---------------------------------------------------------------------------
+  // NIST_MAT_Tb
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[65].fName              = "NIST_MAT_Tb";
   fDensityEffectDataTable[65].fPlasmaEnergy      = 52.865 * eV;
   fDensityEffectDataTable[65].fSternheimerFactor = 1.993;
@@ -866,7 +932,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[65].fDeltaErrorMax     = 0.063;
   fDensityEffectDataTable[65].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Dy ---------------------------------------------------------------------------
+  // NIST_MAT_Dy
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[66].fName              = "NIST_MAT_Dy";
   fDensityEffectDataTable[66].fPlasmaEnergy      = 53.698 * eV;
   fDensityEffectDataTable[66].fSternheimerFactor = 2.081;
@@ -879,7 +946,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[66].fDeltaErrorMax     = 0.061;
   fDensityEffectDataTable[66].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ho ---------------------------------------------------------------------------
+  // NIST_MAT_Ho
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[67].fName              = "NIST_MAT_Ho";
   fDensityEffectDataTable[67].fPlasmaEnergy      = 54.467 * eV;
   fDensityEffectDataTable[67].fSternheimerFactor = 2.197;
@@ -892,7 +960,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[67].fDeltaErrorMax     = 0.062;
   fDensityEffectDataTable[67].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Er ---------------------------------------------------------------------------
+  // NIST_MAT_Er
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[68].fName              = "NIST_MAT_Er";
   fDensityEffectDataTable[68].fPlasmaEnergy      = 55.322 * eV;
   fDensityEffectDataTable[68].fSternheimerFactor = 2.26;
@@ -905,7 +974,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[68].fDeltaErrorMax     = 0.061;
   fDensityEffectDataTable[68].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Tm ---------------------------------------------------------------------------
+  // NIST_MAT_Tm
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[69].fName              = "NIST_MAT_Tm";
   fDensityEffectDataTable[69].fPlasmaEnergy      = 56.225 * eV;
   fDensityEffectDataTable[69].fSternheimerFactor = 2.333;
@@ -918,7 +988,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[69].fDeltaErrorMax     = 0.062;
   fDensityEffectDataTable[69].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Yb ---------------------------------------------------------------------------
+  // NIST_MAT_Yb
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[70].fName              = "NIST_MAT_Yb";
   fDensityEffectDataTable[70].fPlasmaEnergy      = 47.546 * eV;
   fDensityEffectDataTable[70].fSternheimerFactor = 2.505;
@@ -931,7 +1002,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[70].fDeltaErrorMax     = 0.071;
   fDensityEffectDataTable[70].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Lu ---------------------------------------------------------------------------
+  // NIST_MAT_Lu
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[71].fName              = "NIST_MAT_Lu";
   fDensityEffectDataTable[71].fPlasmaEnergy      = 57.581 * eV;
   fDensityEffectDataTable[71].fSternheimerFactor = 2.348;
@@ -944,7 +1016,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[71].fDeltaErrorMax     = 0.054;
   fDensityEffectDataTable[71].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Hf ---------------------------------------------------------------------------
+  // NIST_MAT_Hf
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[72].fName              = "NIST_MAT_Hf";
   fDensityEffectDataTable[72].fPlasmaEnergy      = 66.77 * eV;
   fDensityEffectDataTable[72].fSternheimerFactor = 2.174;
@@ -957,7 +1030,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[72].fDeltaErrorMax     = 0.035;
   fDensityEffectDataTable[72].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ta ---------------------------------------------------------------------------
+  // NIST_MAT_Ta
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[73].fName              = "NIST_MAT_Ta";
   fDensityEffectDataTable[73].fPlasmaEnergy      = 74.692 * eV;
   fDensityEffectDataTable[73].fSternheimerFactor = 2.07;
@@ -970,7 +1044,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[73].fDeltaErrorMax     = 0.03;
   fDensityEffectDataTable[73].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_W ----------------------------------------------------------------------------
+  // NIST_MAT_W
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[74].fName              = "NIST_MAT_W";
   fDensityEffectDataTable[74].fPlasmaEnergy      = 80.315 * eV;
   fDensityEffectDataTable[74].fSternheimerFactor = 1.997;
@@ -983,7 +1058,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[74].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[74].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Re ---------------------------------------------------------------------------
+  // NIST_MAT_Re
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[75].fName              = "NIST_MAT_Re";
   fDensityEffectDataTable[75].fPlasmaEnergy      = 83.846 * eV;
   fDensityEffectDataTable[75].fSternheimerFactor = 1.976;
@@ -996,7 +1072,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[75].fDeltaErrorMax     = 0.026;
   fDensityEffectDataTable[75].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Os ---------------------------------------------------------------------------
+  // NIST_MAT_Os
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[76].fName              = "NIST_MAT_Os";
   fDensityEffectDataTable[76].fPlasmaEnergy      = 86.537 * eV;
   fDensityEffectDataTable[76].fSternheimerFactor = 1.947;
@@ -1009,7 +1086,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[76].fDeltaErrorMax     = 0.023;
   fDensityEffectDataTable[76].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ir ---------------------------------------------------------------------------
+  // NIST_MAT_Ir
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[77].fName              = "NIST_MAT_Ir";
   fDensityEffectDataTable[77].fPlasmaEnergy      = 86.357 * eV;
   fDensityEffectDataTable[77].fSternheimerFactor = 1.927;
@@ -1022,7 +1100,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[77].fDeltaErrorMax     = 0.023;
   fDensityEffectDataTable[77].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Pt ---------------------------------------------------------------------------
+  // NIST_MAT_Pt
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[78].fName              = "NIST_MAT_Pt";
   fDensityEffectDataTable[78].fPlasmaEnergy      = 84.389 * eV;
   fDensityEffectDataTable[78].fSternheimerFactor = 1.965;
@@ -1035,7 +1114,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[78].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[78].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Au ---------------------------------------------------------------------------
+  // NIST_MAT_Au
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[79].fName              = "NIST_MAT_Au";
   fDensityEffectDataTable[79].fPlasmaEnergy      = 80.215 * eV;
   fDensityEffectDataTable[79].fSternheimerFactor = 1.926;
@@ -1048,7 +1128,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[79].fDeltaErrorMax     = 0.02;
   fDensityEffectDataTable[79].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Hg ---------------------------------------------------------------------------
+  // NIST_MAT_Hg
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[80].fName              = "NIST_MAT_Hg";
   fDensityEffectDataTable[80].fPlasmaEnergy      = 66.977 * eV;
   fDensityEffectDataTable[80].fSternheimerFactor = 1.904;
@@ -1061,7 +1142,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[80].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[80].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Tl ---------------------------------------------------------------------------
+  // NIST_MAT_Tl
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[81].fName              = "NIST_MAT_Tl";
   fDensityEffectDataTable[81].fPlasmaEnergy      = 62.104 * eV;
   fDensityEffectDataTable[81].fSternheimerFactor = 1.814;
@@ -1074,7 +1156,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[81].fDeltaErrorMax     = 0.019;
   fDensityEffectDataTable[81].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Pb ---------------------------------------------------------------------------
+  // NIST_MAT_Pb
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[82].fName              = "NIST_MAT_Pb";
   fDensityEffectDataTable[82].fPlasmaEnergy      = 61.072 * eV;
   fDensityEffectDataTable[82].fSternheimerFactor = 1.755;
@@ -1087,7 +1170,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[82].fDeltaErrorMax     = 0.019;
   fDensityEffectDataTable[82].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Bi ---------------------------------------------------------------------------
+  // NIST_MAT_Bi
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[83].fName              = "NIST_MAT_Bi";
   fDensityEffectDataTable[83].fPlasmaEnergy      = 56.696 * eV;
   fDensityEffectDataTable[83].fSternheimerFactor = 1.684;
@@ -1100,7 +1184,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[83].fDeltaErrorMax     = 0.02;
   fDensityEffectDataTable[83].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Po ---------------------------------------------------------------------------
+  // NIST_MAT_Po
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[84].fName              = "NIST_MAT_Po";
   fDensityEffectDataTable[84].fPlasmaEnergy      = 55.773 * eV;
   fDensityEffectDataTable[84].fSternheimerFactor = 1.637;
@@ -1113,7 +1198,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[84].fDeltaErrorMax     = 0.02;
   fDensityEffectDataTable[84].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Rn ---------------------------------------------------------------------------
+  // NIST_MAT_Rn
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[85].fName              = "NIST_MAT_Rn";
   fDensityEffectDataTable[85].fPlasmaEnergy      = 1.708 * eV;
   fDensityEffectDataTable[85].fSternheimerFactor = 1.458;
@@ -1126,7 +1212,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[85].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[85].fState             = MaterialState::kStateGas;
 
-  // NIST_MAT_Ra ---------------------------------------------------------------------------
+  // NIST_MAT_Ra
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[86].fName              = "NIST_MAT_Ra";
   fDensityEffectDataTable[86].fPlasmaEnergy      = 40.205 * eV;
   fDensityEffectDataTable[86].fSternheimerFactor = 1.403;
@@ -1139,7 +1226,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[86].fDeltaErrorMax     = 0.022;
   fDensityEffectDataTable[86].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Ac ---------------------------------------------------------------------------
+  // NIST_MAT_Ac
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[87].fName              = "NIST_MAT_Ac";
   fDensityEffectDataTable[87].fPlasmaEnergy      = 57.254 * eV;
   fDensityEffectDataTable[87].fSternheimerFactor = 1.38;
@@ -1152,7 +1240,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[87].fDeltaErrorMax     = 0.023;
   fDensityEffectDataTable[87].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Th ---------------------------------------------------------------------------
+  // NIST_MAT_Th
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[88].fName              = "NIST_MAT_Th";
   fDensityEffectDataTable[88].fPlasmaEnergy      = 61.438 * eV;
   fDensityEffectDataTable[88].fSternheimerFactor = 1.363;
@@ -1165,7 +1254,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[88].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[88].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Pa ---------------------------------------------------------------------------
+  // NIST_MAT_Pa
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[89].fName              = "NIST_MAT_Pa";
   fDensityEffectDataTable[89].fPlasmaEnergy      = 70.901 * eV;
   fDensityEffectDataTable[89].fSternheimerFactor = 1.42;
@@ -1178,7 +1268,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[89].fDeltaErrorMax     = 0.036;
   fDensityEffectDataTable[89].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_U ----------------------------------------------------------------------------
+  // NIST_MAT_U
+  // ----------------------------------------------------------------------------
   fDensityEffectDataTable[90].fName              = "NIST_MAT_U";
   fDensityEffectDataTable[90].fPlasmaEnergy      = 77.986 * eV;
   fDensityEffectDataTable[90].fSternheimerFactor = 1.447;
@@ -1191,7 +1282,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[90].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[90].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Np ---------------------------------------------------------------------------
+  // NIST_MAT_Np
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[91].fName              = "NIST_MAT_Np";
   fDensityEffectDataTable[91].fPlasmaEnergy      = 81.221 * eV;
   fDensityEffectDataTable[91].fSternheimerFactor = 1.468;
@@ -1204,7 +1296,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[91].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[91].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Pu ---------------------------------------------------------------------------
+  // NIST_MAT_Pu
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[92].fName              = "NIST_MAT_Pu";
   fDensityEffectDataTable[92].fPlasmaEnergy      = 80.486 * eV;
   fDensityEffectDataTable[92].fSternheimerFactor = 1.519;
@@ -1217,7 +1310,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[92].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[92].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Am ---------------------------------------------------------------------------
+  // NIST_MAT_Am
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[93].fName              = "NIST_MAT_Am";
   fDensityEffectDataTable[93].fPlasmaEnergy      = 66.607 * eV;
   fDensityEffectDataTable[93].fSternheimerFactor = 1.552;
@@ -1230,7 +1324,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[93].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[93].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Cm ---------------------------------------------------------------------------
+  // NIST_MAT_Cm
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[94].fName              = "NIST_MAT_Cm";
   fDensityEffectDataTable[94].fPlasmaEnergy      = 66.022 * eV;
   fDensityEffectDataTable[94].fSternheimerFactor = 1.559;
@@ -1243,7 +1338,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[94].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[94].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_Bk ---------------------------------------------------------------------------
+  // NIST_MAT_Bk
+  // ---------------------------------------------------------------------------
   fDensityEffectDataTable[95].fName              = "NIST_MAT_Bk";
   fDensityEffectDataTable[95].fPlasmaEnergy      = 67.557 * eV;
   fDensityEffectDataTable[95].fSternheimerFactor = 1.574;
@@ -1256,7 +1352,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[95].fDeltaErrorMax     = 0.062;
   fDensityEffectDataTable[95].fState             = MaterialState::kStateSolid;
 
-  // NIST_MAT_A-150_TISSUE -----------------------------------------------------------------
+  // NIST_MAT_A-150_TISSUE
+  // -----------------------------------------------------------------
   fDensityEffectDataTable[96].fName              = "NIST_MAT_A-150_TISSUE";
   fDensityEffectDataTable[96].fPlasmaEnergy      = 22.667 * eV;
   fDensityEffectDataTable[96].fSternheimerFactor = 1.95;
@@ -1269,7 +1366,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[96].fDeltaErrorMax     = 0.048;
   fDensityEffectDataTable[96].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ACETONE ----------------------------------------------------------------------
+  // NIST_MAT_ACETONE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[97].fName              = "NIST_MAT_ACETONE";
   fDensityEffectDataTable[97].fPlasmaEnergy      = 19.01 * eV;
   fDensityEffectDataTable[97].fSternheimerFactor = 1.976;
@@ -1282,7 +1380,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[97].fDeltaErrorMax     = 0.069;
   fDensityEffectDataTable[97].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ACETYLENE --------------------------------------------------------------------
+  // NIST_MAT_ACETYLENE
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[98].fName              = "NIST_MAT_ACETYLENE";
   fDensityEffectDataTable[98].fPlasmaEnergy      = 0.7 * eV;
   fDensityEffectDataTable[98].fSternheimerFactor = 1.784;
@@ -1295,7 +1394,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[98].fDeltaErrorMax     = 0.08;
   fDensityEffectDataTable[98].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ADENINE ----------------------------------------------------------------------
+  // NIST_MAT_ADENINE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[99].fName              = "NIST_MAT_ADENINE";
   fDensityEffectDataTable[99].fPlasmaEnergy      = 24.098 * eV;
   fDensityEffectDataTable[99].fSternheimerFactor = 1.892;
@@ -1308,7 +1408,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[99].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[99].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ADIPOSE_TISSUE_ICRP ----------------------------------------------------------
+  // NIST_MAT_ADIPOSE_TISSUE_ICRP
+  // ----------------------------------------------------------
   fDensityEffectDataTable[100].fName              = "NIST_MAT_ADIPOSE_TISSUE_ICRP";
   fDensityEffectDataTable[100].fPlasmaEnergy      = 20.655 * eV;
   fDensityEffectDataTable[100].fSternheimerFactor = 1.987;
@@ -1321,7 +1422,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[100].fDeltaErrorMax     = 0.06;
   fDensityEffectDataTable[100].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_AIR --------------------------------------------------------------------------
+  // NIST_MAT_AIR
+  // --------------------------------------------------------------------------
   fDensityEffectDataTable[101].fName              = "NIST_MAT_AIR";
   fDensityEffectDataTable[101].fPlasmaEnergy      = 0.707 * eV;
   fDensityEffectDataTable[101].fSternheimerFactor = 2.054;
@@ -1334,7 +1436,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[101].fDeltaErrorMax     = 0.09;
   fDensityEffectDataTable[101].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ALANINE ----------------------------------------------------------------------
+  // NIST_MAT_ALANINE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[102].fName              = "NIST_MAT_ALANINE";
   fDensityEffectDataTable[102].fPlasmaEnergy      = 25.204 * eV;
   fDensityEffectDataTable[102].fSternheimerFactor = 2.074;
@@ -1347,7 +1450,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[102].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[102].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ALUMINIM_OXIDE ---------------------------------------------------------------
+  // NIST_MAT_ALUMINIM_OXIDE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[103].fName              = "NIST_MAT_ALUMINIM_OXIDE";
   fDensityEffectDataTable[103].fPlasmaEnergy      = 40.206 * eV;
   fDensityEffectDataTable[103].fSternheimerFactor = 2.394;
@@ -1360,7 +1464,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[103].fDeltaErrorMax     = 0.031;
   fDensityEffectDataTable[103].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_AMBER ------------------------------------------------------------------------
+  // NIST_MAT_AMBER
+  // ------------------------------------------------------------------------
   fDensityEffectDataTable[104].fName              = "NIST_MAT_AMBER";
   fDensityEffectDataTable[104].fPlasmaEnergy      = 22.45 * eV;
   fDensityEffectDataTable[104].fSternheimerFactor = 1.946;
@@ -1373,7 +1478,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[104].fDeltaErrorMax     = 0.053;
   fDensityEffectDataTable[104].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_AMMONIA ----------------------------------------------------------------------
+  // NIST_MAT_AMMONIA
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[105].fName              = "NIST_MAT_AMMONIA";
   fDensityEffectDataTable[105].fPlasmaEnergy      = 0.635 * eV;
   fDensityEffectDataTable[105].fSternheimerFactor = 1.814;
@@ -1386,7 +1492,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[105].fDeltaErrorMax     = 0.102;
   fDensityEffectDataTable[105].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ANILINE ----------------------------------------------------------------------
+  // NIST_MAT_ANILINE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[106].fName              = "NIST_MAT_ANILINE";
   fDensityEffectDataTable[106].fPlasmaEnergy      = 21.361 * eV;
   fDensityEffectDataTable[106].fSternheimerFactor = 1.938;
@@ -1399,7 +1506,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[106].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[106].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ANTHRACENE -------------------------------------------------------------------
+  // NIST_MAT_ANTHRACENE
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[107].fName              = "NIST_MAT_ANTHRACENE";
   fDensityEffectDataTable[107].fPlasmaEnergy      = 23.704 * eV;
   fDensityEffectDataTable[107].fSternheimerFactor = 1.954;
@@ -1412,7 +1520,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[107].fDeltaErrorMax     = 0.042;
   fDensityEffectDataTable[107].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_B-100_BONE -------------------------------------------------------------------
+  // NIST_MAT_B-100_BONE
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[108].fName              = "NIST_MAT_B-100_BONE";
   fDensityEffectDataTable[108].fPlasmaEnergy      = 25.199 * eV;
   fDensityEffectDataTable[108].fSternheimerFactor = 2.013;
@@ -1425,7 +1534,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[108].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[108].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BAKELITE ---------------------------------------------------------------------
+  // NIST_MAT_BAKELITE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[109].fName              = "NIST_MAT_BAKELITE";
   fDensityEffectDataTable[109].fPlasmaEnergy      = 23.408 * eV;
   fDensityEffectDataTable[109].fSternheimerFactor = 2.046;
@@ -1438,7 +1548,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[109].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[109].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BARIUM_FLUORIDE --------------------------------------------------------------
+  // NIST_MAT_BARIUM_FLUORIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[110].fName              = "NIST_MAT_BARIUM_FLUORIDE";
   fDensityEffectDataTable[110].fPlasmaEnergy      = 41.398 * eV;
   fDensityEffectDataTable[110].fSternheimerFactor = 1.727;
@@ -1451,7 +1562,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[110].fDeltaErrorMax     = 0.034;
   fDensityEffectDataTable[110].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BARIUM_SULFATE ---------------------------------------------------------------
+  // NIST_MAT_BARIUM_SULFATE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[111].fName              = "NIST_MAT_BARIUM_SULFATE";
   fDensityEffectDataTable[111].fPlasmaEnergy      = 40.805 * eV;
   fDensityEffectDataTable[111].fSternheimerFactor = 1.893;
@@ -1464,7 +1576,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[111].fDeltaErrorMax     = 0.03;
   fDensityEffectDataTable[111].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BENZENE ----------------------------------------------------------------------
+  // NIST_MAT_BENZENE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[112].fName              = "NIST_MAT_BENZENE";
   fDensityEffectDataTable[112].fPlasmaEnergy      = 19.806 * eV;
   fDensityEffectDataTable[112].fSternheimerFactor = 1.873;
@@ -1477,7 +1590,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[112].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[112].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BERYLLIUM_OXIDE --------------------------------------------------------------
+  // NIST_MAT_BERYLLIUM_OXIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[113].fName              = "NIST_MAT_BERYLLIUM_OXIDE";
   fDensityEffectDataTable[113].fPlasmaEnergy      = 34.629 * eV;
   fDensityEffectDataTable[113].fSternheimerFactor = 2.296;
@@ -1490,7 +1604,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[113].fDeltaErrorMax     = 0.031;
   fDensityEffectDataTable[113].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BGO --------------------------------------------------------------------------
+  // NIST_MAT_BGO
+  // --------------------------------------------------------------------------
   fDensityEffectDataTable[114].fName              = "NIST_MAT_BGO";
   fDensityEffectDataTable[114].fPlasmaEnergy      = 49.904 * eV;
   fDensityEffectDataTable[114].fSternheimerFactor = 2.121;
@@ -1503,7 +1618,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[114].fDeltaErrorMax     = 0.023;
   fDensityEffectDataTable[114].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BLOOD_ICRP -------------------------------------------------------------------
+  // NIST_MAT_BLOOD_ICRP
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[115].fName              = "NIST_MAT_BLOOD_ICRP";
   fDensityEffectDataTable[115].fPlasmaEnergy      = 22.001 * eV;
   fDensityEffectDataTable[115].fSternheimerFactor = 2.184;
@@ -1516,7 +1632,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[115].fDeltaErrorMax     = 0.088;
   fDensityEffectDataTable[115].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BONE_COMPACT_ICRU ------------------------------------------------------------
+  // NIST_MAT_BONE_COMPACT_ICRU
+  // ------------------------------------------------------------
   fDensityEffectDataTable[116].fName              = "NIST_MAT_BONE_COMPACT_ICRU";
   fDensityEffectDataTable[116].fPlasmaEnergy      = 28.536 * eV;
   fDensityEffectDataTable[116].fSternheimerFactor = 2.091;
@@ -1529,7 +1646,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[116].fDeltaErrorMax     = 0.042;
   fDensityEffectDataTable[116].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BONE_CORTICAL_ICRP -----------------------------------------------------------
+  // NIST_MAT_BONE_CORTICAL_ICRP
+  // -----------------------------------------------------------
   fDensityEffectDataTable[117].fName              = "NIST_MAT_BONE_CORTICAL_ICRP";
   fDensityEffectDataTable[117].fPlasmaEnergy      = 28.298 * eV;
   fDensityEffectDataTable[117].fSternheimerFactor = 2.118;
@@ -1542,7 +1660,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[117].fDeltaErrorMax     = 0.04;
   fDensityEffectDataTable[117].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BORON_CARBIDE ----------------------------------------------------------------
+  // NIST_MAT_BORON_CARBIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[118].fName              = "NIST_MAT_BORON_CARBIDE";
   fDensityEffectDataTable[118].fPlasmaEnergy      = 31.38 * eV;
   fDensityEffectDataTable[118].fSternheimerFactor = 2.14;
@@ -1555,7 +1674,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[118].fDeltaErrorMax     = 0.022;
   fDensityEffectDataTable[118].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BORON_OXIDE ------------------------------------------------------------------
+  // NIST_MAT_BORON_OXIDE
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[119].fName              = "NIST_MAT_BORON_OXIDE";
   fDensityEffectDataTable[119].fPlasmaEnergy      = 27.107 * eV;
   fDensityEffectDataTable[119].fSternheimerFactor = 2.446;
@@ -1568,7 +1688,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[119].fDeltaErrorMax     = 0.053;
   fDensityEffectDataTable[119].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BRAIN_ICRP -------------------------------------------------------------------
+  // NIST_MAT_BRAIN_ICRP
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[120].fName              = "NIST_MAT_BRAIN_ICRP";
   fDensityEffectDataTable[120].fPlasmaEnergy      = 21.772 * eV;
   fDensityEffectDataTable[120].fSternheimerFactor = 2.162;
@@ -1581,7 +1702,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[120].fDeltaErrorMax     = 0.086;
   fDensityEffectDataTable[120].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_BUTANE -----------------------------------------------------------------------
+  // NIST_MAT_BUTANE
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[121].fName              = "NIST_MAT_BUTANE";
   fDensityEffectDataTable[121].fPlasmaEnergy      = 1.101 * eV;
   fDensityEffectDataTable[121].fSternheimerFactor = 1.727;
@@ -1594,7 +1716,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[121].fDeltaErrorMax     = 0.1;
   fDensityEffectDataTable[121].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_N-BUTYL_ALCOHOL --------------------------------------------------------------
+  // NIST_MAT_N-BUTYL_ALCOHOL
+  // --------------------------------------------------------------
   fDensityEffectDataTable[122].fName              = "NIST_MAT_N-BUTYL_ALCOHOL";
   fDensityEffectDataTable[122].fPlasmaEnergy      = 19.52 * eV;
   fDensityEffectDataTable[122].fSternheimerFactor = 1.942;
@@ -1607,7 +1730,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[122].fDeltaErrorMax     = 0.065;
   fDensityEffectDataTable[122].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_C-552 ------------------------------------------------------------------------
+  // NIST_MAT_C-552
+  // ------------------------------------------------------------------------
   fDensityEffectDataTable[123].fName              = "NIST_MAT_C-552";
   fDensityEffectDataTable[123].fPlasmaEnergy      = 27.023 * eV;
   fDensityEffectDataTable[123].fSternheimerFactor = 2.128;
@@ -1620,7 +1744,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[123].fDeltaErrorMax     = 0.053;
   fDensityEffectDataTable[123].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CADMIUM_TELLURIDE ------------------------------------------------------------
+  // NIST_MAT_CADMIUM_TELLURIDE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[124].fName              = "NIST_MAT_CADMIUM_TELLURIDE";
   fDensityEffectDataTable[124].fPlasmaEnergy      = 46.314 * eV;
   fDensityEffectDataTable[124].fSternheimerFactor = 1.935;
@@ -1633,7 +1758,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[124].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[124].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CADMIUM_TUNGSTATE ------------------------------------------------------------
+  // NIST_MAT_CADMIUM_TUNGSTATE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[125].fName              = "NIST_MAT_CADMIUM_TUNGSTATE";
   fDensityEffectDataTable[125].fPlasmaEnergy      = 52.954 * eV;
   fDensityEffectDataTable[125].fSternheimerFactor = 2.289;
@@ -1646,7 +1772,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[125].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[125].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CALCIUM_CARBONATE ------------------------------------------------------------
+  // NIST_MAT_CALCIUM_CARBONATE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[126].fName              = "NIST_MAT_CALCIUM_CARBONATE";
   fDensityEffectDataTable[126].fPlasmaEnergy      = 34.08 * eV;
   fDensityEffectDataTable[126].fSternheimerFactor = 2.141;
@@ -1659,7 +1786,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[126].fDeltaErrorMax     = 0.037;
   fDensityEffectDataTable[126].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CALCIUM_FLUORIDE -------------------------------------------------------------
+  // NIST_MAT_CALCIUM_FLUORIDE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[127].fName              = "NIST_MAT_CALCIUM_FLUORIDE";
   fDensityEffectDataTable[127].fPlasmaEnergy      = 35.849 * eV;
   fDensityEffectDataTable[127].fSternheimerFactor = 2.127;
@@ -1672,7 +1800,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[127].fDeltaErrorMax     = 0.044;
   fDensityEffectDataTable[127].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CALCIUM_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_CALCIUM_OXIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[128].fName              = "NIST_MAT_CALCIUM_OXIDE";
   fDensityEffectDataTable[128].fPlasmaEnergy      = 36.988 * eV;
   fDensityEffectDataTable[128].fSternheimerFactor = 1.973;
@@ -1685,7 +1814,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[128].fDeltaErrorMax     = 0.024;
   fDensityEffectDataTable[128].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CALCIUM_SULFATE --------------------------------------------------------------
+  // NIST_MAT_CALCIUM_SULFATE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[129].fName              = "NIST_MAT_CALCIUM_SULFATE";
   fDensityEffectDataTable[129].fPlasmaEnergy      = 35.038 * eV;
   fDensityEffectDataTable[129].fSternheimerFactor = 2.179;
@@ -1698,7 +1828,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[129].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[129].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CALCIUM_TUNGSTATE ------------------------------------------------------------
+  // NIST_MAT_CALCIUM_TUNGSTATE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[130].fName              = "NIST_MAT_CALCIUM_TUNGSTATE";
   fDensityEffectDataTable[130].fPlasmaEnergy      = 46.934 * eV;
   fDensityEffectDataTable[130].fSternheimerFactor = 2.262;
@@ -1711,7 +1842,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[130].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[130].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CARBON_DIOXIDE ---------------------------------------------------------------
+  // NIST_MAT_CARBON_DIOXIDE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[131].fName              = "NIST_MAT_CARBON_DIOXIDE";
   fDensityEffectDataTable[131].fPlasmaEnergy      = 0.874 * eV;
   fDensityEffectDataTable[131].fSternheimerFactor = 2.118;
@@ -1724,7 +1856,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[131].fDeltaErrorMax     = 0.091;
   fDensityEffectDataTable[131].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CARBON_TETRACHLORIDE ---------------------------------------------------------
+  // NIST_MAT_CARBON_TETRACHLORIDE
+  // ---------------------------------------------------------
   fDensityEffectDataTable[132].fName              = "NIST_MAT_CARBON_TETRACHLORIDE";
   fDensityEffectDataTable[132].fPlasmaEnergy      = 25.234 * eV;
   fDensityEffectDataTable[132].fSternheimerFactor = 1.742;
@@ -1737,7 +1870,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[132].fDeltaErrorMax     = 0.041;
   fDensityEffectDataTable[132].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CELLULOSE_CELLOPHANE ---------------------------------------------------------
+  // NIST_MAT_CELLULOSE_CELLOPHANE
+  // ---------------------------------------------------------
   fDensityEffectDataTable[133].fName              = "NIST_MAT_CELLULOSE_CELLOPHANE";
   fDensityEffectDataTable[133].fPlasmaEnergy      = 25.008 * eV;
   fDensityEffectDataTable[133].fSternheimerFactor = 2.17;
@@ -1750,7 +1884,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[133].fDeltaErrorMax     = 0.06;
   fDensityEffectDataTable[133].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CELLULOSE_BUTYRATE -----------------------------------------------------------
+  // NIST_MAT_CELLULOSE_BUTYRATE
+  // -----------------------------------------------------------
   fDensityEffectDataTable[134].fName              = "NIST_MAT_CELLULOSE_BUTYRATE";
   fDensityEffectDataTable[134].fPlasmaEnergy      = 23.041 * eV;
   fDensityEffectDataTable[134].fSternheimerFactor = 2.128;
@@ -1763,7 +1898,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[134].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[134].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CELLULOSE_NITRATE ------------------------------------------------------------
+  // NIST_MAT_CELLULOSE_NITRATE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[135].fName              = "NIST_MAT_CELLULOSE_NITRATE";
   fDensityEffectDataTable[135].fPlasmaEnergy      = 25.224 * eV;
   fDensityEffectDataTable[135].fSternheimerFactor = 2.252;
@@ -1776,7 +1912,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[135].fDeltaErrorMax     = 0.063;
   fDensityEffectDataTable[135].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CERIC_SULFATE ----------------------------------------------------------------
+  // NIST_MAT_CERIC_SULFATE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[136].fName              = "NIST_MAT_CERIC_SULFATE";
   fDensityEffectDataTable[136].fPlasmaEnergy      = 21.743 * eV;
   fDensityEffectDataTable[136].fSternheimerFactor = 2.205;
@@ -1789,7 +1926,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[136].fDeltaErrorMax     = 0.095;
   fDensityEffectDataTable[136].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CESIUM_FLUORIDE --------------------------------------------------------------
+  // NIST_MAT_CESIUM_FLUORIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[137].fName              = "NIST_MAT_CESIUM_FLUORIDE";
   fDensityEffectDataTable[137].fPlasmaEnergy      = 37.942 * eV;
   fDensityEffectDataTable[137].fSternheimerFactor = 1.714;
@@ -1802,7 +1940,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[137].fDeltaErrorMax     = 0.044;
   fDensityEffectDataTable[137].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CESIUM_IODIDE ----------------------------------------------------------------
+  // NIST_MAT_CESIUM_IODIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[138].fName              = "NIST_MAT_CESIUM_IODIDE";
   fDensityEffectDataTable[138].fPlasmaEnergy      = 39.455 * eV;
   fDensityEffectDataTable[138].fSternheimerFactor = 1.672;
@@ -1815,7 +1954,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[138].fDeltaErrorMax     = 0.067;
   fDensityEffectDataTable[138].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CHLOROBENZENE ----------------------------------------------------------------
+  // NIST_MAT_CHLOROBENZENE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[139].fName              = "NIST_MAT_CHLOROBENZENE";
   fDensityEffectDataTable[139].fPlasmaEnergy      = 21.752 * eV;
   fDensityEffectDataTable[139].fSternheimerFactor = 1.889;
@@ -1828,7 +1968,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[139].fDeltaErrorMax     = 0.031;
   fDensityEffectDataTable[139].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CHLOROFORM -------------------------------------------------------------------
+  // NIST_MAT_CHLOROFORM
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[140].fName              = "NIST_MAT_CHLOROFORM";
   fDensityEffectDataTable[140].fPlasmaEnergy      = 24.462 * eV;
   fDensityEffectDataTable[140].fSternheimerFactor = 1.734;
@@ -1841,7 +1982,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[140].fDeltaErrorMax     = 0.038;
   fDensityEffectDataTable[140].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CONCRETE ---------------------------------------------------------------------
+  // NIST_MAT_CONCRETE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[141].fName              = "NIST_MAT_CONCRETE";
   fDensityEffectDataTable[141].fPlasmaEnergy      = 30.986 * eV;
   fDensityEffectDataTable[141].fSternheimerFactor = 2.322;
@@ -1854,7 +1996,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[141].fDeltaErrorMax     = 0.024;
   fDensityEffectDataTable[141].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_CYCLOHEXANE ------------------------------------------------------------------
+  // NIST_MAT_CYCLOHEXANE
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[142].fName              = "NIST_MAT_CYCLOHEXANE";
   fDensityEffectDataTable[142].fPlasmaEnergy      = 19.207 * eV;
   fDensityEffectDataTable[142].fSternheimerFactor = 1.861;
@@ -1867,7 +2010,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[142].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[142].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_1,2-DICHLOROBENZENE ----------------------------------------------------------
+  // NIST_MAT_1,2-DICHLOROBENZENE
+  // ----------------------------------------------------------
   fDensityEffectDataTable[143].fName              = "NIST_MAT_1,2-DICHLOROBENZENE";
   fDensityEffectDataTable[143].fPlasmaEnergy      = 23.354 * eV;
   fDensityEffectDataTable[143].fSternheimerFactor = 1.862;
@@ -1880,7 +2024,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[143].fDeltaErrorMax     = 0.029;
   fDensityEffectDataTable[143].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_DICHLORODIETHYL_ETHER --------------------------------------------------------
+  // NIST_MAT_DICHLORODIETHYL_ETHER
+  // --------------------------------------------------------
   fDensityEffectDataTable[144].fName              = "NIST_MAT_DICHLORODIETHYL_ETHER";
   fDensityEffectDataTable[144].fPlasmaEnergy      = 22.894 * eV;
   fDensityEffectDataTable[144].fSternheimerFactor = 1.903;
@@ -1893,7 +2038,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[144].fDeltaErrorMax     = 0.026;
   fDensityEffectDataTable[144].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_1,2-DICHLOROETHANE -----------------------------------------------------------
+  // NIST_MAT_1,2-DICHLOROETHANE
+  // -----------------------------------------------------------
   fDensityEffectDataTable[145].fName              = "NIST_MAT_1,2-DICHLOROETHANE";
   fDensityEffectDataTable[145].fPlasmaEnergy      = 22.764 * eV;
   fDensityEffectDataTable[145].fSternheimerFactor = 1.618;
@@ -1906,7 +2052,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[145].fDeltaErrorMax     = 0.03;
   fDensityEffectDataTable[145].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_DIETHYL_ETHER ----------------------------------------------------------------
+  // NIST_MAT_DIETHYL_ETHER
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[146].fName              = "NIST_MAT_DIETHYL_ETHER";
   fDensityEffectDataTable[146].fPlasmaEnergy      = 18.326 * eV;
   fDensityEffectDataTable[146].fSternheimerFactor = 1.951;
@@ -1919,7 +2066,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[146].fDeltaErrorMax     = 0.07;
   fDensityEffectDataTable[146].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_N,N-DIMETHYL_FORMAMIDE -------------------------------------------------------
+  // NIST_MAT_N,N-DIMETHYL_FORMAMIDE
+  // -------------------------------------------------------
   fDensityEffectDataTable[147].fName              = "NIST_MAT_N,N-DIMETHYL_FORMAMIDE";
   fDensityEffectDataTable[147].fPlasmaEnergy      = 20.763 * eV;
   fDensityEffectDataTable[147].fSternheimerFactor = 2.005;
@@ -1932,7 +2080,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[147].fDeltaErrorMax     = 0.065;
   fDensityEffectDataTable[147].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_DIMETHYL_SULFOXIDE -----------------------------------------------------------
+  // NIST_MAT_DIMETHYL_SULFOXIDE
+  // -----------------------------------------------------------
   fDensityEffectDataTable[148].fName              = "NIST_MAT_DIMETHYL_SULFOXIDE";
   fDensityEffectDataTable[148].fPlasmaEnergy      = 22.173 * eV;
   fDensityEffectDataTable[148].fSternheimerFactor = 2.075;
@@ -1945,7 +2094,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[148].fDeltaErrorMax     = 0.03;
   fDensityEffectDataTable[148].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ETHANE -----------------------------------------------------------------------
+  // NIST_MAT_ETHANE
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[149].fName              = "NIST_MAT_ETHANE";
   fDensityEffectDataTable[149].fPlasmaEnergy      = 0.789 * eV;
   fDensityEffectDataTable[149].fSternheimerFactor = 1.69;
@@ -1958,7 +2108,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[149].fDeltaErrorMax     = 0.097;
   fDensityEffectDataTable[149].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ETHYL_ALCOHOL ----------------------------------------------------------------
+  // NIST_MAT_ETHYL_ALCOHOL
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[150].fName              = "NIST_MAT_ETHYL_ALCOHOL";
   fDensityEffectDataTable[150].fPlasmaEnergy      = 19.232 * eV;
   fDensityEffectDataTable[150].fSternheimerFactor = 2.013;
@@ -1971,7 +2122,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[150].fDeltaErrorMax     = 0.071;
   fDensityEffectDataTable[150].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ETHYL_CELLULOSE --------------------------------------------------------------
+  // NIST_MAT_ETHYL_CELLULOSE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[151].fName              = "NIST_MAT_ETHYL_CELLULOSE";
   fDensityEffectDataTable[151].fPlasmaEnergy      = 22.594 * eV;
   fDensityEffectDataTable[151].fSternheimerFactor = 2.065;
@@ -1984,7 +2136,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[151].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[151].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ETHYLENE ---------------------------------------------------------------------
+  // NIST_MAT_ETHYLENE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[152].fName              = "NIST_MAT_ETHYLENE";
   fDensityEffectDataTable[152].fPlasmaEnergy      = 0.746 * eV;
   fDensityEffectDataTable[152].fSternheimerFactor = 1.733;
@@ -1997,7 +2150,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[152].fDeltaErrorMax     = 0.085;
   fDensityEffectDataTable[152].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_EYE_LENS_ICRP ----------------------------------------------------------------
+  // NIST_MAT_EYE_LENS_ICRP
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[153].fName              = "NIST_MAT_EYE_LENS_ICRP";
   fDensityEffectDataTable[153].fPlasmaEnergy      = 22.388 * eV;
   fDensityEffectDataTable[153].fSternheimerFactor = 2.154;
@@ -2010,7 +2164,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[153].fDeltaErrorMax     = 0.077;
   fDensityEffectDataTable[153].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FERRIC_OXIDE -----------------------------------------------------------------
+  // NIST_MAT_FERRIC_OXIDE
+  // -----------------------------------------------------------------
   fDensityEffectDataTable[154].fName              = "NIST_MAT_FERRIC_OXIDE";
   fDensityEffectDataTable[154].fPlasmaEnergy      = 45.331 * eV;
   fDensityEffectDataTable[154].fSternheimerFactor = 2.747;
@@ -2023,7 +2178,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[154].fDeltaErrorMax     = 0.026;
   fDensityEffectDataTable[154].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FERROBORIDE ------------------------------------------------------------------
+  // NIST_MAT_FERROBORIDE
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[155].fName              = "NIST_MAT_FERROBORIDE";
   fDensityEffectDataTable[155].fPlasmaEnergy      = 52.546 * eV;
   fDensityEffectDataTable[155].fSternheimerFactor = 2.726;
@@ -2036,7 +2192,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[155].fDeltaErrorMax     = 0.022;
   fDensityEffectDataTable[155].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FERROUS_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_FERROUS_OXIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[156].fName              = "NIST_MAT_FERROUS_OXIDE";
   fDensityEffectDataTable[156].fPlasmaEnergy      = 47.327 * eV;
   fDensityEffectDataTable[156].fSternheimerFactor = 2.769;
@@ -2049,7 +2206,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[156].fDeltaErrorMax     = 0.022;
   fDensityEffectDataTable[156].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FERROUS_SULFATE --------------------------------------------------------------
+  // NIST_MAT_FERROUS_SULFATE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[157].fName              = "NIST_MAT_FERROUS_SULFATE";
   fDensityEffectDataTable[157].fPlasmaEnergy      = 21.69 * eV;
   fDensityEffectDataTable[157].fSternheimerFactor = 2.208;
@@ -2062,7 +2220,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[157].fDeltaErrorMax     = 0.096;
   fDensityEffectDataTable[157].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FREON-12 ---------------------------------------------------------------------
+  // NIST_MAT_FREON-12
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[158].fName              = "NIST_MAT_FREON-12";
   fDensityEffectDataTable[158].fPlasmaEnergy      = 21.121 * eV;
   fDensityEffectDataTable[158].fSternheimerFactor = 1.974;
@@ -2075,7 +2234,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[158].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[158].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FREON-12B2 -------------------------------------------------------------------
+  // NIST_MAT_FREON-12B2
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[159].fName              = "NIST_MAT_FREON-12B2";
   fDensityEffectDataTable[159].fPlasmaEnergy      = 25.877 * eV;
   fDensityEffectDataTable[159].fSternheimerFactor = 2.195;
@@ -2088,7 +2248,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[159].fDeltaErrorMax     = 0.021;
   fDensityEffectDataTable[159].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FREON-13 ---------------------------------------------------------------------
+  // NIST_MAT_FREON-13
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[160].fName              = "NIST_MAT_FREON-13";
   fDensityEffectDataTable[160].fPlasmaEnergy      = 19.432 * eV;
   fDensityEffectDataTable[160].fSternheimerFactor = 2.116;
@@ -2101,7 +2262,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[160].fDeltaErrorMax     = 0.05;
   fDensityEffectDataTable[160].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FREON-13B1 -------------------------------------------------------------------
+  // NIST_MAT_FREON-13B1
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[161].fName              = "NIST_MAT_FREON-13B1";
   fDensityEffectDataTable[161].fPlasmaEnergy      = 23.849 * eV;
   fDensityEffectDataTable[161].fSternheimerFactor = 2.233;
@@ -2114,7 +2276,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[161].fDeltaErrorMax     = 0.036;
   fDensityEffectDataTable[161].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_FREON-13I1 -------------------------------------------------------------------
+  // NIST_MAT_FREON-13I1
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[162].fName              = "NIST_MAT_FREON-13I1";
   fDensityEffectDataTable[162].fPlasmaEnergy      = 25.615 * eV;
   fDensityEffectDataTable[162].fSternheimerFactor = 1.924;
@@ -2127,7 +2290,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[162].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[162].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GADOLINIUM_OXYSULFIDE --------------------------------------------------------
+  // NIST_MAT_GADOLINIUM_OXYSULFIDE
+  // --------------------------------------------------------
   fDensityEffectDataTable[163].fName              = "NIST_MAT_GADOLINIUM_OXYSULFIDE";
   fDensityEffectDataTable[163].fPlasmaEnergy      = 51.099 * eV;
   fDensityEffectDataTable[163].fSternheimerFactor = 2.179;
@@ -2140,7 +2304,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[163].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[163].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GALLIUM_ARSENIDE -------------------------------------------------------------
+  // NIST_MAT_GALLIUM_ARSENIDE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[164].fName              = "NIST_MAT_GALLIUM_ARSENIDE";
   fDensityEffectDataTable[164].fPlasmaEnergy      = 44.17 * eV;
   fDensityEffectDataTable[164].fSternheimerFactor = 2.652;
@@ -2153,7 +2318,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[164].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[164].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GEL_PHOTO_EMULSION -----------------------------------------------------------
+  // NIST_MAT_GEL_PHOTO_EMULSION
+  // -----------------------------------------------------------
   fDensityEffectDataTable[165].fName              = "NIST_MAT_GEL_PHOTO_EMULSION";
   fDensityEffectDataTable[165].fPlasmaEnergy      = 24.058 * eV;
   fDensityEffectDataTable[165].fSternheimerFactor = 2.156;
@@ -2166,7 +2332,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[165].fDeltaErrorMax     = 0.06;
   fDensityEffectDataTable[165].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_Pyrex_Glass ------------------------------------------------------------------
+  // NIST_MAT_Pyrex_Glass
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[166].fName              = "NIST_MAT_Pyrex_Glass";
   fDensityEffectDataTable[166].fPlasmaEnergy      = 30.339 * eV;
   fDensityEffectDataTable[166].fSternheimerFactor = 2.369;
@@ -2179,7 +2346,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[166].fDeltaErrorMax     = 0.022;
   fDensityEffectDataTable[166].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GLASS_LEAD -------------------------------------------------------------------
+  // NIST_MAT_GLASS_LEAD
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[167].fName              = "NIST_MAT_GLASS_LEAD";
   fDensityEffectDataTable[167].fPlasmaEnergy      = 46.631 * eV;
   fDensityEffectDataTable[167].fSternheimerFactor = 2.085;
@@ -2192,7 +2360,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[167].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[167].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GLASS_PLATE ------------------------------------------------------------------
+  // NIST_MAT_GLASS_PLATE
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[168].fName              = "NIST_MAT_GLASS_PLATE";
   fDensityEffectDataTable[168].fPlasmaEnergy      = 31.481 * eV;
   fDensityEffectDataTable[168].fSternheimerFactor = 2.329;
@@ -2205,7 +2374,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[168].fDeltaErrorMax     = 0.025;
   fDensityEffectDataTable[168].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GLUCOSE ----------------------------------------------------------------------
+  // NIST_MAT_GLUCOSE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[169].fName              = "NIST_MAT_GLUCOSE";
   fDensityEffectDataTable[169].fPlasmaEnergy      = 26.153 * eV;
   fDensityEffectDataTable[169].fSternheimerFactor = 2.174;
@@ -2218,7 +2388,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[169].fDeltaErrorMax     = 0.061;
   fDensityEffectDataTable[169].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GLUTAMINE --------------------------------------------------------------------
+  // NIST_MAT_GLUTAMINE
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[170].fName              = "NIST_MAT_GLUTAMINE";
   fDensityEffectDataTable[170].fPlasmaEnergy      = 25.437 * eV;
   fDensityEffectDataTable[170].fSternheimerFactor = 2.077;
@@ -2231,7 +2402,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[170].fDeltaErrorMax     = 0.055;
   fDensityEffectDataTable[170].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GLYCEROL ---------------------------------------------------------------------
+  // NIST_MAT_GLYCEROL
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[171].fName              = "NIST_MAT_GLYCEROL";
   fDensityEffectDataTable[171].fPlasmaEnergy      = 23.846 * eV;
   fDensityEffectDataTable[171].fSternheimerFactor = 2.12;
@@ -2244,7 +2416,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[171].fDeltaErrorMax     = 0.067;
   fDensityEffectDataTable[171].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GUANINE ----------------------------------------------------------------------
+  // NIST_MAT_GUANINE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[172].fName              = "NIST_MAT_GUANINE";
   fDensityEffectDataTable[172].fPlasmaEnergy      = 26.022 * eV;
   fDensityEffectDataTable[172].fSternheimerFactor = 1.97;
@@ -2257,7 +2430,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[172].fDeltaErrorMax     = 0.069;
   fDensityEffectDataTable[172].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GYPSUM -----------------------------------------------------------------------
+  // NIST_MAT_GYPSUM
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[173].fName              = "NIST_MAT_GYPSUM";
   fDensityEffectDataTable[173].fPlasmaEnergy      = 31.379 * eV;
   fDensityEffectDataTable[173].fSternheimerFactor = 2.187;
@@ -2270,7 +2444,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[173].fDeltaErrorMax     = 0.038;
   fDensityEffectDataTable[173].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_N-HEPTANE --------------------------------------------------------------------
+  // NIST_MAT_N-HEPTANE
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[174].fName              = "NIST_MAT_N-HEPTANE";
   fDensityEffectDataTable[174].fPlasmaEnergy      = 18.128 * eV;
   fDensityEffectDataTable[174].fSternheimerFactor = 1.848;
@@ -2283,7 +2458,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[174].fDeltaErrorMax     = 0.059;
   fDensityEffectDataTable[174].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_N-HEXANE ---------------------------------------------------------------------
+  // NIST_MAT_N-HEXANE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[175].fName              = "NIST_MAT_N-HEXANE";
   fDensityEffectDataTable[175].fPlasmaEnergy      = 17.836 * eV;
   fDensityEffectDataTable[175].fSternheimerFactor = 1.843;
@@ -2296,7 +2472,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[175].fDeltaErrorMax     = 0.061;
   fDensityEffectDataTable[175].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_KAPTON -----------------------------------------------------------------------
+  // NIST_MAT_KAPTON
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[176].fName              = "NIST_MAT_KAPTON";
   fDensityEffectDataTable[176].fPlasmaEnergy      = 24.586 * eV;
   fDensityEffectDataTable[176].fSternheimerFactor = 2.109;
@@ -2309,7 +2486,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[176].fDeltaErrorMax     = 0.05;
   fDensityEffectDataTable[176].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LANTHANUM_OXYBROMIDE ---------------------------------------------------------
+  // NIST_MAT_LANTHANUM_OXYBROMIDE
+  // ---------------------------------------------------------
   fDensityEffectDataTable[177].fName              = "NIST_MAT_LANTHANUM_OXYBROMIDE";
   fDensityEffectDataTable[177].fPlasmaEnergy      = 47.125 * eV;
   fDensityEffectDataTable[177].fSternheimerFactor = 1.831;
@@ -2322,7 +2500,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[177].fDeltaErrorMax     = 0.04;
   fDensityEffectDataTable[177].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LANTHANUM_OXYSULFIDE ---------------------------------------------------------
+  // NIST_MAT_LANTHANUM_OXYSULFIDE
+  // ---------------------------------------------------------
   fDensityEffectDataTable[178].fName              = "NIST_MAT_LANTHANUM_OXYSULFIDE";
   fDensityEffectDataTable[178].fPlasmaEnergy      = 45.394 * eV;
   fDensityEffectDataTable[178].fSternheimerFactor = 1.681;
@@ -2335,7 +2514,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[178].fDeltaErrorMax     = 0.065;
   fDensityEffectDataTable[178].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LEAD_OXIDE -------------------------------------------------------------------
+  // NIST_MAT_LEAD_OXIDE
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[179].fName              = "NIST_MAT_LEAD_OXIDE";
   fDensityEffectDataTable[179].fPlasmaEnergy      = 56.488 * eV;
   fDensityEffectDataTable[179].fSternheimerFactor = 2.012;
@@ -2348,7 +2528,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[179].fDeltaErrorMax     = 0.039;
   fDensityEffectDataTable[179].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LITHIUM_AMIDE ----------------------------------------------------------------
+  // NIST_MAT_LITHIUM_AMIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[180].fName              = "NIST_MAT_LITHIUM_AMIDE";
   fDensityEffectDataTable[180].fPlasmaEnergy      = 22.609 * eV;
   fDensityEffectDataTable[180].fSternheimerFactor = 1.74;
@@ -2361,7 +2542,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[180].fDeltaErrorMax     = 0.05;
   fDensityEffectDataTable[180].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LITHIUM_CARBONATE ------------------------------------------------------------
+  // NIST_MAT_LITHIUM_CARBONATE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[181].fName              = "NIST_MAT_LITHIUM_CARBONATE";
   fDensityEffectDataTable[181].fPlasmaEnergy      = 29.217 * eV;
   fDensityEffectDataTable[181].fSternheimerFactor = 2.246;
@@ -2374,7 +2556,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[181].fDeltaErrorMax     = 0.062;
   fDensityEffectDataTable[181].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LITHIUM_FLUORIDE -------------------------------------------------------------
+  // NIST_MAT_LITHIUM_FLUORIDE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[182].fName              = "NIST_MAT_LITHIUM_FLUORIDE";
   fDensityEffectDataTable[182].fPlasmaEnergy      = 31.815 * eV;
   fDensityEffectDataTable[182].fSternheimerFactor = 2.197;
@@ -2387,7 +2570,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[182].fDeltaErrorMax     = 0.084;
   fDensityEffectDataTable[182].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LITHIUM_HYDRIDE --------------------------------------------------------------
+  // NIST_MAT_LITHIUM_HYDRIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[183].fName              = "NIST_MAT_LITHIUM_HYDRIDE";
   fDensityEffectDataTable[183].fPlasmaEnergy      = 18.51 * eV;
   fDensityEffectDataTable[183].fSternheimerFactor = 1.482;
@@ -2400,7 +2584,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[183].fDeltaErrorMax     = 0.035;
   fDensityEffectDataTable[183].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LITHIUM_IODIDE ---------------------------------------------------------------
+  // NIST_MAT_LITHIUM_IODIDE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[184].fName              = "NIST_MAT_LITHIUM_IODIDE";
   fDensityEffectDataTable[184].fPlasmaEnergy      = 34.841 * eV;
   fDensityEffectDataTable[184].fSternheimerFactor = 1.706;
@@ -2413,7 +2598,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[184].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[184].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LITHIUM_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_LITHIUM_OXIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[185].fName              = "NIST_MAT_LITHIUM_OXIDE";
   fDensityEffectDataTable[185].fPlasmaEnergy      = 27.984 * eV;
   fDensityEffectDataTable[185].fSternheimerFactor = 2.039;
@@ -2426,7 +2612,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[185].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[185].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LITHIUM_TETRABORATE ----------------------------------------------------------
+  // NIST_MAT_LITHIUM_TETRABORATE
+  // ----------------------------------------------------------
   fDensityEffectDataTable[186].fName              = "NIST_MAT_LITHIUM_TETRABORATE";
   fDensityEffectDataTable[186].fPlasmaEnergy      = 31.343 * eV;
   fDensityEffectDataTable[186].fSternheimerFactor = 2.36;
@@ -2439,7 +2626,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[186].fDeltaErrorMax     = 0.048;
   fDensityEffectDataTable[186].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LUNG_ICRP --------------------------------------------------------------------
+  // NIST_MAT_LUNG_ICRP
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[187].fName              = "NIST_MAT_LUNG_ICRP";
   fDensityEffectDataTable[187].fPlasmaEnergy      = 21.891 * eV;
   fDensityEffectDataTable[187].fSternheimerFactor = 2.184;
@@ -2452,7 +2640,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[187].fDeltaErrorMax     = 0.089;
   fDensityEffectDataTable[187].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_M3_WAX -----------------------------------------------------------------------
+  // NIST_MAT_M3_WAX
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[188].fName              = "NIST_MAT_M3_WAX";
   fDensityEffectDataTable[188].fPlasmaEnergy      = 22 * eV;
   fDensityEffectDataTable[188].fSternheimerFactor = 1.975;
@@ -2465,7 +2654,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[188].fDeltaErrorMax     = 0.044;
   fDensityEffectDataTable[188].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MAGNESIUM_CARBONATE ----------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_CARBONATE
+  // ----------------------------------------------------------
   fDensityEffectDataTable[189].fName              = "NIST_MAT_MAGNESIUM_CARBONATE";
   fDensityEffectDataTable[189].fPlasmaEnergy      = 34.979 * eV;
   fDensityEffectDataTable[189].fSternheimerFactor = 2.388;
@@ -2478,7 +2668,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[189].fDeltaErrorMax     = 0.045;
   fDensityEffectDataTable[189].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MAGNESIUM_FLUORIDE -----------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_FLUORIDE
+  // -----------------------------------------------------------
   fDensityEffectDataTable[190].fName              = "NIST_MAT_MAGNESIUM_FLUORIDE";
   fDensityEffectDataTable[190].fPlasmaEnergy      = 34.634 * eV;
   fDensityEffectDataTable[190].fSternheimerFactor = 2.33;
@@ -2491,7 +2682,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[190].fDeltaErrorMax     = 0.085;
   fDensityEffectDataTable[190].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MAGNESIUM_OXIDE --------------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_OXIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[191].fName              = "NIST_MAT_MAGNESIUM_OXIDE";
   fDensityEffectDataTable[191].fPlasmaEnergy      = 38.407 * eV;
   fDensityEffectDataTable[191].fSternheimerFactor = 2.412;
@@ -2504,7 +2696,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[191].fDeltaErrorMax     = 0.055;
   fDensityEffectDataTable[191].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MAGNESIUM_TETRABORATE --------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_TETRABORATE
+  // --------------------------------------------------------
   fDensityEffectDataTable[192].fName              = "NIST_MAT_MAGNESIUM_TETRABORATE";
   fDensityEffectDataTable[192].fPlasmaEnergy      = 32.089 * eV;
   fDensityEffectDataTable[192].fSternheimerFactor = 2.43;
@@ -2517,7 +2710,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[192].fDeltaErrorMax     = 0.044;
   fDensityEffectDataTable[192].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MERCURIC_IODIDE --------------------------------------------------------------
+  // NIST_MAT_MERCURIC_IODIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[193].fName              = "NIST_MAT_MERCURIC_IODIDE";
   fDensityEffectDataTable[193].fPlasmaEnergy      = 46.494 * eV;
   fDensityEffectDataTable[193].fSternheimerFactor = 1.892;
@@ -2530,7 +2724,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[193].fDeltaErrorMax     = 0.047;
   fDensityEffectDataTable[193].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_METHANE ----------------------------------------------------------------------
+  // NIST_MAT_METHANE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[194].fName              = "NIST_MAT_METHANE";
   fDensityEffectDataTable[194].fPlasmaEnergy      = 0.588 * eV;
   fDensityEffectDataTable[194].fSternheimerFactor = 1.662;
@@ -2543,7 +2738,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[194].fDeltaErrorMax     = 0.112;
   fDensityEffectDataTable[194].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_METHANOL ---------------------------------------------------------------------
+  // NIST_MAT_METHANOL
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[195].fName              = "NIST_MAT_METHANOL";
   fDensityEffectDataTable[195].fPlasmaEnergy      = 19.214 * eV;
   fDensityEffectDataTable[195].fSternheimerFactor = 2.125;
@@ -2556,7 +2752,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[195].fDeltaErrorMax     = 0.08;
   fDensityEffectDataTable[195].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MIX_D_WAX --------------------------------------------------------------------
+  // NIST_MAT_MIX_D_WAX
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[196].fName              = "NIST_MAT_MIX_D_WAX";
   fDensityEffectDataTable[196].fPlasmaEnergy      = 21.547 * eV;
   fDensityEffectDataTable[196].fSternheimerFactor = 1.905;
@@ -2569,7 +2766,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[196].fDeltaErrorMax     = 0.047;
   fDensityEffectDataTable[196].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MS20_TISSUE ------------------------------------------------------------------
+  // NIST_MAT_MS20_TISSUE
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[197].fName              = "NIST_MAT_MS20_TISSUE";
   fDensityEffectDataTable[197].fPlasmaEnergy      = 21.153 * eV;
   fDensityEffectDataTable[197].fSternheimerFactor = 2.07;
@@ -2582,7 +2780,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[197].fDeltaErrorMax     = 0.053;
   fDensityEffectDataTable[197].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MUSCLE_SCELETAL_ICRP ---------------------------------------------------------
+  // NIST_MAT_MUSCLE_SCELETAL_ICRP
+  // ---------------------------------------------------------
   fDensityEffectDataTable[198].fName              = "NIST_MAT_MUSCLE_SCELETAL_ICRP";
   fDensityEffectDataTable[198].fPlasmaEnergy      = 21.781 * eV;
   fDensityEffectDataTable[198].fSternheimerFactor = 2.185;
@@ -2595,7 +2794,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[198].fDeltaErrorMax     = 0.089;
   fDensityEffectDataTable[198].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MUSCLE_STRIATED_ICRU ---------------------------------------------------------
+  // NIST_MAT_MUSCLE_STRIATED_ICRU
+  // ---------------------------------------------------------
   fDensityEffectDataTable[199].fName              = "NIST_MAT_MUSCLE_STRIATED_ICRU";
   fDensityEffectDataTable[199].fPlasmaEnergy      = 21.795 * eV;
   fDensityEffectDataTable[199].fSternheimerFactor = 2.174;
@@ -2608,7 +2808,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[199].fDeltaErrorMax     = 0.086;
   fDensityEffectDataTable[199].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MUSCLE_WITH_SUCROSE ----------------------------------------------------------
+  // NIST_MAT_MUSCLE_WITH_SUCROSE
+  // ----------------------------------------------------------
   fDensityEffectDataTable[200].fName              = "NIST_MAT_MUSCLE_WITH_SUCROSE";
   fDensityEffectDataTable[200].fPlasmaEnergy      = 22.48 * eV;
   fDensityEffectDataTable[200].fSternheimerFactor = 2.169;
@@ -2621,7 +2822,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[200].fDeltaErrorMax     = 0.08;
   fDensityEffectDataTable[200].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MUSCLE_WITHOUT_SUCROSE -------------------------------------------------------
+  // NIST_MAT_MUSCLE_WITHOUT_SUCROSE
+  // -------------------------------------------------------
   fDensityEffectDataTable[201].fName              = "NIST_MAT_MUSCLE_WITHOUT_SUCROSE";
   fDensityEffectDataTable[201].fPlasmaEnergy      = 22.109 * eV;
   fDensityEffectDataTable[201].fSternheimerFactor = 2.173;
@@ -2634,7 +2836,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[201].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[201].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_NAPHTALENE -------------------------------------------------------------------
+  // NIST_MAT_NAPHTALENE
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[202].fName              = "NIST_MAT_NAPHTALENE";
   fDensityEffectDataTable[202].fPlasmaEnergy      = 22.459 * eV;
   fDensityEffectDataTable[202].fSternheimerFactor = 1.956;
@@ -2647,7 +2850,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[202].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[202].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_NITROBENZENE -----------------------------------------------------------------
+  // NIST_MAT_NITROBENZENE
+  // -----------------------------------------------------------------
   fDensityEffectDataTable[203].fName              = "NIST_MAT_NITROBENZENE";
   fDensityEffectDataTable[203].fPlasmaEnergy      = 22.747 * eV;
   fDensityEffectDataTable[203].fSternheimerFactor = 2.065;
@@ -2660,7 +2864,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[203].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[203].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_NITROUS_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_NITROUS_OXIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[204].fName              = "NIST_MAT_NITROUS_OXIDE";
   fDensityEffectDataTable[204].fPlasmaEnergy      = 0.872 * eV;
   fDensityEffectDataTable[204].fSternheimerFactor = 2.059;
@@ -2673,7 +2878,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[204].fDeltaErrorMax     = 0.086;
   fDensityEffectDataTable[204].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_NYLON-8062 -------------------------------------------------------------------
+  // NIST_MAT_NYLON-8062
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[205].fName              = "NIST_MAT_NYLON-8062";
   fDensityEffectDataTable[205].fPlasmaEnergy      = 22.221 * eV;
   fDensityEffectDataTable[205].fSternheimerFactor = 1.967;
@@ -2686,7 +2892,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[205].fDeltaErrorMax     = 0.054;
   fDensityEffectDataTable[205].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_NYLON-6-6 --------------------------------------------------------------------
+  // NIST_MAT_NYLON-6-6
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[206].fName              = "NIST_MAT_NYLON-6-6";
   fDensityEffectDataTable[206].fPlasmaEnergy      = 22.774 * eV;
   fDensityEffectDataTable[206].fSternheimerFactor = 1.931;
@@ -2699,7 +2906,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[206].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[206].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_NYLON-6-10 -------------------------------------------------------------------
+  // NIST_MAT_NYLON-6-10
+  // -------------------------------------------------------------------
   fDensityEffectDataTable[207].fName              = "NIST_MAT_NYLON-6-10";
   fDensityEffectDataTable[207].fPlasmaEnergy      = 22.866 * eV;
   fDensityEffectDataTable[207].fSternheimerFactor = 1.942;
@@ -2712,7 +2920,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[207].fDeltaErrorMax     = 0.05;
   fDensityEffectDataTable[207].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_NYLON-11_RILSAN --------------------------------------------------------------
+  // NIST_MAT_NYLON-11_RILSAN
+  // --------------------------------------------------------------
   fDensityEffectDataTable[208].fName              = "NIST_MAT_NYLON-11_RILSAN";
   fDensityEffectDataTable[208].fPlasmaEnergy      = 25.661 * eV;
   fDensityEffectDataTable[208].fSternheimerFactor = 1.902;
@@ -2725,7 +2934,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[208].fDeltaErrorMax     = 0.044;
   fDensityEffectDataTable[208].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_OCTANE -----------------------------------------------------------------------
+  // NIST_MAT_OCTANE
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[209].fName              = "NIST_MAT_OCTANE";
   fDensityEffectDataTable[209].fPlasmaEnergy      = 18.36 * eV;
   fDensityEffectDataTable[209].fSternheimerFactor = 1.851;
@@ -2738,7 +2948,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[209].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[209].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_PARAFFIN ---------------------------------------------------------------------
+  // NIST_MAT_PARAFFIN
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[210].fName              = "NIST_MAT_PARAFFIN";
   fDensityEffectDataTable[210].fPlasmaEnergy      = 21.031 * eV;
   fDensityEffectDataTable[210].fSternheimerFactor = 1.844;
@@ -2751,7 +2962,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[210].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[210].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_N-PENTANE --------------------------------------------------------------------
+  // NIST_MAT_N-PENTANE
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[211].fName              = "NIST_MAT_N-PENTANE";
   fDensityEffectDataTable[211].fPlasmaEnergy      = 17.398 * eV;
   fDensityEffectDataTable[211].fSternheimerFactor = 1.842;
@@ -2764,7 +2976,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[211].fDeltaErrorMax     = 0.064;
   fDensityEffectDataTable[211].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_PHOTO_EMULSION ---------------------------------------------------------------
+  // NIST_MAT_PHOTO_EMULSION
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[212].fName              = "NIST_MAT_PHOTO_EMULSION";
   fDensityEffectDataTable[212].fPlasmaEnergy      = 37.946 * eV;
   fDensityEffectDataTable[212].fSternheimerFactor = 2.264;
@@ -2777,7 +2990,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[212].fDeltaErrorMax     = 0.028;
   fDensityEffectDataTable[212].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_PLASTIC_SC_VINYLTOLUENE ------------------------------------------------------
+  // NIST_MAT_PLASTIC_SC_VINYLTOLUENE
+  // ------------------------------------------------------
   fDensityEffectDataTable[213].fName              = "NIST_MAT_PLASTIC_SC_VINYLTOLUENE";
   fDensityEffectDataTable[213].fPlasmaEnergy      = 21.54 * eV;
   fDensityEffectDataTable[213].fSternheimerFactor = 1.929;
@@ -2790,7 +3004,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[213].fDeltaErrorMax     = 0.05;
   fDensityEffectDataTable[213].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_PLUTONIUM_DIOXIDE ------------------------------------------------------------
+  // NIST_MAT_PLUTONIUM_DIOXIDE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[214].fName              = "NIST_MAT_PLUTONIUM_DIOXIDE";
   fDensityEffectDataTable[214].fPlasmaEnergy      = 62.143 * eV;
   fDensityEffectDataTable[214].fSternheimerFactor = 1.846;
@@ -2803,7 +3018,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[214].fDeltaErrorMax     = 0.111;
   fDensityEffectDataTable[214].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYACRYLONITRILE ------------------------------------------------------------
+  // NIST_MAT_POLYACRYLONITRILE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[215].fName              = "NIST_MAT_POLYACRYLONITRILE";
   fDensityEffectDataTable[215].fPlasmaEnergy      = 22.642 * eV;
   fDensityEffectDataTable[215].fSternheimerFactor = 1.955;
@@ -2816,7 +3032,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[215].fDeltaErrorMax     = 0.05;
   fDensityEffectDataTable[215].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYCARBONATE ----------------------------------------------------------------
+  // NIST_MAT_POLYCARBONATE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[216].fName              = "NIST_MAT_POLYCARBONATE";
   fDensityEffectDataTable[216].fPlasmaEnergy      = 22.915 * eV;
   fDensityEffectDataTable[216].fSternheimerFactor = 2.06;
@@ -2829,7 +3046,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[216].fDeltaErrorMax     = 0.049;
   fDensityEffectDataTable[216].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYCHLOROSTYRENE ------------------------------------------------------------
+  // NIST_MAT_POLYCHLOROSTYRENE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[217].fName              = "NIST_MAT_POLYCHLOROSTYRENE";
   fDensityEffectDataTable[217].fPlasmaEnergy      = 23.81 * eV;
   fDensityEffectDataTable[217].fSternheimerFactor = 1.902;
@@ -2842,7 +3060,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[217].fDeltaErrorMax     = 0.029;
   fDensityEffectDataTable[217].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYETHYLENE -----------------------------------------------------------------
+  // NIST_MAT_POLYETHYLENE
+  // -----------------------------------------------------------------
   fDensityEffectDataTable[218].fName              = "NIST_MAT_POLYETHYLENE";
   fDensityEffectDataTable[218].fPlasmaEnergy      = 21.099 * eV;
   fDensityEffectDataTable[218].fSternheimerFactor = 1.882;
@@ -2855,7 +3074,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[218].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[218].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_MYLAR ------------------------------------------------------------------------
+  // NIST_MAT_MYLAR
+  // ------------------------------------------------------------------------
   fDensityEffectDataTable[219].fName              = "NIST_MAT_MYLAR";
   fDensityEffectDataTable[219].fPlasmaEnergy      = 24.595 * eV;
   fDensityEffectDataTable[219].fSternheimerFactor = 2.144;
@@ -2868,7 +3088,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[219].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[219].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_LUCITE -----------------------------------------------------------------------
+  // NIST_MAT_LUCITE
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[220].fName              = "NIST_MAT_LUCITE";
   fDensityEffectDataTable[220].fPlasmaEnergy      = 23.086 * eV;
   fDensityEffectDataTable[220].fSternheimerFactor = 2.173;
@@ -2881,7 +3102,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[220].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[220].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYOXOMETHYLENE -------------------------------------------------------------
+  // NIST_MAT_POLYOXOMETHYLENE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[221].fName              = "NIST_MAT_POLYOXOMETHYLENE";
   fDensityEffectDataTable[221].fPlasmaEnergy      = 25.11 * eV;
   fDensityEffectDataTable[221].fSternheimerFactor = 2.175;
@@ -2894,7 +3116,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[221].fDeltaErrorMax     = 0.063;
   fDensityEffectDataTable[221].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYPROPYLENE ----------------------------------------------------------------
+  // NIST_MAT_POLYPROPYLENE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[222].fName              = "NIST_MAT_POLYPROPYLENE";
   fDensityEffectDataTable[222].fPlasmaEnergy      = 20.457 * eV;
   fDensityEffectDataTable[222].fSternheimerFactor = 1.884;
@@ -2907,7 +3130,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[222].fDeltaErrorMax     = 0.055;
   fDensityEffectDataTable[222].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYSTYRENE ------------------------------------------------------------------
+  // NIST_MAT_POLYSTYRENE
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[223].fName              = "NIST_MAT_POLYSTYRENE";
   fDensityEffectDataTable[223].fPlasmaEnergy      = 21.754 * eV;
   fDensityEffectDataTable[223].fSternheimerFactor = 2.027;
@@ -2920,7 +3144,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[223].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[223].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TEFLON -----------------------------------------------------------------------
+  // NIST_MAT_TEFLON
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[224].fName              = "NIST_MAT_TEFLON";
   fDensityEffectDataTable[224].fPlasmaEnergy      = 29.609 * eV;
   fDensityEffectDataTable[224].fSternheimerFactor = 2.142;
@@ -2933,9 +3158,10 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[224].fDeltaErrorMax     = 0.073;
   fDensityEffectDataTable[224].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE --------------------------------------------------
-  fDensityEffectDataTable[225].fName              = "NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE";
-  fDensityEffectDataTable[225].fPlasmaEnergy      = 28.955 * eV;
+  // NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE
+  // --------------------------------------------------
+  fDensityEffectDataTable[225].fName         = "NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE";
+  fDensityEffectDataTable[225].fPlasmaEnergy = 28.955 * eV;
   fDensityEffectDataTable[225].fSternheimerFactor = 2.094;
   fDensityEffectDataTable[225].fParameterC        = 3.8551;
   fDensityEffectDataTable[225].fParameterFitX0    = 0.1714;
@@ -2946,7 +3172,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[225].fDeltaErrorMax     = 0.035;
   fDensityEffectDataTable[225].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYVINYL_ACETATE ------------------------------------------------------------
+  // NIST_MAT_POLYVINYL_ACETATE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[226].fName              = "NIST_MAT_POLYVINYL_ACETATE";
   fDensityEffectDataTable[226].fPlasmaEnergy      = 22.978 * eV;
   fDensityEffectDataTable[226].fSternheimerFactor = 2.116;
@@ -2959,7 +3186,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[226].fDeltaErrorMax     = 0.055;
   fDensityEffectDataTable[226].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_PLOYVINYL_ALCOHOL ------------------------------------------------------------
+  // NIST_MAT_PLOYVINYL_ALCOHOL
+  // ------------------------------------------------------------
   fDensityEffectDataTable[227].fName              = "NIST_MAT_PLOYVINYL_ALCOHOL";
   fDensityEffectDataTable[227].fPlasmaEnergy      = 24.251 * eV;
   fDensityEffectDataTable[227].fSternheimerFactor = 2.071;
@@ -2972,7 +3200,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[227].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[227].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYVINYL_BUTYRAL ------------------------------------------------------------
+  // NIST_MAT_POLYVINYL_BUTYRAL
+  // ------------------------------------------------------------
   fDensityEffectDataTable[228].fName              = "NIST_MAT_POLYVINYL_BUTYRAL";
   fDensityEffectDataTable[228].fPlasmaEnergy      = 22.521 * eV;
   fDensityEffectDataTable[228].fSternheimerFactor = 2.021;
@@ -2985,7 +3214,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[228].fDeltaErrorMax     = 0.054;
   fDensityEffectDataTable[228].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYVINYL_CHLORIDE -----------------------------------------------------------
+  // NIST_MAT_POLYVINYL_CHLORIDE
+  // -----------------------------------------------------------
   fDensityEffectDataTable[229].fName              = "NIST_MAT_POLYVINYL_CHLORIDE";
   fDensityEffectDataTable[229].fPlasmaEnergy      = 23.51 * eV;
   fDensityEffectDataTable[229].fSternheimerFactor = 1.84;
@@ -2998,7 +3228,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[229].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[229].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYVINYLIDENE_CHLORIDE ------------------------------------------------------
+  // NIST_MAT_POLYVINYLIDENE_CHLORIDE
+  // ------------------------------------------------------
   fDensityEffectDataTable[230].fName              = "NIST_MAT_POLYVINYLIDENE_CHLORIDE";
   fDensityEffectDataTable[230].fPlasmaEnergy      = 26.437 * eV;
   fDensityEffectDataTable[230].fSternheimerFactor = 1.814;
@@ -3011,7 +3242,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[230].fDeltaErrorMax     = 0.034;
   fDensityEffectDataTable[230].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYVINYLIDENE_FLUORIDE ------------------------------------------------------
+  // NIST_MAT_POLYVINYLIDENE_FLUORIDE
+  // ------------------------------------------------------
   fDensityEffectDataTable[231].fName              = "NIST_MAT_POLYVINYLIDENE_FLUORIDE";
   fDensityEffectDataTable[231].fPlasmaEnergy      = 27.024 * eV;
   fDensityEffectDataTable[231].fSternheimerFactor = 2.16;
@@ -3024,7 +3256,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[231].fDeltaErrorMax     = 0.067;
   fDensityEffectDataTable[231].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POLYVINYL_PYRROLIDONE --------------------------------------------------------
+  // NIST_MAT_POLYVINYL_PYRROLIDONE
+  // --------------------------------------------------------
   fDensityEffectDataTable[232].fName              = "NIST_MAT_POLYVINYL_PYRROLIDONE";
   fDensityEffectDataTable[232].fPlasmaEnergy      = 23.671 * eV;
   fDensityEffectDataTable[232].fSternheimerFactor = 1.989;
@@ -3037,7 +3270,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[232].fDeltaErrorMax     = 0.031;
   fDensityEffectDataTable[232].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POTASSIUM_IODIDE -------------------------------------------------------------
+  // NIST_MAT_POTASSIUM_IODIDE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[233].fName              = "NIST_MAT_POTASSIUM_IODIDE";
   fDensityEffectDataTable[233].fPlasmaEnergy      = 33.575 * eV;
   fDensityEffectDataTable[233].fSternheimerFactor = 1.784;
@@ -3050,7 +3284,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[233].fDeltaErrorMax     = 0.042;
   fDensityEffectDataTable[233].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_POTASSIUM_OXIDE --------------------------------------------------------------
+  // NIST_MAT_POTASSIUM_OXIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[234].fName              = "NIST_MAT_POTASSIUM_OXIDE";
   fDensityEffectDataTable[234].fPlasmaEnergy      = 30.672 * eV;
   fDensityEffectDataTable[234].fSternheimerFactor = 2.065;
@@ -3063,7 +3298,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[234].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[234].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_PROPANE ----------------------------------------------------------------------
+  // NIST_MAT_PROPANE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[235].fName              = "NIST_MAT_PROPANE";
   fDensityEffectDataTable[235].fPlasmaEnergy      = 0.959 * eV;
   fDensityEffectDataTable[235].fSternheimerFactor = 1.708;
@@ -3076,7 +3312,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[235].fDeltaErrorMax     = 0.093;
   fDensityEffectDataTable[235].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_lPROPANE ---------------------------------------------------------------------
+  // NIST_MAT_lPROPANE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[236].fName              = "NIST_MAT_lPROPANE";
   fDensityEffectDataTable[236].fPlasmaEnergy      = 14.509 * eV;
   fDensityEffectDataTable[236].fSternheimerFactor = 1.844;
@@ -3089,7 +3326,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[236].fDeltaErrorMax     = 0.068;
   fDensityEffectDataTable[236].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_ROPYL_ALCOHOL ----------------------------------------------------------------
+  // NIST_MAT_ROPYL_ALCOHOL
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[237].fName              = "NIST_MAT_ROPYL_ALCOHOL";
   fDensityEffectDataTable[237].fPlasmaEnergy      = 19.429 * eV;
   fDensityEffectDataTable[237].fSternheimerFactor = 1.972;
@@ -3102,7 +3340,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[237].fDeltaErrorMax     = 0.07;
   fDensityEffectDataTable[237].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_PYRIDINE ---------------------------------------------------------------------
+  // NIST_MAT_PYRIDINE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[238].fName              = "NIST_MAT_PYRIDINE";
   fDensityEffectDataTable[238].fPlasmaEnergy      = 20.807 * eV;
   fDensityEffectDataTable[238].fSternheimerFactor = 1.895;
@@ -3115,7 +3354,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[238].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[238].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_RUBBER_BUTYL -----------------------------------------------------------------
+  // NIST_MAT_RUBBER_BUTYL
+  // -----------------------------------------------------------------
   fDensityEffectDataTable[239].fName              = "NIST_MAT_RUBBER_BUTYL";
   fDensityEffectDataTable[239].fPlasmaEnergy      = 20.873 * eV;
   fDensityEffectDataTable[239].fSternheimerFactor = 1.852;
@@ -3128,7 +3368,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[239].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[239].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_RUBBER_NATURAL ---------------------------------------------------------------
+  // NIST_MAT_RUBBER_NATURAL
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[240].fName              = "NIST_MAT_RUBBER_NATURAL";
   fDensityEffectDataTable[240].fPlasmaEnergy      = 20.644 * eV;
   fDensityEffectDataTable[240].fSternheimerFactor = 1.889;
@@ -3141,7 +3382,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[240].fDeltaErrorMax     = 0.053;
   fDensityEffectDataTable[240].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_RUBBER_NEOPRENE --------------------------------------------------------------
+  // NIST_MAT_RUBBER_NEOPRENE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[241].fName              = "NIST_MAT_RUBBER_NEOPRENE";
   fDensityEffectDataTable[241].fPlasmaEnergy      = 23.036 * eV;
   fDensityEffectDataTable[241].fSternheimerFactor = 1.874;
@@ -3154,7 +3396,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[241].fDeltaErrorMax     = 0.026;
   fDensityEffectDataTable[241].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SILICON_DIOXIDE --------------------------------------------------------------
+  // NIST_MAT_SILICON_DIOXIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[242].fName              = "NIST_MAT_SILICON_DIOXIDE";
   fDensityEffectDataTable[242].fPlasmaEnergy      = 31.014 * eV;
   fDensityEffectDataTable[242].fSternheimerFactor = 2.335;
@@ -3167,7 +3410,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[242].fDeltaErrorMax     = 0.018;
   fDensityEffectDataTable[242].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SILVER_BROMIDE ---------------------------------------------------------------
+  // NIST_MAT_SILVER_BROMIDE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[243].fName              = "NIST_MAT_SILVER_BROMIDE";
   fDensityEffectDataTable[243].fPlasmaEnergy      = 48.448 * eV;
   fDensityEffectDataTable[243].fSternheimerFactor = 2.271;
@@ -3180,7 +3424,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[243].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[243].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SILVER_CHLORIDE --------------------------------------------------------------
+  // NIST_MAT_SILVER_CHLORIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[244].fName              = "NIST_MAT_SILVER_CHLORIDE";
   fDensityEffectDataTable[244].fPlasmaEnergy      = 45.405 * eV;
   fDensityEffectDataTable[244].fSternheimerFactor = 2.096;
@@ -3193,7 +3438,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[244].fDeltaErrorMax     = 0.062;
   fDensityEffectDataTable[244].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SILVER_HALIDES ---------------------------------------------------------------
+  // NIST_MAT_SILVER_HALIDES
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[245].fName              = "NIST_MAT_SILVER_HALIDES";
   fDensityEffectDataTable[245].fPlasmaEnergy      = 48.433 * eV;
   fDensityEffectDataTable[245].fSternheimerFactor = 2.27;
@@ -3206,7 +3452,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[245].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[245].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SILVER_IODIDE ----------------------------------------------------------------
+  // NIST_MAT_SILVER_IODIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[246].fName              = "NIST_MAT_SILVER_IODIDE";
   fDensityEffectDataTable[246].fPlasmaEnergy      = 46.105 * eV;
   fDensityEffectDataTable[246].fSternheimerFactor = 1.945;
@@ -3219,7 +3466,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[246].fDeltaErrorMax     = 0.071;
   fDensityEffectDataTable[246].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SKIN_ICRP --------------------------------------------------------------------
+  // NIST_MAT_SKIN_ICRP
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[247].fName              = "NIST_MAT_SKIN_ICRP";
   fDensityEffectDataTable[247].fPlasmaEnergy      = 22.4 * eV;
   fDensityEffectDataTable[247].fSternheimerFactor = 2.14;
@@ -3232,7 +3480,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[247].fDeltaErrorMax     = 0.076;
   fDensityEffectDataTable[247].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SODIUM_CARBONATE -------------------------------------------------------------
+  // NIST_MAT_SODIUM_CARBONATE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[248].fName              = "NIST_MAT_SODIUM_CARBONATE";
   fDensityEffectDataTable[248].fPlasmaEnergy      = 32.117 * eV;
   fDensityEffectDataTable[248].fSternheimerFactor = 2.557;
@@ -3245,7 +3494,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[248].fDeltaErrorMax     = 0.074;
   fDensityEffectDataTable[248].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SODIUM_IODIDE ----------------------------------------------------------------
+  // NIST_MAT_SODIUM_IODIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[249].fName              = "NIST_MAT_SODIUM_IODIDE";
   fDensityEffectDataTable[249].fPlasmaEnergy      = 36.057 * eV;
   fDensityEffectDataTable[249].fSternheimerFactor = 1.857;
@@ -3258,7 +3508,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[249].fDeltaErrorMax     = 0.031;
   fDensityEffectDataTable[249].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SODIUM_MONOXIDE --------------------------------------------------------------
+  // NIST_MAT_SODIUM_MONOXIDE
+  // --------------------------------------------------------------
   fDensityEffectDataTable[250].fName              = "NIST_MAT_SODIUM_MONOXIDE";
   fDensityEffectDataTable[250].fPlasmaEnergy      = 30.205 * eV;
   fDensityEffectDataTable[250].fSternheimerFactor = 2.689;
@@ -3271,7 +3522,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[250].fDeltaErrorMax     = 0.097;
   fDensityEffectDataTable[250].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SODIUM_NITRATE ---------------------------------------------------------------
+  // NIST_MAT_SODIUM_NITRATE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[251].fName              = "NIST_MAT_SODIUM_NITRATE";
   fDensityEffectDataTable[251].fPlasmaEnergy      = 30.459 * eV;
   fDensityEffectDataTable[251].fSternheimerFactor = 2.456;
@@ -3284,7 +3536,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[251].fDeltaErrorMax     = 0.081;
   fDensityEffectDataTable[251].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_STILBENE ---------------------------------------------------------------------
+  // NIST_MAT_STILBENE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[252].fName              = "NIST_MAT_STILBENE";
   fDensityEffectDataTable[252].fPlasmaEnergy      = 20.719 * eV;
   fDensityEffectDataTable[252].fSternheimerFactor = 1.963;
@@ -3297,7 +3550,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[252].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[252].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_SUCROSE ----------------------------------------------------------------------
+  // NIST_MAT_SUCROSE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[253].fName              = "NIST_MAT_SUCROSE";
   fDensityEffectDataTable[253].fPlasmaEnergy      = 26.416 * eV;
   fDensityEffectDataTable[253].fSternheimerFactor = 2.167;
@@ -3310,7 +3564,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[253].fDeltaErrorMax     = 0.057;
   fDensityEffectDataTable[253].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TERPHENYL --------------------------------------------------------------------
+  // NIST_MAT_TERPHENYL
+  // --------------------------------------------------------------------
   fDensityEffectDataTable[254].fName              = "NIST_MAT_TERPHENYL";
   fDensityEffectDataTable[254].fPlasmaEnergy      = 23.116 * eV;
   fDensityEffectDataTable[254].fSternheimerFactor = 1.976;
@@ -3323,7 +3578,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[254].fDeltaErrorMax     = 0.043;
   fDensityEffectDataTable[254].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TESTES_ICRP ------------------------------------------------------------------
+  // NIST_MAT_TESTES_ICRP
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[255].fName              = "NIST_MAT_TESTES_ICRP";
   fDensityEffectDataTable[255].fPlasmaEnergy      = 21.815 * eV;
   fDensityEffectDataTable[255].fSternheimerFactor = 2.185;
@@ -3336,7 +3592,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[255].fDeltaErrorMax     = 0.091;
   fDensityEffectDataTable[255].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TETRACHLOROETHYLENE ----------------------------------------------------------
+  // NIST_MAT_TETRACHLOROETHYLENE
+  // ----------------------------------------------------------
   fDensityEffectDataTable[256].fName              = "NIST_MAT_TETRACHLOROETHYLENE";
   fDensityEffectDataTable[256].fPlasmaEnergy      = 25.513 * eV;
   fDensityEffectDataTable[256].fSternheimerFactor = 1.79;
@@ -3349,7 +3606,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[256].fDeltaErrorMax     = 0.038;
   fDensityEffectDataTable[256].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_THALIUM_CHLORIDE -------------------------------------------------------------
+  // NIST_MAT_THALIUM_CHLORIDE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[257].fName              = "NIST_MAT_THALIUM_CHLORIDE";
   fDensityEffectDataTable[257].fPlasmaEnergy      = 48.749 * eV;
   fDensityEffectDataTable[257].fSternheimerFactor = 1.997;
@@ -3362,7 +3620,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[257].fDeltaErrorMax     = 0.04;
   fDensityEffectDataTable[257].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TISSUE_SOFT_ICRP -------------------------------------------------------------
+  // NIST_MAT_TISSUE_SOFT_ICRP
+  // -------------------------------------------------------------
   fDensityEffectDataTable[258].fName              = "NIST_MAT_TISSUE_SOFT_ICRP";
   fDensityEffectDataTable[258].fPlasmaEnergy      = 21.394 * eV;
   fDensityEffectDataTable[258].fSternheimerFactor = 2.144;
@@ -3375,7 +3634,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[258].fDeltaErrorMax     = 0.077;
   fDensityEffectDataTable[258].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TISSUE_SOFT_ICRU-4 -----------------------------------------------------------
+  // NIST_MAT_TISSUE_SOFT_ICRU-4
+  // -----------------------------------------------------------
   fDensityEffectDataTable[259].fName              = "NIST_MAT_TISSUE_SOFT_ICRU-4";
   fDensityEffectDataTable[259].fPlasmaEnergy      = 21.366 * eV;
   fDensityEffectDataTable[259].fSternheimerFactor = 2.192;
@@ -3388,7 +3648,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[259].fDeltaErrorMax     = 0.092;
   fDensityEffectDataTable[259].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TISSUE-METHANE ---------------------------------------------------------------
+  // NIST_MAT_TISSUE-METHANE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[260].fName              = "NIST_MAT_TISSUE-METHANE";
   fDensityEffectDataTable[260].fPlasmaEnergy      = 0.697 * eV;
   fDensityEffectDataTable[260].fSternheimerFactor = 1.89;
@@ -3401,7 +3662,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[260].fDeltaErrorMax     = 0.098;
   fDensityEffectDataTable[260].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TISSUE-PROPANE ---------------------------------------------------------------
+  // NIST_MAT_TISSUE-PROPANE
+  // ---------------------------------------------------------------
   fDensityEffectDataTable[261].fName              = "NIST_MAT_TISSUE-PROPANE";
   fDensityEffectDataTable[261].fPlasmaEnergy      = 0.913 * eV;
   fDensityEffectDataTable[261].fSternheimerFactor = 1.856;
@@ -3414,7 +3676,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[261].fDeltaErrorMax     = 0.092;
   fDensityEffectDataTable[261].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TITANIUM_DIOXIDE -------------------------------------------------------------
+  // NIST_MAT_TITANIUM_DIOXIDE
+  // -------------------------------------------------------------
   fDensityEffectDataTable[262].fName              = "NIST_MAT_TITANIUM_DIOXIDE";
   fDensityEffectDataTable[262].fPlasmaEnergy      = 41.022 * eV;
   fDensityEffectDataTable[262].fSternheimerFactor = 2.307;
@@ -3427,7 +3690,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[262].fDeltaErrorMax     = 0.027;
   fDensityEffectDataTable[262].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TOLUENE ----------------------------------------------------------------------
+  // NIST_MAT_TOLUENE
+  // ----------------------------------------------------------------------
   fDensityEffectDataTable[263].fName              = "NIST_MAT_TOLUENE";
   fDensityEffectDataTable[263].fPlasmaEnergy      = 19.764 * eV;
   fDensityEffectDataTable[263].fSternheimerFactor = 1.88;
@@ -3440,7 +3704,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[263].fDeltaErrorMax     = 0.052;
   fDensityEffectDataTable[263].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TRICHLOROETHYLENE ------------------------------------------------------------
+  // NIST_MAT_TRICHLOROETHYLENE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[264].fName              = "NIST_MAT_TRICHLOROETHYLENE";
   fDensityEffectDataTable[264].fPlasmaEnergy      = 24.301 * eV;
   fDensityEffectDataTable[264].fSternheimerFactor = 1.789;
@@ -3453,7 +3718,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[264].fDeltaErrorMax     = 0.036;
   fDensityEffectDataTable[264].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TRIETHYL_PHOSPHATE -----------------------------------------------------------
+  // NIST_MAT_TRIETHYL_PHOSPHATE
+  // -----------------------------------------------------------
   fDensityEffectDataTable[265].fName              = "NIST_MAT_TRIETHYL_PHOSPHATE";
   fDensityEffectDataTable[265].fPlasmaEnergy      = 21.863 * eV;
   fDensityEffectDataTable[265].fSternheimerFactor = 2.1;
@@ -3466,7 +3732,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[265].fDeltaErrorMax     = 0.049;
   fDensityEffectDataTable[265].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_TUNGSTEN_HEXAFLUORIDE --------------------------------------------------------
+  // NIST_MAT_TUNGSTEN_HEXAFLUORIDE
+  // --------------------------------------------------------
   fDensityEffectDataTable[266].fName              = "NIST_MAT_TUNGSTEN_HEXAFLUORIDE";
   fDensityEffectDataTable[266].fPlasmaEnergy      = 29.265 * eV;
   fDensityEffectDataTable[266].fSternheimerFactor = 2.325;
@@ -3479,7 +3746,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[266].fDeltaErrorMax     = 0.055;
   fDensityEffectDataTable[266].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_URANIUM_DICARBIDE ------------------------------------------------------------
+  // NIST_MAT_URANIUM_DICARBIDE
+  // ------------------------------------------------------------
   fDensityEffectDataTable[267].fName              = "NIST_MAT_URANIUM_DICARBIDE";
   fDensityEffectDataTable[267].fPlasmaEnergy      = 60.969 * eV;
   fDensityEffectDataTable[267].fSternheimerFactor = 1.703;
@@ -3492,7 +3760,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[267].fDeltaErrorMax     = 0.12;
   fDensityEffectDataTable[267].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_URANIUM_MONOCARBIDE ----------------------------------------------------------
+  // NIST_MAT_URANIUM_MONOCARBIDE
+  // ----------------------------------------------------------
   fDensityEffectDataTable[268].fName              = "NIST_MAT_URANIUM_MONOCARBIDE";
   fDensityEffectDataTable[268].fPlasmaEnergy      = 66.602 * eV;
   fDensityEffectDataTable[268].fSternheimerFactor = 1.68;
@@ -3505,7 +3774,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[268].fDeltaErrorMax     = 0.132;
   fDensityEffectDataTable[268].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_URANIUM_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_URANIUM_OXIDE
+  // ----------------------------------------------------------------
   fDensityEffectDataTable[269].fName              = "NIST_MAT_URANIUM_OXIDE";
   fDensityEffectDataTable[269].fPlasmaEnergy      = 60.332 * eV;
   fDensityEffectDataTable[269].fSternheimerFactor = 1.76;
@@ -3518,7 +3788,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[269].fDeltaErrorMax     = 0.098;
   fDensityEffectDataTable[269].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_UREA -------------------------------------------------------------------------
+  // NIST_MAT_UREA
+  // -------------------------------------------------------------------------
   fDensityEffectDataTable[270].fName              = "NIST_MAT_UREA";
   fDensityEffectDataTable[270].fPlasmaEnergy      = 24.194 * eV;
   fDensityEffectDataTable[270].fSternheimerFactor = 2.022;
@@ -3531,7 +3802,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[270].fDeltaErrorMax     = 0.06;
   fDensityEffectDataTable[270].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_VALINE -----------------------------------------------------------------------
+  // NIST_MAT_VALINE
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[271].fName              = "NIST_MAT_VALINE";
   fDensityEffectDataTable[271].fPlasmaEnergy      = 23.622 * eV;
   fDensityEffectDataTable[271].fSternheimerFactor = 2.024;
@@ -3544,7 +3816,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[271].fDeltaErrorMax     = 0.056;
   fDensityEffectDataTable[271].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_VITON ------------------------------------------------------------------------
+  // NIST_MAT_VITON
+  // ------------------------------------------------------------------------
   fDensityEffectDataTable[272].fName              = "NIST_MAT_VITON";
   fDensityEffectDataTable[272].fPlasmaEnergy      = 26.948 * eV;
   fDensityEffectDataTable[272].fSternheimerFactor = 2.227;
@@ -3557,7 +3830,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[272].fDeltaErrorMax     = 0.07;
   fDensityEffectDataTable[272].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_WATER ------------------------------------------------------------------------
+  // NIST_MAT_WATER
+  // ------------------------------------------------------------------------
   fDensityEffectDataTable[273].fName              = "NIST_MAT_WATER";
   fDensityEffectDataTable[273].fPlasmaEnergy      = 21.469 * eV;
   fDensityEffectDataTable[273].fSternheimerFactor = 2.203;
@@ -3570,7 +3844,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[273].fDeltaErrorMax     = 0.097;
   fDensityEffectDataTable[273].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_WATER_VAPOR ------------------------------------------------------------------
+  // NIST_MAT_WATER_VAPOR
+  // ------------------------------------------------------------------
   fDensityEffectDataTable[274].fName              = "NIST_MAT_WATER_VAPOR";
   fDensityEffectDataTable[274].fPlasmaEnergy      = 0.59 * eV;
   fDensityEffectDataTable[274].fSternheimerFactor = 2.175;
@@ -3583,7 +3858,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[274].fDeltaErrorMax     = 0.121;
   fDensityEffectDataTable[274].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_XYLENE -----------------------------------------------------------------------
+  // NIST_MAT_XYLENE
+  // -----------------------------------------------------------------------
   fDensityEffectDataTable[275].fName              = "NIST_MAT_XYLENE";
   fDensityEffectDataTable[275].fPlasmaEnergy      = 19.866 * eV;
   fDensityEffectDataTable[275].fSternheimerFactor = 1.882;
@@ -3596,7 +3872,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[275].fDeltaErrorMax     = 0.051;
   fDensityEffectDataTable[275].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GRAPHITE ---------------------------------------------------------------------
+  // NIST_MAT_GRAPHITE
+  // ---------------------------------------------------------------------
   fDensityEffectDataTable[276].fName              = "NIST_MAT_GRAPHITE";
   fDensityEffectDataTable[276].fPlasmaEnergy      = 30.652 * eV;
   fDensityEffectDataTable[276].fSternheimerFactor = 2.29;
@@ -3609,7 +3886,8 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[276].fDeltaErrorMax     = 0.038;
   fDensityEffectDataTable[276].fState             = MaterialState::kStateUndefined;
 
-  // NIST_MAT_GRAPHITE_POROUS --------------------------------------------------------------
+  // NIST_MAT_GRAPHITE_POROUS
+  // --------------------------------------------------------------
   fDensityEffectDataTable[277].fName              = "NIST_MAT_GRAPHITE_POROUS";
   fDensityEffectDataTable[277].fPlasmaEnergy      = 26.555 * eV;
   fDensityEffectDataTable[277].fSternheimerFactor = 2.49;
@@ -3623,4 +3901,4 @@ void DensityEffectData::BuildTable()
   fDensityEffectDataTable[277].fState             = MaterialState::kStateUndefined;
 }
 
-} // namespace geantphysics
+} // namespace geantx

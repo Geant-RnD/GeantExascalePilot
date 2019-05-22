@@ -3,7 +3,7 @@
 
 #include "Geant/particles/Particle.hpp"
 
-namespace geantphysics {
+namespace geantx {
 /**
  * @brief   Class(singletone) to store K- static properties.
  * @class   KaonMinus
@@ -21,8 +21,7 @@ public:
 private:
   KaonMinus(const std::string &name, int pdgcode, int intcode, double mass, double charge)
       : Particle(name, pdgcode, intcode, mass, charge)
-  {
-  }
+  {}
 };
 
-} // namespace geantphysics
+} // namespace geantx

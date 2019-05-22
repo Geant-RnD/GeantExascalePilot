@@ -74,6 +74,22 @@ list(APPEND ${PROJECT_NAME}_SYSTEM_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}/TiMemory/source/cereal/include)
 
 #----------------------------------------------------------------------------------------#
+# GoogleTest submodule
+#
+if(GEANT_BUILD_TESTS)
+    checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
+        RELATIVE_PATH source/GoogleTest WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+    add_subdirectory(GoogleTest)
+    enable_testing()
+
+    mark_as_advanced(
+        BUILD_GMOCK BUILD_GTEST
+        gmock_build_tests gtest_build_samples gtest_build_tests
+        gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols
+    )
+endif()
+
+#----------------------------------------------------------------------------------------#
 # VecCore submodule
 #
 if(NOT VecCore_FOUND)
@@ -111,11 +127,16 @@ if(GEANT_USE_SUBMODULES)
     set(VECGEOM_LIBRARIES vecgeom vecgeomcuda)
 endif()
 
+set(TIMEMORY_LIBRARY timemory-cxx-library${GEANT_LIBTARGET_EXT})
+if(BUILD_SHARED_LIBS)
+    set(TIMEMORY_LIBRARY timemory-cxx-library)
+endif()
+
 list(APPEND ${PROJECT_NAME}_LINK_LIBRARIES
-    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES})
+    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES} ${TIMEMORY_LIBRARY})
 
 list(APPEND EXTERNAL_LIBRARIES
-    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES})
+    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES} ${TIMEMORY_LIBRARY})
 
 list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}

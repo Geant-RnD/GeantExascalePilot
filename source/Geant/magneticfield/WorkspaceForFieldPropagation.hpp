@@ -3,7 +3,7 @@
 
 #include "base/SOA3D.h"
 
-namespace geant {
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 struct WorkspaceForFieldPropagation {
 public:
@@ -120,13 +120,15 @@ bool WorkspaceForFieldPropagation::CheckSize(size_t numNeeded)
   assert(goodOutp && "Bad capacity of PositionOutp in Workspace for Field Propagation.");
 
   bool goodInpDir = fDirectionInp && (fDirectionInp->capacity() >= numNeeded);
-  assert(goodInpDir && "Bad capacity of DirectionInp in Workspace for Field Propagation.");
+  assert(goodInpDir &&
+         "Bad capacity of DirectionInp in Workspace for Field Propagation.");
 
   bool goodOutpDir = fDirectionOutp && (fDirectionOutp->capacity() >= numNeeded);
-  assert(goodOutpDir && "Bad capacity of DirectionOutp in Workspace for Field Propagation.");
+  assert(goodOutpDir &&
+         "Bad capacity of DirectionOutp in Workspace for Field Propagation.");
 
   return goodInp && goodOutp && goodInpDir && goodOutpDir;
 }
 
 } // namespace GEANT_IMPL_NAMESPACE
-} // namespace geant
+} // namespace geantx

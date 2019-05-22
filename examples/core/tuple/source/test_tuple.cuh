@@ -1,4 +1,12 @@
 
+//===------------------ GeantX --------------------------------------------===//
+//
+// Geant Exascale Pilot
+//
+// For the licensing terms see LICENSE file.
+// For the list of contributors see CREDITS file.
+// Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
+//===----------------------------------------------------------------------===//
 
 #include <cstdio>
 #if defined(__NVCC__)
@@ -8,10 +16,10 @@
 #    include <nvfunctional>
 #endif
 
-#include "Geant/core/Common.hpp"
-#include "Geant/core/Macros.hpp"
-#include "Geant/core/Utils.hpp"
+#include "Geant/core/Config.hpp"
 #include "PTL/TaskGroup.hh"
+
+using namespace PTL;
 
 template <typename _Tp>
 using result_of_t = typename std::result_of<_Tp>::type;
@@ -22,11 +30,15 @@ using decay_t = typename std::decay<_Tp>::type;
 template <typename _Func, typename... _Args>
 GEANT_HOST_DEVICE void invoker(_Func&& func, _Args&&... args)
 {
-    (nvstd::function<void(_Args...)>(std::forward<_Func>(func), std::forward<_Args>(args)...))();
+    (nvstd::function<void(_Args...)>(std::forward<_Func>(func),
+                                     std::forward<_Args>(args)...))();
 }
 
-GEANT_DEVICE inline void device_printer() { printf("[device: %s] second\n", __FUNCTION__); }
-inline void              host_printer() { printf("[host: %s] fourth\n", __FUNCTION__); }
+GEANT_DEVICE inline void device_printer()
+{
+    printf("[device: %s] second\n", __FUNCTION__);
+}
+inline void host_printer() { printf("[host: %s] fourth\n", __FUNCTION__); }
 
 void              launch(TaskGroup<void>&);
 GEANT_GLOBAL void kernel();

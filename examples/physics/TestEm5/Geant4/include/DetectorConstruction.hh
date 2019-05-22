@@ -51,91 +51,84 @@ class PrimaryGeneratorAction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class DetectorConstruction : public G4VUserDetectorConstruction
-{
-  public:
+class DetectorConstruction : public G4VUserDetectorConstruction {
+public:
+  DetectorConstruction();
+  ~DetectorConstruction();
 
-    DetectorConstruction();
-   ~DetectorConstruction();
+public:
+  virtual G4VPhysicalVolume *Construct();
 
-  public:
- 
-     virtual G4VPhysicalVolume* Construct();
+  void SetAbsorberMaterial(G4String);
+  void SetAbsorberThickness(G4double);
+  void SetAbsorberSizeYZ(G4double);
 
-     void SetAbsorberMaterial (G4String);
-     void SetAbsorberThickness(G4double);
-     void SetAbsorberSizeYZ   (G4double);
+  void SetAbsorberXpos(G4double);
 
-     void SetAbsorberXpos(G4double);
+  void SetWorldMaterial(G4String);
+  void SetWorldSizeX(G4double);
+  void SetWorldSizeYZ(G4double);
 
-     void SetWorldMaterial(G4String);
-     void SetWorldSizeX   (G4double);
-     void SetWorldSizeYZ  (G4double);
+  void SetMagField(const G4ThreeVector &fv) { fMagFieldVector = fv; }
 
-     void SetMagField(const G4ThreeVector& fv) { fMagFieldVector = fv; }
+  void SetPrimaryGenerator(PrimaryGeneratorAction *pg) { fPrimaryGenerator = pg; }
 
-     void SetPrimaryGenerator(PrimaryGeneratorAction* pg) { fPrimaryGenerator = pg; }
+public:
+  void PrintCalorParameters();
 
-  public:
+  G4Material *GetAbsorberMaterial() { return fAbsorberMaterial; };
+  G4double GetAbsorberThickness() { return fAbsorberThickness; };
+  G4double GetAbsorberSizeYZ() { return fAbsorberSizeYZ; };
 
-     void PrintCalorParameters();
+  G4double GetAbsorberXpos() { return fXposAbs; };
+  G4double GetxstartAbs() { return fXstartAbs; };
+  G4double GetxendAbs() { return fXendAbs; };
 
-     G4Material* GetAbsorberMaterial()  {return fAbsorberMaterial;};
-     G4double    GetAbsorberThickness() {return fAbsorberThickness;};
-     G4double    GetAbsorberSizeYZ()    {return fAbsorberSizeYZ;};
+  G4Material *GetWorldMaterial() { return fWorldMaterial; };
+  G4double GetWorldSizeX() { return fWorldSizeX; };
 
-     G4double    GetAbsorberXpos()      {return fXposAbs;};
-     G4double    GetxstartAbs()         {return fXstartAbs;};
-     G4double    GetxendAbs()           {return fXendAbs;};
+  const G4VPhysicalVolume *GetAbsorber() { return fPhysiAbsorber; };
 
-     G4Material* GetWorldMaterial()     {return fWorldMaterial;};
-     G4double    GetWorldSizeX()        {return fWorldSizeX;};
+private:
+  void ChangeGeometry();
 
-     const G4VPhysicalVolume* GetAbsorber() {return fPhysiAbsorber;};
+  G4Material *fAbsorberMaterial;
+  G4double fAbsorberThickness;
+  G4double fAbsorberSizeYZ;
 
-  private:
+  G4double fXposAbs;
+  G4double fXstartAbs, fXendAbs;
 
-     void ChangeGeometry();
+  G4Material *fWorldMaterial;
+  G4double fWorldSizeX;
+  G4double fWorldSizeYZ;
 
-     G4Material*        fAbsorberMaterial;
-     G4double           fAbsorberThickness;
-     G4double           fAbsorberSizeYZ;
+  G4bool fDefaultWorld;
 
-     G4double           fXposAbs;
-     G4double           fXstartAbs, fXendAbs;
+  G4Box *fSolidWorld;
+  G4LogicalVolume *fLogicWorld;
+  G4VPhysicalVolume *fPhysiWorld;
 
-     G4Material*        fWorldMaterial;
-     G4double           fWorldSizeX;
-     G4double           fWorldSizeYZ;
+  G4Box *fSolidAbsorber;
+  G4LogicalVolume *fLogicAbsorber;
+  G4VPhysicalVolume *fPhysiAbsorber;
 
-     G4bool             fDefaultWorld;
+  // field related members
+  G4ThreeVector fMagFieldVector;
+  G4FieldManager *fFieldMgr;
+  G4UniformMagField *fUniformMagField;
 
-     G4Box*             fSolidWorld;
-     G4LogicalVolume*   fLogicWorld;
-     G4VPhysicalVolume* fPhysiWorld;
+  PrimaryGeneratorAction *fPrimaryGenerator;
 
-     G4Box*             fSolidAbsorber;
-     G4LogicalVolume*   fLogicAbsorber;
-     G4VPhysicalVolume* fPhysiAbsorber;
-     
-     // field related members
-     G4ThreeVector      fMagFieldVector;
-     G4FieldManager*    fFieldMgr;
-     G4UniformMagField* fUniformMagField;
+  DetectorMessenger *fDetectorMessenger;
 
-     PrimaryGeneratorAction* fPrimaryGenerator;
-     
-     DetectorMessenger* fDetectorMessenger;
-
-  private:
-    
-     void DefineMaterials();
-     void ComputeCalorParameters();
-     void SetConstantField();
-     G4VPhysicalVolume* ConstructCalorimeter();     
+private:
+  void DefineMaterials();
+  void ComputeCalorParameters();
+  void SetConstantField();
+  G4VPhysicalVolume *ConstructCalorimeter();
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-

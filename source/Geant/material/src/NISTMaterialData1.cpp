@@ -3,7 +3,7 @@
 #include "Geant/material/MaterialState.hpp"
 #include "Geant/material/NISTMaterialData.hpp"
 
-namespace geantphysics {
+namespace geantx {
 void NISTMaterialData::BuildTable()
 {
   //
@@ -15,20 +15,21 @@ void NISTMaterialData::BuildTable()
   // Space Science Materials   ==> index [294-296]
   // Biochemical Materials     ==> index [297-315]
 
-  using geant::units::cm3;
-  using geant::units::eV;
-  using geant::units::g;
-  using geant::units::kelvin;
-  using geant::units::kNTPTemperature;
-  using geant::units::kSTPPressure;
-  using geant::units::kUniverseMeanDensity;
-  using geant::units::pascal;
+  using geantx::units::cm3;
+  using geantx::units::eV;
+  using geantx::units::g;
+  using geantx::units::kelvin;
+  using geantx::units::kNTPTemperature;
+  using geantx::units::kSTPPressure;
+  using geantx::units::kUniverseMeanDensity;
+  using geantx::units::pascal;
 
   // =======================================================================================
   // Elemental materials Z = 1-98 ==> index 0-97
   // =======================================================================================
 
-  // NIST_MAT_H ----------------------------------------------------------------------------
+  // NIST_MAT_H
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_0[]                     = {1};
   static const double FractionsZ_0[]              = {1};
   fNISTMaterialDataTable[0].fName                 = "NIST_MAT_H";
@@ -42,7 +43,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[0].fElementFraction      = FractionsZ_0;
   fNISTMaterialDataTable[0].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_He ---------------------------------------------------------------------------
+  // NIST_MAT_He
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_1[]                     = {2};
   static const double FractionsZ_1[]              = {1};
   fNISTMaterialDataTable[1].fName                 = "NIST_MAT_He";
@@ -56,7 +58,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[1].fElementFraction      = FractionsZ_1;
   fNISTMaterialDataTable[1].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Li ---------------------------------------------------------------------------
+  // NIST_MAT_Li
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_2[]                     = {3};
   static const double FractionsZ_2[]              = {1};
   fNISTMaterialDataTable[2].fName                 = "NIST_MAT_Li";
@@ -70,7 +73,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[2].fElementFraction      = FractionsZ_2;
   fNISTMaterialDataTable[2].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Be ---------------------------------------------------------------------------
+  // NIST_MAT_Be
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_3[]                     = {4};
   static const double FractionsZ_3[]              = {1};
   fNISTMaterialDataTable[3].fName                 = "NIST_MAT_Be";
@@ -84,7 +88,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[3].fElementFraction      = FractionsZ_3;
   fNISTMaterialDataTable[3].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_B ----------------------------------------------------------------------------
+  // NIST_MAT_B
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_4[]                     = {5};
   static const double FractionsZ_4[]              = {1};
   fNISTMaterialDataTable[4].fName                 = "NIST_MAT_B";
@@ -98,7 +103,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[4].fElementFraction      = FractionsZ_4;
   fNISTMaterialDataTable[4].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_C ----------------------------------------------------------------------------
+  // NIST_MAT_C
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_5[]                     = {6};
   static const double FractionsZ_5[]              = {1};
   fNISTMaterialDataTable[5].fName                 = "NIST_MAT_C";
@@ -112,7 +118,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[5].fElementFraction      = FractionsZ_5;
   fNISTMaterialDataTable[5].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_N ----------------------------------------------------------------------------
+  // NIST_MAT_N
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_6[]                     = {7};
   static const double FractionsZ_6[]              = {1};
   fNISTMaterialDataTable[6].fName                 = "NIST_MAT_N";
@@ -126,7 +133,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[6].fElementFraction      = FractionsZ_6;
   fNISTMaterialDataTable[6].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_O ----------------------------------------------------------------------------
+  // NIST_MAT_O
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_7[]                     = {8};
   static const double FractionsZ_7[]              = {1};
   fNISTMaterialDataTable[7].fName                 = "NIST_MAT_O";
@@ -140,7 +148,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[7].fElementFraction      = FractionsZ_7;
   fNISTMaterialDataTable[7].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_F ----------------------------------------------------------------------------
+  // NIST_MAT_F
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_8[]                     = {9};
   static const double FractionsZ_8[]              = {1};
   fNISTMaterialDataTable[8].fName                 = "NIST_MAT_F";
@@ -154,7 +163,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[8].fElementFraction      = FractionsZ_8;
   fNISTMaterialDataTable[8].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ne ---------------------------------------------------------------------------
+  // NIST_MAT_Ne
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_9[]                     = {10};
   static const double FractionsZ_9[]              = {1};
   fNISTMaterialDataTable[9].fName                 = "NIST_MAT_Ne";
@@ -168,7 +178,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[9].fElementFraction      = FractionsZ_9;
   fNISTMaterialDataTable[9].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Na ---------------------------------------------------------------------------
+  // NIST_MAT_Na
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_10[]                     = {11};
   static const double FractionsZ_10[]              = {1};
   fNISTMaterialDataTable[10].fName                 = "NIST_MAT_Na";
@@ -182,7 +193,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[10].fElementFraction      = FractionsZ_10;
   fNISTMaterialDataTable[10].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Mg ---------------------------------------------------------------------------
+  // NIST_MAT_Mg
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_11[]                     = {12};
   static const double FractionsZ_11[]              = {1};
   fNISTMaterialDataTable[11].fName                 = "NIST_MAT_Mg";
@@ -196,7 +208,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[11].fElementFraction      = FractionsZ_11;
   fNISTMaterialDataTable[11].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Al ---------------------------------------------------------------------------
+  // NIST_MAT_Al
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_12[]                     = {13};
   static const double FractionsZ_12[]              = {1};
   fNISTMaterialDataTable[12].fName                 = "NIST_MAT_Al";
@@ -210,7 +223,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[12].fElementFraction      = FractionsZ_12;
   fNISTMaterialDataTable[12].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Si ---------------------------------------------------------------------------
+  // NIST_MAT_Si
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_13[]                     = {14};
   static const double FractionsZ_13[]              = {1};
   fNISTMaterialDataTable[13].fName                 = "NIST_MAT_Si";
@@ -224,7 +238,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[13].fElementFraction      = FractionsZ_13;
   fNISTMaterialDataTable[13].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_P ----------------------------------------------------------------------------
+  // NIST_MAT_P
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_14[]                     = {15};
   static const double FractionsZ_14[]              = {1};
   fNISTMaterialDataTable[14].fName                 = "NIST_MAT_P";
@@ -238,7 +253,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[14].fElementFraction      = FractionsZ_14;
   fNISTMaterialDataTable[14].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_S ----------------------------------------------------------------------------
+  // NIST_MAT_S
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_15[]                     = {16};
   static const double FractionsZ_15[]              = {1};
   fNISTMaterialDataTable[15].fName                 = "NIST_MAT_S";
@@ -252,7 +268,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[15].fElementFraction      = FractionsZ_15;
   fNISTMaterialDataTable[15].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Cl ---------------------------------------------------------------------------
+  // NIST_MAT_Cl
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_16[]                     = {17};
   static const double FractionsZ_16[]              = {1};
   fNISTMaterialDataTable[16].fName                 = "NIST_MAT_Cl";
@@ -266,7 +283,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[16].fElementFraction      = FractionsZ_16;
   fNISTMaterialDataTable[16].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ar ---------------------------------------------------------------------------
+  // NIST_MAT_Ar
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_17[]                     = {18};
   static const double FractionsZ_17[]              = {1};
   fNISTMaterialDataTable[17].fName                 = "NIST_MAT_Ar";
@@ -280,7 +298,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[17].fElementFraction      = FractionsZ_17;
   fNISTMaterialDataTable[17].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_K ----------------------------------------------------------------------------
+  // NIST_MAT_K
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_18[]                     = {19};
   static const double FractionsZ_18[]              = {1};
   fNISTMaterialDataTable[18].fName                 = "NIST_MAT_K";
@@ -294,7 +313,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[18].fElementFraction      = FractionsZ_18;
   fNISTMaterialDataTable[18].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ca ---------------------------------------------------------------------------
+  // NIST_MAT_Ca
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_19[]                     = {20};
   static const double FractionsZ_19[]              = {1};
   fNISTMaterialDataTable[19].fName                 = "NIST_MAT_Ca";
@@ -308,7 +328,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[19].fElementFraction      = FractionsZ_19;
   fNISTMaterialDataTable[19].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Sc ---------------------------------------------------------------------------
+  // NIST_MAT_Sc
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_20[]                     = {21};
   static const double FractionsZ_20[]              = {1};
   fNISTMaterialDataTable[20].fName                 = "NIST_MAT_Sc";
@@ -322,7 +343,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[20].fElementFraction      = FractionsZ_20;
   fNISTMaterialDataTable[20].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ti ---------------------------------------------------------------------------
+  // NIST_MAT_Ti
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_21[]                     = {22};
   static const double FractionsZ_21[]              = {1};
   fNISTMaterialDataTable[21].fName                 = "NIST_MAT_Ti";
@@ -336,7 +358,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[21].fElementFraction      = FractionsZ_21;
   fNISTMaterialDataTable[21].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_V ----------------------------------------------------------------------------
+  // NIST_MAT_V
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_22[]                     = {23};
   static const double FractionsZ_22[]              = {1};
   fNISTMaterialDataTable[22].fName                 = "NIST_MAT_V";
@@ -350,7 +373,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[22].fElementFraction      = FractionsZ_22;
   fNISTMaterialDataTable[22].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Cr ---------------------------------------------------------------------------
+  // NIST_MAT_Cr
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_23[]                     = {24};
   static const double FractionsZ_23[]              = {1};
   fNISTMaterialDataTable[23].fName                 = "NIST_MAT_Cr";
@@ -364,7 +388,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[23].fElementFraction      = FractionsZ_23;
   fNISTMaterialDataTable[23].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Mn ---------------------------------------------------------------------------
+  // NIST_MAT_Mn
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_24[]                     = {25};
   static const double FractionsZ_24[]              = {1};
   fNISTMaterialDataTable[24].fName                 = "NIST_MAT_Mn";
@@ -378,7 +403,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[24].fElementFraction      = FractionsZ_24;
   fNISTMaterialDataTable[24].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Fe ---------------------------------------------------------------------------
+  // NIST_MAT_Fe
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_25[]                     = {26};
   static const double FractionsZ_25[]              = {1};
   fNISTMaterialDataTable[25].fName                 = "NIST_MAT_Fe";
@@ -392,7 +418,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[25].fElementFraction      = FractionsZ_25;
   fNISTMaterialDataTable[25].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Co ---------------------------------------------------------------------------
+  // NIST_MAT_Co
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_26[]                     = {27};
   static const double FractionsZ_26[]              = {1};
   fNISTMaterialDataTable[26].fName                 = "NIST_MAT_Co";
@@ -406,7 +433,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[26].fElementFraction      = FractionsZ_26;
   fNISTMaterialDataTable[26].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ni ---------------------------------------------------------------------------
+  // NIST_MAT_Ni
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_27[]                     = {28};
   static const double FractionsZ_27[]              = {1};
   fNISTMaterialDataTable[27].fName                 = "NIST_MAT_Ni";
@@ -420,7 +448,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[27].fElementFraction      = FractionsZ_27;
   fNISTMaterialDataTable[27].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Cu ---------------------------------------------------------------------------
+  // NIST_MAT_Cu
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_28[]                     = {29};
   static const double FractionsZ_28[]              = {1};
   fNISTMaterialDataTable[28].fName                 = "NIST_MAT_Cu";
@@ -434,7 +463,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[28].fElementFraction      = FractionsZ_28;
   fNISTMaterialDataTable[28].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Zn ---------------------------------------------------------------------------
+  // NIST_MAT_Zn
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_29[]                     = {30};
   static const double FractionsZ_29[]              = {1};
   fNISTMaterialDataTable[29].fName                 = "NIST_MAT_Zn";
@@ -448,7 +478,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[29].fElementFraction      = FractionsZ_29;
   fNISTMaterialDataTable[29].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ga ---------------------------------------------------------------------------
+  // NIST_MAT_Ga
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_30[]                     = {31};
   static const double FractionsZ_30[]              = {1};
   fNISTMaterialDataTable[30].fName                 = "NIST_MAT_Ga";
@@ -462,7 +493,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[30].fElementFraction      = FractionsZ_30;
   fNISTMaterialDataTable[30].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ge ---------------------------------------------------------------------------
+  // NIST_MAT_Ge
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_31[]                     = {32};
   static const double FractionsZ_31[]              = {1};
   fNISTMaterialDataTable[31].fName                 = "NIST_MAT_Ge";
@@ -476,7 +508,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[31].fElementFraction      = FractionsZ_31;
   fNISTMaterialDataTable[31].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_As ---------------------------------------------------------------------------
+  // NIST_MAT_As
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_32[]                     = {33};
   static const double FractionsZ_32[]              = {1};
   fNISTMaterialDataTable[32].fName                 = "NIST_MAT_As";
@@ -490,7 +523,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[32].fElementFraction      = FractionsZ_32;
   fNISTMaterialDataTable[32].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Se ---------------------------------------------------------------------------
+  // NIST_MAT_Se
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_33[]                     = {34};
   static const double FractionsZ_33[]              = {1};
   fNISTMaterialDataTable[33].fName                 = "NIST_MAT_Se";
@@ -504,7 +538,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[33].fElementFraction      = FractionsZ_33;
   fNISTMaterialDataTable[33].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Br ---------------------------------------------------------------------------
+  // NIST_MAT_Br
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_34[]                     = {35};
   static const double FractionsZ_34[]              = {1};
   fNISTMaterialDataTable[34].fName                 = "NIST_MAT_Br";
@@ -518,7 +553,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[34].fElementFraction      = FractionsZ_34;
   fNISTMaterialDataTable[34].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Kr ---------------------------------------------------------------------------
+  // NIST_MAT_Kr
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_35[]                     = {36};
   static const double FractionsZ_35[]              = {1};
   fNISTMaterialDataTable[35].fName                 = "NIST_MAT_Kr";
@@ -532,7 +568,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[35].fElementFraction      = FractionsZ_35;
   fNISTMaterialDataTable[35].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Rb ---------------------------------------------------------------------------
+  // NIST_MAT_Rb
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_36[]                     = {37};
   static const double FractionsZ_36[]              = {1};
   fNISTMaterialDataTable[36].fName                 = "NIST_MAT_Rb";
@@ -546,7 +583,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[36].fElementFraction      = FractionsZ_36;
   fNISTMaterialDataTable[36].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Sr ---------------------------------------------------------------------------
+  // NIST_MAT_Sr
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_37[]                     = {38};
   static const double FractionsZ_37[]              = {1};
   fNISTMaterialDataTable[37].fName                 = "NIST_MAT_Sr";
@@ -560,7 +598,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[37].fElementFraction      = FractionsZ_37;
   fNISTMaterialDataTable[37].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Y ----------------------------------------------------------------------------
+  // NIST_MAT_Y
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_38[]                     = {39};
   static const double FractionsZ_38[]              = {1};
   fNISTMaterialDataTable[38].fName                 = "NIST_MAT_Y";
@@ -574,7 +613,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[38].fElementFraction      = FractionsZ_38;
   fNISTMaterialDataTable[38].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Zr ---------------------------------------------------------------------------
+  // NIST_MAT_Zr
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_39[]                     = {40};
   static const double FractionsZ_39[]              = {1};
   fNISTMaterialDataTable[39].fName                 = "NIST_MAT_Zr";
@@ -588,7 +628,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[39].fElementFraction      = FractionsZ_39;
   fNISTMaterialDataTable[39].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Nb ---------------------------------------------------------------------------
+  // NIST_MAT_Nb
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_40[]                     = {41};
   static const double FractionsZ_40[]              = {1};
   fNISTMaterialDataTable[40].fName                 = "NIST_MAT_Nb";
@@ -602,7 +643,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[40].fElementFraction      = FractionsZ_40;
   fNISTMaterialDataTable[40].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Mo ---------------------------------------------------------------------------
+  // NIST_MAT_Mo
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_41[]                     = {42};
   static const double FractionsZ_41[]              = {1};
   fNISTMaterialDataTable[41].fName                 = "NIST_MAT_Mo";
@@ -616,7 +658,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[41].fElementFraction      = FractionsZ_41;
   fNISTMaterialDataTable[41].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Tc ---------------------------------------------------------------------------
+  // NIST_MAT_Tc
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_42[]                     = {43};
   static const double FractionsZ_42[]              = {1};
   fNISTMaterialDataTable[42].fName                 = "NIST_MAT_Tc";
@@ -630,7 +673,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[42].fElementFraction      = FractionsZ_42;
   fNISTMaterialDataTable[42].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ru ---------------------------------------------------------------------------
+  // NIST_MAT_Ru
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_43[]                     = {44};
   static const double FractionsZ_43[]              = {1};
   fNISTMaterialDataTable[43].fName                 = "NIST_MAT_Ru";
@@ -644,7 +688,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[43].fElementFraction      = FractionsZ_43;
   fNISTMaterialDataTable[43].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Rh ---------------------------------------------------------------------------
+  // NIST_MAT_Rh
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_44[]                     = {45};
   static const double FractionsZ_44[]              = {1};
   fNISTMaterialDataTable[44].fName                 = "NIST_MAT_Rh";
@@ -658,7 +703,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[44].fElementFraction      = FractionsZ_44;
   fNISTMaterialDataTable[44].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Pd ---------------------------------------------------------------------------
+  // NIST_MAT_Pd
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_45[]                     = {46};
   static const double FractionsZ_45[]              = {1};
   fNISTMaterialDataTable[45].fName                 = "NIST_MAT_Pd";
@@ -672,7 +718,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[45].fElementFraction      = FractionsZ_45;
   fNISTMaterialDataTable[45].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ag ---------------------------------------------------------------------------
+  // NIST_MAT_Ag
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_46[]                     = {47};
   static const double FractionsZ_46[]              = {1};
   fNISTMaterialDataTable[46].fName                 = "NIST_MAT_Ag";
@@ -686,7 +733,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[46].fElementFraction      = FractionsZ_46;
   fNISTMaterialDataTable[46].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Cd ---------------------------------------------------------------------------
+  // NIST_MAT_Cd
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_47[]                     = {48};
   static const double FractionsZ_47[]              = {1};
   fNISTMaterialDataTable[47].fName                 = "NIST_MAT_Cd";
@@ -700,7 +748,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[47].fElementFraction      = FractionsZ_47;
   fNISTMaterialDataTable[47].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_In ---------------------------------------------------------------------------
+  // NIST_MAT_In
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_48[]                     = {49};
   static const double FractionsZ_48[]              = {1};
   fNISTMaterialDataTable[48].fName                 = "NIST_MAT_In";
@@ -714,7 +763,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[48].fElementFraction      = FractionsZ_48;
   fNISTMaterialDataTable[48].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Sn ---------------------------------------------------------------------------
+  // NIST_MAT_Sn
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_49[]                     = {50};
   static const double FractionsZ_49[]              = {1};
   fNISTMaterialDataTable[49].fName                 = "NIST_MAT_Sn";
@@ -728,7 +778,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[49].fElementFraction      = FractionsZ_49;
   fNISTMaterialDataTable[49].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Sb ---------------------------------------------------------------------------
+  // NIST_MAT_Sb
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_50[]                     = {51};
   static const double FractionsZ_50[]              = {1};
   fNISTMaterialDataTable[50].fName                 = "NIST_MAT_Sb";
@@ -742,7 +793,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[50].fElementFraction      = FractionsZ_50;
   fNISTMaterialDataTable[50].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Te ---------------------------------------------------------------------------
+  // NIST_MAT_Te
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_51[]                     = {52};
   static const double FractionsZ_51[]              = {1};
   fNISTMaterialDataTable[51].fName                 = "NIST_MAT_Te";
@@ -756,7 +808,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[51].fElementFraction      = FractionsZ_51;
   fNISTMaterialDataTable[51].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_I ----------------------------------------------------------------------------
+  // NIST_MAT_I
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_52[]                     = {53};
   static const double FractionsZ_52[]              = {1};
   fNISTMaterialDataTable[52].fName                 = "NIST_MAT_I";
@@ -770,7 +823,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[52].fElementFraction      = FractionsZ_52;
   fNISTMaterialDataTable[52].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Xe ---------------------------------------------------------------------------
+  // NIST_MAT_Xe
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_53[]                     = {54};
   static const double FractionsZ_53[]              = {1};
   fNISTMaterialDataTable[53].fName                 = "NIST_MAT_Xe";
@@ -784,7 +838,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[53].fElementFraction      = FractionsZ_53;
   fNISTMaterialDataTable[53].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Cs ---------------------------------------------------------------------------
+  // NIST_MAT_Cs
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_54[]                     = {55};
   static const double FractionsZ_54[]              = {1};
   fNISTMaterialDataTable[54].fName                 = "NIST_MAT_Cs";
@@ -798,7 +853,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[54].fElementFraction      = FractionsZ_54;
   fNISTMaterialDataTable[54].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ba ---------------------------------------------------------------------------
+  // NIST_MAT_Ba
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_55[]                     = {56};
   static const double FractionsZ_55[]              = {1};
   fNISTMaterialDataTable[55].fName                 = "NIST_MAT_Ba";
@@ -812,7 +868,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[55].fElementFraction      = FractionsZ_55;
   fNISTMaterialDataTable[55].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_La ---------------------------------------------------------------------------
+  // NIST_MAT_La
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_56[]                     = {57};
   static const double FractionsZ_56[]              = {1};
   fNISTMaterialDataTable[56].fName                 = "NIST_MAT_La";
@@ -826,7 +883,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[56].fElementFraction      = FractionsZ_56;
   fNISTMaterialDataTable[56].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ce ---------------------------------------------------------------------------
+  // NIST_MAT_Ce
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_57[]                     = {58};
   static const double FractionsZ_57[]              = {1};
   fNISTMaterialDataTable[57].fName                 = "NIST_MAT_Ce";
@@ -840,7 +898,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[57].fElementFraction      = FractionsZ_57;
   fNISTMaterialDataTable[57].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Pr ---------------------------------------------------------------------------
+  // NIST_MAT_Pr
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_58[]                     = {59};
   static const double FractionsZ_58[]              = {1};
   fNISTMaterialDataTable[58].fName                 = "NIST_MAT_Pr";
@@ -854,7 +913,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[58].fElementFraction      = FractionsZ_58;
   fNISTMaterialDataTable[58].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Nd ---------------------------------------------------------------------------
+  // NIST_MAT_Nd
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_59[]                     = {60};
   static const double FractionsZ_59[]              = {1};
   fNISTMaterialDataTable[59].fName                 = "NIST_MAT_Nd";
@@ -868,7 +928,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[59].fElementFraction      = FractionsZ_59;
   fNISTMaterialDataTable[59].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Pm ---------------------------------------------------------------------------
+  // NIST_MAT_Pm
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_60[]                     = {61};
   static const double FractionsZ_60[]              = {1};
   fNISTMaterialDataTable[60].fName                 = "NIST_MAT_Pm";
@@ -882,7 +943,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[60].fElementFraction      = FractionsZ_60;
   fNISTMaterialDataTable[60].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Sm ---------------------------------------------------------------------------
+  // NIST_MAT_Sm
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_61[]                     = {62};
   static const double FractionsZ_61[]              = {1};
   fNISTMaterialDataTable[61].fName                 = "NIST_MAT_Sm";
@@ -896,7 +958,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[61].fElementFraction      = FractionsZ_61;
   fNISTMaterialDataTable[61].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Eu ---------------------------------------------------------------------------
+  // NIST_MAT_Eu
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_62[]                     = {63};
   static const double FractionsZ_62[]              = {1};
   fNISTMaterialDataTable[62].fName                 = "NIST_MAT_Eu";
@@ -910,7 +973,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[62].fElementFraction      = FractionsZ_62;
   fNISTMaterialDataTable[62].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Gd ---------------------------------------------------------------------------
+  // NIST_MAT_Gd
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_63[]                     = {64};
   static const double FractionsZ_63[]              = {1};
   fNISTMaterialDataTable[63].fName                 = "NIST_MAT_Gd";
@@ -924,7 +988,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[63].fElementFraction      = FractionsZ_63;
   fNISTMaterialDataTable[63].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Tb ---------------------------------------------------------------------------
+  // NIST_MAT_Tb
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_64[]                     = {65};
   static const double FractionsZ_64[]              = {1};
   fNISTMaterialDataTable[64].fName                 = "NIST_MAT_Tb";
@@ -938,7 +1003,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[64].fElementFraction      = FractionsZ_64;
   fNISTMaterialDataTable[64].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Dy ---------------------------------------------------------------------------
+  // NIST_MAT_Dy
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_65[]                     = {66};
   static const double FractionsZ_65[]              = {1};
   fNISTMaterialDataTable[65].fName                 = "NIST_MAT_Dy";
@@ -952,7 +1018,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[65].fElementFraction      = FractionsZ_65;
   fNISTMaterialDataTable[65].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ho ---------------------------------------------------------------------------
+  // NIST_MAT_Ho
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_66[]                     = {67};
   static const double FractionsZ_66[]              = {1};
   fNISTMaterialDataTable[66].fName                 = "NIST_MAT_Ho";
@@ -966,7 +1033,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[66].fElementFraction      = FractionsZ_66;
   fNISTMaterialDataTable[66].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Er ---------------------------------------------------------------------------
+  // NIST_MAT_Er
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_67[]                     = {68};
   static const double FractionsZ_67[]              = {1};
   fNISTMaterialDataTable[67].fName                 = "NIST_MAT_Er";
@@ -980,7 +1048,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[67].fElementFraction      = FractionsZ_67;
   fNISTMaterialDataTable[67].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Tm ---------------------------------------------------------------------------
+  // NIST_MAT_Tm
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_68[]                     = {69};
   static const double FractionsZ_68[]              = {1};
   fNISTMaterialDataTable[68].fName                 = "NIST_MAT_Tm";
@@ -994,7 +1063,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[68].fElementFraction      = FractionsZ_68;
   fNISTMaterialDataTable[68].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Yb ---------------------------------------------------------------------------
+  // NIST_MAT_Yb
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_69[]                     = {70};
   static const double FractionsZ_69[]              = {1};
   fNISTMaterialDataTable[69].fName                 = "NIST_MAT_Yb";
@@ -1008,7 +1078,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[69].fElementFraction      = FractionsZ_69;
   fNISTMaterialDataTable[69].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Lu ---------------------------------------------------------------------------
+  // NIST_MAT_Lu
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_70[]                     = {71};
   static const double FractionsZ_70[]              = {1};
   fNISTMaterialDataTable[70].fName                 = "NIST_MAT_Lu";
@@ -1022,7 +1093,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[70].fElementFraction      = FractionsZ_70;
   fNISTMaterialDataTable[70].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Hf ---------------------------------------------------------------------------
+  // NIST_MAT_Hf
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_71[]                     = {72};
   static const double FractionsZ_71[]              = {1};
   fNISTMaterialDataTable[71].fName                 = "NIST_MAT_Hf";
@@ -1036,7 +1108,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[71].fElementFraction      = FractionsZ_71;
   fNISTMaterialDataTable[71].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ta ---------------------------------------------------------------------------
+  // NIST_MAT_Ta
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_72[]                     = {73};
   static const double FractionsZ_72[]              = {1};
   fNISTMaterialDataTable[72].fName                 = "NIST_MAT_Ta";
@@ -1050,7 +1123,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[72].fElementFraction      = FractionsZ_72;
   fNISTMaterialDataTable[72].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_W ----------------------------------------------------------------------------
+  // NIST_MAT_W
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_73[]                     = {74};
   static const double FractionsZ_73[]              = {1};
   fNISTMaterialDataTable[73].fName                 = "NIST_MAT_W";
@@ -1064,7 +1138,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[73].fElementFraction      = FractionsZ_73;
   fNISTMaterialDataTable[73].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Re ---------------------------------------------------------------------------
+  // NIST_MAT_Re
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_74[]                     = {75};
   static const double FractionsZ_74[]              = {1};
   fNISTMaterialDataTable[74].fName                 = "NIST_MAT_Re";
@@ -1078,7 +1153,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[74].fElementFraction      = FractionsZ_74;
   fNISTMaterialDataTable[74].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Os ---------------------------------------------------------------------------
+  // NIST_MAT_Os
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_75[]                     = {76};
   static const double FractionsZ_75[]              = {1};
   fNISTMaterialDataTable[75].fName                 = "NIST_MAT_Os";
@@ -1092,7 +1168,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[75].fElementFraction      = FractionsZ_75;
   fNISTMaterialDataTable[75].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ir ---------------------------------------------------------------------------
+  // NIST_MAT_Ir
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_76[]                     = {77};
   static const double FractionsZ_76[]              = {1};
   fNISTMaterialDataTable[76].fName                 = "NIST_MAT_Ir";
@@ -1106,7 +1183,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[76].fElementFraction      = FractionsZ_76;
   fNISTMaterialDataTable[76].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Pt ---------------------------------------------------------------------------
+  // NIST_MAT_Pt
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_77[]                     = {78};
   static const double FractionsZ_77[]              = {1};
   fNISTMaterialDataTable[77].fName                 = "NIST_MAT_Pt";
@@ -1120,7 +1198,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[77].fElementFraction      = FractionsZ_77;
   fNISTMaterialDataTable[77].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Au ---------------------------------------------------------------------------
+  // NIST_MAT_Au
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_78[]                     = {79};
   static const double FractionsZ_78[]              = {1};
   fNISTMaterialDataTable[78].fName                 = "NIST_MAT_Au";
@@ -1134,7 +1213,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[78].fElementFraction      = FractionsZ_78;
   fNISTMaterialDataTable[78].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Hg ---------------------------------------------------------------------------
+  // NIST_MAT_Hg
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_79[]                     = {80};
   static const double FractionsZ_79[]              = {1};
   fNISTMaterialDataTable[79].fName                 = "NIST_MAT_Hg";
@@ -1148,7 +1228,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[79].fElementFraction      = FractionsZ_79;
   fNISTMaterialDataTable[79].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Tl ---------------------------------------------------------------------------
+  // NIST_MAT_Tl
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_80[]                     = {81};
   static const double FractionsZ_80[]              = {1};
   fNISTMaterialDataTable[80].fName                 = "NIST_MAT_Tl";
@@ -1162,7 +1243,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[80].fElementFraction      = FractionsZ_80;
   fNISTMaterialDataTable[80].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Pb ---------------------------------------------------------------------------
+  // NIST_MAT_Pb
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_81[]                     = {82};
   static const double FractionsZ_81[]              = {1};
   fNISTMaterialDataTable[81].fName                 = "NIST_MAT_Pb";
@@ -1176,7 +1258,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[81].fElementFraction      = FractionsZ_81;
   fNISTMaterialDataTable[81].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Bi ---------------------------------------------------------------------------
+  // NIST_MAT_Bi
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_82[]                     = {83};
   static const double FractionsZ_82[]              = {1};
   fNISTMaterialDataTable[82].fName                 = "NIST_MAT_Bi";
@@ -1190,7 +1273,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[82].fElementFraction      = FractionsZ_82;
   fNISTMaterialDataTable[82].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Po ---------------------------------------------------------------------------
+  // NIST_MAT_Po
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_83[]                     = {84};
   static const double FractionsZ_83[]              = {1};
   fNISTMaterialDataTable[83].fName                 = "NIST_MAT_Po";
@@ -1204,7 +1288,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[83].fElementFraction      = FractionsZ_83;
   fNISTMaterialDataTable[83].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_At ---------------------------------------------------------------------------
+  // NIST_MAT_At
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_84[]                     = {85};
   static const double FractionsZ_84[]              = {1};
   fNISTMaterialDataTable[84].fName                 = "NIST_MAT_At";
@@ -1218,7 +1303,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[84].fElementFraction      = FractionsZ_84;
   fNISTMaterialDataTable[84].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Rn ---------------------------------------------------------------------------
+  // NIST_MAT_Rn
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_85[]                     = {86};
   static const double FractionsZ_85[]              = {1};
   fNISTMaterialDataTable[85].fName                 = "NIST_MAT_Rn";
@@ -1232,7 +1318,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[85].fElementFraction      = FractionsZ_85;
   fNISTMaterialDataTable[85].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Fr ---------------------------------------------------------------------------
+  // NIST_MAT_Fr
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_86[]                     = {87};
   static const double FractionsZ_86[]              = {1};
   fNISTMaterialDataTable[86].fName                 = "NIST_MAT_Fr";
@@ -1246,7 +1333,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[86].fElementFraction      = FractionsZ_86;
   fNISTMaterialDataTable[86].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ra ---------------------------------------------------------------------------
+  // NIST_MAT_Ra
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_87[]                     = {88};
   static const double FractionsZ_87[]              = {1};
   fNISTMaterialDataTable[87].fName                 = "NIST_MAT_Ra";
@@ -1260,7 +1348,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[87].fElementFraction      = FractionsZ_87;
   fNISTMaterialDataTable[87].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Ac ---------------------------------------------------------------------------
+  // NIST_MAT_Ac
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_88[]                     = {89};
   static const double FractionsZ_88[]              = {1};
   fNISTMaterialDataTable[88].fName                 = "NIST_MAT_Ac";
@@ -1274,7 +1363,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[88].fElementFraction      = FractionsZ_88;
   fNISTMaterialDataTable[88].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Th ---------------------------------------------------------------------------
+  // NIST_MAT_Th
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_89[]                     = {90};
   static const double FractionsZ_89[]              = {1};
   fNISTMaterialDataTable[89].fName                 = "NIST_MAT_Th";
@@ -1288,7 +1378,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[89].fElementFraction      = FractionsZ_89;
   fNISTMaterialDataTable[89].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Pa ---------------------------------------------------------------------------
+  // NIST_MAT_Pa
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_90[]                     = {91};
   static const double FractionsZ_90[]              = {1};
   fNISTMaterialDataTable[90].fName                 = "NIST_MAT_Pa";
@@ -1302,7 +1393,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[90].fElementFraction      = FractionsZ_90;
   fNISTMaterialDataTable[90].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_U ----------------------------------------------------------------------------
+  // NIST_MAT_U
+  // ----------------------------------------------------------------------------
   static const int ElemsZ_91[]                     = {92};
   static const double FractionsZ_91[]              = {1};
   fNISTMaterialDataTable[91].fName                 = "NIST_MAT_U";
@@ -1316,7 +1408,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[91].fElementFraction      = FractionsZ_91;
   fNISTMaterialDataTable[91].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Np ---------------------------------------------------------------------------
+  // NIST_MAT_Np
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_92[]                     = {93};
   static const double FractionsZ_92[]              = {1};
   fNISTMaterialDataTable[92].fName                 = "NIST_MAT_Np";
@@ -1330,7 +1423,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[92].fElementFraction      = FractionsZ_92;
   fNISTMaterialDataTable[92].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Pu ---------------------------------------------------------------------------
+  // NIST_MAT_Pu
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_93[]                     = {94};
   static const double FractionsZ_93[]              = {1};
   fNISTMaterialDataTable[93].fName                 = "NIST_MAT_Pu";
@@ -1344,7 +1438,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[93].fElementFraction      = FractionsZ_93;
   fNISTMaterialDataTable[93].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Am ---------------------------------------------------------------------------
+  // NIST_MAT_Am
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_94[]                     = {95};
   static const double FractionsZ_94[]              = {1};
   fNISTMaterialDataTable[94].fName                 = "NIST_MAT_Am";
@@ -1358,7 +1453,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[94].fElementFraction      = FractionsZ_94;
   fNISTMaterialDataTable[94].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Cm ---------------------------------------------------------------------------
+  // NIST_MAT_Cm
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_95[]                     = {96};
   static const double FractionsZ_95[]              = {1};
   fNISTMaterialDataTable[95].fName                 = "NIST_MAT_Cm";
@@ -1372,7 +1468,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[95].fElementFraction      = FractionsZ_95;
   fNISTMaterialDataTable[95].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Bk ---------------------------------------------------------------------------
+  // NIST_MAT_Bk
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_96[]                     = {97};
   static const double FractionsZ_96[]              = {1};
   fNISTMaterialDataTable[96].fName                 = "NIST_MAT_Bk";
@@ -1386,7 +1483,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[96].fElementFraction      = FractionsZ_96;
   fNISTMaterialDataTable[96].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Cf ---------------------------------------------------------------------------
+  // NIST_MAT_Cf
+  // ---------------------------------------------------------------------------
   static const int ElemsZ_97[]                     = {98};
   static const double FractionsZ_97[]              = {1};
   fNISTMaterialDataTable[97].fName                 = "NIST_MAT_Cf";
@@ -1404,9 +1502,11 @@ void NISTMaterialData::BuildTable()
   // Compound Materials :
   // =======================================================================================
 
-  // NIST_MAT_A-150_TISSUE -----------------------------------------------------------------
+  // NIST_MAT_A-150_TISSUE
+  // -----------------------------------------------------------------
   static const int ElemsZ_98[]                     = {1, 6, 7, 8, 9, 20};
-  static const double FractionsZ_98[]              = {0.101327, 0.775501, 0.035057, 0.052316, 0.017422, 0.018378};
+  static const double FractionsZ_98[]              = {0.101327, 0.775501, 0.035057,
+                                         0.052316, 0.017422, 0.018378};
   fNISTMaterialDataTable[98].fName                 = "NIST_MAT_A-150_TISSUE";
   fNISTMaterialDataTable[98].fDensity              = 1.127 * (g / cm3);
   fNISTMaterialDataTable[98].fMeanExcitationEnergy = 65.1 * eV;
@@ -1418,7 +1518,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[98].fElementFraction      = FractionsZ_98;
   fNISTMaterialDataTable[98].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_ACETONE ----------------------------------------------------------------------
+  // NIST_MAT_ACETONE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_99[]                     = {6, 1, 8};
   static const double FractionsZ_99[]              = {3, 6, 1};
   fNISTMaterialDataTable[99].fName                 = "NIST_MAT_ACETONE";
@@ -1432,7 +1533,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[99].fElementFraction      = FractionsZ_99;
   fNISTMaterialDataTable[99].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ACETYLENE --------------------------------------------------------------------
+  // NIST_MAT_ACETYLENE
+  // --------------------------------------------------------------------
   static const int ElemsZ_100[]                     = {6, 1};
   static const double FractionsZ_100[]              = {2, 2};
   fNISTMaterialDataTable[100].fName                 = "NIST_MAT_ACETYLENE";
@@ -1446,7 +1548,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[100].fElementFraction      = FractionsZ_100;
   fNISTMaterialDataTable[100].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ADENINE ----------------------------------------------------------------------
+  // NIST_MAT_ADENINE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_101[]                     = {6, 1, 7};
   static const double FractionsZ_101[]              = {5, 5, 5};
   fNISTMaterialDataTable[101].fName                 = "NIST_MAT_ADENINE";
@@ -1460,9 +1563,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[101].fElementFraction      = FractionsZ_101;
   fNISTMaterialDataTable[101].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ADIPOSE_TISSUE_ICRP ----------------------------------------------------------
+  // NIST_MAT_ADIPOSE_TISSUE_ICRP
+  // ----------------------------------------------------------
   static const int ElemsZ_102[]                     = {1, 6, 7, 8, 11, 16, 17};
-  static const double FractionsZ_102[]              = {0.114, 0.598, 0.007, 0.278, 0.001, 0.001, 0.001};
+  static const double FractionsZ_102[]              = {0.114, 0.598, 0.007, 0.278,
+                                          0.001, 0.001, 0.001};
   fNISTMaterialDataTable[102].fName                 = "NIST_MAT_ADIPOSE_TISSUE_ICRP";
   fNISTMaterialDataTable[102].fDensity              = 0.95 * (g / cm3);
   fNISTMaterialDataTable[102].fMeanExcitationEnergy = 63.2 * eV;
@@ -1474,11 +1579,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[102].fElementFraction      = FractionsZ_102;
   fNISTMaterialDataTable[102].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_AIR --------------------------------------------------------------------------
-  static const int ElemsZ_103[]                     = {6, 7, 8, 18};
-  static const double FractionsZ_103[]              = {0.000124, 0.755267, 0.231781, 0.012827};
-  fNISTMaterialDataTable[103].fName                 = "NIST_MAT_AIR";
-  fNISTMaterialDataTable[103].fDensity              = 0.00120479 * (g / cm3);
+  // NIST_MAT_AIR
+  // --------------------------------------------------------------------------
+  static const int ElemsZ_103[]        = {6, 7, 8, 18};
+  static const double FractionsZ_103[] = {0.000124, 0.755267, 0.231781, 0.012827};
+  fNISTMaterialDataTable[103].fName    = "NIST_MAT_AIR";
+  fNISTMaterialDataTable[103].fDensity = 0.00120479 * (g / cm3);
   fNISTMaterialDataTable[103].fMeanExcitationEnergy = 85.7 * eV;
   fNISTMaterialDataTable[103].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[103].fPressure             = kSTPPressure;
@@ -1488,7 +1594,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[103].fElementFraction      = FractionsZ_103;
   fNISTMaterialDataTable[103].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_ALANINE ----------------------------------------------------------------------
+  // NIST_MAT_ALANINE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_104[]                     = {6, 1, 7, 8};
   static const double FractionsZ_104[]              = {3, 7, 1, 2};
   fNISTMaterialDataTable[104].fName                 = "NIST_MAT_ALANINE";
@@ -1502,7 +1609,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[104].fElementFraction      = FractionsZ_104;
   fNISTMaterialDataTable[104].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ALUMINUM_OXIDE ---------------------------------------------------------------
+  // NIST_MAT_ALUMINUM_OXIDE
+  // ---------------------------------------------------------------
   static const int ElemsZ_105[]                     = {13, 8};
   static const double FractionsZ_105[]              = {2, 3};
   fNISTMaterialDataTable[105].fName                 = "NIST_MAT_ALUMINUM_OXIDE";
@@ -1516,7 +1624,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[105].fElementFraction      = FractionsZ_105;
   fNISTMaterialDataTable[105].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_AMBER ------------------------------------------------------------------------
+  // NIST_MAT_AMBER
+  // ------------------------------------------------------------------------
   static const int ElemsZ_106[]                     = {1, 6, 8};
   static const double FractionsZ_106[]              = {0.10593, 0.788973, 0.105096};
   fNISTMaterialDataTable[106].fName                 = "NIST_MAT_AMBER";
@@ -1530,7 +1639,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[106].fElementFraction      = FractionsZ_106;
   fNISTMaterialDataTable[106].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_AMMONIA ----------------------------------------------------------------------
+  // NIST_MAT_AMMONIA
+  // ----------------------------------------------------------------------
   static const int ElemsZ_107[]                     = {7, 1};
   static const double FractionsZ_107[]              = {1, 3};
   fNISTMaterialDataTable[107].fName                 = "NIST_MAT_AMMONIA";
@@ -1544,7 +1654,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[107].fElementFraction      = FractionsZ_107;
   fNISTMaterialDataTable[107].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ANILINE ----------------------------------------------------------------------
+  // NIST_MAT_ANILINE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_108[]                     = {6, 1, 7};
   static const double FractionsZ_108[]              = {6, 7, 1};
   fNISTMaterialDataTable[108].fName                 = "NIST_MAT_ANILINE";
@@ -1558,7 +1669,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[108].fElementFraction      = FractionsZ_108;
   fNISTMaterialDataTable[108].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ANTHRACENE -------------------------------------------------------------------
+  // NIST_MAT_ANTHRACENE
+  // -------------------------------------------------------------------
   static const int ElemsZ_109[]                     = {6, 1};
   static const double FractionsZ_109[]              = {14, 10};
   fNISTMaterialDataTable[109].fName                 = "NIST_MAT_ANTHRACENE";
@@ -1572,9 +1684,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[109].fElementFraction      = FractionsZ_109;
   fNISTMaterialDataTable[109].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_B-100_BONE -------------------------------------------------------------------
+  // NIST_MAT_B-100_BONE
+  // -------------------------------------------------------------------
   static const int ElemsZ_110[]                     = {1, 6, 7, 8, 9, 20};
-  static const double FractionsZ_110[]              = {0.065471, 0.536945, 0.0215, 0.032085, 0.167411, 0.176589};
+  static const double FractionsZ_110[]              = {0.065471, 0.536945, 0.0215,
+                                          0.032085, 0.167411, 0.176589};
   fNISTMaterialDataTable[110].fName                 = "NIST_MAT_B-100_BONE";
   fNISTMaterialDataTable[110].fDensity              = 1.45 * (g / cm3);
   fNISTMaterialDataTable[110].fMeanExcitationEnergy = 85.9 * eV;
@@ -1586,7 +1700,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[110].fElementFraction      = FractionsZ_110;
   fNISTMaterialDataTable[110].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_BAKELITE ---------------------------------------------------------------------
+  // NIST_MAT_BAKELITE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_111[]                     = {1, 6, 8};
   static const double FractionsZ_111[]              = {0.057441, 0.774591, 0.167968};
   fNISTMaterialDataTable[111].fName                 = "NIST_MAT_BAKELITE";
@@ -1600,7 +1715,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[111].fElementFraction      = FractionsZ_111;
   fNISTMaterialDataTable[111].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_BARIUM_FLUORIDE --------------------------------------------------------------
+  // NIST_MAT_BARIUM_FLUORIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_112[]                     = {56, 9};
   static const double FractionsZ_112[]              = {1, 2};
   fNISTMaterialDataTable[112].fName                 = "NIST_MAT_BARIUM_FLUORIDE";
@@ -1614,7 +1730,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[112].fElementFraction      = FractionsZ_112;
   fNISTMaterialDataTable[112].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BARIUM_SULFATE ---------------------------------------------------------------
+  // NIST_MAT_BARIUM_SULFATE
+  // ---------------------------------------------------------------
   static const int ElemsZ_113[]                     = {56, 16, 8};
   static const double FractionsZ_113[]              = {1, 1, 4};
   fNISTMaterialDataTable[113].fName                 = "NIST_MAT_BARIUM_SULFATE";
@@ -1628,7 +1745,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[113].fElementFraction      = FractionsZ_113;
   fNISTMaterialDataTable[113].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BENZENE ----------------------------------------------------------------------
+  // NIST_MAT_BENZENE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_114[]                     = {6, 1};
   static const double FractionsZ_114[]              = {6, 6};
   fNISTMaterialDataTable[114].fName                 = "NIST_MAT_BENZENE";
@@ -1642,7 +1760,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[114].fElementFraction      = FractionsZ_114;
   fNISTMaterialDataTable[114].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BERYLLIUM_OXIDE --------------------------------------------------------------
+  // NIST_MAT_BERYLLIUM_OXIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_115[]                     = {4, 8};
   static const double FractionsZ_115[]              = {1, 1};
   fNISTMaterialDataTable[115].fName                 = "NIST_MAT_BERYLLIUM_OXIDE";
@@ -1656,7 +1775,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[115].fElementFraction      = FractionsZ_115;
   fNISTMaterialDataTable[115].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BGO --------------------------------------------------------------------------
+  // NIST_MAT_BGO
+  // --------------------------------------------------------------------------
   static const int ElemsZ_116[]                     = {83, 32, 8};
   static const double FractionsZ_116[]              = {4, 3, 12};
   fNISTMaterialDataTable[116].fName                 = "NIST_MAT_BGO";
@@ -1670,9 +1790,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[116].fElementFraction      = FractionsZ_116;
   fNISTMaterialDataTable[116].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BLOOD_ICRP -------------------------------------------------------------------
+  // NIST_MAT_BLOOD_ICRP
+  // -------------------------------------------------------------------
   static const int ElemsZ_117[]        = {1, 6, 7, 8, 11, 15, 16, 17, 19, 26};
-  static const double FractionsZ_117[] = {0.102, 0.11, 0.033, 0.745, 0.001, 0.001, 0.002, 0.003, 0.002, 0.001};
+  static const double FractionsZ_117[] = {0.102, 0.11,  0.033, 0.745, 0.001,
+                                          0.001, 0.002, 0.003, 0.002, 0.001};
   fNISTMaterialDataTable[117].fName    = "NIST_MAT_BLOOD_ICRP";
   fNISTMaterialDataTable[117].fDensity = 1.06 * (g / cm3);
   fNISTMaterialDataTable[117].fMeanExcitationEnergy = 75.2 * eV;
@@ -1684,9 +1806,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[117].fElementFraction      = FractionsZ_117;
   fNISTMaterialDataTable[117].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_BONE_COMPACT_ICRU ------------------------------------------------------------
+  // NIST_MAT_BONE_COMPACT_ICRU
+  // ------------------------------------------------------------
   static const int ElemsZ_118[]                     = {1, 6, 7, 8, 12, 15, 16, 20};
-  static const double FractionsZ_118[]              = {0.064, 0.278, 0.027, 0.41, 0.002, 0.07, 0.002, 0.147};
+  static const double FractionsZ_118[]              = {0.064, 0.278, 0.027, 0.41,
+                                          0.002, 0.07,  0.002, 0.147};
   fNISTMaterialDataTable[118].fName                 = "NIST_MAT_BONE_COMPACT_ICRU";
   fNISTMaterialDataTable[118].fDensity              = 1.85 * (g / cm3);
   fNISTMaterialDataTable[118].fMeanExcitationEnergy = 91.9 * eV;
@@ -1698,10 +1822,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[118].fElementFraction      = FractionsZ_118;
   fNISTMaterialDataTable[118].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_BONE_CORTICAL_ICRP -----------------------------------------------------------
-  // Sceleton Cortical bone for Adult ICRU 46
+  // NIST_MAT_BONE_CORTICAL_ICRP
+  // ----------------------------------------------------------- Sceleton Cortical bone
+  // for Adult ICRU 46
   static const int ElemsZ_119[]                     = {1, 6, 7, 8, 11, 12, 15, 16, 20};
-  static const double FractionsZ_119[]              = {0.034, 0.155, 0.042, 0.435, 0.001, 0.002, 0.103, 0.003, 0.225};
+  static const double FractionsZ_119[]              = {0.034, 0.155, 0.042, 0.435, 0.001,
+                                          0.002, 0.103, 0.003, 0.225};
   fNISTMaterialDataTable[119].fName                 = "NIST_MAT_BONE_CORTICAL_ICRP";
   fNISTMaterialDataTable[119].fDensity              = 1.92 * (g / cm3);
   fNISTMaterialDataTable[119].fMeanExcitationEnergy = 110 * eV;
@@ -1713,7 +1839,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[119].fElementFraction      = FractionsZ_119;
   fNISTMaterialDataTable[119].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_BORON_CARBIDE ----------------------------------------------------------------
+  // NIST_MAT_BORON_CARBIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_120[]                     = {5, 6};
   static const double FractionsZ_120[]              = {4, 1};
   fNISTMaterialDataTable[120].fName                 = "NIST_MAT_BORON_CARBIDE";
@@ -1727,7 +1854,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[120].fElementFraction      = FractionsZ_120;
   fNISTMaterialDataTable[120].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BORON_OXIDE ------------------------------------------------------------------
+  // NIST_MAT_BORON_OXIDE
+  // ------------------------------------------------------------------
   static const int ElemsZ_121[]                     = {5, 8};
   static const double FractionsZ_121[]              = {2, 3};
   fNISTMaterialDataTable[121].fName                 = "NIST_MAT_BORON_OXIDE";
@@ -1741,9 +1869,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[121].fElementFraction      = FractionsZ_121;
   fNISTMaterialDataTable[121].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BRAIN_ICRP -------------------------------------------------------------------
+  // NIST_MAT_BRAIN_ICRP
+  // -------------------------------------------------------------------
   static const int ElemsZ_122[]                     = {1, 6, 7, 8, 11, 15, 16, 17, 19};
-  static const double FractionsZ_122[]              = {0.107, 0.145, 0.022, 0.712, 0.002, 0.004, 0.002, 0.003, 0.003};
+  static const double FractionsZ_122[]              = {0.107, 0.145, 0.022, 0.712, 0.002,
+                                          0.004, 0.002, 0.003, 0.003};
   fNISTMaterialDataTable[122].fName                 = "NIST_MAT_BRAIN_ICRP";
   fNISTMaterialDataTable[122].fDensity              = 1.04 * (g / cm3);
   fNISTMaterialDataTable[122].fMeanExcitationEnergy = 73.3 * eV;
@@ -1755,7 +1885,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[122].fElementFraction      = FractionsZ_122;
   fNISTMaterialDataTable[122].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_BUTANE -----------------------------------------------------------------------
+  // NIST_MAT_BUTANE
+  // -----------------------------------------------------------------------
   static const int ElemsZ_123[]                     = {6, 1};
   static const double FractionsZ_123[]              = {4, 10};
   fNISTMaterialDataTable[123].fName                 = "NIST_MAT_BUTANE";
@@ -1769,7 +1900,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[123].fElementFraction      = FractionsZ_123;
   fNISTMaterialDataTable[123].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_N-BUTYL_ALCOHOL --------------------------------------------------------------
+  // NIST_MAT_N-BUTYL_ALCOHOL
+  // --------------------------------------------------------------
   static const int ElemsZ_124[]                     = {6, 1, 8};
   static const double FractionsZ_124[]              = {4, 10, 1};
   fNISTMaterialDataTable[124].fName                 = "NIST_MAT_N-BUTYL_ALCOHOL";
@@ -1783,11 +1915,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[124].fElementFraction      = FractionsZ_124;
   fNISTMaterialDataTable[124].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_C-552 ------------------------------------------------------------------------
-  static const int ElemsZ_125[]                     = {1, 6, 8, 9, 14};
-  static const double FractionsZ_125[]              = {0.02468, 0.50161, 0.004527, 0.465209, 0.003973};
-  fNISTMaterialDataTable[125].fName                 = "NIST_MAT_C-552";
-  fNISTMaterialDataTable[125].fDensity              = 1.76 * (g / cm3);
+  // NIST_MAT_C-552
+  // ------------------------------------------------------------------------
+  static const int ElemsZ_125[]        = {1, 6, 8, 9, 14};
+  static const double FractionsZ_125[] = {0.02468, 0.50161, 0.004527, 0.465209, 0.003973};
+  fNISTMaterialDataTable[125].fName    = "NIST_MAT_C-552";
+  fNISTMaterialDataTable[125].fDensity = 1.76 * (g / cm3);
   fNISTMaterialDataTable[125].fMeanExcitationEnergy = 86.8 * eV;
   fNISTMaterialDataTable[125].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[125].fPressure             = kSTPPressure;
@@ -1797,7 +1930,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[125].fElementFraction      = FractionsZ_125;
   fNISTMaterialDataTable[125].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_CADMIUM_TELLURIDE ------------------------------------------------------------
+  // NIST_MAT_CADMIUM_TELLURIDE
+  // ------------------------------------------------------------
   static const int ElemsZ_126[]                     = {48, 52};
   static const double FractionsZ_126[]              = {1, 1};
   fNISTMaterialDataTable[126].fName                 = "NIST_MAT_CADMIUM_TELLURIDE";
@@ -1811,7 +1945,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[126].fElementFraction      = FractionsZ_126;
   fNISTMaterialDataTable[126].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CADMIUM_TUNGSTATE ------------------------------------------------------------
+  // NIST_MAT_CADMIUM_TUNGSTATE
+  // ------------------------------------------------------------
   static const int ElemsZ_127[]                     = {48, 74, 8};
   static const double FractionsZ_127[]              = {1, 1, 4};
   fNISTMaterialDataTable[127].fName                 = "NIST_MAT_CADMIUM_TUNGSTATE";
@@ -1825,7 +1960,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[127].fElementFraction      = FractionsZ_127;
   fNISTMaterialDataTable[127].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CALCIUM_CARBONATE ------------------------------------------------------------
+  // NIST_MAT_CALCIUM_CARBONATE
+  // ------------------------------------------------------------
   static const int ElemsZ_128[]                     = {20, 6, 8};
   static const double FractionsZ_128[]              = {1, 1, 3};
   fNISTMaterialDataTable[128].fName                 = "NIST_MAT_CALCIUM_CARBONATE";
@@ -1839,7 +1975,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[128].fElementFraction      = FractionsZ_128;
   fNISTMaterialDataTable[128].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CALCIUM_FLUORIDE -------------------------------------------------------------
+  // NIST_MAT_CALCIUM_FLUORIDE
+  // -------------------------------------------------------------
   static const int ElemsZ_129[]                     = {20, 9};
   static const double FractionsZ_129[]              = {1, 2};
   fNISTMaterialDataTable[129].fName                 = "NIST_MAT_CALCIUM_FLUORIDE";
@@ -1853,7 +1990,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[129].fElementFraction      = FractionsZ_129;
   fNISTMaterialDataTable[129].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CALCIUM_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_CALCIUM_OXIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_130[]                     = {20, 8};
   static const double FractionsZ_130[]              = {1, 1};
   fNISTMaterialDataTable[130].fName                 = "NIST_MAT_CALCIUM_OXIDE";
@@ -1867,7 +2005,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[130].fElementFraction      = FractionsZ_130;
   fNISTMaterialDataTable[130].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CALCIUM_SULFATE --------------------------------------------------------------
+  // NIST_MAT_CALCIUM_SULFATE
+  // --------------------------------------------------------------
   static const int ElemsZ_131[]                     = {20, 16, 8};
   static const double FractionsZ_131[]              = {1, 1, 4};
   fNISTMaterialDataTable[131].fName                 = "NIST_MAT_CALCIUM_SULFATE";
@@ -1881,7 +2020,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[131].fElementFraction      = FractionsZ_131;
   fNISTMaterialDataTable[131].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CALCIUM_TUNGSTATE ------------------------------------------------------------
+  // NIST_MAT_CALCIUM_TUNGSTATE
+  // ------------------------------------------------------------
   static const int ElemsZ_132[]                     = {20, 74, 8};
   static const double FractionsZ_132[]              = {1, 1, 4};
   fNISTMaterialDataTable[132].fName                 = "NIST_MAT_CALCIUM_TUNGSTATE";
@@ -1895,7 +2035,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[132].fElementFraction      = FractionsZ_132;
   fNISTMaterialDataTable[132].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CARBON_DIOXIDE ---------------------------------------------------------------
+  // NIST_MAT_CARBON_DIOXIDE
+  // ---------------------------------------------------------------
   static const int ElemsZ_133[]                     = {6, 8};
   static const double FractionsZ_133[]              = {1, 2};
   fNISTMaterialDataTable[133].fName                 = "NIST_MAT_CARBON_DIOXIDE";
@@ -1909,7 +2050,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[133].fElementFraction      = FractionsZ_133;
   fNISTMaterialDataTable[133].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CARBON_TETRACHLORIDE ---------------------------------------------------------
+  // NIST_MAT_CARBON_TETRACHLORIDE
+  // ---------------------------------------------------------
   static const int ElemsZ_134[]                     = {6, 17};
   static const double FractionsZ_134[]              = {1, 4};
   fNISTMaterialDataTable[134].fName                 = "NIST_MAT_CARBON_TETRACHLORIDE";
@@ -1923,7 +2065,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[134].fElementFraction      = FractionsZ_134;
   fNISTMaterialDataTable[134].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CELLULOSE_CELLOPHANE ---------------------------------------------------------
+  // NIST_MAT_CELLULOSE_CELLOPHANE
+  // ---------------------------------------------------------
   static const int ElemsZ_135[]                     = {6, 1, 8};
   static const double FractionsZ_135[]              = {6, 10, 5};
   fNISTMaterialDataTable[135].fName                 = "NIST_MAT_CELLULOSE_CELLOPHANE";
@@ -1937,7 +2080,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[135].fElementFraction      = FractionsZ_135;
   fNISTMaterialDataTable[135].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CELLULOSE_BUTYRATE -----------------------------------------------------------
+  // NIST_MAT_CELLULOSE_BUTYRATE
+  // -----------------------------------------------------------
   static const int ElemsZ_136[]                     = {1, 6, 8};
   static const double FractionsZ_136[]              = {0.067125, 0.545403, 0.387472};
   fNISTMaterialDataTable[136].fName                 = "NIST_MAT_CELLULOSE_BUTYRATE";
@@ -1951,11 +2095,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[136].fElementFraction      = FractionsZ_136;
   fNISTMaterialDataTable[136].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_CELLULOSE_NITRATE ------------------------------------------------------------
-  static const int ElemsZ_137[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_137[]              = {0.029216, 0.271296, 0.121276, 0.578212};
-  fNISTMaterialDataTable[137].fName                 = "NIST_MAT_CELLULOSE_NITRATE";
-  fNISTMaterialDataTable[137].fDensity              = 1.49 * (g / cm3);
+  // NIST_MAT_CELLULOSE_NITRATE
+  // ------------------------------------------------------------
+  static const int ElemsZ_137[]        = {1, 6, 7, 8};
+  static const double FractionsZ_137[] = {0.029216, 0.271296, 0.121276, 0.578212};
+  fNISTMaterialDataTable[137].fName    = "NIST_MAT_CELLULOSE_NITRATE";
+  fNISTMaterialDataTable[137].fDensity = 1.49 * (g / cm3);
   fNISTMaterialDataTable[137].fMeanExcitationEnergy = 87 * eV;
   fNISTMaterialDataTable[137].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[137].fPressure             = kSTPPressure;
@@ -1965,11 +2110,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[137].fElementFraction      = FractionsZ_137;
   fNISTMaterialDataTable[137].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_CERIC_SULFATE ----------------------------------------------------------------
-  static const int ElemsZ_138[]                     = {1, 7, 8, 16, 58};
-  static const double FractionsZ_138[]              = {0.107596, 0.0008, 0.874976, 0.014627, 0.002001};
-  fNISTMaterialDataTable[138].fName                 = "NIST_MAT_CERIC_SULFATE";
-  fNISTMaterialDataTable[138].fDensity              = 1.03 * (g / cm3);
+  // NIST_MAT_CERIC_SULFATE
+  // ----------------------------------------------------------------
+  static const int ElemsZ_138[]        = {1, 7, 8, 16, 58};
+  static const double FractionsZ_138[] = {0.107596, 0.0008, 0.874976, 0.014627, 0.002001};
+  fNISTMaterialDataTable[138].fName    = "NIST_MAT_CERIC_SULFATE";
+  fNISTMaterialDataTable[138].fDensity = 1.03 * (g / cm3);
   fNISTMaterialDataTable[138].fMeanExcitationEnergy = 76.7 * eV;
   fNISTMaterialDataTable[138].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[138].fPressure             = kSTPPressure;
@@ -1979,7 +2125,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[138].fElementFraction      = FractionsZ_138;
   fNISTMaterialDataTable[138].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_CESIUM_FLUORIDE --------------------------------------------------------------
+  // NIST_MAT_CESIUM_FLUORIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_139[]                     = {55, 9};
   static const double FractionsZ_139[]              = {1, 1};
   fNISTMaterialDataTable[139].fName                 = "NIST_MAT_CESIUM_FLUORIDE";
@@ -1993,7 +2140,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[139].fElementFraction      = FractionsZ_139;
   fNISTMaterialDataTable[139].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CESIUM_IODIDE ----------------------------------------------------------------
+  // NIST_MAT_CESIUM_IODIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_140[]                     = {55, 53};
   static const double FractionsZ_140[]              = {1, 1};
   fNISTMaterialDataTable[140].fName                 = "NIST_MAT_CESIUM_IODIDE";
@@ -2007,7 +2155,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[140].fElementFraction      = FractionsZ_140;
   fNISTMaterialDataTable[140].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CHLOROBENZENE ----------------------------------------------------------------
+  // NIST_MAT_CHLOROBENZENE
+  // ----------------------------------------------------------------
   static const int ElemsZ_141[]                     = {6, 1, 17};
   static const double FractionsZ_141[]              = {6, 5, 1};
   fNISTMaterialDataTable[141].fName                 = "NIST_MAT_CHLOROBENZENE";
@@ -2021,7 +2170,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[141].fElementFraction      = FractionsZ_141;
   fNISTMaterialDataTable[141].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CHLOROFORM -------------------------------------------------------------------
+  // NIST_MAT_CHLOROFORM
+  // -------------------------------------------------------------------
   static const int ElemsZ_142[]                     = {6, 1, 17};
   static const double FractionsZ_142[]              = {1, 1, 3};
   fNISTMaterialDataTable[142].fName                 = "NIST_MAT_CHLOROFORM";
@@ -2035,9 +2185,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[142].fElementFraction      = FractionsZ_142;
   fNISTMaterialDataTable[142].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CONCRETE ---------------------------------------------------------------------
+  // NIST_MAT_CONCRETE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_143[]        = {1, 6, 8, 11, 12, 13, 14, 19, 20, 26};
-  static const double FractionsZ_143[] = {0.01, 0.001, 0.529107, 0.016, 0.002, 0.033872, 0.337021, 0.013, 0.044, 0.014};
+  static const double FractionsZ_143[] = {0.01,     0.001,    0.529107, 0.016, 0.002,
+                                          0.033872, 0.337021, 0.013,    0.044, 0.014};
   fNISTMaterialDataTable[143].fName    = "NIST_MAT_CONCRETE";
   fNISTMaterialDataTable[143].fDensity = 2.3 * (g / cm3);
   fNISTMaterialDataTable[143].fMeanExcitationEnergy = 135.2 * eV;
@@ -2049,7 +2201,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[143].fElementFraction      = FractionsZ_143;
   fNISTMaterialDataTable[143].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_CYCLOHEXANE ------------------------------------------------------------------
+  // NIST_MAT_CYCLOHEXANE
+  // ------------------------------------------------------------------
   static const int ElemsZ_144[]                     = {6, 1};
   static const double FractionsZ_144[]              = {6, 12};
   fNISTMaterialDataTable[144].fName                 = "NIST_MAT_CYCLOHEXANE";
@@ -2063,7 +2216,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[144].fElementFraction      = FractionsZ_144;
   fNISTMaterialDataTable[144].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_2-DICHLOROBENZENE ------------------------------------------------------------
+  // NIST_MAT_2-DICHLOROBENZENE
+  // ------------------------------------------------------------
   static const int ElemsZ_145[]                     = {6, 1, 17};
   static const double FractionsZ_145[]              = {6, 4, 2};
   fNISTMaterialDataTable[145].fName                 = "NIST_MAT_2-DICHLOROBENZENE";
@@ -2077,7 +2231,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[145].fElementFraction      = FractionsZ_145;
   fNISTMaterialDataTable[145].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DICHLORODIETHYL_ETHER --------------------------------------------------------
+  // NIST_MAT_DICHLORODIETHYL_ETHER
+  // --------------------------------------------------------
   static const int ElemsZ_146[]                     = {6, 1, 8, 17};
   static const double FractionsZ_146[]              = {4, 8, 1, 2};
   fNISTMaterialDataTable[146].fName                 = "NIST_MAT_DICHLORODIETHYL_ETHER";
@@ -2091,7 +2246,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[146].fElementFraction      = FractionsZ_146;
   fNISTMaterialDataTable[146].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_2-DICHLOROETHANE -------------------------------------------------------------
+  // NIST_MAT_2-DICHLOROETHANE
+  // -------------------------------------------------------------
   static const int ElemsZ_147[]                     = {6, 1, 17};
   static const double FractionsZ_147[]              = {2, 4, 2};
   fNISTMaterialDataTable[147].fName                 = "NIST_MAT_2-DICHLOROETHANE";
@@ -2105,7 +2261,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[147].fElementFraction      = FractionsZ_147;
   fNISTMaterialDataTable[147].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DIETHYL_ETHER ----------------------------------------------------------------
+  // NIST_MAT_DIETHYL_ETHER
+  // ----------------------------------------------------------------
   static const int ElemsZ_148[]                     = {6, 1, 8};
   static const double FractionsZ_148[]              = {4, 10, 1};
   fNISTMaterialDataTable[148].fName                 = "NIST_MAT_DIETHYL_ETHER";
@@ -2119,7 +2276,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[148].fElementFraction      = FractionsZ_148;
   fNISTMaterialDataTable[148].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_N-DIMETHYL_FORMAMIDE ---------------------------------------------------------
+  // NIST_MAT_N-DIMETHYL_FORMAMIDE
+  // ---------------------------------------------------------
   static const int ElemsZ_149[]                     = {6, 1, 7, 8};
   static const double FractionsZ_149[]              = {3, 7, 1, 1};
   fNISTMaterialDataTable[149].fName                 = "NIST_MAT_N-DIMETHYL_FORMAMIDE";
@@ -2133,7 +2291,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[149].fElementFraction      = FractionsZ_149;
   fNISTMaterialDataTable[149].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DIMETHYL_SULFOXIDE -----------------------------------------------------------
+  // NIST_MAT_DIMETHYL_SULFOXIDE
+  // -----------------------------------------------------------
   static const int ElemsZ_150[]                     = {6, 1, 8, 16};
   static const double FractionsZ_150[]              = {2, 6, 1, 1};
   fNISTMaterialDataTable[150].fName                 = "NIST_MAT_DIMETHYL_SULFOXIDE";
@@ -2147,7 +2306,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[150].fElementFraction      = FractionsZ_150;
   fNISTMaterialDataTable[150].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ETHANE -----------------------------------------------------------------------
+  // NIST_MAT_ETHANE
+  // -----------------------------------------------------------------------
   static const int ElemsZ_151[]                     = {6, 1};
   static const double FractionsZ_151[]              = {2, 6};
   fNISTMaterialDataTable[151].fName                 = "NIST_MAT_ETHANE";
@@ -2161,7 +2321,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[151].fElementFraction      = FractionsZ_151;
   fNISTMaterialDataTable[151].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ETHYL_ALCOHOL ----------------------------------------------------------------
+  // NIST_MAT_ETHYL_ALCOHOL
+  // ----------------------------------------------------------------
   static const int ElemsZ_152[]                     = {6, 1, 8};
   static const double FractionsZ_152[]              = {2, 6, 1};
   fNISTMaterialDataTable[152].fName                 = "NIST_MAT_ETHYL_ALCOHOL";
@@ -2175,7 +2336,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[152].fElementFraction      = FractionsZ_152;
   fNISTMaterialDataTable[152].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_ETHYL_CELLULOSE --------------------------------------------------------------
+  // NIST_MAT_ETHYL_CELLULOSE
+  // --------------------------------------------------------------
   static const int ElemsZ_153[]                     = {1, 6, 8};
   static const double FractionsZ_153[]              = {0.090027, 0.585182, 0.324791};
   fNISTMaterialDataTable[153].fName                 = "NIST_MAT_ETHYL_CELLULOSE";
@@ -2189,7 +2351,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[153].fElementFraction      = FractionsZ_153;
   fNISTMaterialDataTable[153].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_ETHYLENE ---------------------------------------------------------------------
+  // NIST_MAT_ETHYLENE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_154[]                     = {6, 1};
   static const double FractionsZ_154[]              = {2, 4};
   fNISTMaterialDataTable[154].fName                 = "NIST_MAT_ETHYLENE";
@@ -2203,9 +2366,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[154].fElementFraction      = FractionsZ_154;
   fNISTMaterialDataTable[154].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_EYE_LENS_ICRP ----------------------------------------------------------------
+  // NIST_MAT_EYE_LENS_ICRP
+  // ----------------------------------------------------------------
   static const int ElemsZ_155[]                     = {1, 6, 7, 8, 11, 15, 16, 17};
-  static const double FractionsZ_155[]              = {0.096, 0.195, 0.057, 0.646, 0.001, 0.001, 0.003, 0.001};
+  static const double FractionsZ_155[]              = {0.096, 0.195, 0.057, 0.646,
+                                          0.001, 0.001, 0.003, 0.001};
   fNISTMaterialDataTable[155].fName                 = "NIST_MAT_EYE_LENS_ICRP";
   fNISTMaterialDataTable[155].fDensity              = 1.07 * (g / cm3);
   fNISTMaterialDataTable[155].fMeanExcitationEnergy = 73.3 * eV;
@@ -2217,7 +2382,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[155].fElementFraction      = FractionsZ_155;
   fNISTMaterialDataTable[155].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_FERRIC_OXIDE -----------------------------------------------------------------
+  // NIST_MAT_FERRIC_OXIDE
+  // -----------------------------------------------------------------
   static const int ElemsZ_156[]                     = {26, 8};
   static const double FractionsZ_156[]              = {2, 3};
   fNISTMaterialDataTable[156].fName                 = "NIST_MAT_FERRIC_OXIDE";
@@ -2231,7 +2397,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[156].fElementFraction      = FractionsZ_156;
   fNISTMaterialDataTable[156].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_FERROBORIDE ------------------------------------------------------------------
+  // NIST_MAT_FERROBORIDE
+  // ------------------------------------------------------------------
   static const int ElemsZ_157[]                     = {26, 5};
   static const double FractionsZ_157[]              = {1, 1};
   fNISTMaterialDataTable[157].fName                 = "NIST_MAT_FERROBORIDE";
@@ -2245,7 +2412,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[157].fElementFraction      = FractionsZ_157;
   fNISTMaterialDataTable[157].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_FERROUS_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_FERROUS_OXIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_158[]                     = {26, 8};
   static const double FractionsZ_158[]              = {1, 1};
   fNISTMaterialDataTable[158].fName                 = "NIST_MAT_FERROUS_OXIDE";
@@ -2259,9 +2427,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[158].fElementFraction      = FractionsZ_158;
   fNISTMaterialDataTable[158].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_FERROUS_SULFATE --------------------------------------------------------------
+  // NIST_MAT_FERROUS_SULFATE
+  // --------------------------------------------------------------
   static const int ElemsZ_159[]        = {1, 7, 8, 11, 16, 17, 26};
-  static const double FractionsZ_159[] = {0.108259, 2.7e-05, 0.878636, 2.2e-05, 0.012968, 3.4e-05, 5.4e-05};
+  static const double FractionsZ_159[] = {0.108259, 2.7e-05, 0.878636, 2.2e-05,
+                                          0.012968, 3.4e-05, 5.4e-05};
   fNISTMaterialDataTable[159].fName    = "NIST_MAT_FERROUS_SULFATE";
   fNISTMaterialDataTable[159].fDensity = 1.024 * (g / cm3);
   fNISTMaterialDataTable[159].fMeanExcitationEnergy = 76.4 * eV;
@@ -2273,7 +2443,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[159].fElementFraction      = FractionsZ_159;
   fNISTMaterialDataTable[159].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_FREON-12 ---------------------------------------------------------------------
+  // NIST_MAT_FREON-12
+  // ---------------------------------------------------------------------
   static const int ElemsZ_160[]                     = {6, 9, 17};
   static const double FractionsZ_160[]              = {0.099335, 0.314247, 0.586418};
   fNISTMaterialDataTable[160].fName                 = "NIST_MAT_FREON-12";
@@ -2287,7 +2458,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[160].fElementFraction      = FractionsZ_160;
   fNISTMaterialDataTable[160].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_FREON-12B2 -------------------------------------------------------------------
+  // NIST_MAT_FREON-12B2
+  // -------------------------------------------------------------------
   static const int ElemsZ_161[]                     = {6, 9, 35};
   static const double FractionsZ_161[]              = {0.057245, 0.181096, 0.761659};
   fNISTMaterialDataTable[161].fName                 = "NIST_MAT_FREON-12B2";
@@ -2301,7 +2473,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[161].fElementFraction      = FractionsZ_161;
   fNISTMaterialDataTable[161].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_FREON-13 ---------------------------------------------------------------------
+  // NIST_MAT_FREON-13
+  // ---------------------------------------------------------------------
   static const int ElemsZ_162[]                     = {6, 9, 17};
   static const double FractionsZ_162[]              = {0.114983, 0.545622, 0.339396};
   fNISTMaterialDataTable[162].fName                 = "NIST_MAT_FREON-13";
@@ -2315,7 +2488,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[162].fElementFraction      = FractionsZ_162;
   fNISTMaterialDataTable[162].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_FREON-13B1 -------------------------------------------------------------------
+  // NIST_MAT_FREON-13B1
+  // -------------------------------------------------------------------
   static const int ElemsZ_163[]                     = {6, 9, 35};
   static const double FractionsZ_163[]              = {1, 3, 1};
   fNISTMaterialDataTable[163].fName                 = "NIST_MAT_FREON-13B1";
@@ -2329,7 +2503,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[163].fElementFraction      = FractionsZ_163;
   fNISTMaterialDataTable[163].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_FREON-13I1 -------------------------------------------------------------------
+  // NIST_MAT_FREON-13I1
+  // -------------------------------------------------------------------
   static const int ElemsZ_164[]                     = {6, 9, 53};
   static const double FractionsZ_164[]              = {0.061309, 0.290924, 0.647767};
   fNISTMaterialDataTable[164].fName                 = "NIST_MAT_FREON-13I1";
@@ -2343,7 +2518,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[164].fElementFraction      = FractionsZ_164;
   fNISTMaterialDataTable[164].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_GADOLINIUM_OXYSULFIDE --------------------------------------------------------
+  // NIST_MAT_GADOLINIUM_OXYSULFIDE
+  // --------------------------------------------------------
   static const int ElemsZ_165[]                     = {64, 8, 16};
   static const double FractionsZ_165[]              = {2, 2, 1};
   fNISTMaterialDataTable[165].fName                 = "NIST_MAT_GADOLINIUM_OXYSULFIDE";
@@ -2357,7 +2533,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[165].fElementFraction      = FractionsZ_165;
   fNISTMaterialDataTable[165].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_GALLIUM_ARSENIDE -------------------------------------------------------------
+  // NIST_MAT_GALLIUM_ARSENIDE
+  // -------------------------------------------------------------
   static const int ElemsZ_166[]                     = {31, 33};
   static const double FractionsZ_166[]              = {1, 1};
   fNISTMaterialDataTable[166].fName                 = "NIST_MAT_GALLIUM_ARSENIDE";
@@ -2371,11 +2548,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[166].fElementFraction      = FractionsZ_166;
   fNISTMaterialDataTable[166].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_GEL_PHOTO_EMULSION -----------------------------------------------------------
-  static const int ElemsZ_167[]                     = {1, 6, 7, 8, 16};
-  static const double FractionsZ_167[]              = {0.08118, 0.41606, 0.11124, 0.38064, 0.01088};
-  fNISTMaterialDataTable[167].fName                 = "NIST_MAT_GEL_PHOTO_EMULSION";
-  fNISTMaterialDataTable[167].fDensity              = 1.2914 * (g / cm3);
+  // NIST_MAT_GEL_PHOTO_EMULSION
+  // -----------------------------------------------------------
+  static const int ElemsZ_167[]        = {1, 6, 7, 8, 16};
+  static const double FractionsZ_167[] = {0.08118, 0.41606, 0.11124, 0.38064, 0.01088};
+  fNISTMaterialDataTable[167].fName    = "NIST_MAT_GEL_PHOTO_EMULSION";
+  fNISTMaterialDataTable[167].fDensity = 1.2914 * (g / cm3);
   fNISTMaterialDataTable[167].fMeanExcitationEnergy = 74.8 * eV;
   fNISTMaterialDataTable[167].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[167].fPressure             = kSTPPressure;
@@ -2385,9 +2563,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[167].fElementFraction      = FractionsZ_167;
   fNISTMaterialDataTable[167].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_Pyrex_Glass ------------------------------------------------------------------
+  // NIST_MAT_Pyrex_Glass
+  // ------------------------------------------------------------------
   static const int ElemsZ_168[]                     = {5, 8, 11, 13, 14, 19};
-  static const double FractionsZ_168[]              = {0.040064, 0.539562, 0.028191, 0.011644, 0.37722, 0.003321};
+  static const double FractionsZ_168[]              = {0.040064, 0.539562, 0.028191,
+                                          0.011644, 0.37722,  0.003321};
   fNISTMaterialDataTable[168].fName                 = "NIST_MAT_Pyrex_Glass";
   fNISTMaterialDataTable[168].fDensity              = 2.23 * (g / cm3);
   fNISTMaterialDataTable[168].fMeanExcitationEnergy = 134 * eV;
@@ -2399,11 +2579,13 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[168].fElementFraction      = FractionsZ_168;
   fNISTMaterialDataTable[168].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_GLASS_LEAD -------------------------------------------------------------------
-  static const int ElemsZ_169[]                     = {8, 14, 22, 33, 82};
-  static const double FractionsZ_169[]              = {0.156453, 0.080866, 0.008092, 0.002651, 0.751938};
-  fNISTMaterialDataTable[169].fName                 = "NIST_MAT_GLASS_LEAD";
-  fNISTMaterialDataTable[169].fDensity              = 6.22 * (g / cm3);
+  // NIST_MAT_GLASS_LEAD
+  // -------------------------------------------------------------------
+  static const int ElemsZ_169[]        = {8, 14, 22, 33, 82};
+  static const double FractionsZ_169[] = {0.156453, 0.080866, 0.008092, 0.002651,
+                                          0.751938};
+  fNISTMaterialDataTable[169].fName    = "NIST_MAT_GLASS_LEAD";
+  fNISTMaterialDataTable[169].fDensity = 6.22 * (g / cm3);
   fNISTMaterialDataTable[169].fMeanExcitationEnergy = 526.4 * eV;
   fNISTMaterialDataTable[169].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[169].fPressure             = kSTPPressure;
@@ -2413,11 +2595,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[169].fElementFraction      = FractionsZ_169;
   fNISTMaterialDataTable[169].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_GLASS_PLATE ------------------------------------------------------------------
-  static const int ElemsZ_170[]                     = {8, 11, 14, 20};
-  static const double FractionsZ_170[]              = {0.4598, 0.096441, 0.336553, 0.107205};
-  fNISTMaterialDataTable[170].fName                 = "NIST_MAT_GLASS_PLATE";
-  fNISTMaterialDataTable[170].fDensity              = 2.4 * (g / cm3);
+  // NIST_MAT_GLASS_PLATE
+  // ------------------------------------------------------------------
+  static const int ElemsZ_170[]        = {8, 11, 14, 20};
+  static const double FractionsZ_170[] = {0.4598, 0.096441, 0.336553, 0.107205};
+  fNISTMaterialDataTable[170].fName    = "NIST_MAT_GLASS_PLATE";
+  fNISTMaterialDataTable[170].fDensity = 2.4 * (g / cm3);
   fNISTMaterialDataTable[170].fMeanExcitationEnergy = 145.4 * eV;
   fNISTMaterialDataTable[170].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[170].fPressure             = kSTPPressure;
@@ -2427,7 +2610,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[170].fElementFraction      = FractionsZ_170;
   fNISTMaterialDataTable[170].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_GLUTAMINE --------------------------------------------------------------------
+  // NIST_MAT_GLUTAMINE
+  // --------------------------------------------------------------------
   static const int ElemsZ_171[]                     = {6, 1, 7, 8};
   static const double FractionsZ_171[]              = {5, 10, 2, 3};
   fNISTMaterialDataTable[171].fName                 = "NIST_MAT_GLUTAMINE";
@@ -2441,7 +2625,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[171].fElementFraction      = FractionsZ_171;
   fNISTMaterialDataTable[171].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_GLYCEROL ---------------------------------------------------------------------
+  // NIST_MAT_GLYCEROL
+  // ---------------------------------------------------------------------
   static const int ElemsZ_172[]                     = {6, 1, 8};
   static const double FractionsZ_172[]              = {3, 8, 3};
   fNISTMaterialDataTable[172].fName                 = "NIST_MAT_GLYCEROL";
@@ -2455,7 +2640,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[172].fElementFraction      = FractionsZ_172;
   fNISTMaterialDataTable[172].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_GUANINE ----------------------------------------------------------------------
+  // NIST_MAT_GUANINE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_173[]                     = {6, 1, 7, 8};
   static const double FractionsZ_173[]              = {5, 5, 5, 1};
   fNISTMaterialDataTable[173].fName                 = "NIST_MAT_GUANINE";
@@ -2469,7 +2655,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[173].fElementFraction      = FractionsZ_173;
   fNISTMaterialDataTable[173].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_GYPSUM -----------------------------------------------------------------------
+  // NIST_MAT_GYPSUM
+  // -----------------------------------------------------------------------
   static const int ElemsZ_174[]                     = {20, 16, 8, 1};
   static const double FractionsZ_174[]              = {1, 1, 6, 4};
   fNISTMaterialDataTable[174].fName                 = "NIST_MAT_GYPSUM";
@@ -2483,7 +2670,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[174].fElementFraction      = FractionsZ_174;
   fNISTMaterialDataTable[174].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_N-HEPTANE --------------------------------------------------------------------
+  // NIST_MAT_N-HEPTANE
+  // --------------------------------------------------------------------
   static const int ElemsZ_175[]                     = {6, 1};
   static const double FractionsZ_175[]              = {7, 16};
   fNISTMaterialDataTable[175].fName                 = "NIST_MAT_N-HEPTANE";
@@ -2497,7 +2685,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[175].fElementFraction      = FractionsZ_175;
   fNISTMaterialDataTable[175].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_N-HEXANE ---------------------------------------------------------------------
+  // NIST_MAT_N-HEXANE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_176[]                     = {6, 1};
   static const double FractionsZ_176[]              = {6, 14};
   fNISTMaterialDataTable[176].fName                 = "NIST_MAT_N-HEXANE";
@@ -2511,7 +2700,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[176].fElementFraction      = FractionsZ_176;
   fNISTMaterialDataTable[176].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_KAPTON -----------------------------------------------------------------------
+  // NIST_MAT_KAPTON
+  // -----------------------------------------------------------------------
   static const int ElemsZ_177[]                     = {6, 1, 7, 8};
   static const double FractionsZ_177[]              = {22, 10, 2, 5};
   fNISTMaterialDataTable[177].fName                 = "NIST_MAT_KAPTON";
@@ -2525,7 +2715,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[177].fElementFraction      = FractionsZ_177;
   fNISTMaterialDataTable[177].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LANTHANUM_OXYBROMIDE ---------------------------------------------------------
+  // NIST_MAT_LANTHANUM_OXYBROMIDE
+  // ---------------------------------------------------------
   static const int ElemsZ_178[]                     = {57, 35, 8};
   static const double FractionsZ_178[]              = {1, 1, 1};
   fNISTMaterialDataTable[178].fName                 = "NIST_MAT_LANTHANUM_OXYBROMIDE";
@@ -2539,7 +2730,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[178].fElementFraction      = FractionsZ_178;
   fNISTMaterialDataTable[178].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LANTHANUM_OXYSULFIDE ---------------------------------------------------------
+  // NIST_MAT_LANTHANUM_OXYSULFIDE
+  // ---------------------------------------------------------
   static const int ElemsZ_179[]                     = {57, 8, 16};
   static const double FractionsZ_179[]              = {2, 2, 1};
   fNISTMaterialDataTable[179].fName                 = "NIST_MAT_LANTHANUM_OXYSULFIDE";
@@ -2553,7 +2745,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[179].fElementFraction      = FractionsZ_179;
   fNISTMaterialDataTable[179].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LEAD_OXIDE -------------------------------------------------------------------
+  // NIST_MAT_LEAD_OXIDE
+  // -------------------------------------------------------------------
   static const int ElemsZ_180[]                     = {8, 82};
   static const double FractionsZ_180[]              = {0.071682, 0.928318};
   fNISTMaterialDataTable[180].fName                 = "NIST_MAT_LEAD_OXIDE";
@@ -2567,7 +2760,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[180].fElementFraction      = FractionsZ_180;
   fNISTMaterialDataTable[180].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_LITHIUM_AMIDE ----------------------------------------------------------------
+  // NIST_MAT_LITHIUM_AMIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_181[]                     = {3, 7, 1};
   static const double FractionsZ_181[]              = {1, 1, 2};
   fNISTMaterialDataTable[181].fName                 = "NIST_MAT_LITHIUM_AMIDE";
@@ -2581,7 +2775,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[181].fElementFraction      = FractionsZ_181;
   fNISTMaterialDataTable[181].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LITHIUM_CARBONATE ------------------------------------------------------------
+  // NIST_MAT_LITHIUM_CARBONATE
+  // ------------------------------------------------------------
   static const int ElemsZ_182[]                     = {3, 6, 8};
   static const double FractionsZ_182[]              = {2, 1, 3};
   fNISTMaterialDataTable[182].fName                 = "NIST_MAT_LITHIUM_CARBONATE";
@@ -2595,7 +2790,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[182].fElementFraction      = FractionsZ_182;
   fNISTMaterialDataTable[182].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LITHIUM_FLUORIDE -------------------------------------------------------------
+  // NIST_MAT_LITHIUM_FLUORIDE
+  // -------------------------------------------------------------
   static const int ElemsZ_183[]                     = {3, 9};
   static const double FractionsZ_183[]              = {1, 1};
   fNISTMaterialDataTable[183].fName                 = "NIST_MAT_LITHIUM_FLUORIDE";
@@ -2609,7 +2805,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[183].fElementFraction      = FractionsZ_183;
   fNISTMaterialDataTable[183].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LITHIUM_HYDRIDE --------------------------------------------------------------
+  // NIST_MAT_LITHIUM_HYDRIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_184[]                     = {3, 1};
   static const double FractionsZ_184[]              = {1, 1};
   fNISTMaterialDataTable[184].fName                 = "NIST_MAT_LITHIUM_HYDRIDE";
@@ -2623,7 +2820,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[184].fElementFraction      = FractionsZ_184;
   fNISTMaterialDataTable[184].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LITHIUM_IODIDE ---------------------------------------------------------------
+  // NIST_MAT_LITHIUM_IODIDE
+  // ---------------------------------------------------------------
   static const int ElemsZ_185[]                     = {3, 53};
   static const double FractionsZ_185[]              = {1, 1};
   fNISTMaterialDataTable[185].fName                 = "NIST_MAT_LITHIUM_IODIDE";
@@ -2637,7 +2835,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[185].fElementFraction      = FractionsZ_185;
   fNISTMaterialDataTable[185].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LITHIUM_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_LITHIUM_OXIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_186[]                     = {3, 8};
   static const double FractionsZ_186[]              = {2, 1};
   fNISTMaterialDataTable[186].fName                 = "NIST_MAT_LITHIUM_OXIDE";
@@ -2651,7 +2850,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[186].fElementFraction      = FractionsZ_186;
   fNISTMaterialDataTable[186].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LITHIUM_TETRABORATE ----------------------------------------------------------
+  // NIST_MAT_LITHIUM_TETRABORATE
+  // ----------------------------------------------------------
   static const int ElemsZ_187[]                     = {3, 5, 8};
   static const double FractionsZ_187[]              = {2, 4, 7};
   fNISTMaterialDataTable[187].fName                 = "NIST_MAT_LITHIUM_TETRABORATE";
@@ -2665,10 +2865,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[187].fElementFraction      = FractionsZ_187;
   fNISTMaterialDataTable[187].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LUNG_ICRP --------------------------------------------------------------------
-  // Adult Lung congested
+  // NIST_MAT_LUNG_ICRP
+  // -------------------------------------------------------------------- Adult Lung
+  // congested
   static const int ElemsZ_188[]                     = {1, 6, 7, 8, 11, 15, 16, 17, 19};
-  static const double FractionsZ_188[]              = {0.105, 0.083, 0.023, 0.779, 0.002, 0.001, 0.002, 0.003, 0.002};
+  static const double FractionsZ_188[]              = {0.105, 0.083, 0.023, 0.779, 0.002,
+                                          0.001, 0.002, 0.003, 0.002};
   fNISTMaterialDataTable[188].fName                 = "NIST_MAT_LUNG_ICRP";
   fNISTMaterialDataTable[188].fDensity              = 1.04 * (g / cm3);
   fNISTMaterialDataTable[188].fMeanExcitationEnergy = 75.3 * eV;
@@ -2680,11 +2882,13 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[188].fElementFraction      = FractionsZ_188;
   fNISTMaterialDataTable[188].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_M3_WAX -----------------------------------------------------------------------
-  static const int ElemsZ_189[]                     = {1, 6, 8, 12, 20};
-  static const double FractionsZ_189[]              = {0.114318, 0.655823, 0.092183, 0.134792, 0.002883};
-  fNISTMaterialDataTable[189].fName                 = "NIST_MAT_M3_WAX";
-  fNISTMaterialDataTable[189].fDensity              = 1.05 * (g / cm3);
+  // NIST_MAT_M3_WAX
+  // -----------------------------------------------------------------------
+  static const int ElemsZ_189[]        = {1, 6, 8, 12, 20};
+  static const double FractionsZ_189[] = {0.114318, 0.655823, 0.092183, 0.134792,
+                                          0.002883};
+  fNISTMaterialDataTable[189].fName    = "NIST_MAT_M3_WAX";
+  fNISTMaterialDataTable[189].fDensity = 1.05 * (g / cm3);
   fNISTMaterialDataTable[189].fMeanExcitationEnergy = 67.9 * eV;
   fNISTMaterialDataTable[189].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[189].fPressure             = kSTPPressure;
@@ -2694,7 +2898,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[189].fElementFraction      = FractionsZ_189;
   fNISTMaterialDataTable[189].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_MAGNESIUM_CARBONATE ----------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_CARBONATE
+  // ----------------------------------------------------------
   static const int ElemsZ_190[]                     = {12, 6, 8};
   static const double FractionsZ_190[]              = {1, 1, 3};
   fNISTMaterialDataTable[190].fName                 = "NIST_MAT_MAGNESIUM_CARBONATE";
@@ -2708,7 +2913,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[190].fElementFraction      = FractionsZ_190;
   fNISTMaterialDataTable[190].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_MAGNESIUM_FLUORIDE -----------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_FLUORIDE
+  // -----------------------------------------------------------
   static const int ElemsZ_191[]                     = {12, 9};
   static const double FractionsZ_191[]              = {1, 2};
   fNISTMaterialDataTable[191].fName                 = "NIST_MAT_MAGNESIUM_FLUORIDE";
@@ -2722,7 +2928,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[191].fElementFraction      = FractionsZ_191;
   fNISTMaterialDataTable[191].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_MAGNESIUM_OXIDE --------------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_OXIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_192[]                     = {12, 8};
   static const double FractionsZ_192[]              = {1, 1};
   fNISTMaterialDataTable[192].fName                 = "NIST_MAT_MAGNESIUM_OXIDE";
@@ -2736,7 +2943,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[192].fElementFraction      = FractionsZ_192;
   fNISTMaterialDataTable[192].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_MAGNESIUM_TETRABORATE --------------------------------------------------------
+  // NIST_MAT_MAGNESIUM_TETRABORATE
+  // --------------------------------------------------------
   static const int ElemsZ_193[]                     = {12, 5, 8};
   static const double FractionsZ_193[]              = {1, 4, 7};
   fNISTMaterialDataTable[193].fName                 = "NIST_MAT_MAGNESIUM_TETRABORATE";
@@ -2750,7 +2958,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[193].fElementFraction      = FractionsZ_193;
   fNISTMaterialDataTable[193].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_MERCURIC_IODIDE --------------------------------------------------------------
+  // NIST_MAT_MERCURIC_IODIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_194[]                     = {80, 53};
   static const double FractionsZ_194[]              = {1, 2};
   fNISTMaterialDataTable[194].fName                 = "NIST_MAT_MERCURIC_IODIDE";
@@ -2764,7 +2973,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[194].fElementFraction      = FractionsZ_194;
   fNISTMaterialDataTable[194].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_METHANE ----------------------------------------------------------------------
+  // NIST_MAT_METHANE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_195[]                     = {6, 1};
   static const double FractionsZ_195[]              = {1, 4};
   fNISTMaterialDataTable[195].fName                 = "NIST_MAT_METHANE";
@@ -2778,7 +2988,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[195].fElementFraction      = FractionsZ_195;
   fNISTMaterialDataTable[195].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_METHANOL ---------------------------------------------------------------------
+  // NIST_MAT_METHANOL
+  // ---------------------------------------------------------------------
   static const int ElemsZ_196[]                     = {6, 1, 8};
   static const double FractionsZ_196[]              = {1, 4, 1};
   fNISTMaterialDataTable[196].fName                 = "NIST_MAT_METHANOL";
@@ -2792,11 +3003,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[196].fElementFraction      = FractionsZ_196;
   fNISTMaterialDataTable[196].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_MIX_D_WAX --------------------------------------------------------------------
-  static const int ElemsZ_197[]                     = {1, 6, 8, 12, 22};
-  static const double FractionsZ_197[]              = {0.13404, 0.77796, 0.03502, 0.038594, 0.014386};
-  fNISTMaterialDataTable[197].fName                 = "NIST_MAT_MIX_D_WAX";
-  fNISTMaterialDataTable[197].fDensity              = 0.99 * (g / cm3);
+  // NIST_MAT_MIX_D_WAX
+  // --------------------------------------------------------------------
+  static const int ElemsZ_197[]        = {1, 6, 8, 12, 22};
+  static const double FractionsZ_197[] = {0.13404, 0.77796, 0.03502, 0.038594, 0.014386};
+  fNISTMaterialDataTable[197].fName    = "NIST_MAT_MIX_D_WAX";
+  fNISTMaterialDataTable[197].fDensity = 0.99 * (g / cm3);
   fNISTMaterialDataTable[197].fMeanExcitationEnergy = 60.9 * eV;
   fNISTMaterialDataTable[197].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[197].fPressure             = kSTPPressure;
@@ -2806,9 +3018,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[197].fElementFraction      = FractionsZ_197;
   fNISTMaterialDataTable[197].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_MS20_TISSUE ------------------------------------------------------------------
+  // NIST_MAT_MS20_TISSUE
+  // ------------------------------------------------------------------
   static const int ElemsZ_198[]                     = {1, 6, 7, 8, 12, 17};
-  static const double FractionsZ_198[]              = {0.081192, 0.583442, 0.017798, 0.186381, 0.130287, 0.0009};
+  static const double FractionsZ_198[]              = {0.081192, 0.583442, 0.017798,
+                                          0.186381, 0.130287, 0.0009};
   fNISTMaterialDataTable[198].fName                 = "NIST_MAT_MS20_TISSUE";
   fNISTMaterialDataTable[198].fDensity              = 1 * (g / cm3);
   fNISTMaterialDataTable[198].fMeanExcitationEnergy = 75.1 * eV;
@@ -2820,9 +3034,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[198].fElementFraction      = FractionsZ_198;
   fNISTMaterialDataTable[198].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_MUSCLE_SKELETAL_ICRP ---------------------------------------------------------
+  // NIST_MAT_MUSCLE_SKELETAL_ICRP
+  // ---------------------------------------------------------
   static const int ElemsZ_199[]                     = {1, 6, 7, 8, 11, 15, 16, 17, 19};
-  static const double FractionsZ_199[]              = {0.102, 0.143, 0.034, 0.71, 0.001, 0.002, 0.003, 0.001, 0.004};
+  static const double FractionsZ_199[]              = {0.102, 0.143, 0.034, 0.71, 0.001,
+                                          0.002, 0.003, 0.001, 0.004};
   fNISTMaterialDataTable[199].fName                 = "NIST_MAT_MUSCLE_SKELETAL_ICRP";
   fNISTMaterialDataTable[199].fDensity              = 1.05 * (g / cm3);
   fNISTMaterialDataTable[199].fMeanExcitationEnergy = 75.3 * eV;
@@ -2834,10 +3050,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[199].fElementFraction      = FractionsZ_199;
   fNISTMaterialDataTable[199].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_MUSCLE_STRIATED_ICRU ---------------------------------------------------------
-  // from old ICRU report
+  // NIST_MAT_MUSCLE_STRIATED_ICRU
+  // --------------------------------------------------------- from old ICRU report
   static const int ElemsZ_200[]                     = {1, 6, 7, 8, 11, 15, 16, 19};
-  static const double FractionsZ_200[]              = {0.102, 0.123, 0.035, 0.729, 0.001, 0.002, 0.004, 0.003};
+  static const double FractionsZ_200[]              = {0.102, 0.123, 0.035, 0.729,
+                                          0.001, 0.002, 0.004, 0.003};
   fNISTMaterialDataTable[200].fName                 = "NIST_MAT_MUSCLE_STRIATED_ICRU";
   fNISTMaterialDataTable[200].fDensity              = 1.04 * (g / cm3);
   fNISTMaterialDataTable[200].fMeanExcitationEnergy = 74.7 * eV;
@@ -2849,11 +3066,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[200].fElementFraction      = FractionsZ_200;
   fNISTMaterialDataTable[200].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_MUSCLE_WITH_SUCROSE ----------------------------------------------------------
-  static const int ElemsZ_201[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_201[]              = {0.098234, 0.156214, 0.035451, 0.7101};
-  fNISTMaterialDataTable[201].fName                 = "NIST_MAT_MUSCLE_WITH_SUCROSE";
-  fNISTMaterialDataTable[201].fDensity              = 1.11 * (g / cm3);
+  // NIST_MAT_MUSCLE_WITH_SUCROSE
+  // ----------------------------------------------------------
+  static const int ElemsZ_201[]        = {1, 6, 7, 8};
+  static const double FractionsZ_201[] = {0.098234, 0.156214, 0.035451, 0.7101};
+  fNISTMaterialDataTable[201].fName    = "NIST_MAT_MUSCLE_WITH_SUCROSE";
+  fNISTMaterialDataTable[201].fDensity = 1.11 * (g / cm3);
   fNISTMaterialDataTable[201].fMeanExcitationEnergy = 74.3 * eV;
   fNISTMaterialDataTable[201].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[201].fPressure             = kSTPPressure;
@@ -2863,11 +3081,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[201].fElementFraction      = FractionsZ_201;
   fNISTMaterialDataTable[201].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_MUSCLE_WITHOUT_SUCROSE -------------------------------------------------------
-  static const int ElemsZ_202[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_202[]              = {0.101969, 0.120058, 0.035451, 0.742522};
-  fNISTMaterialDataTable[202].fName                 = "NIST_MAT_MUSCLE_WITHOUT_SUCROSE";
-  fNISTMaterialDataTable[202].fDensity              = 1.07 * (g / cm3);
+  // NIST_MAT_MUSCLE_WITHOUT_SUCROSE
+  // -------------------------------------------------------
+  static const int ElemsZ_202[]        = {1, 6, 7, 8};
+  static const double FractionsZ_202[] = {0.101969, 0.120058, 0.035451, 0.742522};
+  fNISTMaterialDataTable[202].fName    = "NIST_MAT_MUSCLE_WITHOUT_SUCROSE";
+  fNISTMaterialDataTable[202].fDensity = 1.07 * (g / cm3);
   fNISTMaterialDataTable[202].fMeanExcitationEnergy = 74.2 * eV;
   fNISTMaterialDataTable[202].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[202].fPressure             = kSTPPressure;
@@ -2877,7 +3096,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[202].fElementFraction      = FractionsZ_202;
   fNISTMaterialDataTable[202].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_NAPHTHALENE ------------------------------------------------------------------
+  // NIST_MAT_NAPHTHALENE
+  // ------------------------------------------------------------------
   static const int ElemsZ_203[]                     = {6, 1};
   static const double FractionsZ_203[]              = {10, 8};
   fNISTMaterialDataTable[203].fName                 = "NIST_MAT_NAPHTHALENE";
@@ -2891,7 +3111,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[203].fElementFraction      = FractionsZ_203;
   fNISTMaterialDataTable[203].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_NITROBENZENE -----------------------------------------------------------------
+  // NIST_MAT_NITROBENZENE
+  // -----------------------------------------------------------------
   static const int ElemsZ_204[]                     = {6, 1, 7, 8};
   static const double FractionsZ_204[]              = {6, 5, 1, 2};
   fNISTMaterialDataTable[204].fName                 = "NIST_MAT_NITROBENZENE";
@@ -2905,7 +3126,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[204].fElementFraction      = FractionsZ_204;
   fNISTMaterialDataTable[204].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_NITROUS_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_NITROUS_OXIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_205[]                     = {7, 8};
   static const double FractionsZ_205[]              = {2, 1};
   fNISTMaterialDataTable[205].fName                 = "NIST_MAT_NITROUS_OXIDE";
@@ -2919,11 +3141,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[205].fElementFraction      = FractionsZ_205;
   fNISTMaterialDataTable[205].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_NYLON-8062 -------------------------------------------------------------------
-  static const int ElemsZ_206[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_206[]              = {0.103509, 0.648415, 0.099536, 0.148539};
-  fNISTMaterialDataTable[206].fName                 = "NIST_MAT_NYLON-8062";
-  fNISTMaterialDataTable[206].fDensity              = 1.08 * (g / cm3);
+  // NIST_MAT_NYLON-8062
+  // -------------------------------------------------------------------
+  static const int ElemsZ_206[]        = {1, 6, 7, 8};
+  static const double FractionsZ_206[] = {0.103509, 0.648415, 0.099536, 0.148539};
+  fNISTMaterialDataTable[206].fName    = "NIST_MAT_NYLON-8062";
+  fNISTMaterialDataTable[206].fDensity = 1.08 * (g / cm3);
   fNISTMaterialDataTable[206].fMeanExcitationEnergy = 64.3 * eV;
   fNISTMaterialDataTable[206].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[206].fPressure             = kSTPPressure;
@@ -2933,7 +3156,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[206].fElementFraction      = FractionsZ_206;
   fNISTMaterialDataTable[206].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_NYLON-6-6 --------------------------------------------------------------------
+  // NIST_MAT_NYLON-6-6
+  // --------------------------------------------------------------------
   static const int ElemsZ_207[]                     = {6, 1, 7, 8};
   static const double FractionsZ_207[]              = {6, 11, 1, 1};
   fNISTMaterialDataTable[207].fName                 = "NIST_MAT_NYLON-6-6";
@@ -2947,11 +3171,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[207].fElementFraction      = FractionsZ_207;
   fNISTMaterialDataTable[207].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_NYLON-6-10 -------------------------------------------------------------------
-  static const int ElemsZ_208[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_208[]              = {0.107062, 0.680449, 0.099189, 0.1133};
-  fNISTMaterialDataTable[208].fName                 = "NIST_MAT_NYLON-6-10";
-  fNISTMaterialDataTable[208].fDensity              = 1.14 * (g / cm3);
+  // NIST_MAT_NYLON-6-10
+  // -------------------------------------------------------------------
+  static const int ElemsZ_208[]        = {1, 6, 7, 8};
+  static const double FractionsZ_208[] = {0.107062, 0.680449, 0.099189, 0.1133};
+  fNISTMaterialDataTable[208].fName    = "NIST_MAT_NYLON-6-10";
+  fNISTMaterialDataTable[208].fDensity = 1.14 * (g / cm3);
   fNISTMaterialDataTable[208].fMeanExcitationEnergy = 63.2 * eV;
   fNISTMaterialDataTable[208].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[208].fPressure             = kSTPPressure;
@@ -2961,11 +3186,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[208].fElementFraction      = FractionsZ_208;
   fNISTMaterialDataTable[208].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_NYLON-11_RILSAN --------------------------------------------------------------
-  static const int ElemsZ_209[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_209[]              = {0.115476, 0.720819, 0.076417, 0.087289};
-  fNISTMaterialDataTable[209].fName                 = "NIST_MAT_NYLON-11_RILSAN";
-  fNISTMaterialDataTable[209].fDensity              = 1.425 * (g / cm3);
+  // NIST_MAT_NYLON-11_RILSAN
+  // --------------------------------------------------------------
+  static const int ElemsZ_209[]        = {1, 6, 7, 8};
+  static const double FractionsZ_209[] = {0.115476, 0.720819, 0.076417, 0.087289};
+  fNISTMaterialDataTable[209].fName    = "NIST_MAT_NYLON-11_RILSAN";
+  fNISTMaterialDataTable[209].fDensity = 1.425 * (g / cm3);
   fNISTMaterialDataTable[209].fMeanExcitationEnergy = 61.6 * eV;
   fNISTMaterialDataTable[209].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[209].fPressure             = kSTPPressure;
@@ -2975,7 +3201,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[209].fElementFraction      = FractionsZ_209;
   fNISTMaterialDataTable[209].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_OCTANE -----------------------------------------------------------------------
+  // NIST_MAT_OCTANE
+  // -----------------------------------------------------------------------
   static const int ElemsZ_210[]                     = {6, 1};
   static const double FractionsZ_210[]              = {8, 18};
   fNISTMaterialDataTable[210].fName                 = "NIST_MAT_OCTANE";
@@ -2989,7 +3216,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[210].fElementFraction      = FractionsZ_210;
   fNISTMaterialDataTable[210].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_PARAFFIN ---------------------------------------------------------------------
+  // NIST_MAT_PARAFFIN
+  // ---------------------------------------------------------------------
   static const int ElemsZ_211[]                     = {6, 1};
   static const double FractionsZ_211[]              = {25, 52};
   fNISTMaterialDataTable[211].fName                 = "NIST_MAT_PARAFFIN";
@@ -3003,7 +3231,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[211].fElementFraction      = FractionsZ_211;
   fNISTMaterialDataTable[211].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_N-PENTANE --------------------------------------------------------------------
+  // NIST_MAT_N-PENTANE
+  // --------------------------------------------------------------------
   static const int ElemsZ_212[]                     = {6, 1};
   static const double FractionsZ_212[]              = {5, 12};
   fNISTMaterialDataTable[212].fName                 = "NIST_MAT_N-PENTANE";
@@ -3017,9 +3246,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[212].fElementFraction      = FractionsZ_212;
   fNISTMaterialDataTable[212].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_PHOTO_EMULSION ---------------------------------------------------------------
+  // NIST_MAT_PHOTO_EMULSION
+  // ---------------------------------------------------------------
   static const int ElemsZ_213[]        = {1, 6, 7, 8, 16, 35, 47, 53};
-  static const double FractionsZ_213[] = {0.0141, 0.072261, 0.01932, 0.066101, 0.00189, 0.349103, 0.474105, 0.00312};
+  static const double FractionsZ_213[] = {0.0141,  0.072261, 0.01932,  0.066101,
+                                          0.00189, 0.349103, 0.474105, 0.00312};
   fNISTMaterialDataTable[213].fName    = "NIST_MAT_PHOTO_EMULSION";
   fNISTMaterialDataTable[213].fDensity = 3.815 * (g / cm3);
   fNISTMaterialDataTable[213].fMeanExcitationEnergy = 331 * eV;
@@ -3031,7 +3262,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[213].fElementFraction      = FractionsZ_213;
   fNISTMaterialDataTable[213].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_PLASTIC_SC_VINYLTOLUENE ------------------------------------------------------
+  // NIST_MAT_PLASTIC_SC_VINYLTOLUENE
+  // ------------------------------------------------------
   static const int ElemsZ_214[]                     = {6, 1};
   static const double FractionsZ_214[]              = {9, 10};
   fNISTMaterialDataTable[214].fName                 = "NIST_MAT_PLASTIC_SC_VINYLTOLUENE";
@@ -3045,7 +3277,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[214].fElementFraction      = FractionsZ_214;
   fNISTMaterialDataTable[214].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_PLUTONIUM_DIOXIDE ------------------------------------------------------------
+  // NIST_MAT_PLUTONIUM_DIOXIDE
+  // ------------------------------------------------------------
   static const int ElemsZ_215[]                     = {94, 8};
   static const double FractionsZ_215[]              = {1, 2};
   fNISTMaterialDataTable[215].fName                 = "NIST_MAT_PLUTONIUM_DIOXIDE";
@@ -3059,7 +3292,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[215].fElementFraction      = FractionsZ_215;
   fNISTMaterialDataTable[215].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYACRYLONITRILE ------------------------------------------------------------
+  // NIST_MAT_POLYACRYLONITRILE
+  // ------------------------------------------------------------
   static const int ElemsZ_216[]                     = {6, 1, 7};
   static const double FractionsZ_216[]              = {3, 3, 1};
   fNISTMaterialDataTable[216].fName                 = "NIST_MAT_POLYACRYLONITRILE";
@@ -3073,7 +3307,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[216].fElementFraction      = FractionsZ_216;
   fNISTMaterialDataTable[216].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYCARBONATE ----------------------------------------------------------------
+  // NIST_MAT_POLYCARBONATE
+  // ----------------------------------------------------------------
   static const int ElemsZ_217[]                     = {6, 1, 8};
   static const double FractionsZ_217[]              = {16, 14, 3};
   fNISTMaterialDataTable[217].fName                 = "NIST_MAT_POLYCARBONATE";
@@ -3087,7 +3322,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[217].fElementFraction      = FractionsZ_217;
   fNISTMaterialDataTable[217].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYCHLOROSTYRENE ------------------------------------------------------------
+  // NIST_MAT_POLYCHLOROSTYRENE
+  // ------------------------------------------------------------
   static const int ElemsZ_218[]                     = {6, 1, 17};
   static const double FractionsZ_218[]              = {8, 7, 1};
   fNISTMaterialDataTable[218].fName                 = "NIST_MAT_POLYCHLOROSTYRENE";
@@ -3101,7 +3337,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[218].fElementFraction      = FractionsZ_218;
   fNISTMaterialDataTable[218].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYETHYLENE -----------------------------------------------------------------
+  // NIST_MAT_POLYETHYLENE
+  // -----------------------------------------------------------------
   static const int ElemsZ_219[]                     = {6, 1};
   static const double FractionsZ_219[]              = {1, 2};
   fNISTMaterialDataTable[219].fName                 = "NIST_MAT_POLYETHYLENE";
@@ -3115,7 +3352,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[219].fElementFraction      = FractionsZ_219;
   fNISTMaterialDataTable[219].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_MYLAR ------------------------------------------------------------------------
+  // NIST_MAT_MYLAR
+  // ------------------------------------------------------------------------
   static const int ElemsZ_220[]                     = {6, 1, 8};
   static const double FractionsZ_220[]              = {10, 8, 4};
   fNISTMaterialDataTable[220].fName                 = "NIST_MAT_MYLAR";
@@ -3129,7 +3367,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[220].fElementFraction      = FractionsZ_220;
   fNISTMaterialDataTable[220].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_PLEXIGLASS -------------------------------------------------------------------
+  // NIST_MAT_PLEXIGLASS
+  // -------------------------------------------------------------------
   static const int ElemsZ_221[]                     = {6, 1, 8};
   static const double FractionsZ_221[]              = {5, 8, 2};
   fNISTMaterialDataTable[221].fName                 = "NIST_MAT_PLEXIGLASS";
@@ -3143,7 +3382,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[221].fElementFraction      = FractionsZ_221;
   fNISTMaterialDataTable[221].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYOXYMETHYLENE -------------------------------------------------------------
+  // NIST_MAT_POLYOXYMETHYLENE
+  // -------------------------------------------------------------
   static const int ElemsZ_222[]                     = {6, 1, 8};
   static const double FractionsZ_222[]              = {1, 2, 1};
   fNISTMaterialDataTable[222].fName                 = "NIST_MAT_POLYOXYMETHYLENE";
@@ -3157,7 +3397,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[222].fElementFraction      = FractionsZ_222;
   fNISTMaterialDataTable[222].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYPROPYLENE ----------------------------------------------------------------
+  // NIST_MAT_POLYPROPYLENE
+  // ----------------------------------------------------------------
   static const int ElemsZ_223[]                     = {6, 1};
   static const double FractionsZ_223[]              = {2, 4};
   fNISTMaterialDataTable[223].fName                 = "NIST_MAT_POLYPROPYLENE";
@@ -3171,7 +3412,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[223].fElementFraction      = FractionsZ_223;
   fNISTMaterialDataTable[223].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYSTYRENE ------------------------------------------------------------------
+  // NIST_MAT_POLYSTYRENE
+  // ------------------------------------------------------------------
   static const int ElemsZ_224[]                     = {6, 1};
   static const double FractionsZ_224[]              = {8, 8};
   fNISTMaterialDataTable[224].fName                 = "NIST_MAT_POLYSTYRENE";
@@ -3185,7 +3427,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[224].fElementFraction      = FractionsZ_224;
   fNISTMaterialDataTable[224].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TEFLON -----------------------------------------------------------------------
+  // NIST_MAT_TEFLON
+  // -----------------------------------------------------------------------
   static const int ElemsZ_225[]                     = {6, 9};
   static const double FractionsZ_225[]              = {2, 4};
   fNISTMaterialDataTable[225].fName                 = "NIST_MAT_TEFLON";
@@ -3199,11 +3442,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[225].fElementFraction      = FractionsZ_225;
   fNISTMaterialDataTable[225].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE --------------------------------------------------
-  static const int ElemsZ_226[]                     = {6, 9, 17};
-  static const double FractionsZ_226[]              = {2, 3, 1};
-  fNISTMaterialDataTable[226].fName                 = "NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE";
-  fNISTMaterialDataTable[226].fDensity              = 2.1 * (g / cm3);
+  // NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE
+  // --------------------------------------------------
+  static const int ElemsZ_226[]        = {6, 9, 17};
+  static const double FractionsZ_226[] = {2, 3, 1};
+  fNISTMaterialDataTable[226].fName    = "NIST_MAT_POLYTRIFLUOROCHLOROETHYLENE";
+  fNISTMaterialDataTable[226].fDensity = 2.1 * (g / cm3);
   fNISTMaterialDataTable[226].fMeanExcitationEnergy = 120.7 * eV;
   fNISTMaterialDataTable[226].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[226].fPressure             = kSTPPressure;
@@ -3213,7 +3457,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[226].fElementFraction      = FractionsZ_226;
   fNISTMaterialDataTable[226].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYVINYL_ACETATE ------------------------------------------------------------
+  // NIST_MAT_POLYVINYL_ACETATE
+  // ------------------------------------------------------------
   static const int ElemsZ_227[]                     = {6, 1, 8};
   static const double FractionsZ_227[]              = {4, 6, 2};
   fNISTMaterialDataTable[227].fName                 = "NIST_MAT_POLYVINYL_ACETATE";
@@ -3227,7 +3472,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[227].fElementFraction      = FractionsZ_227;
   fNISTMaterialDataTable[227].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYVINYL_ALCOHOL ------------------------------------------------------------
+  // NIST_MAT_POLYVINYL_ALCOHOL
+  // ------------------------------------------------------------
   static const int ElemsZ_228[]                     = {6, 1, 8};
   static const double FractionsZ_228[]              = {2, 4, 1};
   fNISTMaterialDataTable[228].fName                 = "NIST_MAT_POLYVINYL_ALCOHOL";
@@ -3241,7 +3487,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[228].fElementFraction      = FractionsZ_228;
   fNISTMaterialDataTable[228].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYVINYL_BUTYRAL ------------------------------------------------------------
+  // NIST_MAT_POLYVINYL_BUTYRAL
+  // ------------------------------------------------------------
   static const int ElemsZ_229[]                     = {6, 1, 8};
   static const double FractionsZ_229[]              = {8, 14, 2};
   fNISTMaterialDataTable[229].fName                 = "NIST_MAT_POLYVINYL_BUTYRAL";
@@ -3255,7 +3502,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[229].fElementFraction      = FractionsZ_229;
   fNISTMaterialDataTable[229].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYVINYL_CHLORIDE -----------------------------------------------------------
+  // NIST_MAT_POLYVINYL_CHLORIDE
+  // -----------------------------------------------------------
   static const int ElemsZ_230[]                     = {6, 1, 17};
   static const double FractionsZ_230[]              = {2, 3, 1};
   fNISTMaterialDataTable[230].fName                 = "NIST_MAT_POLYVINYL_CHLORIDE";
@@ -3269,7 +3517,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[230].fElementFraction      = FractionsZ_230;
   fNISTMaterialDataTable[230].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYVINYLIDENE_CHLORIDE ------------------------------------------------------
+  // NIST_MAT_POLYVINYLIDENE_CHLORIDE
+  // ------------------------------------------------------
   static const int ElemsZ_231[]                     = {6, 1, 17};
   static const double FractionsZ_231[]              = {2, 2, 2};
   fNISTMaterialDataTable[231].fName                 = "NIST_MAT_POLYVINYLIDENE_CHLORIDE";
@@ -3283,7 +3532,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[231].fElementFraction      = FractionsZ_231;
   fNISTMaterialDataTable[231].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYVINYLIDENE_FLUORIDE ------------------------------------------------------
+  // NIST_MAT_POLYVINYLIDENE_FLUORIDE
+  // ------------------------------------------------------
   static const int ElemsZ_232[]                     = {6, 1, 9};
   static const double FractionsZ_232[]              = {2, 2, 2};
   fNISTMaterialDataTable[232].fName                 = "NIST_MAT_POLYVINYLIDENE_FLUORIDE";
@@ -3297,7 +3547,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[232].fElementFraction      = FractionsZ_232;
   fNISTMaterialDataTable[232].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POLYVINYL_PYRROLIDONE --------------------------------------------------------
+  // NIST_MAT_POLYVINYL_PYRROLIDONE
+  // --------------------------------------------------------
   static const int ElemsZ_233[]                     = {6, 1, 7, 8};
   static const double FractionsZ_233[]              = {6, 9, 1, 1};
   fNISTMaterialDataTable[233].fName                 = "NIST_MAT_POLYVINYL_PYRROLIDONE";
@@ -3311,7 +3562,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[233].fElementFraction      = FractionsZ_233;
   fNISTMaterialDataTable[233].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POTASSIUM_IODIDE -------------------------------------------------------------
+  // NIST_MAT_POTASSIUM_IODIDE
+  // -------------------------------------------------------------
   static const int ElemsZ_234[]                     = {19, 53};
   static const double FractionsZ_234[]              = {1, 1};
   fNISTMaterialDataTable[234].fName                 = "NIST_MAT_POTASSIUM_IODIDE";
@@ -3325,7 +3577,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[234].fElementFraction      = FractionsZ_234;
   fNISTMaterialDataTable[234].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_POTASSIUM_OXIDE --------------------------------------------------------------
+  // NIST_MAT_POTASSIUM_OXIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_235[]                     = {19, 8};
   static const double FractionsZ_235[]              = {2, 1};
   fNISTMaterialDataTable[235].fName                 = "NIST_MAT_POTASSIUM_OXIDE";
@@ -3339,7 +3592,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[235].fElementFraction      = FractionsZ_235;
   fNISTMaterialDataTable[235].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_PROPANE ----------------------------------------------------------------------
+  // NIST_MAT_PROPANE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_236[]                     = {6, 1};
   static const double FractionsZ_236[]              = {3, 8};
   fNISTMaterialDataTable[236].fName                 = "NIST_MAT_PROPANE";
@@ -3353,7 +3607,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[236].fElementFraction      = FractionsZ_236;
   fNISTMaterialDataTable[236].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_lPROPANE ---------------------------------------------------------------------
+  // NIST_MAT_lPROPANE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_237[]                     = {6, 1};
   static const double FractionsZ_237[]              = {3, 8};
   fNISTMaterialDataTable[237].fName                 = "NIST_MAT_lPROPANE";
@@ -3367,7 +3622,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[237].fElementFraction      = FractionsZ_237;
   fNISTMaterialDataTable[237].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_N-PROPYL_ALCOHOL -------------------------------------------------------------
+  // NIST_MAT_N-PROPYL_ALCOHOL
+  // -------------------------------------------------------------
   static const int ElemsZ_238[]                     = {6, 1, 8};
   static const double FractionsZ_238[]              = {3, 8, 1};
   fNISTMaterialDataTable[238].fName                 = "NIST_MAT_N-PROPYL_ALCOHOL";
@@ -3381,7 +3637,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[238].fElementFraction      = FractionsZ_238;
   fNISTMaterialDataTable[238].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_PYRIDINE ---------------------------------------------------------------------
+  // NIST_MAT_PYRIDINE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_239[]                     = {6, 1, 7};
   static const double FractionsZ_239[]              = {5, 5, 1};
   fNISTMaterialDataTable[239].fName                 = "NIST_MAT_PYRIDINE";
@@ -3395,7 +3652,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[239].fElementFraction      = FractionsZ_239;
   fNISTMaterialDataTable[239].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_RUBBER_BUTYL -----------------------------------------------------------------
+  // NIST_MAT_RUBBER_BUTYL
+  // -----------------------------------------------------------------
   static const int ElemsZ_240[]                     = {1, 6};
   static const double FractionsZ_240[]              = {0.143711, 0.856289};
   fNISTMaterialDataTable[240].fName                 = "NIST_MAT_RUBBER_BUTYL";
@@ -3409,7 +3667,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[240].fElementFraction      = FractionsZ_240;
   fNISTMaterialDataTable[240].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_RUBBER_NATURAL ---------------------------------------------------------------
+  // NIST_MAT_RUBBER_NATURAL
+  // ---------------------------------------------------------------
   static const int ElemsZ_241[]                     = {1, 6};
   static const double FractionsZ_241[]              = {0.118371, 0.881629};
   fNISTMaterialDataTable[241].fName                 = "NIST_MAT_RUBBER_NATURAL";
@@ -3423,7 +3682,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[241].fElementFraction      = FractionsZ_241;
   fNISTMaterialDataTable[241].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_RUBBER_NEOPRENE --------------------------------------------------------------
+  // NIST_MAT_RUBBER_NEOPRENE
+  // --------------------------------------------------------------
   static const int ElemsZ_242[]                     = {1, 6, 17};
   static const double FractionsZ_242[]              = {0.05692, 0.542646, 0.400434};
   fNISTMaterialDataTable[242].fName                 = "NIST_MAT_RUBBER_NEOPRENE";
@@ -3437,7 +3697,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[242].fElementFraction      = FractionsZ_242;
   fNISTMaterialDataTable[242].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_SILICON_DIOXIDE --------------------------------------------------------------
+  // NIST_MAT_SILICON_DIOXIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_243[]                     = {14, 8};
   static const double FractionsZ_243[]              = {1, 2};
   fNISTMaterialDataTable[243].fName                 = "NIST_MAT_SILICON_DIOXIDE";
@@ -3451,7 +3712,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[243].fElementFraction      = FractionsZ_243;
   fNISTMaterialDataTable[243].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SILVER_BROMIDE ---------------------------------------------------------------
+  // NIST_MAT_SILVER_BROMIDE
+  // ---------------------------------------------------------------
   static const int ElemsZ_244[]                     = {47, 35};
   static const double FractionsZ_244[]              = {1, 1};
   fNISTMaterialDataTable[244].fName                 = "NIST_MAT_SILVER_BROMIDE";
@@ -3465,7 +3727,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[244].fElementFraction      = FractionsZ_244;
   fNISTMaterialDataTable[244].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SILVER_CHLORIDE --------------------------------------------------------------
+  // NIST_MAT_SILVER_CHLORIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_245[]                     = {47, 17};
   static const double FractionsZ_245[]              = {1, 1};
   fNISTMaterialDataTable[245].fName                 = "NIST_MAT_SILVER_CHLORIDE";
@@ -3479,7 +3742,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[245].fElementFraction      = FractionsZ_245;
   fNISTMaterialDataTable[245].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SILVER_HALIDES ---------------------------------------------------------------
+  // NIST_MAT_SILVER_HALIDES
+  // ---------------------------------------------------------------
   static const int ElemsZ_246[]                     = {35, 47, 53};
   static const double FractionsZ_246[]              = {0.422895, 0.573748, 0.003357};
   fNISTMaterialDataTable[246].fName                 = "NIST_MAT_SILVER_HALIDES";
@@ -3493,7 +3757,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[246].fElementFraction      = FractionsZ_246;
   fNISTMaterialDataTable[246].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_SILVER_IODIDE ----------------------------------------------------------------
+  // NIST_MAT_SILVER_IODIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_247[]                     = {47, 53};
   static const double FractionsZ_247[]              = {1, 1};
   fNISTMaterialDataTable[247].fName                 = "NIST_MAT_SILVER_IODIDE";
@@ -3507,9 +3772,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[247].fElementFraction      = FractionsZ_247;
   fNISTMaterialDataTable[247].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SKIN_ICRP --------------------------------------------------------------------
+  // NIST_MAT_SKIN_ICRP
+  // --------------------------------------------------------------------
   static const int ElemsZ_248[]                     = {1, 6, 7, 8, 11, 15, 16, 17, 19};
-  static const double FractionsZ_248[]              = {0.1, 0.204, 0.042, 0.645, 0.002, 0.001, 0.002, 0.003, 0.001};
+  static const double FractionsZ_248[]              = {0.1,   0.204, 0.042, 0.645, 0.002,
+                                          0.001, 0.002, 0.003, 0.001};
   fNISTMaterialDataTable[248].fName                 = "NIST_MAT_SKIN_ICRP";
   fNISTMaterialDataTable[248].fDensity              = 1.09 * (g / cm3);
   fNISTMaterialDataTable[248].fMeanExcitationEnergy = 72.7 * eV;
@@ -3521,7 +3788,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[248].fElementFraction      = FractionsZ_248;
   fNISTMaterialDataTable[248].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_SODIUM_CARBONATE -------------------------------------------------------------
+  // NIST_MAT_SODIUM_CARBONATE
+  // -------------------------------------------------------------
   static const int ElemsZ_249[]                     = {11, 6, 8};
   static const double FractionsZ_249[]              = {2, 1, 3};
   fNISTMaterialDataTable[249].fName                 = "NIST_MAT_SODIUM_CARBONATE";
@@ -3535,7 +3803,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[249].fElementFraction      = FractionsZ_249;
   fNISTMaterialDataTable[249].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SODIUM_IODIDE ----------------------------------------------------------------
+  // NIST_MAT_SODIUM_IODIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_250[]                     = {11, 53};
   static const double FractionsZ_250[]              = {1, 1};
   fNISTMaterialDataTable[250].fName                 = "NIST_MAT_SODIUM_IODIDE";
@@ -3549,7 +3818,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[250].fElementFraction      = FractionsZ_250;
   fNISTMaterialDataTable[250].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SODIUM_MONOXIDE --------------------------------------------------------------
+  // NIST_MAT_SODIUM_MONOXIDE
+  // --------------------------------------------------------------
   static const int ElemsZ_251[]                     = {11, 8};
   static const double FractionsZ_251[]              = {2, 1};
   fNISTMaterialDataTable[251].fName                 = "NIST_MAT_SODIUM_MONOXIDE";
@@ -3563,7 +3833,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[251].fElementFraction      = FractionsZ_251;
   fNISTMaterialDataTable[251].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SODIUM_NITRATE ---------------------------------------------------------------
+  // NIST_MAT_SODIUM_NITRATE
+  // ---------------------------------------------------------------
   static const int ElemsZ_252[]                     = {11, 7, 8};
   static const double FractionsZ_252[]              = {1, 1, 3};
   fNISTMaterialDataTable[252].fName                 = "NIST_MAT_SODIUM_NITRATE";
@@ -3577,7 +3848,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[252].fElementFraction      = FractionsZ_252;
   fNISTMaterialDataTable[252].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_STILBENE ---------------------------------------------------------------------
+  // NIST_MAT_STILBENE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_253[]                     = {6, 1};
   static const double FractionsZ_253[]              = {14, 12};
   fNISTMaterialDataTable[253].fName                 = "NIST_MAT_STILBENE";
@@ -3591,7 +3863,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[253].fElementFraction      = FractionsZ_253;
   fNISTMaterialDataTable[253].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_SUCROSE ----------------------------------------------------------------------
+  // NIST_MAT_SUCROSE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_254[]                     = {6, 1, 8};
   static const double FractionsZ_254[]              = {12, 22, 11};
   fNISTMaterialDataTable[254].fName                 = "NIST_MAT_SUCROSE";
@@ -3605,7 +3878,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[254].fElementFraction      = FractionsZ_254;
   fNISTMaterialDataTable[254].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TERPHENYL --------------------------------------------------------------------
+  // NIST_MAT_TERPHENYL
+  // --------------------------------------------------------------------
   static const int ElemsZ_255[]                     = {6, 1};
   static const double FractionsZ_255[]              = {18, 14};
   fNISTMaterialDataTable[255].fName                 = "NIST_MAT_TERPHENYL";
@@ -3619,9 +3893,11 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[255].fElementFraction      = FractionsZ_255;
   fNISTMaterialDataTable[255].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TESTIS_ICRP ------------------------------------------------------------------
+  // NIST_MAT_TESTIS_ICRP
+  // ------------------------------------------------------------------
   static const int ElemsZ_256[]                     = {1, 6, 7, 8, 11, 15, 16, 17, 19};
-  static const double FractionsZ_256[]              = {0.106, 0.099, 0.02, 0.766, 0.002, 0.001, 0.002, 0.002, 0.002};
+  static const double FractionsZ_256[]              = {0.106, 0.099, 0.02,  0.766, 0.002,
+                                          0.001, 0.002, 0.002, 0.002};
   fNISTMaterialDataTable[256].fName                 = "NIST_MAT_TESTIS_ICRP";
   fNISTMaterialDataTable[256].fDensity              = 1.04 * (g / cm3);
   fNISTMaterialDataTable[256].fMeanExcitationEnergy = 75 * eV;
@@ -3633,7 +3909,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[256].fElementFraction      = FractionsZ_256;
   fNISTMaterialDataTable[256].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_TETRACHLOROETHYLENE ----------------------------------------------------------
+  // NIST_MAT_TETRACHLOROETHYLENE
+  // ----------------------------------------------------------
   static const int ElemsZ_257[]                     = {6, 17};
   static const double FractionsZ_257[]              = {2, 4};
   fNISTMaterialDataTable[257].fName                 = "NIST_MAT_TETRACHLOROETHYLENE";
@@ -3647,7 +3924,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[257].fElementFraction      = FractionsZ_257;
   fNISTMaterialDataTable[257].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_THALLIUM_CHLORIDE ------------------------------------------------------------
+  // NIST_MAT_THALLIUM_CHLORIDE
+  // ------------------------------------------------------------
   static const int ElemsZ_258[]                     = {81, 17};
   static const double FractionsZ_258[]              = {1, 1};
   fNISTMaterialDataTable[258].fName                 = "NIST_MAT_THALLIUM_CHLORIDE";
@@ -3661,10 +3939,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[258].fElementFraction      = FractionsZ_258;
   fNISTMaterialDataTable[258].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TISSUE_SOFT_ICRP -------------------------------------------------------------
-  // TISSUE_SOFT_MALE ICRU-44/46 (1989)
+  // NIST_MAT_TISSUE_SOFT_ICRP
+  // ------------------------------------------------------------- TISSUE_SOFT_MALE
+  // ICRU-44/46 (1989)
   static const int ElemsZ_259[]                     = {1, 6, 7, 8, 11, 15, 16, 17, 19};
-  static const double FractionsZ_259[]              = {0.105, 0.256, 0.027, 0.602, 0.001, 0.002, 0.003, 0.002, 0.002};
+  static const double FractionsZ_259[]              = {0.105, 0.256, 0.027, 0.602, 0.001,
+                                          0.002, 0.003, 0.002, 0.002};
   fNISTMaterialDataTable[259].fName                 = "NIST_MAT_TISSUE_SOFT_ICRP";
   fNISTMaterialDataTable[259].fDensity              = 1.03 * (g / cm3);
   fNISTMaterialDataTable[259].fMeanExcitationEnergy = 72.3 * eV;
@@ -3676,8 +3956,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[259].fElementFraction      = FractionsZ_259;
   fNISTMaterialDataTable[259].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_TISSUE_SOFT_ICRU-4 -----------------------------------------------------------
-  // Tissue soft adult ICRU-33 (1980)
+  // NIST_MAT_TISSUE_SOFT_ICRU-4
+  // ----------------------------------------------------------- Tissue soft adult ICRU-33
+  // (1980)
   static const int ElemsZ_260[]                     = {1, 6, 7, 8};
   static const double FractionsZ_260[]              = {0.101, 0.111, 0.026, 0.762};
   fNISTMaterialDataTable[260].fName                 = "NIST_MAT_TISSUE_SOFT_ICRU-4";
@@ -3691,11 +3972,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[260].fElementFraction      = FractionsZ_260;
   fNISTMaterialDataTable[260].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_TISSUE-METHANE ---------------------------------------------------------------
-  static const int ElemsZ_261[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_261[]              = {0.101869, 0.456179, 0.035172, 0.40678};
-  fNISTMaterialDataTable[261].fName                 = "NIST_MAT_TISSUE-METHANE";
-  fNISTMaterialDataTable[261].fDensity              = 0.00106409 * (g / cm3);
+  // NIST_MAT_TISSUE-METHANE
+  // ---------------------------------------------------------------
+  static const int ElemsZ_261[]        = {1, 6, 7, 8};
+  static const double FractionsZ_261[] = {0.101869, 0.456179, 0.035172, 0.40678};
+  fNISTMaterialDataTable[261].fName    = "NIST_MAT_TISSUE-METHANE";
+  fNISTMaterialDataTable[261].fDensity = 0.00106409 * (g / cm3);
   fNISTMaterialDataTable[261].fMeanExcitationEnergy = 61.2 * eV;
   fNISTMaterialDataTable[261].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[261].fPressure             = kSTPPressure;
@@ -3705,11 +3987,12 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[261].fElementFraction      = FractionsZ_261;
   fNISTMaterialDataTable[261].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_TISSUE-PROPANE ---------------------------------------------------------------
-  static const int ElemsZ_262[]                     = {1, 6, 7, 8};
-  static const double FractionsZ_262[]              = {0.102672, 0.56894, 0.035022, 0.293366};
-  fNISTMaterialDataTable[262].fName                 = "NIST_MAT_TISSUE-PROPANE";
-  fNISTMaterialDataTable[262].fDensity              = 0.00182628 * (g / cm3);
+  // NIST_MAT_TISSUE-PROPANE
+  // ---------------------------------------------------------------
+  static const int ElemsZ_262[]        = {1, 6, 7, 8};
+  static const double FractionsZ_262[] = {0.102672, 0.56894, 0.035022, 0.293366};
+  fNISTMaterialDataTable[262].fName    = "NIST_MAT_TISSUE-PROPANE";
+  fNISTMaterialDataTable[262].fDensity = 0.00182628 * (g / cm3);
   fNISTMaterialDataTable[262].fMeanExcitationEnergy = 59.5 * eV;
   fNISTMaterialDataTable[262].fTemperature          = kNTPTemperature;
   fNISTMaterialDataTable[262].fPressure             = kSTPPressure;
@@ -3719,7 +4002,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[262].fElementFraction      = FractionsZ_262;
   fNISTMaterialDataTable[262].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_TITANIUM_DIOXIDE -------------------------------------------------------------
+  // NIST_MAT_TITANIUM_DIOXIDE
+  // -------------------------------------------------------------
   static const int ElemsZ_263[]                     = {22, 8};
   static const double FractionsZ_263[]              = {1, 2};
   fNISTMaterialDataTable[263].fName                 = "NIST_MAT_TITANIUM_DIOXIDE";
@@ -3733,7 +4017,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[263].fElementFraction      = FractionsZ_263;
   fNISTMaterialDataTable[263].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TOLUENE ----------------------------------------------------------------------
+  // NIST_MAT_TOLUENE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_264[]                     = {6, 1};
   static const double FractionsZ_264[]              = {7, 8};
   fNISTMaterialDataTable[264].fName                 = "NIST_MAT_TOLUENE";
@@ -3747,7 +4032,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[264].fElementFraction      = FractionsZ_264;
   fNISTMaterialDataTable[264].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TRICHLOROETHYLENE ------------------------------------------------------------
+  // NIST_MAT_TRICHLOROETHYLENE
+  // ------------------------------------------------------------
   static const int ElemsZ_265[]                     = {6, 1, 17};
   static const double FractionsZ_265[]              = {2, 1, 3};
   fNISTMaterialDataTable[265].fName                 = "NIST_MAT_TRICHLOROETHYLENE";
@@ -3761,7 +4047,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[265].fElementFraction      = FractionsZ_265;
   fNISTMaterialDataTable[265].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TRIETHYL_PHOSPHATE -----------------------------------------------------------
+  // NIST_MAT_TRIETHYL_PHOSPHATE
+  // -----------------------------------------------------------
   static const int ElemsZ_266[]                     = {6, 1, 8, 15};
   static const double FractionsZ_266[]              = {6, 15, 4, 1};
   fNISTMaterialDataTable[266].fName                 = "NIST_MAT_TRIETHYL_PHOSPHATE";
@@ -3775,7 +4062,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[266].fElementFraction      = FractionsZ_266;
   fNISTMaterialDataTable[266].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_TUNGSTEN_HEXAFLUORIDE --------------------------------------------------------
+  // NIST_MAT_TUNGSTEN_HEXAFLUORIDE
+  // --------------------------------------------------------
   static const int ElemsZ_267[]                     = {74, 9};
   static const double FractionsZ_267[]              = {1, 6};
   fNISTMaterialDataTable[267].fName                 = "NIST_MAT_TUNGSTEN_HEXAFLUORIDE";
@@ -3789,7 +4077,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[267].fElementFraction      = FractionsZ_267;
   fNISTMaterialDataTable[267].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_URANIUM_DICARBIDE ------------------------------------------------------------
+  // NIST_MAT_URANIUM_DICARBIDE
+  // ------------------------------------------------------------
   static const int ElemsZ_268[]                     = {92, 6};
   static const double FractionsZ_268[]              = {1, 2};
   fNISTMaterialDataTable[268].fName                 = "NIST_MAT_URANIUM_DICARBIDE";
@@ -3803,7 +4092,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[268].fElementFraction      = FractionsZ_268;
   fNISTMaterialDataTable[268].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_URANIUM_MONOCARBIDE ----------------------------------------------------------
+  // NIST_MAT_URANIUM_MONOCARBIDE
+  // ----------------------------------------------------------
   static const int ElemsZ_269[]                     = {92, 6};
   static const double FractionsZ_269[]              = {1, 1};
   fNISTMaterialDataTable[269].fName                 = "NIST_MAT_URANIUM_MONOCARBIDE";
@@ -3817,7 +4107,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[269].fElementFraction      = FractionsZ_269;
   fNISTMaterialDataTable[269].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_URANIUM_OXIDE ----------------------------------------------------------------
+  // NIST_MAT_URANIUM_OXIDE
+  // ----------------------------------------------------------------
   static const int ElemsZ_270[]                     = {92, 8};
   static const double FractionsZ_270[]              = {1, 2};
   fNISTMaterialDataTable[270].fName                 = "NIST_MAT_URANIUM_OXIDE";
@@ -3831,7 +4122,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[270].fElementFraction      = FractionsZ_270;
   fNISTMaterialDataTable[270].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_UREA -------------------------------------------------------------------------
+  // NIST_MAT_UREA
+  // -------------------------------------------------------------------------
   static const int ElemsZ_271[]                     = {6, 1, 7, 8};
   static const double FractionsZ_271[]              = {1, 4, 2, 1};
   fNISTMaterialDataTable[271].fName                 = "NIST_MAT_UREA";
@@ -3845,7 +4137,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[271].fElementFraction      = FractionsZ_271;
   fNISTMaterialDataTable[271].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_VALINE -----------------------------------------------------------------------
+  // NIST_MAT_VALINE
+  // -----------------------------------------------------------------------
   static const int ElemsZ_272[]                     = {6, 1, 7, 8};
   static const double FractionsZ_272[]              = {5, 11, 1, 2};
   fNISTMaterialDataTable[272].fName                 = "NIST_MAT_VALINE";
@@ -3859,7 +4152,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[272].fElementFraction      = FractionsZ_272;
   fNISTMaterialDataTable[272].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_VITON ------------------------------------------------------------------------
+  // NIST_MAT_VITON
+  // ------------------------------------------------------------------------
   static const int ElemsZ_273[]                     = {1, 6, 9};
   static const double FractionsZ_273[]              = {0.009417, 0.280555, 0.710028};
   fNISTMaterialDataTable[273].fName                 = "NIST_MAT_VITON";
@@ -3873,7 +4167,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[273].fElementFraction      = FractionsZ_273;
   fNISTMaterialDataTable[273].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_WATER ------------------------------------------------------------------------
+  // NIST_MAT_WATER
+  // ------------------------------------------------------------------------
   static const int ElemsZ_274[]                     = {1, 8};
   static const double FractionsZ_274[]              = {2, 1};
   fNISTMaterialDataTable[274].fName                 = "NIST_MAT_WATER";
@@ -3887,7 +4182,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[274].fElementFraction      = FractionsZ_274;
   fNISTMaterialDataTable[274].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_WATER_VAPOR ------------------------------------------------------------------
+  // NIST_MAT_WATER_VAPOR
+  // ------------------------------------------------------------------
   static const int ElemsZ_275[]                     = {1, 8};
   static const double FractionsZ_275[]              = {2, 1};
   fNISTMaterialDataTable[275].fName                 = "NIST_MAT_WATER_VAPOR";
@@ -3901,7 +4197,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[275].fElementFraction      = FractionsZ_275;
   fNISTMaterialDataTable[275].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_XYLENE -----------------------------------------------------------------------
+  // NIST_MAT_XYLENE
+  // -----------------------------------------------------------------------
   static const int ElemsZ_276[]                     = {6, 1};
   static const double FractionsZ_276[]              = {8, 10};
   fNISTMaterialDataTable[276].fName                 = "NIST_MAT_XYLENE";
@@ -3915,7 +4212,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[276].fElementFraction      = FractionsZ_276;
   fNISTMaterialDataTable[276].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_GRAPHITE ---------------------------------------------------------------------
+  // NIST_MAT_GRAPHITE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_277[]                     = {6};
   static const double FractionsZ_277[]              = {1};
   fNISTMaterialDataTable[277].fName                 = "NIST_MAT_GRAPHITE";
@@ -3933,7 +4231,8 @@ void NISTMaterialData::BuildTable()
   // HEP and Nuclear Materials :
   // =======================================================================================
 
-  // NIST_MAT_lH2 --------------------------------------------------------------------------
+  // NIST_MAT_lH2
+  // --------------------------------------------------------------------------
   static const int ElemsZ_278[]                     = {1};
   static const double FractionsZ_278[]              = {1};
   fNISTMaterialDataTable[278].fName                 = "NIST_MAT_lH2";
@@ -3947,7 +4246,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[278].fElementFraction      = FractionsZ_278;
   fNISTMaterialDataTable[278].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_lN2 --------------------------------------------------------------------------
+  // NIST_MAT_lN2
+  // --------------------------------------------------------------------------
   static const int ElemsZ_279[]                     = {7};
   static const double FractionsZ_279[]              = {1};
   fNISTMaterialDataTable[279].fName                 = "NIST_MAT_lN2";
@@ -3961,7 +4261,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[279].fElementFraction      = FractionsZ_279;
   fNISTMaterialDataTable[279].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_lO2 --------------------------------------------------------------------------
+  // NIST_MAT_lO2
+  // --------------------------------------------------------------------------
   static const int ElemsZ_280[]                     = {8};
   static const double FractionsZ_280[]              = {1};
   fNISTMaterialDataTable[280].fName                 = "NIST_MAT_lO2";
@@ -3975,7 +4276,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[280].fElementFraction      = FractionsZ_280;
   fNISTMaterialDataTable[280].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_lAr --------------------------------------------------------------------------
+  // NIST_MAT_lAr
+  // --------------------------------------------------------------------------
   static const int ElemsZ_281[]                     = {18};
   static const double FractionsZ_281[]              = {1};
   fNISTMaterialDataTable[281].fName                 = "NIST_MAT_lAr";
@@ -3989,7 +4291,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[281].fElementFraction      = FractionsZ_281;
   fNISTMaterialDataTable[281].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_lBr --------------------------------------------------------------------------
+  // NIST_MAT_lBr
+  // --------------------------------------------------------------------------
   static const int ElemsZ_282[]                     = {35};
   static const double FractionsZ_282[]              = {1};
   fNISTMaterialDataTable[282].fName                 = "NIST_MAT_lBr";
@@ -4003,7 +4306,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[282].fElementFraction      = FractionsZ_282;
   fNISTMaterialDataTable[282].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_lKr --------------------------------------------------------------------------
+  // NIST_MAT_lKr
+  // --------------------------------------------------------------------------
   static const int ElemsZ_283[]                     = {36};
   static const double FractionsZ_283[]              = {1};
   fNISTMaterialDataTable[283].fName                 = "NIST_MAT_lKr";
@@ -4017,7 +4321,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[283].fElementFraction      = FractionsZ_283;
   fNISTMaterialDataTable[283].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_lXe --------------------------------------------------------------------------
+  // NIST_MAT_lXe
+  // --------------------------------------------------------------------------
   static const int ElemsZ_284[]                     = {54};
   static const double FractionsZ_284[]              = {1};
   fNISTMaterialDataTable[284].fName                 = "NIST_MAT_lXe";
@@ -4031,7 +4336,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[284].fElementFraction      = FractionsZ_284;
   fNISTMaterialDataTable[284].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_PbWO4 ------------------------------------------------------------------------
+  // NIST_MAT_PbWO4
+  // ------------------------------------------------------------------------
   static const int ElemsZ_285[]                     = {8, 82, 74};
   static const double FractionsZ_285[]              = {4, 1, 1};
   fNISTMaterialDataTable[285].fName                 = "NIST_MAT_PbWO4";
@@ -4045,7 +4351,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[285].fElementFraction      = FractionsZ_285;
   fNISTMaterialDataTable[285].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_Galactic ---------------------------------------------------------------------
+  // NIST_MAT_Galactic
+  // ---------------------------------------------------------------------
   static const int ElemsZ_286[]                     = {1};
   static const double FractionsZ_286[]              = {1};
   fNISTMaterialDataTable[286].fName                 = "NIST_MAT_Galactic";
@@ -4059,7 +4366,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[286].fElementFraction      = FractionsZ_286;
   fNISTMaterialDataTable[286].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_GRAPHITE_POROUS --------------------------------------------------------------
+  // NIST_MAT_GRAPHITE_POROUS
+  // --------------------------------------------------------------
   static const int ElemsZ_287[]                     = {6};
   static const double FractionsZ_287[]              = {1};
   fNISTMaterialDataTable[287].fName                 = "NIST_MAT_GRAPHITE_POROUS";
@@ -4073,8 +4381,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[287].fElementFraction      = FractionsZ_287;
   fNISTMaterialDataTable[287].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_LUCITE -----------------------------------------------------------------------
-  // LUCITE is equal to plustiglass
+  // NIST_MAT_LUCITE
+  // ----------------------------------------------------------------------- LUCITE is
+  // equal to plustiglass
   static const int ElemsZ_288[]                     = {1, 6, 8};
   static const double FractionsZ_288[]              = {0.080538, 0.599848, 0.319614};
   fNISTMaterialDataTable[288].fName                 = "NIST_MAT_LUCITE";
@@ -4088,8 +4397,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[288].fElementFraction      = FractionsZ_288;
   fNISTMaterialDataTable[288].fIsBuiltByAtomCount   = false;
 
-  // NIST_MAT_BRASS ------------------------------------------------------------------------
-  // SRIM-2008 materials
+  // NIST_MAT_BRASS
+  // ------------------------------------------------------------------------ SRIM-2008
+  // materials
   static const int ElemsZ_289[]                     = {29, 30, 82};
   static const double FractionsZ_289[]              = {62, 35, 3};
   fNISTMaterialDataTable[289].fName                 = "NIST_MAT_BRASS";
@@ -4103,7 +4413,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[289].fElementFraction      = FractionsZ_289;
   fNISTMaterialDataTable[289].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_BRONZE -----------------------------------------------------------------------
+  // NIST_MAT_BRONZE
+  // -----------------------------------------------------------------------
   static const int ElemsZ_290[]                     = {29, 30, 82};
   static const double FractionsZ_290[]              = {89, 9, 2};
   fNISTMaterialDataTable[290].fName                 = "NIST_MAT_BRONZE";
@@ -4117,9 +4428,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[290].fElementFraction      = FractionsZ_290;
   fNISTMaterialDataTable[290].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_STAINLESS-STEEL --------------------------------------------------------------
-  // parameters are taken from
-  // http://www.azom.com/article.aspx?ArticleID=965
+  // NIST_MAT_STAINLESS-STEEL
+  // -------------------------------------------------------------- parameters are taken
+  // from http://www.azom.com/article.aspx?ArticleID=965
   static const int ElemsZ_291[]                     = {26, 24, 28};
   static const double FractionsZ_291[]              = {74, 18, 8};
   fNISTMaterialDataTable[291].fName                 = "NIST_MAT_STAINLESS-STEEL";
@@ -4133,7 +4444,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[291].fElementFraction      = FractionsZ_291;
   fNISTMaterialDataTable[291].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_CR39 -------------------------------------------------------------------------
+  // NIST_MAT_CR39
+  // -------------------------------------------------------------------------
   static const int ElemsZ_292[]                     = {1, 6, 8};
   static const double FractionsZ_292[]              = {18, 12, 7};
   fNISTMaterialDataTable[292].fName                 = "NIST_MAT_CR39";
@@ -4147,7 +4459,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[292].fElementFraction      = FractionsZ_292;
   fNISTMaterialDataTable[292].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_OCTADECANOL ------------------------------------------------------------------
+  // NIST_MAT_OCTADECANOL
+  // ------------------------------------------------------------------
   static const int ElemsZ_293[]                     = {1, 6, 8};
   static const double FractionsZ_293[]              = {38, 18, 1};
   fNISTMaterialDataTable[293].fName                 = "NIST_MAT_OCTADECANOL";
@@ -4165,7 +4478,8 @@ void NISTMaterialData::BuildTable()
   // Space Science Materials :
   // =======================================================================================
 
-  // NIST_MAT_KEVLAR -----------------------------------------------------------------------
+  // NIST_MAT_KEVLAR
+  // -----------------------------------------------------------------------
   static const int ElemsZ_294[]                     = {6, 1, 8, 7};
   static const double FractionsZ_294[]              = {14, 10, 2, 2};
   fNISTMaterialDataTable[294].fName                 = "NIST_MAT_KEVLAR";
@@ -4179,7 +4493,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[294].fElementFraction      = FractionsZ_294;
   fNISTMaterialDataTable[294].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DACRON -----------------------------------------------------------------------
+  // NIST_MAT_DACRON
+  // -----------------------------------------------------------------------
   // POLYETHYLENE_TEREPHTALATE
   static const int ElemsZ_295[]                     = {6, 1, 8};
   static const double FractionsZ_295[]              = {10, 8, 4};
@@ -4194,8 +4509,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[295].fElementFraction      = FractionsZ_295;
   fNISTMaterialDataTable[295].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_NEOPRENE ---------------------------------------------------------------------
-  // POLYCLOROPRENE
+  // NIST_MAT_NEOPRENE
+  // --------------------------------------------------------------------- POLYCLOROPRENE
   static const int ElemsZ_296[]                     = {6, 1, 17};
   static const double FractionsZ_296[]              = {4, 5, 1};
   fNISTMaterialDataTable[296].fName                 = "NIST_MAT_NEOPRENE";
@@ -4213,7 +4528,8 @@ void NISTMaterialData::BuildTable()
   // Biochemical Materials :
   // =======================================================================================
 
-  // NIST_MAT_CYTOSINE ---------------------------------------------------------------------
+  // NIST_MAT_CYTOSINE
+  // ---------------------------------------------------------------------
   static const int ElemsZ_297[]                     = {1, 6, 7, 8};
   static const double FractionsZ_297[]              = {5, 4, 3, 1};
   fNISTMaterialDataTable[297].fName                 = "NIST_MAT_CYTOSINE";
@@ -4227,7 +4543,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[297].fElementFraction      = FractionsZ_297;
   fNISTMaterialDataTable[297].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_THYMINE ----------------------------------------------------------------------
+  // NIST_MAT_THYMINE
+  // ----------------------------------------------------------------------
   static const int ElemsZ_298[]                     = {1, 6, 7, 8};
   static const double FractionsZ_298[]              = {6, 5, 2, 2};
   fNISTMaterialDataTable[298].fName                 = "NIST_MAT_THYMINE";
@@ -4241,7 +4558,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[298].fElementFraction      = FractionsZ_298;
   fNISTMaterialDataTable[298].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_URACIL -----------------------------------------------------------------------
+  // NIST_MAT_URACIL
+  // -----------------------------------------------------------------------
   static const int ElemsZ_299[]                     = {1, 6, 7, 8};
   static const double FractionsZ_299[]              = {4, 4, 2, 2};
   fNISTMaterialDataTable[299].fName                 = "NIST_MAT_URACIL";
@@ -4255,8 +4573,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[299].fElementFraction      = FractionsZ_299;
   fNISTMaterialDataTable[299].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_ADENINE ------------------------------------------------------------------
-  // DNA_Nucleobase (Nucleobase-1H)
+  // NIST_MAT_DNA_ADENINE
+  // ------------------------------------------------------------------ DNA_Nucleobase
+  // (Nucleobase-1H)
   static const int ElemsZ_300[]                     = {1, 6, 7};
   static const double FractionsZ_300[]              = {4, 5, 5};
   fNISTMaterialDataTable[300].fName                 = "NIST_MAT_DNA_ADENINE";
@@ -4270,7 +4589,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[300].fElementFraction      = FractionsZ_300;
   fNISTMaterialDataTable[300].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_GUANINE ------------------------------------------------------------------
+  // NIST_MAT_DNA_GUANINE
+  // ------------------------------------------------------------------
   static const int ElemsZ_301[]                     = {1, 6, 7, 8};
   static const double FractionsZ_301[]              = {4, 5, 5, 1};
   fNISTMaterialDataTable[301].fName                 = "NIST_MAT_DNA_GUANINE";
@@ -4284,7 +4604,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[301].fElementFraction      = FractionsZ_301;
   fNISTMaterialDataTable[301].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_CYTOSINE -----------------------------------------------------------------
+  // NIST_MAT_DNA_CYTOSINE
+  // -----------------------------------------------------------------
   static const int ElemsZ_302[]                     = {1, 6, 7, 8};
   static const double FractionsZ_302[]              = {4, 4, 3, 1};
   fNISTMaterialDataTable[302].fName                 = "NIST_MAT_DNA_CYTOSINE";
@@ -4298,7 +4619,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[302].fElementFraction      = FractionsZ_302;
   fNISTMaterialDataTable[302].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_THYMINE ------------------------------------------------------------------
+  // NIST_MAT_DNA_THYMINE
+  // ------------------------------------------------------------------
   static const int ElemsZ_303[]                     = {1, 6, 7, 8};
   static const double FractionsZ_303[]              = {5, 5, 2, 2};
   fNISTMaterialDataTable[303].fName                 = "NIST_MAT_DNA_THYMINE";
@@ -4312,7 +4634,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[303].fElementFraction      = FractionsZ_303;
   fNISTMaterialDataTable[303].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_URACIL -------------------------------------------------------------------
+  // NIST_MAT_DNA_URACIL
+  // -------------------------------------------------------------------
   static const int ElemsZ_304[]                     = {1, 6, 7, 8};
   static const double FractionsZ_304[]              = {3, 4, 2, 2};
   fNISTMaterialDataTable[304].fName                 = "NIST_MAT_DNA_URACIL";
@@ -4326,8 +4649,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[304].fElementFraction      = FractionsZ_304;
   fNISTMaterialDataTable[304].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_ADENOSINE ----------------------------------------------------------------
-  // DNA_Nucleoside (Nucleoside-3H)
+  // NIST_MAT_DNA_ADENOSINE
+  // ---------------------------------------------------------------- DNA_Nucleoside
+  // (Nucleoside-3H)
   static const int ElemsZ_305[]                     = {1, 6, 7, 8};
   static const double FractionsZ_305[]              = {10, 10, 5, 4};
   fNISTMaterialDataTable[305].fName                 = "NIST_MAT_DNA_ADENOSINE";
@@ -4341,7 +4665,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[305].fElementFraction      = FractionsZ_305;
   fNISTMaterialDataTable[305].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_GUANOSINE ----------------------------------------------------------------
+  // NIST_MAT_DNA_GUANOSINE
+  // ----------------------------------------------------------------
   static const int ElemsZ_306[]                     = {1, 6, 7, 8};
   static const double FractionsZ_306[]              = {10, 10, 5, 5};
   fNISTMaterialDataTable[306].fName                 = "NIST_MAT_DNA_GUANOSINE";
@@ -4355,7 +4680,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[306].fElementFraction      = FractionsZ_306;
   fNISTMaterialDataTable[306].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_CYTIDINE -----------------------------------------------------------------
+  // NIST_MAT_DNA_CYTIDINE
+  // -----------------------------------------------------------------
   static const int ElemsZ_307[]                     = {1, 6, 7, 8};
   static const double FractionsZ_307[]              = {10, 9, 3, 5};
   fNISTMaterialDataTable[307].fName                 = "NIST_MAT_DNA_CYTIDINE";
@@ -4369,7 +4695,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[307].fElementFraction      = FractionsZ_307;
   fNISTMaterialDataTable[307].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_URIDINE ------------------------------------------------------------------
+  // NIST_MAT_DNA_URIDINE
+  // ------------------------------------------------------------------
   static const int ElemsZ_308[]                     = {1, 6, 7, 8};
   static const double FractionsZ_308[]              = {9, 9, 2, 6};
   fNISTMaterialDataTable[308].fName                 = "NIST_MAT_DNA_URIDINE";
@@ -4383,7 +4710,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[308].fElementFraction      = FractionsZ_308;
   fNISTMaterialDataTable[308].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_METHYLURIDINE ------------------------------------------------------------
+  // NIST_MAT_DNA_METHYLURIDINE
+  // ------------------------------------------------------------
   static const int ElemsZ_309[]                     = {1, 6, 7, 8};
   static const double FractionsZ_309[]              = {11, 10, 2, 6};
   fNISTMaterialDataTable[309].fName                 = "NIST_MAT_DNA_METHYLURIDINE";
@@ -4397,7 +4725,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[309].fElementFraction      = FractionsZ_309;
   fNISTMaterialDataTable[309].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_MONOPHOSPHATE ------------------------------------------------------------
+  // NIST_MAT_DNA_MONOPHOSPHATE
+  // ------------------------------------------------------------
   static const int ElemsZ_310[]                     = {15, 8};
   static const double FractionsZ_310[]              = {1, 3};
   fNISTMaterialDataTable[310].fName                 = "NIST_MAT_DNA_MONOPHOSPHATE";
@@ -4411,8 +4740,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[310].fElementFraction      = FractionsZ_310;
   fNISTMaterialDataTable[310].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_A ------------------------------------------------------------------------
-  // Adenine base
+  // NIST_MAT_DNA_A
+  // ------------------------------------------------------------------------ Adenine base
   static const int ElemsZ_311[]                     = {1, 6, 7, 8, 15};
   static const double FractionsZ_311[]              = {10, 10, 5, 7, 1};
   fNISTMaterialDataTable[311].fName                 = "NIST_MAT_DNA_A";
@@ -4426,8 +4755,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[311].fElementFraction      = FractionsZ_311;
   fNISTMaterialDataTable[311].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_G ------------------------------------------------------------------------
-  // Guanine base
+  // NIST_MAT_DNA_G
+  // ------------------------------------------------------------------------ Guanine base
   static const int ElemsZ_312[]                     = {1, 6, 7, 8, 15};
   static const double FractionsZ_312[]              = {10, 10, 5, 8, 1};
   fNISTMaterialDataTable[312].fName                 = "NIST_MAT_DNA_G";
@@ -4441,8 +4770,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[312].fElementFraction      = FractionsZ_312;
   fNISTMaterialDataTable[312].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_C ------------------------------------------------------------------------
-  // Cytosine base
+  // NIST_MAT_DNA_C
+  // ------------------------------------------------------------------------ Cytosine
+  // base
   static const int ElemsZ_313[]                     = {1, 6, 7, 8, 15};
   static const double FractionsZ_313[]              = {10, 9, 3, 8, 1};
   fNISTMaterialDataTable[313].fName                 = "NIST_MAT_DNA_C";
@@ -4456,8 +4786,8 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[313].fElementFraction      = FractionsZ_313;
   fNISTMaterialDataTable[313].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_U ------------------------------------------------------------------------
-  // Uracil base
+  // NIST_MAT_DNA_U
+  // ------------------------------------------------------------------------ Uracil base
   static const int ElemsZ_314[]                     = {1, 6, 7, 8, 15};
   static const double FractionsZ_314[]              = {9, 9, 2, 9, 1};
   fNISTMaterialDataTable[314].fName                 = "NIST_MAT_DNA_U";
@@ -4471,8 +4801,9 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[314].fElementFraction      = FractionsZ_314;
   fNISTMaterialDataTable[314].fIsBuiltByAtomCount   = true;
 
-  // NIST_MAT_DNA_MU -----------------------------------------------------------------------
-  // MethaUracil base
+  // NIST_MAT_DNA_MU
+  // ----------------------------------------------------------------------- MethaUracil
+  // base
   static const int ElemsZ_315[]                     = {1, 6, 7, 8, 15};
   static const double FractionsZ_315[]              = {11, 10, 2, 9, 1};
   fNISTMaterialDataTable[315].fName                 = "NIST_MAT_DNA_MU";
@@ -4487,4 +4818,4 @@ void NISTMaterialData::BuildTable()
   fNISTMaterialDataTable[315].fIsBuiltByAtomCount   = true;
 }
 
-} // namespace geantphysics
+} // namespace geantx

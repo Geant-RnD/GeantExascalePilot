@@ -70,7 +70,8 @@ public:
   }
 
 private:
-  GUFieldPropagatorPool(GUFieldPropagator *prototype = 0); // , void** banks=0 );  // Ensure one per thread
+  GUFieldPropagatorPool(
+      GUFieldPropagator *prototype = 0); // , void** banks=0 );  // Ensure one per thread
   ~GUFieldPropagatorPool();
 
   void Extend(size_t Num);
