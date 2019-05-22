@@ -28,20 +28,19 @@
 
 //======================================================================================//
 
-// Macros to test the cuda error code and issue an error message and throw an 
+// Macros to test the cuda error code and issue an error message and throw an
 // exception.
 //
 // GEANT_CUDA_CALL(cond) : use to check the return value of a cuda function.
 // GEANT_CUDA_CALL_FUNCTION(cond) : same as GEANT_CUDA_CALL including printing the name
 //                                  of the current function.
 // GEANT_CUDA_CHECK_LAST_ERROR() : check the 'last' error record by cuda.
-// GEANT_CUDA_CHECK_LAST_ERROR() : check the 'last' error record by cuda including 
+// GEANT_CUDA_CHECK_LAST_ERROR() : check the 'last' error record by cuda including
 //                                 printing the name of the current function.
-// GEANT_CUDA_CHECK_LAST_ERROR_SYNC : synchronize cuda before calling 
+// GEANT_CUDA_CHECK_LAST_ERROR_SYNC : synchronize cuda before calling
 //                                    GEANT_CUDA_CHECK_LAST_ERROR
-// GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC : synchronize cuda before calling 
+// GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION_SYNC : synchronize cuda before calling
 //                                             GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION
-
 
 #define GEANT_CUDA_CHECK_LAST_ERROR_SYNC() \
   {                                        \
@@ -57,7 +56,7 @@
 
 #define GEANT_CUDA_CHECK_LAST_ERROR()                                                   \
   {                                                                                     \
-    cudaError_t result = cudaGetLastError();                                              \
+    cudaError_t result = cudaGetLastError();                                            \
     if (GEANT_UNLIKELY(result != cudaSuccess)) {                                        \
       cudaGetLastError();                                                               \
       ::geantx::cudaruntime::CudaError(cudaGetErrorString(result), __FILE__, __LINE__); \
@@ -66,7 +65,7 @@
 
 #define GEANT_CUDA_CHECK_LAST_ERROR_FUNCTION()                                       \
   {                                                                                  \
-    cudaError_t result = cudaGetLastError();                                           \
+    cudaError_t result = cudaGetLastError();                                         \
     if (GEANT_UNLIKELY(result != cudaSuccess)) {                                     \
       cudaGetLastError();                                                            \
       ::geantx::cudaruntime::CudaErrorFunc(cudaGetErrorString(result), __FUNCTION__, \

@@ -9,9 +9,9 @@
 #include <iostream>
 
 #ifndef __NVCC__
-#include "Geant/core/LoggerStatement.hpp"
+#  include "Geant/core/LoggerStatement.hpp"
 #else
-#include "Geant/core/NullLoggerStatement.hpp"
+#  include "Geant/core/NullLoggerStatement.hpp"
 #endif
 
 namespace geantx {
@@ -45,7 +45,8 @@ inline std::ostream &operator<<(std::ostream &os, const StreamHere &s)
  * \endcode
  */
 #if !defined(GEANT_HERE)
-#define GEANT_HERE StreamHere{__FUNCTION__, __FILE__, __LINE__}
+#  define GEANT_HERE \
+    StreamHere { __FUNCTION__, __FILE__, __LINE__ }
 #endif
 
 //---------------------------------------------------------------------------//

@@ -21,8 +21,7 @@ public:
 private:
   Gamma(const std::string &name, int pdgcode, int intcode, double mass, double charge)
       : Particle(name, pdgcode, intcode, mass, charge)
-  {
-  }
+  {}
 };
 
 } // namespace geantx

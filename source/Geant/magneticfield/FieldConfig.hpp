@@ -25,8 +25,7 @@ public:
   FieldConfig()
       : fFieldObj(nullptr), fConstFieldValue(vecgeom::Vector3D<double>(0., 0., 0.)),
         fBfieldMag(0.0), fBfieldIsConst(false)
-  {
-  }
+  {}
 
   /* @brief Register an existing field (object).  FieldConfig assumes ownership */
   inline FieldConfig(VVectorField *vf, bool isUniform);

@@ -84,9 +84,10 @@ inline void init_run_manager(TaskRunManager *run_man,
     AutoLock lman(TypeMutex<TaskRunManager>());
     if (!run_man->IsInitialized()) {
       if (verbose > 0) {
-        geantx::Log(geantx::kStatus) << "\n"
-                  << "[" << tid << "] Initializing tasking run manager with " << nthreads
-                  << " threads...";
+        geantx::Log(geantx::kStatus)
+            << "\n"
+            << "[" << tid << "] Initializing tasking run manager with " << nthreads
+            << " threads...";
       }
       run_man->Initialize(nthreads);
     }

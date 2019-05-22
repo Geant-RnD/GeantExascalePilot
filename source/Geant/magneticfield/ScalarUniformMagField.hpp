@@ -22,8 +22,7 @@ public:
   ScalarUniformMagField(const vecgeom::Vector3D<float> &fieldVector)
       : VVectorField(gNumFieldComponents, gFieldChangesEnergy),
         fFieldComponents(fieldVector)
-  {
-  }
+  {}
 
   /** @brief Constructor providing the constant field value (spherical) */
   ScalarUniformMagField(double vField, double vTheta, double vPhi);
@@ -35,8 +34,7 @@ public:
   ScalarUniformMagField(const ScalarUniformMagField &p)
       : VVectorField(gNumFieldComponents, gFieldChangesEnergy),
         fFieldComponents(p.fFieldComponents)
-  {
-  }
+  {}
 
   /** Assignment operator */
   ScalarUniformMagField &operator=(const ScalarUniformMagField &p);

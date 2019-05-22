@@ -38,8 +38,7 @@ VScalarHelicalStepper::VScalarHelicalStepper(VScalarEquationOfMotion *EqRhs,
           6), // state could be 8 - also t, E
 
       fPtrMagEqOfMot(EqRhs), fAngCurve(0.), frCurve(0.), frHelix(0.)
-{
-}
+{}
 
 VScalarHelicalStepper::~VScalarHelicalStepper() {}
 

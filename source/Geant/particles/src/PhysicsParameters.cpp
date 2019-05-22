@@ -82,10 +82,10 @@ void PhysicsParameters::SetMinLossTableEnergy(double val)
         fNumLossTableBinsPerDecade *
         std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetMinLossTableEnergy() "
-              << std::endl
-              << "    Value of fMinLossTableEnergy is out of range: "
-              << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetMinLossTableEnergy() " << std::endl
+        << "    Value of fMinLossTableEnergy is out of range: "
+        << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
   }
 }
 
@@ -98,10 +98,10 @@ void PhysicsParameters::SetMaxLossTableEnergy(double val)
         fNumLossTableBinsPerDecade *
         std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetMaxLossTableEnergy() "
-              << std::endl
-              << "    Value of fMaxLossTableEnergy is out of range: "
-              << val / geantx::units::GeV << " [GeV] so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetMaxLossTableEnergy() " << std::endl
+        << "    Value of fMaxLossTableEnergy is out of range: "
+        << val / geantx::units::GeV << " [GeV] so it's ignored!" << std::endl;
   }
 }
 
@@ -113,9 +113,10 @@ void PhysicsParameters::SetNumLossTableBins(int val)
     fNumLossTableBinsPerDecade = std::lrint(
         fNumLossTableBins / Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetNumLossTableBins() " << std::endl
-              << "    Value of fNumLossTableBins is out of range: " << val
-              << " so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetNumLossTableBins() " << std::endl
+        << "    Value of fNumLossTableBins is out of range: " << val
+        << " so it's ignored!" << std::endl;
   }
 }
 
@@ -128,10 +129,10 @@ void PhysicsParameters::SetNumLossTableBinsPerDecade(int val)
         fNumLossTableBinsPerDecade *
         std::lrint(Math::Log10(fMaxLossTableEnergy / fMinLossTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetNumLossTableBinsPerDecade() "
-              << std::endl
-              << "    Value of fNumLossTableBinsPerDecade is out of range: " << val
-              << " so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetNumLossTableBinsPerDecade() " << std::endl
+        << "    Value of fNumLossTableBinsPerDecade is out of range: " << val
+        << " so it's ignored!" << std::endl;
   }
 }
 
@@ -145,10 +146,10 @@ void PhysicsParameters::SetMinLambdaTableEnergy(double val)
         fNumLambdaTableBinsPerDecade *
         std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetMinLambdaTableEnergy() "
-              << std::endl
-              << "    Value of fMinLambdaTableEnergy is out of range: "
-              << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetMinLambdaTableEnergy() " << std::endl
+        << "    Value of fMinLambdaTableEnergy is out of range: "
+        << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
   }
 }
 
@@ -161,10 +162,10 @@ void PhysicsParameters::SetMaxLambdaTableEnergy(double val)
         fNumLambdaTableBinsPerDecade *
         std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetMaxLambdaTableEnergy() "
-              << std::endl
-              << "    Value of fMaxLambdaTableEnergy is out of range: "
-              << val / geantx::units::GeV << " [GeV] so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetMaxLambdaTableEnergy() " << std::endl
+        << "    Value of fMaxLambdaTableEnergy is out of range: "
+        << val / geantx::units::GeV << " [GeV] so it's ignored!" << std::endl;
   }
 }
 
@@ -176,10 +177,10 @@ void PhysicsParameters::SetNumLambdaTableBins(int val)
     fNumLambdaTableBinsPerDecade = std::lrint(
         fNumLambdaTableBins / Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetNumLambdaTableBins() "
-              << std::endl
-              << "    Value of fNumLambdaTableBins is out of range: " << val
-              << " so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetNumLambdaTableBins() " << std::endl
+        << "    Value of fNumLambdaTableBins is out of range: " << val
+        << " so it's ignored!" << std::endl;
   }
 }
 
@@ -192,10 +193,10 @@ void PhysicsParameters::SetNumLambdaTableBinsPerDecade(int val)
         fNumLambdaTableBinsPerDecade *
         std::lrint(Math::Log10(fMaxLambdaTableEnergy / fMinLambdaTableEnergy));
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetNumLambdaTableBinsPerDecade() "
-              << std::endl
-              << "    Value of fNumLambdaTableBinsPerDecade is out of range: " << val
-              << " so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetNumLambdaTableBinsPerDecade() " << std::endl
+        << "    Value of fNumLambdaTableBinsPerDecade is out of range: " << val
+        << " so it's ignored!" << std::endl;
   }
 }
 
@@ -204,10 +205,10 @@ void PhysicsParameters::SetLowestElectronTrackingEnergy(double val)
   if (val >= 0.0) {
     fLowestElectronTrackingEnergy = val;
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetLowestElectronTrackingEnergy "
-              << std::endl
-              << "    Value of fLowestElectronTrackingEnergy is out of range: "
-              << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetLowestElectronTrackingEnergy " << std::endl
+        << "    Value of fLowestElectronTrackingEnergy is out of range: "
+        << val / geantx::units::keV << " [keV] so it's ignored!" << std::endl;
   }
 }
 
@@ -216,10 +217,10 @@ void PhysicsParameters::SetLinearEnergyLossLimit(double val)
   if (val > 0.0 && val < 0.5) {
     fLinearEnergyLossLimit = val;
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetLinearEnergyLossLimit "
-              << std::endl
-              << "    Value of fLinearEnergyLossLimit is out of range: " << val
-              << " so it's ignored!" << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetLinearEnergyLossLimit " << std::endl
+        << "    Value of fLinearEnergyLossLimit is out of range: " << val
+        << " so it's ignored!" << std::endl;
   }
 }
 
@@ -229,10 +230,10 @@ void PhysicsParameters::SetStepFunction(double roverrange, double finalrange)
     fDRoverRange = roverrange;
     fFinalRange  = finalrange;
   } else {
-    geantx::Log(geantx::kWarning) << "PhysicsParameters::SetStepFunction " << std::endl
-              << "    Values of step function are out of range: " << roverrange << ", "
-              << finalrange / geantx::units::mm << " [mm]  so they are ignored!"
-              << std::endl;
+    geantx::Log(geantx::kWarning)
+        << "PhysicsParameters::SetStepFunction " << std::endl
+        << "    Values of step function are out of range: " << roverrange << ", "
+        << finalrange / geantx::units::mm << " [mm]  so they are ignored!" << std::endl;
   }
 }
 

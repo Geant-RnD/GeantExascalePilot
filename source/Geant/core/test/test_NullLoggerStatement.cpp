@@ -21,25 +21,20 @@ using namespace geantx;
 using std::cout;
 using std::endl;
 
-class LoggerTest : public ::testing::Test
-{
-};
+class LoggerTest : public ::testing::Test {};
 
 std::atomic<int> called_expensive{0};
 
-struct Expensive
-{
-};
+struct Expensive {};
 
-std::ostream& operator<<(std::ostream& os, const Expensive& )
+std::ostream &operator<<(std::ostream &os, const Expensive &)
 {
-    ++called_expensive;
-    return os;
+  ++called_expensive;
+  return os;
 }
 
 TEST_F(LoggerTest, general)
 {
-    NullLoggerStatement() << "Expensive: " << Expensive{} << "tada";
-    EXPECT_EQ(0, called_expensive.load());
+  NullLoggerStatement() << "Expensive: " << Expensive{} << "tada";
+  EXPECT_EQ(0, called_expensive.load());
 }
-

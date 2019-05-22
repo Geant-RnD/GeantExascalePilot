@@ -8,8 +8,8 @@
 
 // #define  INTEGRATOR_CORRECTION   (1./((1<<2)-1))
 
-// template <typename T> inline constexpr const T& MaxConst (const T& a, const T& b) { return
-// (a<b)?b:a;  }
+// template <typename T> inline constexpr const T& MaxConst (const T& a, const T& b) {
+// return (a<b)?b:a;  }
 
 template <typename T_Equation, unsigned int Nvar>
 class TClassicalRK4
@@ -25,8 +25,7 @@ public: // with description
       : TMagErrorStepper<TClassicalRK4<T_Equation, Nvar>, T_Equation, Nvar>(
             EqRhs, OrderRK4, Nvar)
   // fEquation_Rhs(EqRhs)
-  {
-  }
+  {}
 
   TClassicalRK4(const TClassicalRK4 &right);
 

@@ -17,7 +17,7 @@
 #pragma once
 
 #ifndef GEANT_CONFIG_H
-#include "Geant/core/Config.hpp"
+#  include "Geant/core/Config.hpp"
 #endif
 
 #include "Geant/core/Logger.hpp"
@@ -33,7 +33,8 @@ inline namespace GEANT_IMPL_NAMESPACE {
 inline void HandleCudaError(cudaError_t err, const char *file, int line)
 {
   if (err != cudaSuccess) {
-     ::geantx::Log(kFatal).From("Cuda") << cudaGetErrorString(err) << "(" << err << ") in " << file << " at line " << line;
+    ::geantx::Log(kFatal).From("Cuda") << cudaGetErrorString(err) << "(" << err << ") in "
+                                       << file << " at line " << line;
   }
 }
 

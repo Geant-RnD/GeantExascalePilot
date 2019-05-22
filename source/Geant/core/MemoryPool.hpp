@@ -34,30 +34,24 @@ namespace geantx {
 // memory namespace for specifying the type of memory
 //
 namespace memory {
-struct host {
-};
-struct device {
-};
-struct pinned {
-};
+struct host {};
+struct device {};
+struct pinned {};
 } // namespace memory
 
 //======================================================================================//
 // device namespace for specifying traits based on device types
 //
 namespace device {
-struct cpu {
-};
-struct gpu {
-};
+struct cpu {};
+struct gpu {};
 } // namespace device
 
 //======================================================================================//
 //  type-trait for designating if the type will be offloaded
 //
 template <typename _Tp>
-struct OffloadMemoryPool : std::false_type {
-};
+struct OffloadMemoryPool : std::false_type {};
 
 //======================================================================================//
 //  type-trait for using pinned memory or non-pinned memory
@@ -268,8 +262,7 @@ private:
 //--------------------------------------------------------------------------------------//
 
 template <typename _Tp, bool _Offload>
-class MemoryPool {
-};
+class MemoryPool {};
 
 //--------------------------------------------------------------------------------------//
 
@@ -300,14 +293,12 @@ public:
   template <typename _Target,
             std::enable_if_t<(std::is_same<_Target, device::gpu>::value), int> = 0>
   void transfer_to(_Target &&, cudaStream_t = 0)
-  {
-  }
+  {}
 
   template <typename _Target,
             std::enable_if_t<(std::is_same<_Target, device::cpu>::value), int> = 0>
   void transfer_to(_Target &&, cudaStream_t = 0)
-  {
-  }
+  {}
 
   void transfer(const cudaMemcpyKind &, cudaStream_t = 0) {}
 

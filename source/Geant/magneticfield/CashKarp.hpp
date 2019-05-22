@@ -386,5 +386,5 @@ inline geantx::Real_v CashKarp<T_Equation, Nvar>::DistChord() const
 // -------------------------------------------------------------------------------
 
 #ifdef Outside_CashKarp
-#undef Outside_CashKarp
+#  undef Outside_CashKarp
 #endif

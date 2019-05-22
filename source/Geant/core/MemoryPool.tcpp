@@ -15,9 +15,10 @@
 #include <type_traits>
 #include <unistd.h>
 #include <vector>
+#include <tuple>
 
-#include "Geant/core/CudaUtils.hpp"
-#include "Geant/core/Tuple.hpp"
+//#include "Geant/core/CudaUtils.hpp"
+//#include "Geant/core/Tuple.hpp"
 
 namespace geantx {
 //======================================================================================//

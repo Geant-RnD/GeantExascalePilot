@@ -71,14 +71,12 @@ public: // with description
 
   inline VVectorField(int numberOfComponents, bool changesEnergy)
       : fNumberOfComponents(numberOfComponents), fChangesEnergy(changesEnergy)
-  {
-  }
+  {}
 
   inline VVectorField(const VVectorField &field)
       : fNumberOfComponents(field.fNumberOfComponents),
         fChangesEnergy(field.fChangesEnergy)
-  {
-  }
+  {}
   virtual ~VVectorField() {}
 
   // A field signature function that can be used to insure

@@ -15,4 +15,3 @@
 #include "../TrackModifier.hpp"
 
 #include "gtest/gtest.h"
-

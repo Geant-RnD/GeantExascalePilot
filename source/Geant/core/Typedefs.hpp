@@ -22,12 +22,12 @@
 #include "volumes/PlacedVolume.h"
 
 #ifdef GEANT_CUDA
-#include "base/Vector.h"
+#  include "base/Vector.h"
 #else
-#include <vector>
-#ifdef GEANT_USE_NUMA
-#include <GeantNuma.h>
-#endif
+#  include <vector>
+#  ifdef GEANT_USE_NUMA
+#    include <GeantNuma.h>
+#  endif
 #endif
 
 #include <unordered_map>
@@ -52,13 +52,13 @@ typedef VECGEOM_NAMESPACE::VPlacedVolume Node_t;
 template <typename T>
 using vector_t = vecgeom::Vector<T>;
 #else
-#ifdef GEANT_USE_NUMA
+#  ifdef GEANT_USE_NUMA
 template <typename T>
 using vector_t = std::vector<T, geantx::NumaAllocator<T>>;
-#else
+#  else
 template <typename T>
 using vector_t = std::vector<T>;
-#endif
+#  endif
 #endif
 
 // three vector types

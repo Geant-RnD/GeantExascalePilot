@@ -27,7 +27,7 @@ const int ScalarIntegrationDriver::fMaxStepBase = 250; // Was 5000
 // #endif
 
 #ifdef GVFLD_STATS
-#include "TH1.h"
+#  include "TH1.h"
 TH1F *gHistStepsLin  = 0;
 TH1F *gHistStepsLog  = 0;
 TH1F *gHistStepsInit = 0;
@@ -1051,7 +1051,7 @@ void ScalarIntegrationDriver::PrintStatisticsReport()
             << " Total h-distance: small= " << fSumH_sm << " large= " << fSumH_lg
             << std::endl;
 
-#if 0
+#  if 0
   int noPrecSmall=4; 
   // Single line precis of statistics ... optional
   std::cout.precision(noPrecSmall);
@@ -1068,7 +1068,7 @@ void ScalarIntegrationDriver::PrintStatisticsReport()
          << "   " << fDyerrVel_lgTot
          << "   " << fSumH_lg
          << std::endl;
-#endif
+#  endif
 #endif
 
   std::cout.precision(oldPrec);

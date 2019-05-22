@@ -44,7 +44,7 @@
 #include "Geant/core/math_wrappers.hpp"
 
 #ifndef NO_FIELD_STATISTICS
-#define GVFLD_STATS 1
+#  define GVFLD_STATS 1
 #endif
 
 // --------------------------------------------------------------
@@ -2070,8 +2070,10 @@ bool SimpleIntegrationDriver<T_Stepper, Nvar>::TestInitializeLanes() // int numT
   // assert( nFilled2 == std::min( vecCore::VectorSize<Real_v>(), 3 ) );
   // int identityNums2[9]= { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
   int predictedNumBad2[9] = {0, 2, 3, 5, 5, 5, 5, 5, 5};
-  int expectedNumBad2     = predictedNumBad2
-      [vecCore::VectorSize<Real_v>()]; // ==? vecCore::VectorSize<Real_v>() - nFilled2;
+  int expectedNumBad2 =
+      predictedNumBad2[vecCore::VectorSize<Real_v>()]; // ==?
+                                                       // vecCore::VectorSize<Real_v>()
+                                                       // - nFilled2;
   if (numBadSize != expectedNumBad2)
     cerr << testName << testId << " ERROR> Found " << numBadSize << " bad step-size"
          << " versus " << expectedNumBad2

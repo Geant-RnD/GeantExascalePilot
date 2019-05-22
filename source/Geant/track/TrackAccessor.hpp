@@ -34,8 +34,7 @@ public:
 public:
   TrackAccessor(const TrackCollection &tracks, TrackId_t track_id)
       : fState(tracks.Get(track_id))
-  {
-  }
+  {}
 
   // >>> ACCESSORS
 

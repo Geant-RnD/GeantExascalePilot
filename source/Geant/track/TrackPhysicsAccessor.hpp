@@ -42,8 +42,7 @@ public:
   TrackPhysicsAccessor(const TrackCollection &tracks, TrackId_t track_id,
                        const ParticleDefinitions &pdefs)
       : Base(tracks, track_id), fParDef(GetParticleDef(pdefs, Base::State()))
-  {
-  }
+  {}
 
   // >>> ACCESSORS
 
@@ -53,16 +52,32 @@ public:
   double Mass() const { return fParDef.fMass(); }
 
   //! Momentum
-  double P() const { REQUIRE(this->Alive()); return this->Pstate().fMomentum; }
+  double P() const
+  {
+    REQUIRE(this->Alive());
+    return this->Pstate().fMomentum;
+  }
 
   //! Kinetic energy
-  double Ekin() const { REQUIRE(this->Alive()); return this->Pstate().fEkin; }
+  double Ekin() const
+  {
+    REQUIRE(this->Alive());
+    return this->Pstate().fEkin;
+  }
 
   //! Total (rest mass + kinetic) energy
-  double E() const { REQUIRE(this->Alive()); return this->Mass() + this->Ekin(); }
+  double E() const
+  {
+    REQUIRE(this->Alive());
+    return this->Mass() + this->Ekin();
+  }
 
   //! Natural logarithm of kinetic energy
-  double LogEkin() const { REQUIRE(this->Alive()); return std::log(this->Ekin()); }
+  double LogEkin() const
+  {
+    REQUIRE(this->Alive());
+    return std::log(this->Ekin());
+  }
 
   MaterialId_t Material() const { return this->State().fMaterialState.fMaterial; }
 
@@ -78,13 +93,11 @@ protected:
 
   TrackPhysicsAccessor(const TrackState &track, const ParticleDefinitions &pdefs)
       : Base(track), fParDef(GetParticleDef(pdefs, Base::State()))
-  {
-  }
+  {}
 
   TrackPhysicsAccessor(const TrackState &track, const ParticleDef_t &type)
       : Base(track), fParDef(type)
-  {
-  }
+  {}
 
   const TrackPhysicsState &Pstate() const { return this->State().fPhysicsState; }
 

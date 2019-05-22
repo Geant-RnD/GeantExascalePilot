@@ -39,8 +39,7 @@ public:
                 const ParticleDefinitions &pdefs)
       : fState(tracks.Get(track_id)),
         fParDef(PhysicsAccessor_t::GetParticleDef(pdefs, fState))
-  {
-  }
+  {}
 
   //! Move in a straight line
   void Step(double distance)

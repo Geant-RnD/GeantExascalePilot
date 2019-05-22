@@ -34,8 +34,7 @@ class TrackGeometryAccessor : public TrackAccessor {
 public:
   explicit TrackGeometryAccessor(const TrackCollection &tracks, TrackId_t track_id)
       : Base(tracks, track_id)
-  {
-  }
+  {}
 
   // >>> ACCESSORS
 

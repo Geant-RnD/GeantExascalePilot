@@ -76,7 +76,8 @@ public:
    * \brief Add a prefix to the statement.
    *
    */
-  This &From(const char *msg) {
+  This &From(const char *msg)
+  {
     *this << msg << " :";
     return *this;
   }

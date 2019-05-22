@@ -14,12 +14,13 @@
 
 #pragma once
 
-#include "Geant/core/Config.hpp"
-#include "Geant/core/CudaRuntime.hpp"
-
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include <type_traits>
+
+#if !defined(GEANT_HOST_DEVICE)
+#  define GEANT_HOST_DEVICE __host__ __device__
+#endif
 
 namespace geantx {
 

@@ -47,13 +47,12 @@
 
 //======================================================================================//
 
-namespace geantx
-{
+namespace geantx {
 inline namespace cudaruntime {
 template <typename _Tp>
 using device_info = std::unordered_map<int, _Tp>;
 } // namespace cudaruntime
-}
+} // namespace geantx
 
 //======================================================================================//
 

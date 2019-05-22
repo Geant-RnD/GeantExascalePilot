@@ -26,24 +26,25 @@
 //======================================================================================//
 // macro for recording a time point
 #if !defined(GEANT_GET_TIMER)
-#define GEANT_GET_TIMER(var) auto var = std::chrono::high_resolution_clock::now()
+#  define GEANT_GET_TIMER(var) auto var = std::chrono::high_resolution_clock::now()
 #endif
 
 //======================================================================================//
 
 #if !defined(GEANT_REPORT_TIMER)
 // Format string below is: "[%li]> %-16s :: %3i of %3i... %5.2f seconds\n"
-#define GEANT_REPORT_TIMER(start_time, note, counter, total_count)                       \
-  {                                                                                      \
-    auto end_time = std::chrono::high_resolution_clock::now();                           \
-                                                                                         \
-    std::chrono::duration<double> elapsed_seconds = end_time - start_time;               \
-    geantx::Log(kInfo) << "[" << ThreadPool::GetThisThreadID() << "]> " << std::setw(16)             \
-                       << std::setiosflags(ios::left) << note                            \
-                       << " :: " << std::setiosflags(ios::right) << std::setw(3)         \
-                       << counter << " of " << total_count << "..." << std::setw(5)      \
-                       << std::setprecision(2) << elapsed_seconds.count() << "seconds "; \
-  }
+#  define GEANT_REPORT_TIMER(start_time, note, counter, total_count)                  \
+    {                                                                                 \
+      auto end_time = std::chrono::high_resolution_clock::now();                      \
+                                                                                      \
+      std::chrono::duration<double> elapsed_seconds = end_time - start_time;          \
+      geantx::Log(kInfo) << "[" << ThreadPool::GetThisThreadID() << "]> "             \
+                         << std::setw(16) << std::setiosflags(ios::left) << note      \
+                         << " :: " << std::setiosflags(ios::right) << std::setw(3)    \
+                         << counter << " of " << total_count << "..." << std::setw(5) \
+                         << std::setprecision(2) << elapsed_seconds.count()           \
+                         << "seconds ";                                               \
+    }
 #endif
 
 //======================================================================================//
@@ -53,20 +54,20 @@
 //======================================================================================//
 
 #if defined(GEANT_USE_NVTX)
-#include <nvToolsExt.h>
+#  include <nvToolsExt.h>
 
-#ifndef NVTX_RANGE_PUSH
-#define NVTX_RANGE_PUSH(obj) nvtxRangePushEx(obj)
-#endif
-#ifndef NVTX_RANGE_POP
-#define NVTX_RANGE_POP(obj)   \
-  cudaStreamSynchronize(obj); \
-  nvtxRangePop()
-#endif
-#ifndef NVTX_NAME_THREAD
-#define NVTX_NAME_THREAD(num, name) nvtxNameOsThread(num, name)
-#endif
-#ifndef NVTX_MARK
-#define NVTX_MARK(msg) nvtxMark(name)
-#endif
+#  ifndef NVTX_RANGE_PUSH
+#    define NVTX_RANGE_PUSH(obj) nvtxRangePushEx(obj)
+#  endif
+#  ifndef NVTX_RANGE_POP
+#    define NVTX_RANGE_POP(obj)   \
+      cudaStreamSynchronize(obj); \
+      nvtxRangePop()
+#  endif
+#  ifndef NVTX_NAME_THREAD
+#    define NVTX_NAME_THREAD(num, name) nvtxNameOsThread(num, name)
+#  endif
+#  ifndef NVTX_MARK
+#    define NVTX_MARK(msg) nvtxMark(name)
+#  endif
 #endif

@@ -193,7 +193,7 @@ bool GUFieldPropagator::DoStep(ThreeVector const &startPosition,
     std::cout << "   yTrackInFT = " << yTrackInFT << std::endl;
   }
 
-#ifdef EXTEND_SINGLE
+#  ifdef EXTEND_SINGLE
   if (verbose && !infoPrinted) {
     std::cout << methodName << " > Using Flexible/Vector Driver - for 1 track "
               << fScalarDriver << std::endl;
@@ -204,7 +204,7 @@ bool GUFieldPropagator::DoStep(ThreeVector const &startPosition,
   // New 25.01.2018
   fVectorDriver->AccurateAdvance(yTrackInFT, step, chargeFlt, fEpsilon, yTrackOutFT,
                                  okFlex);
-#else
+#  else
   if (verbose && !infoPrinted) {
     std::cout << methodName << " > Using VectorDriver ( Real_v ) with 1 track"
               << fScalarDriver << std::endl;
@@ -214,7 +214,7 @@ bool GUFieldPropagator::DoStep(ThreeVector const &startPosition,
   // Harnessing the vector driver to integrate just a single track -- MIS-USE
   fVectorDriver->AccurateAdvance(&yTrackInFT, &step, &chargeFlt, fEpsilon, &yTrackOutFT,
                                  1, &okFlex);
-#endif
+#  endif
   if (verbose)
     std::cout << " Results:  good = " << okFlex << " track out= " << yTrackOutFT
               << std::endl;

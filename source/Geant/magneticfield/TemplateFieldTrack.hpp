@@ -148,8 +148,7 @@ inline TemplateFieldTrack<Real_v>::TemplateFieldTrack(
 
 template <typename Real_v>
 inline TemplateFieldTrack<Real_v>::~TemplateFieldTrack()
-{
-}
+{}
 
 template <typename Real_v>
 inline void TemplateFieldTrack<Real_v>::SetCurvePnt(

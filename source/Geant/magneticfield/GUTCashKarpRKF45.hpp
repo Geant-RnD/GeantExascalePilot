@@ -19,9 +19,9 @@
 #define INLINERHS 1
 
 #ifdef INLINERHS
-#define REALLY_INLINE inline __attribute__((always_inline))
+#  define REALLY_INLINE inline __attribute__((always_inline))
 #else
-#define REALLY_INLINE inline
+#  define REALLY_INLINE inline
 #endif
 
 template <typename T_Equation, unsigned int Nvar>

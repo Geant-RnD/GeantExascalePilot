@@ -25,8 +25,7 @@ public:
   UniformMagField(const vecgeom::Vector3D<float> &fieldVector)
       : VVectorField(3, true), // Field does not change energy
         fFieldComponents(fieldVector)
-  {
-  }
+  {}
 
   /** @brief Constructor providing the constant field value (spherical) */
   UniformMagField(double vField, double vTheta, double vPhi);

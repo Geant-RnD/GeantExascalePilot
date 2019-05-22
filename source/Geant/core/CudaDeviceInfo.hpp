@@ -75,8 +75,7 @@ public:
 
   DeviceOption(const int &_idx, crstring_t _key, crstring_t _desc)
       : index(_idx), key(_key), description(_desc)
-  {
-  }
+  {}
 
   static void Spacer(std::ostream &os, const char c = '-')
   {
@@ -95,7 +94,7 @@ public:
   friend bool operator==(const DeviceOption &itr, crstring_t cmp)
   {
     return (!IsNumeric(cmp)) ? (itr.key == ToLower(cmp))
-                              : (itr.index == FromString<int>(cmp));
+                             : (itr.index == FromString<int>(cmp));
   }
 
   friend bool operator!=(const DeviceOption &lhs, const DeviceOption &rhs)

@@ -46,7 +46,7 @@ LoggerStatement::~LoggerStatement() noexcept
     // Write it to all the streams
     for (auto *stream_ptr : fSinks) {
 #ifndef GEANT_CUDA_DEVICE_COMPILATION
-     std::lock_guard<std::mutex> lock(prntMutex);
+      std::lock_guard<std::mutex> lock(prntMutex);
 #endif
       *stream_ptr << message << std::flush;
     }
@@ -61,7 +61,7 @@ LoggerStatement::~LoggerStatement() noexcept
  */
 uintmax_t GetThisThreadID()
 {
-   return PTL::ThreadPool::GetThisThreadID();
+  return PTL::ThreadPool::GetThisThreadID();
 }
 
 //---------------------------------------------------------------------------//

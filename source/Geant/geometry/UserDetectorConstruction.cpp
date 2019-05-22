@@ -15,8 +15,8 @@
 #include "Geant/material/Material.hpp"
 #include "Geant/material/Element.hpp"
 #ifdef USE_ROOT
-#include "TGeoRegion.h"
-#include "management/RootGeoManager.h"
+#  include "TGeoRegion.h"
+#  include "management/RootGeoManager.h"
 #endif
 #include "volumes/LogicalVolume.h"
 #include "volumes/PlacedVolume.h"
@@ -34,7 +34,8 @@ int UserDetectorConstruction::SetupGeometry(vector_t<Volume_t const *> &volumes,
   vecgeom::GeoManager::Instance().GetAllLogicalVolumes(volumes);
   nvolumes = volumes.size();
   if (!nvolumes) {
-    geantx::Log(kFatal).From("UserDetectorConstruction::SetupGeometry") << "Geometry is empty";
+    geantx::Log(kFatal).From("UserDetectorConstruction::SetupGeometry")
+        << "Geometry is empty";
     return 0;
   }
 
@@ -59,8 +60,8 @@ bool UserDetectorConstruction::LoadGeometry(const char *filename)
     return true;
   }
 #endif
-  geantx::Log(kError).From("UserDetectorConstruction::LoadGeometry") <<
-                "Cannot load geometry from file " << filename;
+  geantx::Log(kError).From("UserDetectorConstruction::LoadGeometry")
+      << "Cannot load geometry from file " << filename;
   return false;
 }
 
@@ -76,7 +77,7 @@ bool UserDetectorConstruction::LoadVecGeomGeometry(TaskBroker *broker)
     geantx::LogLocal(kStatus) << "Loading VecGeom geometry done";
     std::vector<vecgeom::LogicalVolume *> v1;
     vecgeom::GeoManager::Instance().GetAllLogicalVolumes(v1);
-   geantx::LogLocal(kStatus) << "--- Have logical volumes " << v1.size();
+    geantx::LogLocal(kStatus) << "--- Have logical volumes " << v1.size();
     std::vector<vecgeom::VPlacedVolume *> v2;
     vecgeom::GeoManager::Instance().getAllPlacedVolumes(v2);
     geantx::LogLocal(kStatus) << "--- Have placed volumes " << v2.size();
@@ -121,11 +122,11 @@ int UserDetectorConstruction::ImportRegions()
     Region *region = new Region(std::string(region_root->GetName()), gammaCut,
                                 electronCut, positronCut, protonCut);
 
-     geantx::LogLocal(kStatus) << "Created region " << region_root->GetName()
-        << " with: gammaCut = " << gammaCut << " [cm], eleCut = " << electronCut
-        << " [cm], posCut = " << positronCut << " [cm], protonCut = "
-       << protonCut << " [cm]";
-
+    geantx::LogLocal(kStatus) << "Created region " << region_root->GetName()
+                              << " with: gammaCut = " << gammaCut
+                              << " [cm], eleCut = " << electronCut
+                              << " [cm], posCut = " << positronCut
+                              << " [cm], protonCut = " << protonCut << " [cm]";
 
     // loop volumes in the region. Volumes should be already converted to LogicalVolume
     for (int ivol = 0; ivol < region_root->GetNvolumes(); ++ivol) {
@@ -183,7 +184,8 @@ std::function<void *(TGeoMaterial const *)> UserDetectorConstruction::
       // find or create material
       gmat = geantx::Material::GetMaterial(name);
       if (gmat) {
-        // geantx::Log(geantx::kStatus) << " Material "<<name << " has already been created.!"<< std::endl;
+        // geantx::Log(geantx::kStatus) << " Material "<<name << " has already been
+        // created.!"<< std::endl;
         return gmat;
       }
       gmat = new geantx::Material(name, density, numElem);

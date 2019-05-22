@@ -16,8 +16,7 @@ VScalarIntegrationStepper::VScalarIntegrationStepper(VScalarEquationOfMotion *eq
     : fAbstrEquation(equation), fIntegrationOrder(integrationOrder),
       fNoIntegrationVariables(num_integration_vars),
       fNoStateVariables(num_state_vars > 0 ? num_state_vars : num_integration_vars)
-{
-}
+{}
 
 VScalarIntegrationStepper::~VScalarIntegrationStepper() {}
 

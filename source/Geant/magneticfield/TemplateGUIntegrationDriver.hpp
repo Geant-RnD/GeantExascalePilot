@@ -212,33 +212,28 @@ public: // without description
 protected: // without description
   void WarnSmallStepSize(Double_v hnext, Double_v hstep, Double_v h, Double_v xDone,
                          int noSteps)
-  {
-  } //;  //warnings per
-    // track, probably
+  {} //;  //warnings per
+     // track, probably
   // neeed to change
   // all to double
   //:ananya
   void WarnTooManySteps(Double_v x1start, Double_v x2end, Double_v xCurrent) {} //;
   void WarnEndPointTooFar(Double_v endPointDist, Double_v hStepSize,
                           Double_v epsilonRelative, int debugFlag)
-  {
-  } //;
+  {} //;
   //  Issue warnings for undesirable situations
   // add index in order to print one at a time :ananya
   void PrintStatus(const Double_v *StartArr, Double_v xstart, const Double_v *CurrentArr,
                    Double_v xcurrent, Double_v requestStep, int subStepNo)
-  {
-  } //;
+  {} //;
   void PrintStatus(const TemplateGUFieldTrack<Backend> &StartFT,
                    const TemplateGUFieldTrack<Backend> &CurrentFT, double requestStep,
                    int subStepNo)
-  {
-  } //;
+  {} //;
   void PrintStat_Aux(const TemplateGUFieldTrack<Backend> &aGUFieldTrack,
                      double requestStep, double actualStep, int subStepNo,
                      double subStepSize, double dotVelocities)
-  {
-  } //;
+  {} //;
   //  Verbose output for debugging
 
   void PrintStatisticsReport() {} //;
@@ -411,13 +406,13 @@ template <typename Backend>
 const int TemplateGUIntegrationDriver<Backend>::fMaxStepBase = 250; // Was 5000
 
 #ifndef G4NO_FIELD_STATISTICS
-#define GVFLD_STATS 1
+#  define GVFLD_STATS 1
 #endif
 
 #define GUDEBUG_FIELD 1
 
 #ifdef GVFLD_STATS
-#include "TH1.h"
+#  include "TH1.h"
 TH1F *gHistStepsLin  = 0;
 TH1F *gHistStepsLog  = 0;
 TH1F *gHistStepsInit = 0;
@@ -2085,7 +2080,7 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
   //  - the return value is 'true' if integration succeeded to the end of the interval,
   //    and 'false' otherwise.
 
-#define PARTDEBUG
+#  define PARTDEBUG
 
   typedef typename vecgeom::kVc::precision_v Double_v;
   typedef typename vecgeom::kVc::bool_v Bool_v;
@@ -2096,13 +2091,13 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
   int ncompSVEC = TemplateGUFieldTrack<vecgeom::kVc>::ncompSVEC; // 12, to be derived from
                                                                  // TemplateGUFieldTrack
 
-#ifdef GUDEBUG_FIELD
+#  ifdef GUDEBUG_FIELD
 // static int dbg=1;
 // static int nStpPr=50;   // For debug printing of long integrations
 // Double_v ySubStepStart[ncompSVEC];
-#endif
+#  endif
 
-#ifdef PARTDEBUG
+#  ifdef PARTDEBUG
   if (partDebug) {
     std::cout << " AccurateAdvance called with hstep= ";
     for (int i = 0; i < nTracks; ++i) {
@@ -2110,7 +2105,7 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
     }
     std::cout << std::endl;
   }
-#endif
+#  endif
 
   Double_v y[ncompSVEC], dydx[ncompSVEC];
   Double_v x1, x2;
@@ -2121,9 +2116,9 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
   Double_v startCurveLength;
 
 // G4ThreadLocal
-#ifdef COLLECT_STATISTICS
+#  ifdef COLLECT_STATISTICS
   static int noGoodSteps = 0; // Bad = chord > curve-len
-#endif
+#  endif
 
   Double_v hStepLane;
   Double_v hTotalDoneSoFar(0.); // To keep track of hDone in KeepStepping
@@ -2191,9 +2186,9 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
   while ((!vecgeom::IsFull(isDoneLane) &&
           !vecgeom::IsEmpty((nstp <= fMaxNoSteps) && (x < x2) && (!lastStep))) ||
          trackNextInput < nTracks) {
-#ifdef DEBUG
+#  ifdef DEBUG
     std::cout << "----hStepLane is: " << hStepLane << std::endl;
-#endif
+#  endif
     StartPosAr[0] = y[0];
     StartPosAr[1] = y[1];
     StartPosAr[2] = y[2];
@@ -2234,7 +2229,7 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
     Double_v diff2 = (x2 - x);
     // For rest, check the proposed next stepsize
     h = vecgeom::Max(hnext, fMinimumStep);
-#ifdef PARTDEBUG
+#  ifdef PARTDEBUG
     if (0) {
       std::cout << "diff before both masked assign statements is: " << diff2 << std::endl;
       std::cout << "h after checking proposed next stepsize is max. of : " << hnext
@@ -2245,35 +2240,35 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
       std::cout << "Bool_v x+h > x2 is: " << diffXAndX2 << std::endl;
     }
     Double_v diff = (x2 - x);
-#endif
+#  endif
 
     // Ensure that the next step does not overshoot
     // vecgeom::MaskedAssign( x+h > x2, x2 - x, &h);
     h = vecgeom::Min(x2 - x, h);
 
-#ifdef PARTDEBUG
+#  ifdef PARTDEBUG
     if (0) {
       Double_v hforDebug = x2 - x;
       std::cout << "x2 -x is :  " << hforDebug << std::endl;
       std::cout << "diff is: " << diff << std::endl;
     }
-#endif
-#ifdef PARTDEBUG
+#  endif
+#  ifdef PARTDEBUG
     if (partDebug) {
       // h = x2 - x;
       std::cout << "AccurateAdvance: hnext is: " << hnext << " and h is : " << h
                 << std::endl;
     }
-#endif
+#  endif
     // When stepsize overshoots, decrease it!
     // Must cope with difficult rounding-error issues if hstep << x2
 
     lastStep = (h == 0) || lastStep;
-#ifdef DEBUG
+#  ifdef DEBUG
     if (partDebug) {
       std::cout << " lastStep : " << lastStep << std::endl;
     }
-#endif
+#  endif
     nstp++;
 
     Bool_v CondNoOfSteps     = nstp <= fMaxNoSteps;
@@ -2293,14 +2288,14 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
     // Saves some evaluations
     {
       finishedLane = (!CondNoOfSteps || !CondXLessThanx2 || !CondIsNotLastStep);
-#ifdef DEBUG
+#  ifdef DEBUG
       if (partDebug) {
         std::cout << " finishedLane:     " << finishedLane << std::endl;
         std::cout << " CondNoOfSteps:    " << CondNoOfSteps << std::endl;
         std::cout << " CondXLessThanx2:  " << CondXLessThanx2 << std::endl;
         std::cout << " CondIsNotLastStep:" << CondIsNotLastStep << std::endl;
       }
-#endif
+#  endif
       for (int i = 0; i < kVectorSize; ++i) {
         if (finishedLane[i] == 1 && fIndex[i] != -1) {
           // can be replaced with succeeded[fIndex[i]] = x[i] >= x2[i], one Vc vector
@@ -2336,12 +2331,12 @@ void TemplateGUIntegrationDriver<vecgeom::kVc>::AccurateAdvance(
         }
       }
     }
-#ifdef DEBUG
+#  ifdef DEBUG
     if (partDebug) {
       std::cout << "Value of lastStep is: " << lastStep << std::endl;
       std::cout << "isDoneLane is:        " << isDoneLane << std::endl;
     }
-#endif
+#  endif
 
     /*    Bool_v leftLanes = (nstp<=fMaxNoSteps) && (x < x2) && (!lastStep) ;
         int countLeftLanes=0;

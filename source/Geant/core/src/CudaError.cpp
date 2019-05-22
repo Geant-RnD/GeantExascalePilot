@@ -20,16 +20,14 @@ inline namespace cudaruntime {
 static std::string PrepareMsgAndLog(const char *err_string, const char *msg,
                                     const char *function, const char *file, int line)
 {
-   std::stringstream ss;
-   ss << "cudaCheckError() failed at ";
-   if (function)
-      ss << function << "@'";
-   ss << file  << "':" << line << " : " << err_string;
-   if (msg)
-      ss << "\n\tWhile executing:\n" << msg;
+  std::stringstream ss;
+  ss << "cudaCheckError() failed at ";
+  if (function) ss << function << "@'";
+  ss << file << "':" << line << " : " << err_string;
+  if (msg) ss << "\n\tWhile executing:\n" << msg;
 
-   Log(kError) << ss.str();
-   return ss.str();
+  Log(kError) << ss.str();
+  return ss.str();
 }
 
 //---------------------------------------------------------------------------//
@@ -70,5 +68,5 @@ void CudaErrorFunc(const char *err_string, const char *function, const char *fil
   throw std::runtime_error(PrepareMsgAndLog(err_string, nullptr, function, file, line));
 }
 
-} // inline namespace cudaruntime
+} // namespace cudaruntime
 } // namespace geantx
