@@ -309,22 +309,22 @@ complete re-write of the source code as a test-bed for the concepts I am now pro
 Essentially, every measurement type executes the same series of routines (just as
 a particle-process step does). It may help to make the following associations:
 
-| Step | TiMemory | Monte Carlo Transport |
-| ---- | -------- | --------------------- |
-| construct | compute hash identifier | prepare to compute a step |
-| `insert_node()` | determine call graph location | determine applicable processes for step |
-| `set_prefix()` | optionally assign prefix to node | check conditions for step |
-| `start()` | start recording something | select a process for step |
-| `stop()` | stop recording something | propogate the step |
-| destruct | add delta to call graph instance | handle secondaries |
+| Step            | TiMemory                         | Monte Carlo Transport                   |
+| --------------- | -------------------------------- | --------------------------------------- |
+| construct       | compute hash identifier          | prepare to compute a step               |
+| `insert_node()` | determine call graph location    | determine applicable processes for step |
+| `set_prefix()`  | optionally assign prefix to node | check conditions for step               |
+| `start()`       | start recording something        | select a process for step               |
+| `stop()`        | stop recording something         | propogate the step                      |
+| destruct        | add delta to call graph instance | handle secondaries                      |
 
 #### Relevant Links
 
-- [component_operations.hpp](https://github.com/jrmadsen/TiMemory/blob/graph-storage-redesign/source/timemory/component_operations.hpp)
-- [component_tuple.hpp](https://github.com/jrmadsen/TiMemory/blob/graph-storage-redesign/source/timemory/component_tuple.hpp)
-- [components.hpp](https://github.com/jrmadsen/TiMemory/blob/graph-storage-redesign/source/timemory/components.hpp)
-- [auto_tuple.hpp](https://github.com/jrmadsen/TiMemory/blob/graph-storage-redesign/source/timemory/auto_tuple.hpp)
-- [apply.hpp](https://github.com/jrmadsen/TiMemory/blob/graph-storage-redesign/source/timemory/apply.hpp)
+- [component_operations.hpp](https://github.com/jrmadsen/TiMemory/blob/master/source/timemory/component_operations.hpp)
+- [component_tuple.hpp](https://github.com/jrmadsen/TiMemory/blob/master/source/timemory/component_tuple.hpp)
+- [components.hpp](https://github.com/jrmadsen/TiMemory/blob/master/source/timemory/components.hpp)
+- [auto_tuple.hpp](https://github.com/jrmadsen/TiMemory/blob/master/source/timemory/auto_tuple.hpp)
+- [apply.hpp](https://github.com/jrmadsen/TiMemory/blob/master/source/timemory/apply.hpp)
 
 #### `component_tuple`
 
