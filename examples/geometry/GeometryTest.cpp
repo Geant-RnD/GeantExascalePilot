@@ -5,6 +5,10 @@
 #include <unistd.h>
 #include "Geant/core/Logger.hpp"
 
+#ifdef VECGEOM_ENABLE_CUDA
+#  include "management/CudaManager.h"
+#endif
+
 //#include "Geant/RunManager.h"
 //#include "Geant/TaskBroker.h"
 //#include "Geant/WorkloadManager.h"
@@ -124,11 +128,23 @@ int main(int argc, char *argv[])
     numVolumes = det->SetupGeometry(volumes);
   }
   int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
-   geantx::Log(geantx::kInfo).From("main") << "Geometry created with maxdepth" << maxDepth;
-   geantx::Log(geantx::kInfo).From("main") << "Geometry created with " << numVolumes << " volumes and maxdepth " << maxDepth;
+  geantx::Log(geantx::kInfo).From("main") << "Geometry created with maxdepth" << maxDepth;
+  geantx::Log(geantx::kInfo).From("main")
+      << "Geometry created with " << numVolumes << " volumes and maxdepth " << maxDepth;
 
   // print detector information
   det->DetectorInfo();
+
+  // CUDA stuff
+#ifdef VECGEOM_ENABLE_CUDA
+  // vecgeom::cxx::CudaManager::Instance().set_verbose(3);
+  vecgeom::cxx::CudaManager::Instance().LoadGeometry();
+  vecgeom::cxx::CudaManager::Instance().Synchronize();
+
+  vecgeom::cxx::CudaManager::Instance().PrintGeometry();
+
+  std::cout << std::flush;
+#endif
 
   // SetupUserDetector(det);
   // runMgr->SetDetectorConstruction(det);
@@ -220,15 +236,15 @@ static struct option options[] = {
     {0, 0, 0, 0}};
 
 enum ABS_OPTIONS { ABS_INDEX_OPT = 0, ABS_MATNAME_OPT, ABS_THICK_OPT };
-char *const abs_token[] = {[ABS_OPTIONS::ABS_INDEX_OPT]   = (char *) "absorber-index",
-                           [ABS_OPTIONS::ABS_MATNAME_OPT] = (char *) "material-name",
-                           [ABS_OPTIONS::ABS_THICK_OPT]   = (char *) "thickness",
+char *const abs_token[] = {[ABS_OPTIONS::ABS_INDEX_OPT]   = (char *)"absorber-index",
+                           [ABS_OPTIONS::ABS_MATNAME_OPT] = (char *)"material-name",
+                           [ABS_OPTIONS::ABS_THICK_OPT]   = (char *)"thickness",
                            NULL};
 
 enum DIR_OPTIONS { DIR_X_OPT = 0, DIR_Y_OPT, DIR_Z_OPT };
-char *const dir_token[] = {[DIR_OPTIONS::DIR_X_OPT] = (char *) "x",
-			   [DIR_OPTIONS::DIR_Y_OPT] = (char *) "y",
-			   [DIR_OPTIONS::DIR_Z_OPT] = (char *) "z",
+char *const dir_token[] = {[DIR_OPTIONS::DIR_X_OPT] = (char *)"x",
+                           [DIR_OPTIONS::DIR_Y_OPT] = (char *)"y",
+                           [DIR_OPTIONS::DIR_Z_OPT] = (char *)"z",
                            NULL};
 
 void help()
