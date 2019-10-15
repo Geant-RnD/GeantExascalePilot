@@ -54,8 +54,7 @@ public:
     , m_nitr(nitr)
     , m_label(label)
     , m_generator(gen)
-    {
-    }
+    {}
 
     template <typename _Funct>
     Executor(std::string label, uintmax_t nloop, uintmax_t nitr, _Funct&& func,
@@ -65,8 +64,7 @@ public:
     , m_label(label)
     , m_exec(std::forward<_Funct>(func))
     , m_generator(gen)
-    {
-    }
+    {}
 
     template <typename _Funct>
     void SetExec(_Funct&& func)

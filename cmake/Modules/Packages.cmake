@@ -67,7 +67,53 @@ endif()
 ################################################################################
 
 add_feature(${PROJECT_NAME}_CUDA_FLAGS "CUDA NVCC compiler flags")
-add_feature(CUDA_ARCH "CUDA architecture (e.g. '35' means '-arch=sm_35')")
+set(CUDA_AUTO_ARCH "auto")
+set(CUDA_ARCHITECTURES auto pascal volta turing)
+set(CUDA_ARCH "${CUDA_AUTO_ARCH}" CACHE STRING
+    "CUDA architecture (options: ${CUDA_ARCHITECTURES})")
+add_feature(CUDA_ARCH "CUDA architecture (options: ${CUDA_ARCHITECTURES})")
+set_property(CACHE CUDA_ARCH PROPERTY STRINGS ${CUDA_ARCHITECTURES})
+
+set(cuda_pascal_arch    60)
+set(cuda_volta_arch     70)
+set(cuda_turing_arch    75)
+
+if(NOT "${CUDA_ARCH}" STREQUAL "${CUDA_AUTO_ARCH}")
+    if(NOT "${CUDA_ARCH}" IN_LIST CUDA_ARCHITECTURES)
+        message(WARNING
+            "CUDA architecture \"${CUDA_ARCH}\" not known. Options: ${CUDA_ARCH}")
+        unset(CUDA_ARCH CACHE)
+        set(CUDA_ARCH "${CUDA_AUTO_ARCH}")
+    else()
+        set(_ARCH_NUM ${cuda_${CUDA_ARCH}_arch})
+    endif()
+endif()
+
+add_library(geantx-cuda INTERFACE)
+list(APPEND EXTERNAL_CUDA_LIBRARIES geantx-cuda)
+
+if(CUDA_MAJOR_VERSION VERSION_GREATER 10 OR CUDA_MAJOR_VERSION MATCHES 10)
+    target_compile_options(geantx-cuda INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:
+        $<IF:$<STREQUAL:"${CUDA_ARCH}","${CUDA_AUTO_ARCH}">,-arch=sm_60,-arch=sm_${_ARCH_NUM}>
+        -gencode=arch=compute_60,code=sm_60
+        -gencode=arch=compute_61,code=sm_61
+        -gencode=arch=compute_70,code=sm_70
+        -gencode=arch=compute_75,code=sm_75
+        -gencode=arch=compute_75,code=compute_75
+        >)
+else()
+    target_compile_options(geantx-cuda INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:
+        $<IF:$<STREQUAL:${CUDA_ARCH},${CUDA_AUTO_ARCH}>,-arch=sm_60,-arch=sm_${_ARCH_NUM}>
+        -gencode=arch=compute_50,code=sm_50
+        -gencode=arch=compute_52,code=sm_52
+        -gencode=arch=compute_60,code=sm_60
+        -gencode=arch=compute_61,code=sm_61
+        -gencode=arch=compute_70,code=sm_70
+        -gencode=arch=compute_70,code=compute_70
+        >)
+endif()
+
+add_feature(CUDA_ARCH "CUDA architecture")
 #   30, 32      + Kepler support
 #               + Unified memory programming
 #   35          + Dynamic parallelism support
@@ -75,7 +121,6 @@ add_feature(CUDA_ARCH "CUDA architecture (e.g. '35' means '-arch=sm_35')")
 #   60, 61, 62  + Pascal support
 #   70, 72      + Volta support
 #   75          + Turing support
-set(CUDA_ARCH "60" CACHE STRING "CUDA architecture flag")
 
 if(GEANT_USE_NVTX)
     find_library(NVTX_LIBRARY
@@ -92,13 +137,13 @@ if(NVTX_LIBRARY)
     list(APPEND ${PROJECT_NAME}_DEFINITIONS GEANT_USE_NVTX)
 endif()
 
-list(APPEND ${PROJECT_NAME}_CUDA_FLAGS
-    -arch=sm_${CUDA_ARCH}
-    --default-stream per-thread
-    --compiler-bindir=${CMAKE_CXX_COMPILER})
+target_compile_options(geantx-cuda INTERFACE
+    $<$<COMPILE_LANGUAGE:CUDA>:--default-stream per-thread>
+    $<$<COMPILE_LANGUAGE:CUDA>:--compiler-bindir=${CMAKE_CXX_COMPILER}>)
 
-list(APPEND EXTERNAL_LIBRARIES ${CUDA_LIBRARIES})
-list(APPEND EXTERNAL_INCLUDE_DIRS ${CUDA_INCLUDE_DIRS} ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+target_link_libraries(geantx-cuda INTERFACE ${CUDA_LIBRARIES})
+target_include_directories(geantx-cuda INTERFACE
+    ${CUDA_INCLUDE_DIRS} ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
 
 
 ################################################################################

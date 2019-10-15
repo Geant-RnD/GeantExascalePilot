@@ -65,13 +65,12 @@ list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
 # TiMemory submodule
 #
 checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
-    RELATIVE_PATH source/TiMemory WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-add_subdirectory(TiMemory)
-list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
-    ${CMAKE_CURRENT_LIST_DIR}/TiMemory/source)
-# suppress annoying cereal warnings
-list(APPEND ${PROJECT_NAME}_SYSTEM_INCLUDE_DIRECTORIES
-    ${CMAKE_CURRENT_LIST_DIR}/TiMemory/source/cereal/include)
+    RELATIVE_PATH source/timemory WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+add_subdirectory(timemory)
+set(timemory_FIND_COMPONENTS_INTERFACE geantx-timemory)
+set(timemory_DIR ${CMAKE_BINARY_DIR})
+find_package(timemory COMPONENTS caliper cuda gotcha arch papi)
+set(TIMEMORY_LIBRARY geantx-timemory)
 
 #----------------------------------------------------------------------------------------#
 # GoogleTest submodule
@@ -127,13 +126,8 @@ if(GEANT_USE_SUBMODULES)
     set(VECGEOM_LIBRARIES vecgeom vecgeomcuda)
 endif()
 
-set(TIMEMORY_LIBRARY timemory-cxx-library${GEANT_LIBTARGET_EXT})
-if(BUILD_SHARED_LIBS)
-    set(TIMEMORY_LIBRARY timemory-cxx-library)
-endif()
-
 list(APPEND ${PROJECT_NAME}_LINK_LIBRARIES
-    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES} ${TIMEMORY_LIBRARY})
+    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES})
 
 list(APPEND EXTERNAL_LIBRARIES
     ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES} ${TIMEMORY_LIBRARY})
@@ -193,7 +187,8 @@ if(BUILD_STATIC_LIBS)
 endif()
 
 # Install the interface library
-install(TARGETS ${INSTALL_LIBS} DESTINATION ${LIB_INSTALL_DESTINATION}
+install(TARGETS ${INSTALL_LIBS}
+    DESTINATION ${LIB_INSTALL_DESTINATION}
     EXPORT ${PROJECT_NAME}LibraryDepends)
 
 # install export

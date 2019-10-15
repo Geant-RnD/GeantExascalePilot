@@ -119,8 +119,7 @@ struct Printer
     Printer(std::string name, const _Tp& value)
     : m_name(name)
     , m_value(_Tp(value))
-    {
-    }
+    {}
     Printer(const Printer& rhs) = default;
     Printer& operator=(const Printer& rhs) = default;
     Printer& operator=(Printer&&) noexcept = default;
@@ -164,8 +163,7 @@ struct Add : public Printer<_Tp>
     using base_type::m_value;
     Add(const _Tp& val)
     : base_type("add", val)
-    {
-    }
+    {}
     // imagine this operator takes a G4Step and records a G4Hit
     void operator()(const _Tp& val) { m_value += val; }
 };
@@ -182,8 +180,7 @@ struct Mult : public Printer<_Tp>
     using base_type::m_value;
     Mult(const _Tp& val)
     : base_type("mul", val)
-    {
-    }
+    {}
     // imagine this operator takes a G4Step and records a G4Hit
     void operator()(const _Tp& val) { m_value *= val; }
 };
@@ -200,8 +197,7 @@ struct Sub : public Printer<_Tp>
     using base_type::m_value;
     Sub(const _Tp& val)
     : base_type("sub", val)
-    {
-    }
+    {}
     // imagine this operator takes a G4Step and records a G4Hit
     void operator()(const _Tp& val) { m_value -= val; }
 };
@@ -438,16 +434,14 @@ public:
     , m_class_id(m_obj.m_class_id)
     , m_random_value(m_obj.m_random_value)
     , m_func(func)
-    {
-    }
+    {}
 
     ObjectAccessor(_Tp& obj, const Func_t& func = [](_Tp&, _Args...) {})
     : m_obj(obj)
     , m_class_id(m_obj.m_class_id)
     , m_random_value(m_obj.m_random_value)
     , m_func(func)
-    {
-    }
+    {}
 
     void operator()(_Args&&... args)
     {
