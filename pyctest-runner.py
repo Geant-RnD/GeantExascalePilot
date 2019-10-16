@@ -210,8 +210,8 @@ def run_pyctest():
                              "gperf.cpu.prof.{}.0.cum.txt".format(
                                  os.path.basename(cmd[0])),
                              clobber=False)
-        else:
-            _cmd.append("./timem")
+        #else:
+        #    _cmd.append("./timem")
         _cmd.extend(cmd)
         return _cmd
 
