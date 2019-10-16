@@ -43,6 +43,13 @@ include(ClangFormat)
 #   source
 ################################################################################
 
+add_subdirectory(testing)
+
+if(GEANT_BUILD_TESTS)
+    include(CTest)
+    enable_testing()
+endif()
+
 add_subdirectory(source)
 add_subdirectory(examples)
 

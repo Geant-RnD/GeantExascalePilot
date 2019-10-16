@@ -84,7 +84,7 @@ TEST_F(TransportApplicable, Particle)
 
 TEST_F(TransportApplicable, PhysicsParameters)
 {
-    ASSERT_TRUE(Transportation::IsApplicable<PhysicsParameters>);
+    ASSERT_FALSE(Transportation::IsApplicable<PhysicsParameters>);
 }
 
 TEST_F(TransportApplicable, PionMinus)

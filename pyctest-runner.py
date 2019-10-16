@@ -14,11 +14,13 @@ import pyctest.helpers as helpers
 #------------------------------------------------------------------------------#
 def configure():
 
+    geant_binary_dir = os.path.join(
+         os.getcwd(), "build-GeantExascalePilot", platform.system())
+
     # Get pyctest argument parser that include PyCTest arguments
     parser = helpers.ArgumentParser(project_name="GeantExascalePilot",
                                     source_dir=os.getcwd(),
-                                    binary_dir=os.path.join(
-                                        os.getcwd(), "build-GeantExascalePilot"),
+                                    binary_dir=geant_binary_dir,
                                     build_type="Release",
                                     vcs_type="git",
                                     use_launchers=True)
@@ -106,7 +108,7 @@ def run_pyctest():
         "GEANT_USE_ARCH": "OFF",
         "GEANT_USE_GPERF": "OFF",
         "GEANT_USE_SANITIZER": "OFF",
-        "GEANT_USE_CLANG_TIDY": "ON",
+        "GEANT_USE_CLANG_TIDY": "OFF",
         "GEANT_USE_COVERAGE" : "OFF",
         "PTL_USE_TBB": "OFF",
         "GEANT_BUILD_EXAMPLES": "ON",
@@ -276,8 +278,9 @@ def run_pyctest():
         test.SetProperty("LABELS", "PTL")
         test.SetCommand(construct_command(["./recursive_tbb_tasking"], args))
 
+     # generate the dynamic tests
     pyctest.generate_config(pyctest.BINARY_DIRECTORY)
-    pyctest.generate_test_file(pyctest.BINARY_DIRECTORY)
+    pyctest.generate_test_file(os.path.join(pyctest.BINARY_DIRECTORY, "testing"))
     pyctest.run(pyctest.ARGUMENTS, pyctest.BINARY_DIRECTORY)
 
 
