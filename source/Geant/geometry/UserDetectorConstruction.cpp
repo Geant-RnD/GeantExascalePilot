@@ -8,7 +8,6 @@
 
 #include "navigation/VNavigator.h"
 #include "navigation/NewSimpleNavigator.h"
-#include "navigation/NewSimpleNavigator.h"
 #include "navigation/SimpleABBoxNavigator.h"
 #include "navigation/SimpleABBoxLevelLocator.h"
 #include "navigation/HybridNavigator2.h"
