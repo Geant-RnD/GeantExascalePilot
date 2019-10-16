@@ -320,11 +320,72 @@ ENDFUNCTION()
 # Adds a unit test and links against googletest. Additional arguments are linked
 # against the test.
 #
-function(add_googletest _FILENAME)
-    get_filename_component(_NAME "${_FILENAME}" NAME_WE)
-    create_executable(TARGET_NAME ${_NAME} SOURCES ${_FILENAME})
-    target_link_libraries(${_NAME} gtest gmock gtest_main ${ARGN})
-    add_test(NAME ${_NAME} COMMAND ${_NAME})
+function(ADD_GEANT_GOOGLE_TEST TEST_NAME)
+    if(NOT GEANT_BUILD_TESTS)
+        return()
+    endif()
+
+    include(GoogleTest)
+    # list of arguments taking multiple values
+    set(multival_args SOURCES PROPERTIES LINK_LIBRARIES COMMAND OPTIONS ENVIRONMENT)
+    # parse args
+    cmake_parse_arguments(TEST "DISCOVER_TESTS;ADD_TESTS" "" "${multival_args}" ${ARGN})
+
+    if(NOT TARGET geant-google-test-debug)
+        add_library(geant-google-test-debug INTERFACE)
+        target_compile_definitions(geant-google-test-debug INTERFACE $<$<CONFIG:Debug>:DEBUG>)
+    endif()
+
+    if(NOT TARGET geant-google-test)
+        add_library(geant-google-test INTERFACE)
+        target_link_libraries(geant-google-test INTERFACE gtest gmock gtest_main)
+        target_include_directories(geant-google-test INTERFACE
+            ${PROJECT_SOURCE_DIR}/source/GoogleTest/googletest/include
+            ${PROJECT_SOURCE_DIR}/source/GoogleTest/googlemock/include)
+    endif()
+
+    set(_LINK_LIBS)
+    foreach(_LIB ${TEST_LINK_LIBRARIES})
+        if(NOT TARGET ${_LIB} AND TARGET ${_LIB}${GEANT_LIBTARGET_EXT})
+            list(APPEND _LINK_LIBS ${_LIB}${GEANT_LIBTARGET_EXT})
+        else()
+            list(APPEND _LINK_LIBS ${_LIB})
+        endif()
+    endforeach()
+
+    CREATE_EXECUTABLE(
+        TARGET_NAME     ${TEST_NAME}
+        OUTPUT_NAME     ${TEST_NAME}
+        SOURCES         ${TEST_SOURCES}
+        LINK_LIBRARIES  geant-google-test
+                        geant-google-test-debug
+                        geant-headers
+                        ${_LINK_LIBS}
+        PROPERTIES      "${TEST_PROPERTIES}")
+
+    if("${TEST_COMMAND}" STREQUAL "")
+        set(TEST_COMMAND $<TARGET_FILE:${TEST_NAME}>)
+    endif()
+
+    if(TEST_DISCOVER_TESTS)
+        GTEST_DISCOVER_TESTS(${TEST_NAME}
+            ${TEST_OPTIONS})
+    elseif(TEST_ADD_TESTS)
+        GTEST_ADD_TESTS(TARGET ${TEST_NAME}
+            ${TEST_OPTIONS})
+    else()
+        ADD_TEST(
+            NAME                ${TEST_NAME}
+            COMMAND             ${TEST_COMMAND}
+            WORKING_DIRECTORY   ${CMAKE_CURRENT_LIST_DIR}
+            ${TEST_OPTIONS})
+        SET_TESTS_PROPERTIES(${TEST_NAME} PROPERTIES ENVIRONMENT "${TEST_ENVIRONMENT}")
+    endif()
+
+    #get_filename_component(_NAME "${_FILENAME}" NAME_WE)
+    #create_executable(TARGET_NAME ${_NAME} SOURCES ${_FILENAME})
+    #target_link_libraries(${_NAME} gtest gmock gtest_main ${ARGN})
+    #add_test(NAME ${_NAME} COMMAND ${_NAME})
 endfunction()
 
 #------------------------------------------------------------------------------#

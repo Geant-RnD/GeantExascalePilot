@@ -32,6 +32,11 @@ if(GEANT4_USE_ARCH)
     set(PTL_USE_AVX512 ${GEANT_USE_AVX512} CACHE BOOL "" FORCE)
 endif()
 
+add_library(geant-headers INTERFACE)
+target_include_directories(geant-headers INTERFACE
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>)
+
 # if not specified to only use submodules find the packages
 if(NOT GEANT_USE_SUBMODULES)
     find_package(VecCore ${VecCore_VERSION} REQUIRED COMPONENTS ${VecCore_COMPONENTS})
@@ -136,6 +141,13 @@ list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_LIST_DIR}
     ${CMAKE_BINARY_DIR} # hack until we fix Config.h
     ${CMAKE_CURRENT_LIST_DIR}/PTL/source)
+
+#
+target_include_directories(geant-headers INTERFACE
+    $<BUILD_INTERFACE:${${PROJECT_NAME}_INCLUDE_DIRECTORIES}>
+    $<INSTALL_INTERFACE:${${PROJECT_NAME}_INCLUDE_DIRECTORIES}>)
+
+target_link_libraries(geant-headers INTERFACE ${EXTERNAL_LIBRARIES})
 
 # finally, add Geant
 add_subdirectory(Geant)

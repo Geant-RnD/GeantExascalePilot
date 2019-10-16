@@ -25,6 +25,9 @@ namespace geantx
 // an "AnyParticle" type or find a way for all the possible particle types to
 // be expanded and/or added to
 //
+class Particle;
+class Geantino;
+class ChargedGeantino;
 class Electron;
 class Gamma;
 class KaonLong;
@@ -56,6 +59,8 @@ public:
         Tuple<Electron, Gamma, KaonLong, KaonMinus, KaonPlus, KaonShort, KaonZero,
               Neutron, PionMinus, PionPlus, PionZero, Positron, Proton>;
 
+    template <typename _Tp>
+    static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
     // User provides:
 
 public:

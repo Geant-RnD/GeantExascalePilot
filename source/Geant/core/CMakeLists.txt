@@ -37,6 +37,4 @@ if(BUILD_SHARED_LIBS)
     set(LINK_TARGET ${LIBNAME}-shared)
 endif()
 
-if(GEANT_BUILD_TESTS)
-    add_subdirectory(test)
-endif()
+add_subdirectory(test)

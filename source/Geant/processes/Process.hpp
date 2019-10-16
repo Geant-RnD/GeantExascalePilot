@@ -42,8 +42,8 @@ struct ProcessEnabled : std::false_type
 class Process
 {
 public:
-    Process() {}
     Process(const std::string& name, const double& factor);
+    Process()               = default;
     ~Process()              = default;
     Process(const Process&) = default;
     Process(Process&&)      = default;
