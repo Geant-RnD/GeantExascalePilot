@@ -383,9 +383,8 @@ int main(int argc, char** argv)
         auto_usage_t;
 
     auto_usage_t auto_rusage("rusage information");
-    auto_rusage.component_tuple().reset();
     // get an identical copy but not an auto-tuple
-    auto exe_rusage = auto_rusage.component_tuple();
+    auto exe_rusage = auto_rusage.get_component();
     exe_rusage.reset();
 
     uintmax_t nloop = 11;

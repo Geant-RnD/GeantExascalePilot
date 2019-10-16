@@ -7,7 +7,7 @@
 //#include "Geant/RunManager.h"
 
 #include "navigation/VNavigator.h"
-#include "navigation/SimpleNavigator.h"
+#include "navigation/NewSimpleNavigator.h"
 #include "navigation/NewSimpleNavigator.h"
 #include "navigation/SimpleABBoxNavigator.h"
 #include "navigation/SimpleABBoxLevelLocator.h"

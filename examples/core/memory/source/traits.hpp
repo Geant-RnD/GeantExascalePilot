@@ -19,50 +19,54 @@
 #include "Geant/particles/Gamma.hpp"
 #include "Geant/particles/Neutron.hpp"
 #include "Geant/track/TrackState.hpp"
-#include "timemory/signal_detection.hpp"
+#include "timemory/utility/signals.hpp"
 
-namespace geantx {
+namespace geantx
+{
 // declarations
 struct OffloadTrackStateHost;
 struct OffloadTrackStatePinned;
 
 // customization
 template <>
-struct OffloadMemoryPool<OffloadTrackStatePinned> : std::true_type {
-};
+struct OffloadMemoryPool<OffloadTrackStatePinned> : std::true_type
+{};
 
 template <>
-struct OffloadMemoryPool<OffloadTrackStateHost> : std::true_type {
-};
+struct OffloadMemoryPool<OffloadTrackStateHost> : std::true_type
+{};
 
 template <>
-struct OffloadMemoryType<OffloadTrackStateHost> {
-  using type = memory::host;
+struct OffloadMemoryType<OffloadTrackStateHost>
+{
+    using type = memory::host;
 };
 
 // create the types
-struct OffloadTrackStateHost : public TrackState,
-                               public MemoryPoolAllocator<OffloadTrackStateHost> {
-};
+struct OffloadTrackStateHost
+: public TrackState
+, public MemoryPoolAllocator<OffloadTrackStateHost>
+{};
 
-struct OffloadTrackStatePinned : public TrackState,
-                                 public MemoryPoolAllocator<OffloadTrackStatePinned> {
-};
+struct OffloadTrackStatePinned
+: public TrackState
+, public MemoryPoolAllocator<OffloadTrackStatePinned>
+{};
 
-} // namespace geantx
+}  // namespace geantx
 
 template <typename Type,
           std::enable_if_t<std::is_move_constructible<Type>::value, int> = 0>
-void assign(Type *ptr, Type &&obj)
+void assign(Type* ptr, Type&& obj)
 {
-  printf("  > assigning via move...\n");
-  *ptr = std::move(obj);
+    printf("  > assigning via move...\n");
+    *ptr = std::move(obj);
 }
 
 template <typename Type,
           std::enable_if_t<!std::is_move_constructible<Type>::value, int> = 0>
-void assign(Type *ptr, Type &&obj)
+void assign(Type* ptr, Type&& obj)
 {
-  printf("  > assigning via forward...\n");
-  *ptr = std::forward<Type>(obj);
+    printf("  > assigning via forward...\n");
+    *ptr = std::forward<Type>(obj);
 }
