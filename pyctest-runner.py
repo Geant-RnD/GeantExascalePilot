@@ -235,8 +235,6 @@ def run_pyctest():
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
     pyctest.test("track_manager_tuple", construct_command(["./track_manager_tuple"], args),
                  {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
-    pyctest.test("test_Logger", construct_command(["./test_Logger"], args),
-                 {"WORKING_DIRECTORY": pyctest.BINARY_DIRECTORY, "LABELS": pyctest.PROJECT_NAME})
 
     tasking_suffix = ""
     if args.num_tasks != 16384:
