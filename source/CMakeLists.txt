@@ -69,7 +69,7 @@ checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
 add_subdirectory(timemory)
 set(timemory_FIND_COMPONENTS_INTERFACE geantx-timemory)
 set(timemory_DIR ${CMAKE_BINARY_DIR})
-find_package(timemory COMPONENTS caliper cuda gotcha arch papi)
+find_package(timemory COMPONENTS caliper cuda gotcha arch papi nvtx gperftools-cpu)
 set(TIMEMORY_LIBRARY geantx-timemory)
 
 #----------------------------------------------------------------------------------------#
