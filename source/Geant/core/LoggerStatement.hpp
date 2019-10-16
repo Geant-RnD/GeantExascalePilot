@@ -7,13 +7,12 @@
 
 #include "Geant/core/Config.hpp"
 
-#include <vector>
-#include <sstream>
 #include <iostream>
 #include <memory>
+#include <sstream>
+#include <vector>
 
 namespace geantx {
-
 //===========================================================================//
 /*!
  * \class LoggerStatement

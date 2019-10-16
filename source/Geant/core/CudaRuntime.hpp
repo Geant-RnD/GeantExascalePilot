@@ -17,11 +17,11 @@
 #include "Geant/core/Config.hpp"
 #include "Geant/core/CudaDeviceInfo.hpp"
 
-#include <PTL/Utility.hh>
 #include <PTL/AutoLock.hh>
+#include <PTL/Utility.hh>
 
-#include <string>
 #include <deque>
+#include <string>
 
 #include <cuda.h>
 #include <cuda_runtime_api.h>
@@ -95,7 +95,6 @@
 
 namespace geantx {
 inline namespace cudaruntime {
-
 //======================================================================================//
 
 void CudaError(const char *err_string, const char *msg, const char *file, int line);

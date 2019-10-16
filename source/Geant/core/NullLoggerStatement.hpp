@@ -18,7 +18,6 @@
 
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 class NullLoggerStatement {
   using This = NullLoggerStatement;
 

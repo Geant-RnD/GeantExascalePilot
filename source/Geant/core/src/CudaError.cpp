@@ -12,7 +12,6 @@
 
 namespace geantx {
 inline namespace cudaruntime {
-
 //---------------------------------------------------------------------------//
 /*!
  * \brief Log cuda error and throw an exception.

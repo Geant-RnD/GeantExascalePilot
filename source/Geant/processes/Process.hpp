@@ -16,50 +16,44 @@
 
 #include <string>
 
-namespace geantx
-{
+namespace geantx {
 //----------------------------------------------------------------------------//
 // This trait is marked by the source code as applicable to certain type
 // of particle
 //
 template <typename ProcessType, typename ParticleType>
-struct ProcessAvailable : std::false_type
-{
-};
+struct ProcessAvailable : std::false_type {};
 
 //----------------------------------------------------------------------------//
 // This trait is marked by the user code as applicable to certain type
 // of particle
 //
 template <typename ProcessType, typename ParticleType>
-struct ProcessEnabled : std::false_type
-{
-};
+struct ProcessEnabled : std::false_type {};
 
 //----------------------------------------------------------------------------//
 // This is the base class for a process
 //
-class Process
-{
+class Process {
 public:
-    Process(const std::string& name, const double& factor);
-    Process()               = default;
-    ~Process()              = default;
-    Process(const Process&) = default;
-    Process(Process&&)      = default;
+  Process(const std::string &name, const double &factor);
+  Process()                = default;
+  ~Process()               = default;
+  Process(const Process &) = default;
+  Process(Process &&)      = default;
 
-    Process& operator=(const Process&) = delete;
-    Process& operator=(Process&&) = default;
+  Process &operator=(const Process &) = delete;
+  Process &operator=(Process &&) = default;
 
 public:
-    double GetPILFactor() const { return fPILfactor; }
-    void   SetPILFactor(const double& val) { fPILfactor = val; }
+  double GetPILFactor() const { return fPILfactor; }
+  void SetPILFactor(const double &val) { fPILfactor = val; }
 
-    const std::string& GetName() { return fName; }
-    void               SetName(const std::string& val) { fName = val; }
+  const std::string &GetName() { return fName; }
+  void SetName(const std::string &val) { fName = val; }
 
 protected:
-    double      fPILfactor = 0.0;
-    std::string fName      = "unknown";
+  double fPILfactor = 0.0;
+  std::string fName = "unknown";
 };
-}  // namespace geantx
+} // namespace geantx

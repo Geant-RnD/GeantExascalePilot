@@ -21,7 +21,6 @@
 
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
-
 inline std::string GetDataFileLocation(int argc, char **argv, const char *dataFilename)
 {
   const char *dir = argc > 0 ? dirname(argv[0]) : ".";

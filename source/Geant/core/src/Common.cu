@@ -384,10 +384,12 @@ void geantx::cudaruntime::DeviceQuery()
     std::array<const char *, 6> sComputeMode = {
         "Default (multiple host threads can use ::cudaSetDevice() with device "
         "simultaneously)",
-        "Exclusive (only one host thread in one process is able to use ::cudaSetDevice() "
+        "Exclusive (only one host thread in one process is able to use "
+        "::cudaSetDevice() "
         "with this device)",
         "Prohibited (no host thread can use ::cudaSetDevice() with this device)",
-        "Exclusive Process (many threads in one process is able to use ::cudaSetDevice() "
+        "Exclusive Process (many threads in one process is able to use "
+        "::cudaSetDevice() "
         "with this device)",
         "Unknown",
         nullptr};

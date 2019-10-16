@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include <memory>
 #include <iostream>
+#include <memory>
 
 #ifndef __NVCC__
 #  include "Geant/core/LoggerStatement.hpp"
@@ -15,7 +15,6 @@
 #endif
 
 namespace geantx {
-
 // To be moved to its own header/source file.
 uintmax_t GetThisThreadID();
 

@@ -18,16 +18,15 @@
 #include "Geant/core/Logger.hpp"
 
 #include <atomic>
-#include <string>
-#include <sstream>
-#include <ostream>
 #include <iomanip>
+#include <ostream>
+#include <sstream>
+#include <string>
 
 //======================================================================================//
 
 namespace geantx {
 inline namespace cudaruntime {
-
 void DeviceQuery();
 
 int DeviceCount();

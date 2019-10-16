@@ -1,19 +1,19 @@
 
 #include "TestEm3DetectorConstruction.hpp"
 
-#include "Geant/geometry/UserDetectorConstruction.hpp"
 #include "Geant/geometry/RunManager.hpp"
+#include "Geant/geometry/UserDetectorConstruction.hpp"
 
 #include <iostream>
 #include <vector>
 
 // Material includes
-#include "Geant/material/Material.hpp"
 #include "Geant/material/Element.hpp"
+#include "Geant/material/Material.hpp"
 #include "Geant/material/MaterialProperties.hpp"
 //#include "Geant/NISTElementData.hpp"
-#include "Geant/core/SystemOfUnits.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/core/SystemOfUnits.hpp"
 
 // Region and productionCut includes
 //#include "Geant/Region.hpp"
@@ -123,7 +123,7 @@ void TestEm3DetectorConstruction::SetAbsorberMaterial(int absindx,
     exit(-1);
   }
   // will report proper error msg if the material cannot be found or created
-  geantx::Material *mat = geantx::Material::NISTMaterial(matname);
+  geantx::Material *mat       = geantx::Material::NISTMaterial(matname);
   fAbsorberMaterials[absindx] = mat;
 }
 
@@ -191,35 +191,31 @@ void TestEm3DetectorConstruction::CreateMaterials()
   double temperature = 2.73 * kelvin;
   double z           = 1.;
   double a           = 1.008 * g / mole;
-  new geantx::Material("Galactic", z, a, density,
-                             geantx::MaterialState::kStateGas, temperature,
-                             pressure);
+  new geantx::Material("Galactic", z, a, density, geantx::MaterialState::kStateGas,
+                       temperature, pressure);
   //
   // create material Lead (by mass fraction)
-  double massfraction = 1.;
-  int ncomponents     = 1;
-  density             = 11.35 * g / cm3;
-  geantx::Material *matLead =
-      new geantx::Material("Lead", density, ncomponents);
+  double massfraction       = 1.;
+  int ncomponents           = 1;
+  density                   = 11.35 * g / cm3;
+  geantx::Material *matLead = new geantx::Material("Lead", density, ncomponents);
   matLead->AddElement(elPb, massfraction = 1.0);
   //
   // create Scintillator (by atom count)
-  density     = 1.032 * g / cm3;
-  ncomponents = 2;
-  int natoms  = 1;
-  geantx::Material *matSci =
-      new geantx::Material("Scintillator", density, ncomponents);
+  density                  = 1.032 * g / cm3;
+  ncomponents              = 2;
+  int natoms               = 1;
+  geantx::Material *matSci = new geantx::Material("Scintillator", density, ncomponents);
   matSci->AddElement(elC, natoms = 9);
   matSci->AddElement(elH, natoms = 10);
   //
   // create liquidArgon (from material NIST_MAT_lAr with different density by mass
   // fraction)
   geantx::Material *matlAr = geantx::Material::NISTMaterial("NIST_MAT_lAr");
-  density                        = 1.390 * g / cm3;
-  ncomponents                    = 1;
-  massfraction                   = 1.;
-  geantx::Material *lArEm3 =
-      new geantx::Material("liquidArgon", density, ncomponents);
+  density                  = 1.390 * g / cm3;
+  ncomponents              = 1;
+  massfraction             = 1.;
+  geantx::Material *lArEm3 = new geantx::Material("liquidArgon", density, ncomponents);
   lArEm3->AddMaterial(matlAr, massfraction);
 }
 

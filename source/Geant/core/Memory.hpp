@@ -19,41 +19,35 @@
 #include <type_traits>
 
 #if !defined(GEANT_HOST_DEVICE)
-#    define GEANT_HOST_DEVICE __host__ __device__
+#  define GEANT_HOST_DEVICE __host__ __device__
 #endif
 
-namespace geantx
-{
+namespace geantx {
 //----------------------------------------------------------------------------//
 //  Simple wrapper to designate as a pointer to memory on device
 //
 template <typename _Tp>
-class DevicePtr
-{
+class DevicePtr {
 public:
-    using this_type = DevicePtr<_Tp>;
+  using this_type = DevicePtr<_Tp>;
 
 public:
-    GEANT_HOST_DEVICE DevicePtr()
-    : fPtr(nullptr)
-    {}
-    GEANT_HOST_DEVICE DevicePtr(_Tp* ptr)
-    : fPtr(ptr)
-    {}
-    GEANT_HOST_DEVICE ~DevicePtr()                = default;
-    GEANT_HOST_DEVICE DevicePtr(const this_type&) = default;
-    GEANT_HOST_DEVICE DevicePtr(this_type&&)      = default;
+  GEANT_HOST_DEVICE DevicePtr() : fPtr(nullptr) {}
+  GEANT_HOST_DEVICE DevicePtr(_Tp *ptr) : fPtr(ptr) {}
+  GEANT_HOST_DEVICE ~DevicePtr()                 = default;
+  GEANT_HOST_DEVICE DevicePtr(const this_type &) = default;
+  GEANT_HOST_DEVICE DevicePtr(this_type &&)      = default;
 
-    // operators
-    GEANT_HOST_DEVICE explicit operator _Tp*() { return fPtr; }
-    GEANT_HOST_DEVICE explicit operator void*() { return fPtr; }
-    GEANT_HOST_DEVICE this_type& operator=(const this_type&) = default;
-    GEANT_HOST_DEVICE this_type& operator=(this_type&&) = default;
+  // operators
+  GEANT_HOST_DEVICE explicit operator _Tp *() { return fPtr; }
+  GEANT_HOST_DEVICE explicit operator void *() { return fPtr; }
+  GEANT_HOST_DEVICE this_type &operator=(const this_type &) = default;
+  GEANT_HOST_DEVICE this_type &operator=(this_type &&) = default;
 
-    GEANT_HOST_DEVICE _Tp* get() const { return fPtr; }
+  GEANT_HOST_DEVICE _Tp *get() const { return fPtr; }
 
 private:
-    _Tp* fPtr;
+  _Tp *fPtr;
 };
 
-}  // namespace geantx
+} // namespace geantx

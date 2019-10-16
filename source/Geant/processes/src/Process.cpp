@@ -14,12 +14,9 @@
 
 #include "Geant/processes/Process.hpp"
 
-namespace geantx
-{
-Process::Process(const std::string& name, const double& factor)
-: fPILfactor(factor)
-, fName(name)
-{
-}
+namespace geantx {
+Process::Process(const std::string &name, const double &factor)
+    : fPILfactor(factor), fName(name)
+{}
 
-}  // namespace geantx
+} // namespace geantx

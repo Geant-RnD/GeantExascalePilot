@@ -418,7 +418,8 @@ struct _TupleImpl<_Idx, _Head, _Tail...> : public _TupleImpl<_Idx + 1, _Tail...>
       template <typename _Alloc>
       _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, _TupleImpl&& __in)
       : _Inherited(__tag, __a, std::move(_M_tail(__in)))
-      , _Base(__use_alloc<_Head, _Alloc, _Head>(__a), std::forward<_Head>(_M_head(__in)))
+      , _Base(__use_alloc<_Head, _Alloc, _Head>(__a),
+     std::forward<_Head>(_M_head(__in)))
       {
       }
 
@@ -553,12 +554,14 @@ struct _TupleImpl<_Idx, _Head> : private _HeadBase<_Idx, _Head> {
 
       template <typename _Alloc>
       _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, _TupleImpl&& __in)
-      : _Base(__use_alloc<_Head, _Alloc, _Head>(__a), std::forward<_Head>(_M_head(__in)))
+      : _Base(__use_alloc<_Head, _Alloc, _Head>(__a),
+     std::forward<_Head>(_M_head(__in)))
       {
       }
 
       template <typename _Alloc, typename _UHead>
-      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _TupleImpl<_Idx, _UHead>&
+      _TupleImpl(allocator_arg_t __tag, const _Alloc& __a, const _TupleImpl<_Idx,
+     _UHead>&
      __in) : _Base(__use_alloc<_Head, _Alloc, _Head>(__a), _TupleImpl<_Idx,
      _UHead>::_M_head(__in))
       {
@@ -904,9 +907,10 @@ public:
                 typename std::enable_if<_TMCT<_UElements...>::template
      _ConstructibleTuple<_UElements...>() && _TMCT<_UElements...>::template
      _ImplicitlyConvertibleTuple<_UElements...>() && _TNTC<_Dummy>::template
-     _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type = true> Tuple(allocator_arg_t
-     __tag, const _Alloc& __a, const Tuple<_UElements...>& __in) : _Inherited(__tag, __a,
-     static_cast<const _TupleImpl<0, _UElements...>&>(__in))
+     _NonNestedTuple<Tuple<_UElements...>&&>(), bool>::type = true>
+     Tuple(allocator_arg_t
+     __tag, const _Alloc& __a, const Tuple<_UElements...>& __in) : _Inherited(__tag,
+     __a, static_cast<const _TupleImpl<0, _UElements...>&>(__in))
       {
       }
 
@@ -1068,16 +1072,19 @@ public:
 
   /*
       template <typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>() &&
-                                            !std::is_same<typename std::decay<_U1>::type,
-     allocator_arg_t>::value, bool>::type = true> constexpr Tuple(_U1&& __a1, _U2&& __a2)
-      : _Inherited(std::forward<_U1>(__a1), std::forward<_U2>(__a2))
+                                            !std::is_same<typename
+     std::decay<_U1>::type, allocator_arg_t>::value, bool>::type = true> constexpr
+     Tuple(_U1&& __a1, _U2&& __a2) : _Inherited(std::forward<_U1>(__a1),
+     std::forward<_U2>(__a2))
       {
       }
 
       template <typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      &&
                                             !_TMC::template
      _ImplicitlyMoveConvertibleTuple<_U1, _U2>() && !std::is_same<typename
@@ -1172,8 +1179,8 @@ public:
 
       template <typename _Alloc, typename _Dummy = void,
                 typename std::enable_if<_TCC<_Dummy>::template _ConstructibleTuple<_T1,
-     _T2>() && _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(), bool>::type
-     = true>
+     _T2>() && _TCC<_Dummy>::template _ImplicitlyConvertibleTuple<_T1, _T2>(),
+     bool>::type = true>
 
       Tuple(allocator_arg_t __tag, const _Alloc& __a, const _T1& __a1, const _T2& __a2)
       : _Inherited(__tag, __a, __a1, __a2)
@@ -1186,13 +1193,15 @@ public:
                                        !_TCC<_Dummy>::template
      _ImplicitlyConvertibleTuple<_T1, _T2>(), bool>::type = false>
 
-      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const _T1& __a1, const _T2&
+      explicit Tuple(allocator_arg_t __tag, const _Alloc& __a, const _T1& __a1, const
+     _T2&
      __a2) : _Inherited(__tag, __a, __a1, __a2)
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, _U1&& __a1, _U2&& __a2)
       : _Inherited(__tag, __a, std::forward<_U1>(__a1), std::forward<_U2>(__a2))
@@ -1200,7 +1209,8 @@ public:
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      &&
                                        !_TMC::template
      _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = false> explicit
@@ -1222,25 +1232,26 @@ public:
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                       _TMC::template _ImplicitlyConvertibleTuple<_U1,
-     _U2>(), bool>::type = true> Tuple(allocator_arg_t __tag, const _Alloc& __a, const
-     Tuple<_U1, _U2>& __in) : _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _U1,
-     _U2>&>(__in))
+                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>()
+     && _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(), bool>::type = true>
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, const Tuple<_U1, _U2>& __in) :
+     _Inherited(__tag, __a, static_cast<const _TupleImpl<0, _U1, _U2>&>(__in))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
+                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>()
+     &&
                                        !_TMC::template _ImplicitlyConvertibleTuple<_U1,
-     _U2>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag, const _Alloc& __a,
-     const Tuple<_U1, _U2>& __in) : _Inherited(__tag, __a, static_cast<const _TupleImpl<0,
-     _U1, _U2>&>(__in))
+     _U2>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag, const _Alloc&
+     __a, const Tuple<_U1, _U2>& __in) : _Inherited(__tag, __a, static_cast<const
+     _TupleImpl<0, _U1, _U2>&>(__in))
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, Tuple<_U1, _U2>&& __in)
       : _Inherited(__tag, __a, static_cast<_TupleImpl<0, _U1, _U2>&&>(__in))
@@ -1248,7 +1259,8 @@ public:
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      &&
                                        !_TMC::template
      _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = false> explicit
@@ -1258,23 +1270,25 @@ public:
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
-                                       _TMC::template _ImplicitlyConvertibleTuple<_U1,
-     _U2>(), bool>::type = true> Tuple(allocator_arg_t __tag, const _Alloc& __a, const
-     pair<_U1, _U2>& __in) : _Inherited(__tag, __a, __in.first, __in.second)
+                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>()
+     && _TMC::template _ImplicitlyConvertibleTuple<_U1, _U2>(), bool>::type = true>
+     Tuple(allocator_arg_t __tag, const _Alloc& __a, const pair<_U1, _U2>& __in) :
+     _Inherited(__tag, __a, __in.first, __in.second)
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>() &&
+                typename std::enable_if<_TMC::template _ConstructibleTuple<_U1, _U2>()
+     &&
                                        !_TMC::template _ImplicitlyConvertibleTuple<_U1,
-     _U2>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag, const _Alloc& __a,
-     const pair<_U1, _U2>& __in) : _Inherited(__tag, __a, __in.first, __in.second)
+     _U2>(), bool>::type = false> explicit Tuple(allocator_arg_t __tag, const _Alloc&
+     __a, const pair<_U1, _U2>& __in) : _Inherited(__tag, __a, __in.first, __in.second)
       {
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      && _TMC::template _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = true>
       Tuple(allocator_arg_t __tag, const _Alloc& __a, pair<_U1, _U2>&& __in)
       : _Inherited(__tag, __a, std::forward<_U1>(__in.first),
@@ -1283,12 +1297,14 @@ public:
       }
 
       template <typename _Alloc, typename _U1, typename _U2,
-                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1, _U2>()
+                typename std::enable_if<_TMC::template _MoveConstructibleTuple<_U1,
+     _U2>()
      &&
                                        !_TMC::template
      _ImplicitlyMoveConvertibleTuple<_U1, _U2>(), bool>::type = false> explicit
      Tuple(allocator_arg_t __tag, const _Alloc& __a, pair<_U1, _U2>&& __in) :
-     _Inherited(__tag, __a, std::forward<_U1>(__in.first), std::forward<_U2>(__in.second))
+     _Inherited(__tag, __a, std::forward<_U1>(__in.first),
+     std::forward<_U2>(__in.second))
       {
       }
   */

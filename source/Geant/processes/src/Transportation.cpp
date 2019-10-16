@@ -14,9 +14,8 @@
 
 #include "Geant/processes/Transportation.hpp"
 
-namespace geantx
-{
+namespace geantx {
 Transportation::Transportation() {}
 
 Transportation::~Transportation() {}
-}  // namespace geantx
+} // namespace geantx

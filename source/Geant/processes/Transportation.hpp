@@ -19,8 +19,7 @@
 
 #include <type_traits>
 
-namespace geantx
-{
+namespace geantx {
 // TODO: avoid having to specify all particle types. Instead we will create
 // an "AnyParticle" type or find a way for all the possible particle types to
 // be expanded and/or added to
@@ -42,47 +41,42 @@ class PionZero;
 class Positron;
 class Proton;
 
-class Transportation : public Process
-{
+class Transportation : public Process {
 public:
-    // Enable/disable GetPhysicalInteractionLength (GPIL) functions
-    static constexpr bool EnableAtRestGPIL    = false;
-    static constexpr bool EnableAlongStepGPIL = true;
-    static constexpr bool EnablePostStepGPIL  = false;
-    // Enable/disable DoIt functions
-    static constexpr bool EnableAtRestDoIt    = false;
-    static constexpr bool EnableAlongStepDoIt = true;
-    static constexpr bool EnablePostStepDoIt  = true;
+  // Enable/disable GetPhysicalInteractionLength (GPIL) functions
+  static constexpr bool EnableAtRestGPIL    = false;
+  static constexpr bool EnableAlongStepGPIL = true;
+  static constexpr bool EnablePostStepGPIL  = false;
+  // Enable/disable DoIt functions
+  static constexpr bool EnableAtRestDoIt    = false;
+  static constexpr bool EnableAlongStepDoIt = true;
+  static constexpr bool EnablePostStepDoIt  = true;
 
-    // see TODO above
-    using AllowedParticles =
-        Tuple<Electron, Gamma, KaonLong, KaonMinus, KaonPlus, KaonShort, KaonZero,
-              Neutron, PionMinus, PionPlus, PionZero, Positron, Proton>;
+  // see TODO above
+  using AllowedParticles =
+      Tuple<Electron, Gamma, KaonLong, KaonMinus, KaonPlus, KaonShort, KaonZero, Neutron,
+            PionMinus, PionPlus, PionZero, Positron, Proton>;
 
-    template <typename _Tp>
-    static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
-    // User provides:
+  template <typename _Tp>
+  static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
+  // User provides:
 
 public:
-    Transportation();
-    ~Transportation();
+  Transportation();
+  ~Transportation();
 
-    // here the transportation proposed a step distance
-    double AlongStepGPIL();
-    // double PostStepGPIL();
+  // here the transportation proposed a step distance
+  double AlongStepGPIL();
+  // double PostStepGPIL();
 
-    void AlongStepDoIt();
-    void PostStepDoIt();
+  void AlongStepDoIt();
+  void PostStepDoIt();
 };
 
 template <typename ParticleType>
-struct ProcessAvailable<Transportation, ParticleType> : std::true_type
-{
-};
+struct ProcessAvailable<Transportation, ParticleType> : std::true_type {};
 
 template <typename ParticleType>
-struct ProcessEnabled<Transportation, ParticleType> : std::true_type
-{
-};
+struct ProcessEnabled<Transportation, ParticleType> : std::true_type {};
 
-}  // namespace geantx
+} // namespace geantx

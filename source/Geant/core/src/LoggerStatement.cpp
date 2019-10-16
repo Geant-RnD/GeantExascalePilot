@@ -3,8 +3,8 @@
  * \note   Copyright (c) 2019 Oak Ridge National Laboratory, UT-Battelle, LLC.
  */
 
-#include "Geant/core/Config.hpp"
 #include "Geant/core/LoggerStatement.hpp"
+#include "Geant/core/Config.hpp"
 
 #include "PTL/ThreadPool.hh"
 
