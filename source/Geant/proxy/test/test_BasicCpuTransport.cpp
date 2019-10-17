@@ -24,16 +24,21 @@
 #include "Geant/proxy/ProxySecondaryGenerator.hpp"
 #include "Geant/proxy/ProxyStepLimiter.hpp"
 #include "Geant/proxy/ProxyTrackLimiter.hpp"
+#include "Geant/track/TrackState.hpp"
+
+using namespace geantx;
 
 void initialize_geometry() {}
 
 void initialize_physics() {}
 
-TrackState *get_primary_particle() {}
+TrackState *get_primary_particle()
+{
+  return nullptr;
+}
 
 int main(int argc, char **argv)
 {
-    initialize_geometry();
-    initialize_physics();
-    
+  initialize_geometry();
+  initialize_physics();
 }

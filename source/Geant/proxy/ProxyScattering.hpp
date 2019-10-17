@@ -57,9 +57,9 @@ public:
   // here the transportation is applied
   void AlongStepDoIt(TrackState &state)
   {
-    state.fDir.x *= -0.5;
-    state.fDir.y *= -0.5;
-    state.fDir.z *= 0.25;
+    state.fDir.x() *= -0.5;
+    state.fDir.y() *= -0.5;
+    state.fDir.z() *= 0.25;
     state.fDir.Normalize();
   }
   void PostStepDoIt(TrackState &) {}
