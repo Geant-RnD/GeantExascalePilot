@@ -38,7 +38,7 @@
 using namespace geantx;
 using namespace vecgeom;
 //::VPlacedVolume;
-//using vecgeom::LogicalVolume;
+// using vecgeom::LogicalVolume;
 
 //===----------------------------------------------------------------------===//
 //              A list of all the particles for unrolling
@@ -143,11 +143,11 @@ int main(int argc, char **argv)
   initialize_geometry();
 
   // basic geometry checks
-  LogicalVolume const* logWorld = GeoManager::Instance().GetWorld()->GetLogicalVolume();
+  LogicalVolume const *logWorld = GeoManager::Instance().GetWorld()->GetLogicalVolume();
   if (logWorld) {
     // print detector information
-    //logWorld->PrintContent();
-    std::cout <<"\n # placed volumes: "<< logWorld->GetNTotal() << "\n";
+    logWorld->PrintContent();
+    std::cout << "\n # placed volumes: " << logWorld->GetNTotal() << "\n";
   }
 
   initialize_physics();
