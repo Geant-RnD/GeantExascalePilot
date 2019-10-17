@@ -107,7 +107,7 @@ int main(int argc, char **argv)
   LogicalVolume const* logWorld = GeoManager::Instance().GetWorld()->GetLogicalVolume();
   if (logWorld) {
     // print detector information
-    logWorld->PrintContent();
+    //logWorld->PrintContent();
     std::cout <<"\n # placed volumes: "<< logWorld->GetNTotal() << "\n";
   }
 
