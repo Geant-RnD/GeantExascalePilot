@@ -15,6 +15,8 @@
 //===----------------------------------------------------------------------===//
 //
 
+#pragma once
+
 #include "Geant/core/Tuple.hpp"
 #include "Geant/particles/Types.hpp"
 #include "Geant/processes/Process.hpp"
