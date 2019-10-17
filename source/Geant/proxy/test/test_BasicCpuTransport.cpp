@@ -40,10 +40,15 @@ using namespace vecgeom;
 //::VPlacedVolume;
 //using vecgeom::LogicalVolume;
 
-template <typename T, typename U>
-using map_t = std::map<T, U>;
+//===----------------------------------------------------------------------===//
+//              A list of all the particles for unrolling
+//===----------------------------------------------------------------------===//
 
 using ParticleTypes = std::tuple<CpuGamma, CpuElectron, GpuGamma, GpuElectron>;
+
+//===----------------------------------------------------------------------===//
+//              Type information class for Physics available to Particle
+//===----------------------------------------------------------------------===//
 
 template <typename ParticleType, typename... ProcessTypes>
 struct PhysicsProcessList {
@@ -51,14 +56,43 @@ struct PhysicsProcessList {
   using physics  = std::tuple<ProcessTypes...>;
 };
 
-using CpuGammaPhysics = PhysicsProcessList<CpuGamma, ProxyScattering>;
-//VPlacedVolume *
+//===----------------------------------------------------------------------===//
+//              Specify the Physics for the Particles
+//===----------------------------------------------------------------------===//
+
+using CpuGammaPhysics =
+    PhysicsProcessList<CpuGamma, ProxyScattering, ProxySecondaryGenerator,
+                       ProxyStepLimiter, ProxyTrackLimiter>;
+
+using CpuElectronPhysics =
+    PhysicsProcessList<CpuElectron, ProxyScattering, ProxySecondaryGenerator,
+                       ProxyStepLimiter, ProxyTrackLimiter>;
+
+using GpuGammaPhysics =
+    PhysicsProcessList<GpuGamma, ProxyScattering, ProxySecondaryGenerator,
+                       ProxyStepLimiter, ProxyTrackLimiter>;
+
+using GpuElectronPhysics =
+    PhysicsProcessList<GpuElectron, ProxyScattering, ProxySecondaryGenerator,
+                       ProxyStepLimiter, ProxyTrackLimiter>;
+
+//===----------------------------------------------------------------------===//
+//              A list of all particle + physics pairs
+//===----------------------------------------------------------------------===//
+
+using ParticlePhysicsTypes =
+    std::tuple<CpuGammaPhysics, CpuElectronPhysics, GpuGammaPhysics, GpuElectronPhysics>;
+
+//===----------------------------------------------------------------------===//
+
+// VPlacedVolume *
 void initialize_geometry()
 {
-  UnplacedBox *worldUnplaced      = new UnplacedBox(10, 10, 10);
-  UnplacedTrapezoid *trapUnplaced = new UnplacedTrapezoid(4, 0, 0, 4, 4, 4, 0, 4, 4, 4, 0);
-  UnplacedBox *boxUnplaced        = new UnplacedBox(2.5, 2.5, 2.5);
-  UnplacedOrb *orbUnplaced        = new UnplacedOrb(2.8);
+  UnplacedBox *worldUnplaced = new UnplacedBox(10, 10, 10);
+  UnplacedTrapezoid *trapUnplaced =
+      new UnplacedTrapezoid(4, 0, 0, 4, 4, 4, 0, 4, 4, 4, 0);
+  UnplacedBox *boxUnplaced = new UnplacedBox(2.5, 2.5, 2.5);
+  UnplacedOrb *orbUnplaced = new UnplacedOrb(2.8);
 
   LogicalVolume *world = new LogicalVolume("world", worldUnplaced);
   LogicalVolume *trap  = new LogicalVolume("trap", trapUnplaced);
@@ -70,13 +104,14 @@ void initialize_geometry()
   trap->PlaceDaughter("box1", orb, ident);
 
   Transformation3D *placement1 = new Transformation3D(5, 5, 5, 0, 0, 0);
-  Transformation3D *placement2 = new Transformation3D(-5, 5, 5, 0, 0, 0);   // 45,  0,  0);
-  Transformation3D *placement3 = new Transformation3D(5, -5, 5, 0, 0, 0);   // 0, 45,  0);
-  Transformation3D *placement4 = new Transformation3D(5, 5, -5, 0, 0, 0);   // 0,  0, 45);
-  Transformation3D *placement5 = new Transformation3D(-5, -5, 5, 0, 0, 0);  // 45, 45,  0);
-  Transformation3D *placement6 = new Transformation3D(-5, 5, -5, 0, 0, 0);  // 45,  0, 45);
-  Transformation3D *placement7 = new Transformation3D(5, -5, -5, 0, 0, 0);  // 0, 45, 45);
-  Transformation3D *placement8 = new Transformation3D(-5, -5, -5, 0, 0, 0); // 45, 45, 45);
+  Transformation3D *placement2 = new Transformation3D(-5, 5, 5, 0, 0, 0);  // 45,  0,  0);
+  Transformation3D *placement3 = new Transformation3D(5, -5, 5, 0, 0, 0);  // 0, 45,  0);
+  Transformation3D *placement4 = new Transformation3D(5, 5, -5, 0, 0, 0);  // 0,  0, 45);
+  Transformation3D *placement5 = new Transformation3D(-5, -5, 5, 0, 0, 0); // 45, 45,  0);
+  Transformation3D *placement6 = new Transformation3D(-5, 5, -5, 0, 0, 0); // 45,  0, 45);
+  Transformation3D *placement7 = new Transformation3D(5, -5, -5, 0, 0, 0); // 0, 45, 45);
+  Transformation3D *placement8 =
+      new Transformation3D(-5, -5, -5, 0, 0, 0); // 45, 45, 45);
 
   world->PlaceDaughter("trap1", trap, placement1);
   world->PlaceDaughter("trap2", trap, placement2);
@@ -90,14 +125,18 @@ void initialize_geometry()
   VPlacedVolume *w = world->Place();
   GeoManager::Instance().SetWorld(w);
   GeoManager::Instance().CloseGeometry();
-  //return w;
+  // return w;
 }
+
+//===----------------------------------------------------------------------===//
 
 void initialize_physics() {}
 TrackState *get_primary_particle()
 {
   return nullptr;
 }
+
+//===----------------------------------------------------------------------===//
 
 int main(int argc, char **argv)
 {
@@ -113,3 +152,5 @@ int main(int argc, char **argv)
 
   initialize_physics();
 }
+
+//===----------------------------------------------------------------------===//

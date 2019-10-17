@@ -65,4 +65,5 @@ public:
   void PostStepDoIt(TrackState &) {}
   // void AtRestDoIt(TrackState&);
 };
+
 } // namespace geantx
