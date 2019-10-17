@@ -1,68 +1,49 @@
 ################################################################################
 #
-#        Handles the external packages
+#                               Handle the external packages
 #
 ################################################################################
 
 include(FindPackageHandleStandardArgs)
 
-################################################################################
-#
-#                               Threading
-#
-################################################################################
+add_library(geantx-external INTERFACE)
 
-if(CMAKE_C_COMPILER_IS_INTEL OR CMAKE_CXX_COMPILER_IS_INTEL)
-    if(NOT WIN32)
-        set(CMAKE_THREAD_PREFER_PTHREAD ON)
-        set(THREADS_PREFER_PTHREAD_FLAG OFF CACHE BOOL "Use -pthread vs. -lpthread" FORCE)
-    endif()
+add_library(geantx-cuda INTERFACE)
+add_library(geantx-threading INTERFACE)
 
-    find_package(Threads)
-    if(Threads_FOUND)
-        list(APPEND EXTERNAL_LIBRARIES Threads::Threads)
-    endif()
-endif()
+add_library(geantx-coverage INTERFACE)
+add_library(geantx-gperftools INTERFACE)
+add_library(geantx-ittnotify INTERFACE)
+add_library(geantx-nvtx INTERFACE)
 
+set(GEANTX_EXTERNAL_INTERFACES
+    geantx-cuda
+    geantx-threading
+    )
 
-################################################################################
-#
-#        GCov
-#
-################################################################################
+target_link_libraries(geantx-external INTERFACE ${GEANTX_EXTERNAL_INTERFACES})
 
+# if option is enabled, have geantx-external always provide tools listed below:
 if(GEANT_USE_COVERAGE)
-    find_library(GCOV_LIBRARY gcov)
-    if(GCOV_LIBRARY)
-        list(APPEND EXTERNAL_LIBRARIES ${GCOV_LIBRARY})
-    else()
-        list(APPEND EXTERNAL_LIBRARIES gcov)
-    endif()
-    add(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lgcov")
+    target_link_libraries(geantx-external INTERFACE geantx-coverage)
 endif()
-
-
-################################################################################
-#
-#        Google PerfTools
-#
-################################################################################
 
 if(GEANT_USE_GPERF)
-    find_package(GPerfTools COMPONENTS profiler)
+    target_link_libraries(geantx-external INTERFACE geantx-gperftools)
+endif()
 
-    if(GPerfTools_FOUND)
-        list(APPEND EXTERNAL_INCLUDE_DIRS ${GPerfTools_INCLUDE_DIRS})
-        list(APPEND EXTERNAL_LIBRARIES ${GPerfTools_LIBRARIES})
-        list(APPEND ${PROJECT_NAME}_DEFINITIONS GEANT_USE_GPERF)
-    endif()
+if(GEANT_USE_ITTNOTIFY)
+    target_link_libraries(geantx-external INTERFACE geantx-ittnotify)
+endif()
 
+if(GEANT_USE_NVTX)
+    target_link_libraries(geantx-external INTERFACE geantx-nvtx)
 endif()
 
 
 ################################################################################
 #
-#        CUDA
+#                               CUDA
 #
 ################################################################################
 
@@ -88,9 +69,6 @@ if(NOT "${CUDA_ARCH}" STREQUAL "${CUDA_AUTO_ARCH}")
         set(_ARCH_NUM ${cuda_${CUDA_ARCH}_arch})
     endif()
 endif()
-
-add_library(geantx-cuda INTERFACE)
-list(APPEND EXTERNAL_CUDA_LIBRARIES geantx-cuda)
 
 if(CUDA_MAJOR_VERSION VERSION_GREATER 10 OR CUDA_MAJOR_VERSION MATCHES 10)
     target_compile_options(geantx-cuda INTERFACE $<$<COMPILE_LANGUAGE:CUDA>:
@@ -122,21 +100,6 @@ add_feature(CUDA_ARCH "CUDA architecture")
 #   70, 72      + Volta support
 #   75          + Turing support
 
-if(GEANT_USE_NVTX)
-    find_library(NVTX_LIBRARY
-        NAMES nvToolsExt
-        PATHS /usr/local/cuda
-        HINTS /usr/local/cuda
-        PATH_SUFFIXES lib lib64)
-else()
-    unset(NVTX_LIBRARY CACHE)
-endif()
-
-if(NVTX_LIBRARY)
-    list(APPEND EXTERNAL_CUDA_LIBRARIES ${NVTX_LIBRARY})
-    list(APPEND ${PROJECT_NAME}_DEFINITIONS GEANT_USE_NVTX)
-endif()
-
 target_compile_options(geantx-cuda INTERFACE
     $<$<COMPILE_LANGUAGE:CUDA>:--default-stream per-thread>
     $<$<COMPILE_LANGUAGE:CUDA>:--compiler-bindir=${CMAKE_CXX_COMPILER}>)
@@ -148,49 +111,90 @@ target_include_directories(geantx-cuda INTERFACE
 
 ################################################################################
 #
-#        ITTNOTIFY (for VTune)
+#                               Threading
 #
 ################################################################################
-if(GEANT_USE_ITTNOTIFY)
-    find_package(ittnotify)
 
-    if(ittnotify_FOUND)
-        list(APPEND EXTERNAL_INCLUDE_DIRS ${ITTNOTIFY_INCLUDE_DIRS})
-        list(APPEND EXTERNAL_LIBRARIES ${ITTNOTIFY_LIBRARIES})
-    else()
-        message(WARNING "ittnotify not found. Set \"VTUNE_AMPLIFIER_201{7,8,9}_DIR\" or \"VTUNE_AMPLIFIER_XE_201{7,8,9}_DIR\" in environment")
-    endif()
+if(NOT WIN32)
+    set(CMAKE_THREAD_PREFER_PTHREAD ON)
+    set(THREADS_PREFER_PTHREAD_FLAG OFF CACHE BOOL "Use -pthread vs. -lpthread" FORCE)
+endif()
+
+find_library(PTHREADS_LIBRARY pthread)
+find_package(Threads QUIET)
+
+if(Threads_FOUND)
+    target_link_libraries(geantx-threading INTERFACE Threads::Threads)
+endif()
+
+if(PTHREADS_LIBRARY AND NOT WIN32)
+    target_link_libraries(geantx-threading INTERFACE ${PTHREADS_LIBRARY})
 endif()
 
 
 ################################################################################
 #
-#        External variables
+#                               Coverage
 #
 ################################################################################
 
-# including the directories
-safe_remove_duplicates(EXTERNAL_INCLUDE_DIRS ${EXTERNAL_INCLUDE_DIRS})
-safe_remove_duplicates(EXTERNAL_LIBRARIES ${EXTERNAL_LIBRARIES})
-foreach(_DIR ${EXTERNAL_INCLUDE_DIRS})
-    include_directories(SYSTEM ${_DIR})
-endforeach()
+find_library(GCOV_LIBRARY gcov)
 
-# include dirs
-set(${PROJECT_NAME}_INCLUDE_DIRECTORIES )
+if(GCOV_LIBRARY)
+    target_link_libraries(geantx-coverage INTERFACE ${GCOV_LIBRARIES})
+else()
+    target_link_libraries(geantx-coverage INTERFACE gcov)
+endif()
 
-# system include dirs
-set(${PROJECT_NAME}_SYSTEM_INCLUDE_DIRECTORIES
-    ${EXTERNAL_INCLUDE_DIRS})
 
-# link libs
-set(${PROJECT_NAME}_LINK_LIBRARIES
-    ${EXTERNAL_LIBRARIES})
+################################################################################
+#
+#                               Google PerfTools
+#
+################################################################################
 
-set(${PROJECT_NAME}_PROPERTIES
-    C_STANDARD                  ${CMAKE_C_STANDARD}
-    C_STANDARD_REQUIRED         ${CMAKE_C_STANDARD_REQUIRED}
-    CXX_STANDARD                ${CMAKE_CXX_STANDARD}
-    CXX_STANDARD_REQUIRED       ${CMAKE_CXX_STANDARD_REQUIRED}
-    ${CUDA_PROPERTIES}
-)
+find_package(GPerfTools COMPONENTS profiler)
+
+if(GPerfTools_FOUND)
+    # populate interface target with defs, includes, link-libs
+    target_compile_definitions(geantx-gperftools INTERFACE GEANT_USE_GPERF)
+    target_include_directories(geantx-gperftools INTERFACE ${GPerfTools_INCLUDE_DIRS})
+    target_link_libraries(geantx-gperftools INTERFACE ${GPerfTools_LIBRARIES})
+endif()
+
+
+################################################################################
+#
+#                               ITTNOTIFY (for VTune)
+#
+################################################################################
+
+find_package(ittnotify)
+
+if(ittnotify_FOUND)
+    target_compile_definitions(geantx-ittnotify INTERFACE GEANT_USE_ITTNOTIFY)
+    target_include_directories(geantx-ittnotify INTERFACE ${ITTNOTIFY_INCLUDE_DIRS})
+    target_link_libraries(geantx-ittnotify INTERFACE ${ITTNOTIFY_LIBRARIES})
+else()
+    message(WARNING "ittnotify not found. Set \"VTUNE_AMPLIFIER_201{7,8,9}_DIR\" or \"VTUNE_AMPLIFIER_XE_201{7,8,9}_DIR\" in environment")
+endif()
+
+
+################################################################################
+#
+#                               NVTX
+#
+################################################################################
+
+if(GEANT_USE_NVTX)
+    find_package(NVTX)
+endif()
+
+if(NVTX_FOUND)
+    target_link_libraries(geantx-nvtx INTERFACE ${NVTX_LIBRARIES})
+    target_include_directories(geantx-nvtx INTERFACE ${NVTX_INCLUDE_DIRS})
+    target_compile_definitions(geantx-nvtx INTERFACE GEANT_USE_NVTX)
+else()
+    set(GEANT_USE_NVTX OFF)
+    message(WARNING "NVTX not found. GEANT_USE_NVTX is disabled")
+endif()
