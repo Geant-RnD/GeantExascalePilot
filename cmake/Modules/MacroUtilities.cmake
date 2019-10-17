@@ -292,12 +292,12 @@ FUNCTION(CREATE_EXECUTABLE)
             SOURCES ${EXE_HEADERS} ${EXE_SOURCES})
     endif()
 
-    # create library
+    # create executable
     add_executable(${EXE_TARGET_NAME} ${EXE_SOURCES} ${EXE_HEADERS})
 
-    # link library
-    target_link_libraries(${EXE_TARGET_NAME}
-        ${EXE_LINK_LIBRARIES} ${${PROJECT_NAME}_LINK_LIBRARIES})
+    # link executable
+    target_link_libraries(${EXE_TARGET_NAME} PRIVATE ${EXE_LINK_LIBRARIES} ${EXTERNAL_LIBRARIES}
+        ${${PROJECT_NAME}_LINK_LIBRARIES})
 
     # include dirs
     target_include_directories(${EXE_TARGET_NAME} PRIVATE

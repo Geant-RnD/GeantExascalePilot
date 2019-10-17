@@ -24,14 +24,27 @@
 #include "Geant/proxy/ProxySecondaryGenerator.hpp"
 #include "Geant/proxy/ProxyStepLimiter.hpp"
 #include "Geant/proxy/ProxyTrackLimiter.hpp"
+#include "Geant/proxy/ProxyParticles.hpp"
 #include "Geant/track/TrackState.hpp"
+#include <map>
 
 using namespace geantx;
 
+template <typename T, typename U>
+using map_t = std::map<T, U>;
+
+using ParticleTypes = std::tuple<CpuGamma, CpuElectron, GpuGamma, GpuElectron>;
+
+template <typename ParticleType, typename... ProcessTypes>
+struct PhysicsProcessList {
+  using particle = ParticleType;
+  using physics  = std::tuple<ProcessTypes...>;
+};
+
+using CpuGammaPhysics = PhysicsProcessList<CpuGamma, ProxyScattering>;
+
 void initialize_geometry() {}
-
 void initialize_physics() {}
-
 TrackState *get_primary_particle()
 {
   return nullptr;

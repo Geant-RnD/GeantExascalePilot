@@ -75,7 +75,7 @@ checkout_git_submodule(RECURSIVE TEST_FILE CMakeLists.txt
 add_subdirectory(timemory)
 set(timemory_FIND_COMPONENTS_INTERFACE geantx-timemory)
 set(timemory_DIR ${CMAKE_BINARY_DIR})
-find_package(timemory COMPONENTS caliper cuda gotcha arch papi nvtx gperftools-cpu)
+find_package(timemory COMPONENTS caliper gotcha arch papi gperftools-cpu cuda nvtx cudart)
 set(TIMEMORY_LIBRARY geantx-timemory)
 
 #----------------------------------------------------------------------------------------#
@@ -133,7 +133,7 @@ if(GEANT_USE_SUBMODULES)
 endif()
 
 list(APPEND ${PROJECT_NAME}_LINK_LIBRARIES
-    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES})
+    ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES} ${TIMEMORY_LIBRARY})
 
 list(APPEND EXTERNAL_LIBRARIES
     ptl${GEANT_LIBTARGET_EXT} ${VECGEOM_LIBRARIES} ${TIMEMORY_LIBRARY})
