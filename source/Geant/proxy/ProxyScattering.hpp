@@ -1,3 +1,4 @@
+//
 //===------------------ GeantX --------------------------------------------===//
 //
 // Geant Exascale Pilot
@@ -6,23 +7,20 @@
 // For the list of contributors see CREDITS file.
 // Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
+//
 /**
- * @file Transportation.hpp
- * @brief Transportation process
+ * @file
+ * @brief
  */
 //===----------------------------------------------------------------------===//
-
-#pragma once
+//
 
 #include "Geant/core/Tuple.hpp"
 #include "Geant/particles/Types.hpp"
 #include "Geant/processes/Process.hpp"
-#include "Geant/track/TrackAccessor.hpp"
-
-#include <type_traits>
 
 namespace geantx {
-class Transportation : public Process {
+class ProxyScattering : public Process {
 public:
   // Enable/disable GetPhysicalInteractionLength (GPIL) functions
   static constexpr bool EnableAtRestGPIL    = false;
@@ -41,24 +39,28 @@ public:
   using specialized_types = Tuple<>;
 
 public:
-  Transportation();
-  ~Transportation();
+  ProxyScattering()  = default;
+  ~ProxyScattering() = default;
 
   // here the transportation proposed a step distance
-  double AlongStepGPIL(const TrackState &) { return 1.0; }
+  double AlongStepGPIL(const TrackState &state)
+  {
+    auto _safety = state.fGeometryState.fSafety;
+    // inverse of the square of the safety
+    return (1.0 / (_safety * _safety));
+  }
   // double PostStepGPIL(const TrackState&);
   // double AtRestGPIL(const TrackState&);
 
   // here the transportation is applied
-  void AlongStepDoIt(TrackState &) {}
+  void AlongStepDoIt(TrackState &state)
+  {
+    state.fDir.x *= -0.5;
+    state.fDir.y *= -0.5;
+    state.fDir.z *= 0.25;
+    state.fDir.Normalize();
+  }
   void PostStepDoIt(TrackState &) {}
   // void AtRestDoIt(TrackState&);
 };
-
-template <typename ParticleType>
-struct ProcessAvailable<Transportation, ParticleType> : std::true_type {};
-
-template <typename ParticleType>
-struct ProcessEnabled<Transportation, ParticleType> : std::true_type {};
-
 } // namespace geantx

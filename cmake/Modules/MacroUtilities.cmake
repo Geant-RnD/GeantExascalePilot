@@ -160,6 +160,12 @@ FUNCTION(CREATE_LIBRARY)
         endif()
     endif()
 
+    if("${LIB_TYPE}" STREQUAL "SHARED")
+        set(LIB_EXT -shared)
+    elseif("${LIB_TYPE}" STREQUAL "STATIC")
+        set(LIB_EXT -static)
+    endif()
+
     set(LIB_FORMAT_TARGET ${LIB_OUTPUT_NAME}-format)
     if(NOT TARGET ${LIB_FORMAT_TARGET})
         geant_format_target(
@@ -170,9 +176,31 @@ FUNCTION(CREATE_LIBRARY)
     # create library
     add_library(${LIB_TARGET_NAME} ${LIB_TYPE} ${LIB_SOURCES} ${LIB_HEADERS})
 
+    # check to see if linking to internal library with -static or
+    set(_LINK_LIBRARIES)
+    foreach(_LIB ${LIB_LINK_LIBRARIES})
+        if(NOT TARGET ${_LIB} AND TARGET ${_LIB}${LIB_EXT})
+            list(APPEND _LINK_LIBRARIES ${_LIB}${LIB_EXT})
+        else()
+            list(APPEND _LINK_LIBRARIES ${_LIB})
+        endif()
+    endforeach()
+
+    # remove duplicates
+    foreach(_LIB ${${PROJECT_NAME}_LINK_LIBRARIES})
+        if(${_LIB} IN_LIST EXTERNAL_LIBRARIES)
+            list(REMOVE_ITEM EXTERNAL_LIBRARIES ${_LIB})
+        endif()
+    endforeach()
+
     # link library
-    target_link_libraries(${LIB_TARGET_NAME}
-        ${LIB_LINK_LIBRARIES} ${${PROJECT_NAME}_LINK_LIBRARIES})
+    if(PUBLIC IN_LIST _LINK_LIBRARIES OR PRIVATE IN_LIST _LINK_LIBRARIES)
+        target_link_libraries(${LIB_TARGET_NAME} ${_LINK_LIBRARIES})
+    else()
+        target_link_libraries(${LIB_TARGET_NAME} PUBLIC ${_LINK_LIBRARIES})
+    endif()
+    target_link_libraries(${LIB_TARGET_NAME} PUBLIC ${${PROJECT_NAME}_LINK_LIBRARIES})
+    target_link_libraries(${LIB_TARGET_NAME} PRIVATE ${EXTERNAL_LIBRARIES})
 
     # include dirs
     target_include_directories(${LIB_TARGET_NAME} PRIVATE

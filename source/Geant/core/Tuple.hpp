@@ -2134,4 +2134,29 @@ struct Apply<void> {
   //--------------------------------------------------------------------------------------------//
 };
 
+//======================================================================================//
+// check if type is in expansion
+//
+namespace impl {
+template <typename...>
+struct is_one_of {
+  static constexpr bool value = false;
+};
+
+template <typename F, typename S, template <typename...> class _Tuple, typename... T>
+struct is_one_of<F, S, _Tuple<T...>> {
+  static constexpr bool value =
+      (std::is_same<F, S>::value || is_one_of<F, _Tuple<T...>>::value);
+};
+
+template <typename F, typename S, template <typename...> class _Tuple, typename... T>
+struct is_one_of<F, _Tuple<S, T...>> {
+  static constexpr bool value = is_one_of<F, S, _Tuple<T...>>::value;
+};
+
+} // namespace impl
+
+template <typename _Tp, typename _Types>
+using is_one_of = typename impl::is_one_of<_Tp, _Types>;
+
 //================================================================================================//

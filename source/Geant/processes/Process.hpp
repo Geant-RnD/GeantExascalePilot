@@ -7,12 +7,17 @@
 // Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
 /**
- * @file
+ * @file Geant/processes/Process.hpp
  * @brief Memory pool for device and host allocations.
  */
 //===----------------------------------------------------------------------===//
 
 #pragma once
+
+#include "Geant/core/Tuple.hpp"
+#include "Geant/particles/Types.hpp"
+#include "Geant/track/TrackAccessor.hpp"
+#include "Geant/track/TrackState.hpp"
 
 #include <string>
 
@@ -56,4 +61,5 @@ protected:
   double fPILfactor = 0.0;
   std::string fName = "unknown";
 };
+
 } // namespace geantx
