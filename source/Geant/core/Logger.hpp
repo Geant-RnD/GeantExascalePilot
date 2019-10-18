@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <memory>
+#include <iomanip>
 
 #ifndef __NVCC__
 #  include "Geant/core/LoggerStatement.hpp"
@@ -28,8 +29,11 @@ struct StreamHere {
 inline std::ostream &operator<<(std::ostream &os, const StreamHere &s)
 {
   // Format string below "[%lu]> %s @ %s:%i "
-  os << '[' << geantx::GetThisThreadID() << "]> " << s.fFunction << " @ " << s.fFile
-     << ':' << s.fLine << ": ";
+  std::stringstream ss;
+  ss << '[' << geantx::GetThisThreadID() << "]> " << std::setw(16) << std::left
+     << s.fFunction << " @ " << std::setw(64) << s.fFile << ':' << std::setw(4) << s.fLine
+     << ": ";
+  os << ss.str();
   return os;
 }
 

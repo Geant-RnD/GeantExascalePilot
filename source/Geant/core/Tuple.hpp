@@ -17,6 +17,8 @@
 #include "Geant/core/Config.hpp"
 
 #include <utility>
+#include <tuple>
+#include <type_traits>
 
 //======================================================================================//
 
@@ -1852,6 +1854,22 @@ struct IndexOf<_Tp, Tuple<Head, Tail...>> {
   static constexpr std::size_t value = 1 + IndexOf<_Tp, Tuple<Tail...>>::value;
 };
 
+//======================================================================================//
+// get the index of a type in expansion
+//
+template <typename _Tp, typename Type>
+struct index_of;
+
+template <typename _Tp, typename... Types>
+struct index_of<_Tp, std::tuple<_Tp, Types...>> {
+  static constexpr std::size_t value = 0;
+};
+
+template <typename _Tp, typename Head, typename... Tail>
+struct index_of<_Tp, std::tuple<Head, Tail...>> {
+  static constexpr std::size_t value = 1 + index_of<_Tp, std::tuple<Tail...>>::value;
+};
+
 //================================================================================================//
 
 template <>
@@ -2017,6 +2035,28 @@ struct _ApplyImpl<void> {
   }
 
   //--------------------------------------------------------------------------------------------//
+
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename... _Args,
+            std::enable_if_t<(_N == _Nt), char> = 0>
+  static void unroll_indices(_Args &&... __args)
+  {
+    // call constructor
+    using AccessType = typename std::tuple_element<_N, _Access>::type;
+    AccessType(_N, std::forward<_Args>(__args)...);
+  }
+
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename... _Args,
+            std::enable_if_t<(_N < _Nt), char> = 0>
+  static void unroll_indices(_Args &&... __args)
+  {
+    // call constructor
+    using AccessType = typename std::tuple_element<_N, _Access>::type;
+    AccessType(_N, std::forward<_Args>(__args)...);
+    // recursive call
+    unroll_indices<_N + 1, _Nt, _Access, _Args...>(std::forward<_Args>(__args)...);
+  }
+
+  //----------------------------------------------------------------------------------//
 };
 
 //================================================================================================//
@@ -2129,6 +2169,17 @@ struct Apply<void> {
     _ApplyImpl<void>::template unroll_members<0, _N - 1, _Tuple, _Func, _Args...>(
         std::forward<_Tuple>(__t), std::forward<_Func>(__f),
         std::forward<_Args>(__args)...);
+  }
+
+  //----------------------------------------------------------------------------------//
+
+  template <typename _Access, typename... _Args,
+            std::size_t _N = std::tuple_size<std::decay_t<_Access>>::value,
+            std::enable_if_t<(_N > 0), int> = 0>
+  static void unroll_indices(_Args &&... _args)
+  {
+    _ApplyImpl<void>::template unroll_indices<0, _N - 1, _Access, _Args...>(
+        std::forward<_Args>(_args)...);
   }
 
   //--------------------------------------------------------------------------------------------//

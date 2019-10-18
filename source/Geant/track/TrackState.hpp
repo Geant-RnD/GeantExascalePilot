@@ -16,6 +16,7 @@
 #pragma once
 
 #include "Geant/track/Types.hpp"
+#include "timemory/timemory.hpp"
 
 namespace geantx {
 
@@ -118,12 +119,20 @@ struct TrackPhysicsState {
  * \brief Track state
  */
 struct TrackState {
+
+  TrackState()                   = default;
+  ~TrackState()                  = default;
+  TrackState(const TrackState &) = default;
+  TrackState(TrackState &&)      = default;
+  TrackState &operator=(const TrackState &) = default;
+  TrackState &operator=(TrackState &&) = default;
+
   TrackStatus_t fStatus = kAlive; /** Track status */
   double fStep          = 0;      /** Step length being travelled */
 
-  ThreeVector fPos = 0; /** Position */
-  ThreeVector fDir = 0; /** Direction */
-  double fTime     = 0; /** Time at beginning of step */
+  ThreeVector fPos = {0.0, 0.0, 0.0}; /** Position */
+  ThreeVector fDir = {0.0, 0.0, 0.0}; /** Direction */
+  double fTime     = 0;               /** Time at beginning of step */
 
   /* don't use: ESimulationStage fStage */
   /* unused: double fintlen = 0; */
@@ -136,6 +145,15 @@ struct TrackState {
   TrackPhysicsState fPhysicsState;
   TrackMaterialState fMaterialState;
   TrackGeometryState fGeometryState;
+
+  friend std::ostream &operator<<(std::ostream &os, const TrackState &obj)
+  {
+    std::stringstream ss;
+    ss << TIMEMORY_JOIN("", "status: ", (int)obj.fStatus, ", step: ", obj.fStep,
+                        ", pos: ", obj.fPos, ", dir: ", obj.fDir, ", time: ", obj.fTime);
+    os << ss.str();
+    return os;
+  }
 };
 
 } // namespace geantx

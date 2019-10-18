@@ -44,12 +44,12 @@ public:
   ProxyTrackLimiter()  = default;
   ~ProxyTrackLimiter() = default;
 
-  double AlongStepGPIL(const TrackState &) { return 0.0; }
-  double PostStepGPIL(const TrackState &) { return 0.0; }
-  double AtRestGPIL(const TrackState &) { return 0.0; }
+  double AlongStepGPIL(const TrackState *) { return 0.0; }
+  double PostStepGPIL(const TrackState *) { return 0.0; }
+  double AtRestGPIL(const TrackState *) { return 0.0; }
 
-  void AlongStepDoIt(TrackState &) {}
-  void PostStepDoIt(TrackState &) {}
-  void AtRestDoIt(TrackState &) {}
+  void AlongStepDoIt(TrackState *) {}
+  void PostStepDoIt(TrackState *) {}
+  void AtRestDoIt(TrackState *) {}
 };
 }

@@ -21,44 +21,48 @@
 
 #include <type_traits>
 
-namespace geantx {
-class Transportation : public Process {
+namespace geantx
+{
+class Transportation : public Process
+{
 public:
-  // Enable/disable GetPhysicalInteractionLength (GPIL) functions
-  static constexpr bool EnableAtRestGPIL    = false;
-  static constexpr bool EnableAlongStepGPIL = true;
-  static constexpr bool EnablePostStepGPIL  = false;
-  // Enable/disable DoIt functions
-  static constexpr bool EnableAtRestDoIt    = false;
-  static constexpr bool EnableAlongStepDoIt = true;
-  static constexpr bool EnablePostStepDoIt  = true;
+    // Enable/disable GetPhysicalInteractionLength (GPIL) functions
+    static constexpr bool EnableAtRestGPIL    = false;
+    static constexpr bool EnableAlongStepGPIL = true;
+    static constexpr bool EnablePostStepGPIL  = false;
+    // Enable/disable DoIt functions
+    static constexpr bool EnableAtRestDoIt    = false;
+    static constexpr bool EnableAlongStepDoIt = true;
+    static constexpr bool EnablePostStepDoIt  = true;
 
-  // for enable_if statements
-  template <typename _Tp>
-  static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
+    // for enable_if statements
+    template <typename _Tp>
+    static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
 
-  // provide no specializations
-  using specialized_types = Tuple<>;
+    // provide no specializations
+    using specialized_types = Tuple<>;
 
 public:
-  Transportation();
-  ~Transportation();
+    Transportation();
+    ~Transportation();
 
-  // here the transportation proposed a step distance
-  double AlongStepGPIL(const TrackState &) { return 1.0; }
-  // double PostStepGPIL(const TrackState&);
-  // double AtRestGPIL(const TrackState&);
+    // here the transportation proposed a step distance
+    double AlongStepGPIL(const TrackState&) { return 1.0; }
+    // double PostStepGPIL(const TrackState&);
+    // double AtRestGPIL(const TrackState&);
 
-  // here the transportation is applied
-  void AlongStepDoIt(TrackState &) {}
-  void PostStepDoIt(TrackState &) {}
-  // void AtRestDoIt(TrackState&);
+    // here the transportation is applied
+    void AlongStepDoIt(TrackState&) {}
+    void PostStepDoIt(TrackState&) {}
+    // void AtRestDoIt(TrackState&);
 };
 
 template <typename ParticleType>
-struct ProcessAvailable<Transportation, ParticleType> : std::true_type {};
+struct ProcessAvailable<Transportation, ParticleType> : std::true_type
+{};
 
 template <typename ParticleType>
-struct ProcessEnabled<Transportation, ParticleType> : std::true_type {};
+struct ProcessEnabled<Transportation, ParticleType> : std::true_type
+{};
 
-} // namespace geantx
+}  // namespace geantx
