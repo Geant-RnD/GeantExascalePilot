@@ -370,7 +370,7 @@ bool FieldPropagationHandler::IsSameLocation(TrackState &track, TaskData *td) co
   // Track may have crossed, check it
   bool same = true;
 
-#warning "Need to interogate the geom about boundary crossing"
+#warning "Need to interrogate the geom about boundary crossing"
 #if 0
   vecgeom::NavigationState *tmpstate = td->GetPath();
   ScalarNavInterfaceVGM::NavIsSameLocation(track, same, tmpstate);
