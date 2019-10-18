@@ -36,9 +36,13 @@ if(GEANT4_USE_ARCH)
 endif()
 
 add_library(geant-headers INTERFACE)
+# If the generator expression's variable contains more than one directory/path,
+# during the generation the first directory/path will be considered, unconditionally,
+# as a relative path and prefixed by the current directory/path.
+# Work-around the issue by pre-pending a (non-existing) path.
 target_include_directories(geant-headers INTERFACE
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>)
+    $<BUILD_INTERFACE:../workaround;${PROJECT_SOURCE_DIR}/source>
+    $<INSTALL_INTERFACE:../workaround;${CMAKE_INSTALL_PREFIX}/include>)
 
 # if not specified to only use submodules find the packages
 if(NOT GEANT_USE_SUBMODULES)
@@ -145,10 +149,13 @@ list(APPEND ${PROJECT_NAME}_INCLUDE_DIRECTORIES
     ${CMAKE_BINARY_DIR} # hack until we fix Config.h
     ${CMAKE_CURRENT_LIST_DIR}/PTL/source)
 
-#
+# If the generator expression's variable contains more than one directory/path,
+# during the generation the first directory/path will be considered, unconditionally,
+# as a relative path and prefixed by the current directory/path.
+# Work-around the issue by pre-pending a (non-existing) path.
 target_include_directories(geant-headers INTERFACE
-    $<BUILD_INTERFACE:${${PROJECT_NAME}_INCLUDE_DIRECTORIES}>
-    $<INSTALL_INTERFACE:${${PROJECT_NAME}_INCLUDE_DIRECTORIES}>)
+    $<BUILD_INTERFACE:../workaround;${${PROJECT_NAME}_INCLUDE_DIRECTORIES}>
+    $<INSTALL_INTERFACE:../workaround;${${PROJECT_NAME}_INCLUDE_DIRECTORIES}>)
 
 target_link_libraries(geant-headers INTERFACE ${EXTERNAL_LIBRARIES})
 
