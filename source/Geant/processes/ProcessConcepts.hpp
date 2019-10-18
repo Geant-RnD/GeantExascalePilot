@@ -69,7 +69,7 @@ struct AtRest
               std::enable_if_t<!(_Proc::EnableAtRestGPIL), int> = 0>
     static double GPIL(_Args&&...)
     {
-        return 0.0;
+        return std::numeric_limits<double>::max();
     }
 
     //----------------------------------------------------------------------------------//
@@ -147,7 +147,7 @@ struct AlongStep
     static double GPIL(_Args&&...)
     {
         geantx::Log(kInfo) << GEANT_HERE << "along step disable";
-        return 0.0;
+        return std::numeric_limits<double>::max();
     }
 
     //----------------------------------------------------------------------------------//
@@ -230,7 +230,7 @@ struct PostStep
     static double GPIL(_Args&&...)
     {
         geantx::Log(kInfo) << GEANT_HERE << "post step disabled";
-        return 0.0;
+        return std::numeric_limits<double>::max();
     }
 
     //----------------------------------------------------------------------------------//
@@ -281,7 +281,7 @@ struct AtRest
            _Func* _doit_apply)
     {
         auto _value = impl_type::GPIL(_track);
-        if(_value > *_doit_value)
+        if(_value < *_doit_value)
         {
             *_doit_idx   = _N;
             *_doit_value = _value;
@@ -300,7 +300,7 @@ struct AlongStep
               _Func* _doit_apply)
     {
         auto _value = impl_type::GPIL(_track);
-        if(_value > *_doit_value)
+        if(_value < *_doit_value)
         {
             *_doit_idx   = _N;
             *_doit_value = _value;
@@ -319,7 +319,7 @@ struct PostStep
              _Func* _doit_apply)
     {
         auto _value = impl_type::GPIL(_track);
-        if(_value > *_doit_value)
+        if(_value < *_doit_value)
         {
             *_doit_idx   = _N;
             *_doit_value = _value;

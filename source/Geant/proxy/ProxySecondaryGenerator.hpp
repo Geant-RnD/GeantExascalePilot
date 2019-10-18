@@ -44,12 +44,21 @@ public:
   ProxySecondaryGenerator()  = default;
   ~ProxySecondaryGenerator() = default;
 
-  double AlongStepGPIL(const TrackState *) { return 0.0; }
-  double PostStepGPIL(const TrackState *) { return 0.0; }
-  double AtRestGPIL(const TrackState *) { return 0.0; }
+  GEANT_HOST_DEVICE double AlongStepGPIL(const TrackState *)
+  {
+    return std::numeric_limits<double>::max();
+  }
+  GEANT_HOST_DEVICE double PostStepGPIL(const TrackState *)
+  {
+    return std::numeric_limits<double>::max();
+  }
+  GEANT_HOST_DEVICE double AtRestGPIL(const TrackState *)
+  {
+    return std::numeric_limits<double>::max();
+  }
 
-  void AlongStepDoIt(TrackState *) {}
-  void PostStepDoIt(TrackState *) {}
-  void AtRestDoIt(TrackState *) {}
+  GEANT_HOST_DEVICE void AlongStepDoIt(TrackState *) {}
+  GEANT_HOST_DEVICE void PostStepDoIt(TrackState *) {}
+  GEANT_HOST_DEVICE void AtRestDoIt(TrackState *) {}
 };
-}
+} // namespace geantx

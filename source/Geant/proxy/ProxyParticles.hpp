@@ -41,7 +41,8 @@ public:
   CpuGamma &operator=(const CpuGamma &) = delete;
 
 private:
-  CpuGamma(const std::string &name, int pdgcode, int intcode, double mass, double charge)
+  GEANT_HOST_DEVICE CpuGamma(const std::string &name, int pdgcode, int intcode,
+                             double mass, double charge)
       : Particle(name, pdgcode, intcode, mass, charge)
   {}
 };
@@ -65,8 +66,8 @@ public:
   CpuElectron &operator=(const CpuElectron &) = delete;
 
 private:
-  CpuElectron(const std::string &name, int pdgcode, int intcode, double mass,
-              double charge)
+  GEANT_HOST_DEVICE CpuElectron(const std::string &name, int pdgcode, int intcode,
+                                double mass, double charge)
       : Particle(name, pdgcode, intcode, mass, charge)
   {}
 };
@@ -89,7 +90,8 @@ public:
   static constexpr int IntCode = 2;
 
 private:
-  GpuGamma(const std::string &name, int pdgcode, int intcode, double mass, double charge)
+  GEANT_HOST_DEVICE GpuGamma(const std::string &name, int pdgcode, int intcode,
+                             double mass, double charge)
       : Particle(name, pdgcode, intcode, mass, charge)
   {}
 };

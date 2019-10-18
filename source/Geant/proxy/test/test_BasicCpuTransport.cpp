@@ -102,12 +102,12 @@ ApplyAtRest(TrackCaster<ParticleType>** tracks, intmax_t N)
         ///
         /// Reference: \file Geant/processes/ProcessConcepts.hpp
         ///
-        ///     doit_idx:       index of largest PIL
-        ///     doit_value:     value of largest PIL
-        ///     doit_apply:     lambda that stores the "DoIt" for the largest PIL
+        ///     doit_idx:       index of smallest PIL
+        ///     doit_value:     value of smallest PIL
+        ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
         ///
-        intmax_t doit_idx   = 0;
-        double   doit_value = 0.0;
+        intmax_t doit_idx   = -1;
+        double   doit_value = std::numeric_limits<double>::max();
         Funct_t  doit_apply = [=]() {
             geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
         };
@@ -116,7 +116,7 @@ ApplyAtRest(TrackCaster<ParticleType>** tracks, intmax_t N)
         ///
         Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
         ///
-        /// Invoke the DoIt of largest PIL
+        /// Invoke the DoIt of smallest PIL
         ///
         doit_apply();
     }
@@ -139,12 +139,12 @@ ApplyAlongStep(TrackCaster<ParticleType>** tracks, intmax_t N)
         ///
         /// Reference: \file Geant/processes/ProcessConcepts.hpp
         ///
-        ///     doit_idx:       index of largest PIL
-        ///     doit_value:     value of largest PIL
-        ///     doit_apply:     lambda that stores the "DoIt" for the largest PIL
+        ///     doit_idx:       index of smallest PIL
+        ///     doit_value:     value of smallest PIL
+        ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
         ///
-        intmax_t doit_idx   = 0;
-        double   doit_value = 0.0;
+        intmax_t doit_idx   = -1;
+        double   doit_value = std::numeric_limits<double>::max();
         Funct_t  doit_apply = [=]() {
             geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
         };
@@ -153,7 +153,7 @@ ApplyAlongStep(TrackCaster<ParticleType>** tracks, intmax_t N)
         ///
         Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
         ///
-        /// Invoke the DoIt of largest PIL
+        /// Invoke the DoIt of smallest PIL
         ///
         doit_apply();
     }
@@ -176,12 +176,12 @@ ApplyPostStep(TrackCaster<ParticleType>** tracks, intmax_t N)
         ///
         /// Reference: \file Geant/processes/ProcessConcepts.hpp
         ///
-        ///     doit_idx:       index of largest PIL
-        ///     doit_value:     value of largest PIL
-        ///     doit_apply:     lambda that stores the "DoIt" for the largest PIL
+        ///     doit_idx:       index of smallest PIL
+        ///     doit_value:     value of smallest PIL
+        ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
         ///
-        intmax_t doit_idx   = 0;
-        double   doit_value = 0.0;
+        intmax_t doit_idx   = -1;
+        double   doit_value = std::numeric_limits<double>::max();
         Funct_t  doit_apply = [=]() {
             geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
         };
@@ -190,7 +190,7 @@ ApplyPostStep(TrackCaster<ParticleType>** tracks, intmax_t N)
         ///
         Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
         ///
-        /// Invoke the DoIt of largest PIL
+        /// Invoke the DoIt of smallest PIL
         ///
         doit_apply();
     }

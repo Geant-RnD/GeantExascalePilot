@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "Geant/core/Config.hpp"
 #include "Geant/core/Tuple.hpp"
 #include "Geant/particles/Types.hpp"
 #include "Geant/processes/Process.hpp"
@@ -47,13 +48,13 @@ public:
     ~Transportation();
 
     // here the transportation proposed a step distance
-    double AlongStepGPIL(const TrackState&) { return 1.0; }
+    GEANT_HOST_DEVICE double AlongStepGPIL(const TrackState&) { return 1.0; }
     // double PostStepGPIL(const TrackState&);
     // double AtRestGPIL(const TrackState&);
 
     // here the transportation is applied
-    void AlongStepDoIt(TrackState&) {}
-    void PostStepDoIt(TrackState&) {}
+    GEANT_HOST_DEVICE void AlongStepDoIt(TrackState&) {}
+    GEANT_HOST_DEVICE void PostStepDoIt(TrackState&) {}
     // void AtRestDoIt(TrackState&);
 };
 
