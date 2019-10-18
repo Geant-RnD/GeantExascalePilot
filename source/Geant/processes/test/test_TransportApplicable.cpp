@@ -93,12 +93,6 @@ TEST_F(TransportApplicable, Particle)
     ASSERT_TRUE(value);
 }
 
-TEST_F(TransportApplicable, PhysicsParameters)
-{
-    auto value = Transportation::IsApplicable<PhysicsParameters>;
-    ASSERT_FALSE(value);
-}
-
 TEST_F(TransportApplicable, PionMinus)
 {
     auto value = Transportation::IsApplicable<PionMinus>;
@@ -127,4 +121,13 @@ TEST_F(TransportApplicable, Proton)
 {
     auto value = Transportation::IsApplicable<Proton>;
     ASSERT_TRUE(value);
+}
+//
+//  Test something other than a particle and make sure it is not
+//  always false!
+//
+TEST_F(TransportApplicable, PhysicsParameters)
+{
+    auto value = Transportation::IsApplicable<PhysicsParameters>;
+    ASSERT_FALSE(value);
 }
