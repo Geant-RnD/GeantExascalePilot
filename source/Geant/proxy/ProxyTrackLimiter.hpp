@@ -25,9 +25,9 @@ namespace geantx {
 class ProxyTrackLimiter : public Process {
 public:
   // Enable/disable GetPhysicalInteractionLength (GPIL) functions
-  static constexpr bool EnableAtRestGPIL    = true;
-  static constexpr bool EnableAlongStepGPIL = true;
-  static constexpr bool EnablePostStepGPIL  = true;
+  static constexpr bool EnableAtRestGPIL    = false;
+  static constexpr bool EnableAlongStepGPIL = false;
+  static constexpr bool EnablePostStepGPIL  = false;
   // Enable/disable DoIt functions
   static constexpr bool EnableAtRestDoIt    = true;
   static constexpr bool EnableAlongStepDoIt = true;
@@ -43,19 +43,6 @@ public:
 public:
   ProxyTrackLimiter()  = default;
   ~ProxyTrackLimiter() = default;
-
-  GEANT_HOST_DEVICE double AlongStepGPIL(const TrackState *)
-  {
-    return std::numeric_limits<double>::max();
-  }
-  GEANT_HOST_DEVICE double PostStepGPIL(const TrackState *)
-  {
-    return std::numeric_limits<double>::max();
-  }
-  GEANT_HOST_DEVICE double AtRestGPIL(const TrackState *)
-  {
-    return std::numeric_limits<double>::max();
-  }
 
   GEANT_HOST_DEVICE void AlongStepDoIt(TrackState *) {}
   GEANT_HOST_DEVICE void PostStepDoIt(TrackState *) {}

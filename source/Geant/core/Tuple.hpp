@@ -1874,6 +1874,28 @@ struct index_of<_Tp, std::tuple<Head, Tail...>> {
 
 template <>
 struct _ApplyImpl<void> {
+  //----------------------------------------------------------------------------------//
+
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename... _Args,
+            std::enable_if_t<(_N == _Nt), int> = 0>
+  static void apply(_Args &&... __args)
+  {
+    // call constructor
+    using ApplyType = typename std::tuple_element<_N, _Access>::type;
+    ApplyType(std::forward<_Args>(__args)...);
+  }
+
+  template <std::size_t _N, std::size_t _Nt, typename _Access, typename... _Args,
+            std::enable_if_t<(_N < _Nt), int> = 0>
+  static void apply(_Args &&... __args)
+  {
+    // call constructor
+    using ApplyType = typename std::tuple_element<_N, _Access>::type;
+    ApplyType(std::forward<_Args>(__args)...);
+    // recursive call
+    apply<_N + 1, _Nt, _Access, _Args...>(std::forward<_Args>(__args)...);
+  }
+
   //--------------------------------------------------------------------------------------------//
 
   template <typename _Fn, typename _Tuple, size_t... _Idx>
@@ -2077,6 +2099,17 @@ struct Apply {
 
 template <>
 struct Apply<void> {
+
+  //----------------------------------------------------------------------------------//
+
+  template <typename _Access, typename... _Args,
+            size_t _N = std::tuple_size<_Access>::value>
+  static void apply(_Args &&... __args)
+  {
+    _ApplyImpl<void>::template apply<0, _N - 1, _Access, _Args...>(
+        std::forward<_Args>(__args)...);
+  }
+
   //--------------------------------------------------------------------------------------------//
 
   template <typename _Fn, typename _Tuple,

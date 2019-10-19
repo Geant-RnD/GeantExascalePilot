@@ -18,6 +18,7 @@
 #include "Geant/core/Config.hpp"
 #include "Geant/core/Logger.hpp"
 #include "Geant/core/Memory.hpp"
+#include "Geant/core/SystemOfUnits.hpp"
 #include "Geant/geometry/RunManager.hpp"
 #include "Geant/geometry/UserDetectorConstruction.hpp"
 #include "Geant/track/TrackState.hpp"
@@ -35,12 +36,40 @@
 using namespace geantx;
 using namespace vecgeom;
 
+#include <random>
+
+using namespace tim::component;
+using toolset_t = tim::auto_tuple<real_clock, peak_rss>;
+// using toolset_t =
+//    tim::auto_tuple<real_clock, system_clock, user_clock, cpu_util, peak_rss>;
+// using toolset_t = tim::auto_timer;
+
+//===----------------------------------------------------------------------===//
+// I doubt someone will see this but if you do, please replace with whatever
+// is needed to get a random number generator from VecMath.
+//
+// And if this is Philippe looking, consider me warned about static thread_local
+// being slow.
+//
+inline double
+get_rand()
+{
+    static auto _get_generator = []() {
+        std::random_device rd;
+        std::mt19937_64    gen(rd());
+        return gen;
+    };
+    static thread_local auto _gen = _get_generator();
+    return std::generate_canonical<double, 10>(_gen);
+}
+
 //===----------------------------------------------------------------------===//
 
 // VPlacedVolume *
 void
 initialize_geometry()
 {
+    /*
     UnplacedBox*       worldUnplaced = new UnplacedBox(10, 10, 10);
     UnplacedTrapezoid* trapUnplaced =
         new UnplacedTrapezoid(4, 0, 0, 4, 4, 4, 0, 4, 4, 4, 0);
@@ -84,6 +113,7 @@ initialize_geometry()
     GeoManager::Instance().SetWorld(w);
     GeoManager::Instance().CloseGeometry();
     // return w;
+    */
 }
 
 //--------------------------------------------------------------------------------------//
@@ -94,6 +124,7 @@ ApplyAtRest(TrackCaster<ParticleType>** tracks, intmax_t N)
 {
     using Apply_t = typename PhysicsProcessAtRest<ParticleType, ProcessTuple>::type;
     using Funct_t = std::function<void()>;
+    TIMEMORY_BASIC_MARKER(toolset_t, "");
 
     for(int i = 0; i < N; ++i)
     {
@@ -119,6 +150,10 @@ ApplyAtRest(TrackCaster<ParticleType>** tracks, intmax_t N)
         /// Invoke the DoIt of smallest PIL
         ///
         doit_apply();
+        ///
+        /// Invoke all the AtRest processes that don't propose a PIL
+        ///
+        Apply<void>::apply<Apply_t>(track);
     }
     // ... etc.
 }
@@ -131,6 +166,7 @@ ApplyAlongStep(TrackCaster<ParticleType>** tracks, intmax_t N)
 {
     using Apply_t = typename PhysicsProcessAlongStep<ParticleType, ProcessTuple>::type;
     using Funct_t = std::function<void()>;
+    TIMEMORY_BASIC_MARKER(toolset_t, "");
 
     for(int i = 0; i < N; ++i)
     {
@@ -156,6 +192,10 @@ ApplyAlongStep(TrackCaster<ParticleType>** tracks, intmax_t N)
         /// Invoke the DoIt of smallest PIL
         ///
         doit_apply();
+        ///
+        /// Invoke all the AlongStep processes that don't propose a PIL
+        ///
+        Apply<void>::apply<Apply_t>(track);
     }
     // ... etc.
 }
@@ -168,6 +208,7 @@ ApplyPostStep(TrackCaster<ParticleType>** tracks, intmax_t N)
 {
     using Apply_t = typename PhysicsProcessPostStep<ParticleType, ProcessTuple>::type;
     using Funct_t = std::function<void()>;
+    TIMEMORY_BASIC_MARKER(toolset_t, "");
 
     for(int i = 0; i < N; ++i)
     {
@@ -193,6 +234,10 @@ ApplyPostStep(TrackCaster<ParticleType>** tracks, intmax_t N)
         /// Invoke the DoIt of smallest PIL
         ///
         doit_apply();
+        ///
+        /// Invoke all the PostStep processes that don't propose a PIL
+        ///
+        Apply<void>::apply<Apply_t>(track);
     }
     // ... etc.
 }
@@ -209,6 +254,8 @@ DoStep(VariadicTrackManager<ParticleTypes...>* track_manager)
     using VarManager_t = VariadicTrackManager<ParticleTypes...>;
     using Track_t =
         decltype(std::declval<VarManager_t>().template PopTrack<ParticleType>());
+
+    TIMEMORY_BASIC_MARKER(toolset_t, "");
 
     //
     //  put all data into array
@@ -237,10 +284,12 @@ DoStep(VariadicTrackManager<ParticleTypes...>* track_manager)
 TrackState*
 get_primary_particle()
 {
-    TrackState* state = new TrackState;
-    state->fDir       = { 0.1, 0.2, 1.0 };
-    state->fDir.Normalize();
-    return state;
+    TIMEMORY_BASIC_MARKER(toolset_t, "");
+    TrackState* _track = new TrackState;
+    _track->fDir       = { get_rand(), get_rand(), get_rand() };
+    _track->fPos       = { get_rand(), get_rand(), get_rand() };
+    _track->fDir.Normalize();
+    return _track;
 }
 
 //===----------------------------------------------------------------------===//
@@ -248,16 +297,20 @@ get_primary_particle()
 int
 main(int argc, char** argv)
 {
+    TIMEMORY_BLANK_MARKER(toolset_t, argv[0]);
     initialize_geometry();
 
     // basic geometry checks
-    LogicalVolume const* logWorld = GeoManager::Instance().GetWorld()->GetLogicalVolume();
-    if(logWorld)
+    /*if(GeoManager::Instance().GetWorld())
     {
-        // print detector information
-        logWorld->PrintContent();
-        std::cout << "\n # placed volumes: " << logWorld->GetNTotal() << "\n";
-    }
+        const auto* logWorld = GeoManager::Instance().GetWorld()->GetLogicalVolume();
+        if(logWorld)
+        {
+            // print detector information
+            logWorld->PrintContent();
+            std::cout << "\n # placed volumes: " << logWorld->GetNTotal() << "\n";
+        }
+    }*/
 
     VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> manager;
 

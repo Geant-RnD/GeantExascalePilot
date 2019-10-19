@@ -68,7 +68,7 @@ public:
   }
   void PostStepDoIt(TrackState *_track)
   {
-    geantx::Log(kInfo) << GEANT_HERE << "apply post: " << *_track;
+    geantx::Log(kInfo) << GEANT_HERE << "ALWAYS-ON apply post: " << *_track;
   }
   // void AtRestDoIt(TrackState*);
 
@@ -97,7 +97,8 @@ public:
             std::enable_if_t<(std::is_same<_Tp, CpuElectron>::value), int> = 0>
   void PostStepDoIt(TrackState *_track)
   {
-    geantx::Log(kInfo) << GEANT_HERE << "[CPU_ELECTRON] apply post: " << *_track;
+    geantx::Log(kInfo) << GEANT_HERE
+                       << "[ALWAYS-ON CPU_ELECTRON] apply post: " << *_track;
   }
 };
 
