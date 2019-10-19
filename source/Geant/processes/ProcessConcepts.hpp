@@ -274,18 +274,18 @@ struct PostStep
 template <typename ProcessType, typename ParticleType>
 struct AtRest
 {
-    using impl_type = mpl::AtRest<ProcessType, ParticleType>;
+    using mpl_type = mpl::AtRest<ProcessType, ParticleType>;
 
     template <typename _Track, typename _Tp, typename _Func>
     AtRest(size_t _N, _Track* _track, intmax_t* _doit_idx, _Tp* _doit_value,
            _Func* _doit_apply)
     {
-        auto _value = impl_type::GPIL(_track);
+        auto _value = mpl_type::GPIL(_track);
         if(_value < *_doit_value)
         {
             *_doit_idx   = _N;
             *_doit_value = _value;
-            *_doit_apply = [&]() { impl_type::DoIt(_track); };
+            *_doit_apply = [&]() { mpl_type::DoIt(_track); };
         }
     }
 };
@@ -293,18 +293,18 @@ struct AtRest
 template <typename ProcessType, typename ParticleType>
 struct AlongStep
 {
-    using impl_type = mpl::AlongStep<ProcessType, ParticleType>;
+    using mpl_type = mpl::AlongStep<ProcessType, ParticleType>;
 
     template <typename _Track, typename _Tp, typename _Func>
     AlongStep(size_t _N, _Track*& _track, intmax_t* _doit_idx, _Tp* _doit_value,
               _Func* _doit_apply)
     {
-        auto _value = impl_type::GPIL(_track);
+        auto _value = mpl_type::GPIL(_track);
         if(_value < *_doit_value)
         {
             *_doit_idx   = _N;
             *_doit_value = _value;
-            *_doit_apply = [&]() { impl_type::DoIt(_track); };
+            *_doit_apply = [&]() { mpl_type::DoIt(_track); };
         }
     }
 };
@@ -312,18 +312,18 @@ struct AlongStep
 template <typename ProcessType, typename ParticleType>
 struct PostStep
 {
-    using impl_type = mpl::PostStep<ProcessType, ParticleType>;
+    using mpl_type = mpl::PostStep<ProcessType, ParticleType>;
 
     template <typename _Track, typename _Tp, typename _Func>
     PostStep(size_t _N, _Track* _track, intmax_t* _doit_idx, _Tp* _doit_value,
              _Func* _doit_apply)
     {
-        auto _value = impl_type::GPIL(_track);
+        auto _value = mpl_type::GPIL(_track);
         if(_value < *_doit_value)
         {
             *_doit_idx   = _N;
             *_doit_value = _value;
-            *_doit_apply = [=]() { impl_type::DoIt(_track); };
+            *_doit_apply = [=]() { mpl_type::DoIt(_track); };
         }
     }
 };
