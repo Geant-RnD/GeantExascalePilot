@@ -27,6 +27,7 @@ CREATE_EXECUTABLE(
     LINK_LIBRARIES          example_core_tuple
 )
 
+if ((CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0.0) OR (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 9.0.0))
 CREATE_EXECUTABLE(
     TARGET_NAME             bench_tuple
     HEADERS                 ${headers}
@@ -34,6 +35,7 @@ CREATE_EXECUTABLE(
     INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}/source
     LINK_LIBRARIES          example_core_tuple
 )
+endif()
 
 set_source_files_properties(bench_nvstd.cpp PROPERTIES LANGUAGE CUDA)
 
