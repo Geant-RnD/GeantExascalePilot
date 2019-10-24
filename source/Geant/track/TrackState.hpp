@@ -18,6 +18,8 @@
 #include "Geant/track/Types.hpp"
 #include "timemory/timemory.hpp"
 
+#include <sstream>
+
 namespace geantx {
 
 #if 0
