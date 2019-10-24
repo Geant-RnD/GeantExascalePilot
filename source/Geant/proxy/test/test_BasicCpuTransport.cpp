@@ -18,8 +18,8 @@
 #include "Geant/core/Config.hpp"
 #include "Geant/core/Logger.hpp"
 #include "Geant/core/Memory.hpp"
+#include "Geant/core/MemoryPool.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
-#include "Geant/geometry/RunManager.hpp"
 #include "Geant/geometry/UserDetectorConstruction.hpp"
 #include "Geant/track/TrackState.hpp"
 
@@ -36,14 +36,6 @@
 using namespace geantx;
 using namespace vecgeom;
 
-#include <random>
-
-using namespace tim::component;
-using toolset_t = tim::auto_tuple<real_clock, peak_rss>;
-// using toolset_t =
-//    tim::auto_tuple<real_clock, system_clock, user_clock, cpu_util, peak_rss>;
-// using toolset_t = tim::auto_timer;
-
 //===----------------------------------------------------------------------===//
 // I doubt someone will see this but if you do, please replace with whatever
 // is needed to get a random number generator from VecMath.
@@ -51,6 +43,8 @@ using toolset_t = tim::auto_tuple<real_clock, peak_rss>;
 // And if this is Philippe looking, consider me warned about static thread_local
 // being slow.
 //
+/*
+// moved to Geant/processes/Process.hpp
 inline double
 get_rand()
 {
@@ -62,6 +56,7 @@ get_rand()
     static thread_local auto _gen = _get_generator();
     return std::generate_canonical<double, 10>(_gen);
 }
+*/
 
 //===----------------------------------------------------------------------===//
 
@@ -69,7 +64,6 @@ get_rand()
 void
 initialize_geometry()
 {
-    /*
     UnplacedBox*       worldUnplaced = new UnplacedBox(10, 10, 10);
     UnplacedTrapezoid* trapUnplaced =
         new UnplacedTrapezoid(4, 0, 0, 4, 4, 4, 0, 4, 4, 4, 0);
@@ -112,134 +106,117 @@ initialize_geometry()
     VPlacedVolume* w = world->Place();
     GeoManager::Instance().SetWorld(w);
     GeoManager::Instance().CloseGeometry();
-    // return w;
-    */
 }
 
 //--------------------------------------------------------------------------------------//
 
 template <typename ParticleType, typename ProcessTuple>
 void
-ApplyAtRest(TrackCaster<ParticleType>** tracks, intmax_t N)
+ApplyAtRest(Track* track, size_t idx)
 {
     using Apply_t = typename PhysicsProcessAtRest<ParticleType, ProcessTuple>::type;
     using Funct_t = std::function<void()>;
     TIMEMORY_BASIC_MARKER(toolset_t, "");
 
-    for(int i = 0; i < N; ++i)
-    {
-        TrackState* track = static_cast<TrackState*>(tracks[i]);
-        geantx::Log(kInfo) << GEANT_HERE << "stepping track: " << *track;
-        ///
-        /// Reference: \file Geant/processes/ProcessConcepts.hpp
-        ///
-        ///     doit_idx:       index of smallest PIL
-        ///     doit_value:     value of smallest PIL
-        ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
-        ///
-        intmax_t doit_idx   = -1;
-        double   doit_value = std::numeric_limits<double>::max();
-        Funct_t  doit_apply = [=]() {
-            geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
-        };
-        ///
-        /// Calculate all of the AtRest PIL lengths for all the processes
-        ///
-        Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
-        ///
-        /// Invoke the DoIt of smallest PIL
-        ///
-        doit_apply();
-        ///
-        /// Invoke all the AtRest processes that don't propose a PIL
-        ///
-        Apply<void>::apply<Apply_t>(track);
-    }
-    // ... etc.
+    geantx::Log(kInfo) << GEANT_HERE << "stepping track AtRest: " << *track;
+    ///
+    /// Reference: \file Geant/processes/ProcessConcepts.hpp
+    ///
+    ///     doit_idx:       index of smallest PIL
+    ///     doit_value:     value of smallest PIL
+    ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
+    ///
+    intmax_t doit_idx   = -1;
+    double   doit_value = std::numeric_limits<double>::max();
+    Funct_t  doit_apply = [=]() {
+        // geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
+    };
+    ///
+    /// Calculate all of the AtRest PIL lengths for all the processes
+    ///
+    Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
+    ///
+    /// Invoke the DoIt of smallest PIL
+    ///
+    doit_apply();
+    ///
+    /// Invoke all the AtRest processes that don't propose a PIL
+    ///
+    Apply<void>::apply<Apply_t>(track);
 }
 
 //--------------------------------------------------------------------------------------//
 
 template <typename ParticleType, typename ProcessTuple>
 void
-ApplyAlongStep(TrackCaster<ParticleType>** tracks, intmax_t N)
+ApplyAlongStep(Track* track, size_t idx)
 {
     using Apply_t = typename PhysicsProcessAlongStep<ParticleType, ProcessTuple>::type;
     using Funct_t = std::function<void()>;
     TIMEMORY_BASIC_MARKER(toolset_t, "");
 
-    for(int i = 0; i < N; ++i)
-    {
-        TrackState* track = static_cast<TrackState*>(tracks[i]);
-        geantx::Log(kInfo) << GEANT_HERE << "stepping track: " << *track;
-        ///
-        /// Reference: \file Geant/processes/ProcessConcepts.hpp
-        ///
-        ///     doit_idx:       index of smallest PIL
-        ///     doit_value:     value of smallest PIL
-        ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
-        ///
-        intmax_t doit_idx   = -1;
-        double   doit_value = std::numeric_limits<double>::max();
-        Funct_t  doit_apply = [=]() {
-            geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
-        };
-        ///
-        /// Calculate all of the AlongStep PIL lengths for all the processes
-        ///
-        Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
-        ///
-        /// Invoke the DoIt of smallest PIL
-        ///
-        doit_apply();
-        ///
-        /// Invoke all the AlongStep processes that don't propose a PIL
-        ///
-        Apply<void>::apply<Apply_t>(track);
-    }
-    // ... etc.
+    geantx::Log(kInfo) << GEANT_HERE << "stepping track AlongStep: " << *track;
+    ///
+    /// Reference: \file Geant/processes/ProcessConcepts.hpp
+    ///
+    ///     doit_idx:       index of smallest PIL
+    ///     doit_value:     value of smallest PIL
+    ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
+    ///
+    intmax_t doit_idx   = -1;
+    double   doit_value = std::numeric_limits<double>::max();
+    Funct_t  doit_apply = [=]() {
+        // geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
+    };
+    ///
+    /// Calculate all of the AlongStep PIL lengths for all the processes
+    ///
+    Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
+    ///
+    /// Invoke the DoIt of smallest PIL
+    ///
+    doit_apply();
+    ///
+    /// Invoke all the AlongStep processes that don't propose a PIL
+    ///
+    Apply<void>::apply<Apply_t>(track);
 }
 
 //--------------------------------------------------------------------------------------//
 
 template <typename ParticleType, typename ProcessTuple>
 void
-ApplyPostStep(TrackCaster<ParticleType>** tracks, intmax_t N)
+ApplyPostStep(Track* track, size_t idx)
 {
     using Apply_t = typename PhysicsProcessPostStep<ParticleType, ProcessTuple>::type;
     using Funct_t = std::function<void()>;
     TIMEMORY_BASIC_MARKER(toolset_t, "");
 
-    for(int i = 0; i < N; ++i)
-    {
-        TrackState* track = static_cast<TrackState*>(tracks[i]);
-        geantx::Log(kInfo) << GEANT_HERE << "stepping track: " << *track;
-        ///
-        /// Reference: \file Geant/processes/ProcessConcepts.hpp
-        ///
-        ///     doit_idx:       index of smallest PIL
-        ///     doit_value:     value of smallest PIL
-        ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
-        ///
-        intmax_t doit_idx   = -1;
-        double   doit_value = std::numeric_limits<double>::max();
-        Funct_t  doit_apply = [=]() {
-            geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
-        };
-        ///
-        /// Calculate all of the PostStep PIL lengths for all the processes
-        ///
-        Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
-        ///
-        /// Invoke the DoIt of smallest PIL
-        ///
-        doit_apply();
-        ///
-        /// Invoke all the PostStep processes that don't propose a PIL
-        ///
-        Apply<void>::apply<Apply_t>(track);
-    }
-    // ... etc.
+    geantx::Log(kInfo) << GEANT_HERE << "stepping track PostStep: " << *track;
+    ///
+    /// Reference: \file Geant/processes/ProcessConcepts.hpp
+    ///
+    ///     doit_idx:       index of smallest PIL
+    ///     doit_value:     value of smallest PIL
+    ///     doit_apply:     lambda that stores the "DoIt" for the smallest PIL
+    ///
+    intmax_t doit_idx   = -1;
+    double   doit_value = std::numeric_limits<double>::max();
+    Funct_t  doit_apply = [=]() {
+        geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
+    };
+    ///
+    /// Calculate all of the PostStep PIL lengths for all the processes
+    ///
+    Apply<void>::unroll_indices<Apply_t>(track, &doit_idx, &doit_value, &doit_apply);
+    ///
+    /// Invoke the DoIt of smallest PIL
+    ///
+    doit_apply();
+    ///
+    /// Invoke all the PostStep processes that don't propose a PIL
+    ///
+    Apply<void>::apply<Apply_t>(track);
 }
 
 //--------------------------------------------------------------------------------------//
@@ -249,45 +226,54 @@ template <typename ParticlePhysics, typename... ParticleTypes,
           typename ParticleType          = typename ParticlePhysics::particle,
           typename ParticleTypeProcesses = typename ParticlePhysics::physics>
 auto
-DoStep(VariadicTrackManager<ParticleTypes...>* track_manager)
+DoStep(VariadicTrackManager<ParticleTypes...>* primary,
+       VariadicTrackManager<ParticleTypes...>* secondary)
 {
-    using VarManager_t = VariadicTrackManager<ParticleTypes...>;
-    using Track_t =
-        decltype(std::declval<VarManager_t>().template PopTrack<ParticleType>());
-
     TIMEMORY_BASIC_MARKER(toolset_t, "");
 
-    //
-    //  put all data into array
-    //
-    std::vector<Track_t> _vec;
-    while(true)
-    {
-        auto _track = track_manager->template PopTrack<ParticleType>();
-        if(_track == nullptr) break;
-        geantx::Log(kInfo) << GEANT_HERE << "stepping track: " << *_track;
-        _vec.emplace_back(_track);
-    }
+    // using AtRestProcesses =
+    //     sort::sort<PhysicsProcessAtRestPriority, ParticleTypeProcesses>::type;
 
     //
     // here would be a memory transfer to GPU, if needed
     //
-    ApplyAtRest<ParticleType, ParticleTypeProcesses>(_vec.data(), _vec.size());
-    ApplyAlongStep<ParticleType, ParticleTypeProcesses>(_vec.data(), _vec.size());
-    ApplyPostStep<ParticleType, ParticleTypeProcesses>(_vec.data(), _vec.size());
+    while(!primary->Empty())
+    {
+        auto sz = primary->template Size<ParticleType>();
+        for(size_t i = 0; i < sz; ++i)
+        {
+            auto* _track = primary->template PopTrack<ParticleType>(i);
+            if(!_track) break;
+
+            _track->fStatus = TrackStatus::Alive;
+            ApplyAtRest<ParticleType, ParticleTypeProcesses>(_track, i);
+            if(_track->fStatus != TrackStatus::Killed)
+                ApplyAlongStep<ParticleType, ParticleTypeProcesses>(_track, i);
+            if(_track->fStatus != TrackStatus::Killed)
+                ApplyPostStep<ParticleType, ParticleTypeProcesses>(_track, i);
+            ++_track->fPhysicsState.fPstep;
+
+            ///
+            /// Push the track back into primary
+            ///
+            secondary->template PushTrack<ParticleType>(_track, i);
+        }
+        // ... etc.
+        std::swap(primary, secondary);
+    }
 }
 
 //--------------------------------------------------------------------------------------//
 // general implementation that launches kernels until all ready and secondary are
 // finished
 //
-TrackState*
+Track*
 get_primary_particle()
 {
     TIMEMORY_BASIC_MARKER(toolset_t, "");
-    TrackState* _track = new TrackState;
-    _track->fDir       = { get_rand(), get_rand(), get_rand() };
-    _track->fPos       = { get_rand(), get_rand(), get_rand() };
+    Track* _track = new Track;
+    _track->fDir  = { get_rand(), get_rand(), get_rand() };
+    _track->fPos  = { get_rand(), get_rand(), get_rand() };
     _track->fDir.Normalize();
     return _track;
 }
@@ -297,50 +283,96 @@ get_primary_particle()
 int
 main(int argc, char** argv)
 {
+    tim::settings::precision() = 6;
+    tim::settings::width()     = 12;
+    tim::timemory_init(argc, argv);
+
     TIMEMORY_BLANK_MARKER(toolset_t, argv[0]);
-    initialize_geometry();
 
-    // basic geometry checks
-    /*if(GeoManager::Instance().GetWorld())
+    if(tim::get_env<bool>("TRANSPORT_GEOM", false))
     {
-        const auto* logWorld = GeoManager::Instance().GetWorld()->GetLogicalVolume();
-        if(logWorld)
+        initialize_geometry();
+        // basic geometry checks
+        if(GeoManager::Instance().GetWorld())
         {
-            // print detector information
-            logWorld->PrintContent();
-            std::cout << "\n # placed volumes: " << logWorld->GetNTotal() << "\n";
+            const auto* logWorld = GeoManager::Instance().GetWorld()->GetLogicalVolume();
+            if(logWorld)
+            {
+                // print detector information
+                logWorld->PrintContent();
+                std::cout << "\n # placed volumes: " << logWorld->GetNTotal() << "\n";
+            }
         }
-    }*/
+    }
 
-    VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> manager;
+    VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> primary;
+    VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> secondary;
+
+    /*
+    //
+    // This will eventually provide a re-ordering for the sequence of which the
+    // processes are applied. So one can do something like:
+    //
+    //      template <>
+    //      struct PhysicsProcessPostStepPriority<Transportation>
+    //      : std::integral_constant<int, -100>
+    //      {};
+    //
+    //      template <>
+    //      struct PhysicsProcessPostStepPriority<ProxyStepLimiter>
+    //      : std::integral_constant<int, 100>
+    //      {};
+    //
+    //  so that for the PostStep stage, Transportation is prioritized ahead of
+    //  other processes and ProxyStepLimiter is, in general, applied after
+    //  most other processes
+    //
+
+    using PhysList_A = std::tuple<ProxyTrackLimiter>;
+    using PhysList_B =
+        InsertSorted<PhysList_A, ProxyScattering, SortPhysicsProcessPostStep>;
+    using PhysList_C =
+        InsertSorted<PhysList_B, ProxyStepLimiter, SortPhysicsProcessPostStep>;
+    using PhysList_D =
+        InsertSorted<PhysList_C, Transportation, SortPhysicsProcessPostStep>;
+
+    std::cout << "Phys List A : " << tim::demangle(typeid(PhysList_A).name())
+              << std::endl;
+    std::cout << "Phys List B : " << tim::demangle(typeid(PhysList_B).name())
+              << std::endl;
+    std::cout << "Phys List C : " << tim::demangle(typeid(PhysList_C).name())
+              << std::endl;
+    std::cout << "Phys List D : " << tim::demangle(typeid(PhysList_D).name())
+              << std::endl;
+    */
 
     printf("\n");
-    manager.PushTrack(get_primary_particle());
+    // primary.PushTrack(get_primary_particle());
 
     printf("\n");
-    manager.PushTrack<CpuGamma>(get_primary_particle());
-    manager.PushTrack<CpuGamma>(get_primary_particle());
+    primary.PushTrack<CpuGamma>(get_primary_particle());
+    primary.PushTrack<CpuGamma>(get_primary_particle());
 
     printf("\n");
-    manager.PushTrack<GpuGamma>(get_primary_particle());
+    primary.PushTrack<GpuGamma>(get_primary_particle());
 
     printf("\n");
-    manager.PushTrack<CpuElectron>(get_primary_particle());
+    primary.PushTrack<CpuElectron>(get_primary_particle());
 
     printf("\n");
-    manager.PushTrack<GpuElectron>(get_primary_particle());
+    primary.PushTrack<GpuElectron>(get_primary_particle());
 
     printf("\n");
-    DoStep<CpuGammaPhysics>(&manager);
+    DoStep<CpuGammaPhysics>(&primary, &secondary);
 
     printf("\n");
-    DoStep<CpuElectronPhysics>(&manager);
+    DoStep<CpuElectronPhysics>(&primary, &secondary);
 
     printf("\n");
-    DoStep<GpuGammaPhysics>(&manager);
+    DoStep<GpuGammaPhysics>(&primary, &secondary);
 
     printf("\n");
-    DoStep<GpuElectronPhysics>(&manager);
+    DoStep<GpuElectronPhysics>(&primary, &secondary);
 }
 
 //===----------------------------------------------------------------------===//

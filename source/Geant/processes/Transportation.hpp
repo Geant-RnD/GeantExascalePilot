@@ -15,6 +15,7 @@
 #pragma once
 
 #include "Geant/core/Config.hpp"
+#include "Geant/core/Profiler.hpp"
 #include "Geant/core/Tuple.hpp"
 #include "Geant/particles/Types.hpp"
 #include "Geant/processes/Process.hpp"
@@ -44,18 +45,29 @@ public:
     using specialized_types = Tuple<>;
 
 public:
+    using this_type = Transportation;
+
     Transportation();
     ~Transportation();
 
     // here the transportation proposed a step distance
-    GEANT_HOST_DEVICE double AlongStepGPIL(const TrackState&) { return 1.0; }
-    // double PostStepGPIL(const TrackState&);
-    // double AtRestGPIL(const TrackState&);
+    GEANT_HOST_DEVICE double AlongStepGPIL(const TrackState*)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        return 10.0 * get_rand();
+    }
 
     // here the transportation is applied
-    GEANT_HOST_DEVICE void AlongStepDoIt(TrackState&) {}
-    GEANT_HOST_DEVICE void PostStepDoIt(TrackState&) {}
-    // void AtRestDoIt(TrackState&);
+    GEANT_HOST_DEVICE void AlongStepDoIt(TrackState* _track)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        _track->fPos += _track->fPhysicsState.fPstep * _track->fDir;
+    }
+    GEANT_HOST_DEVICE void PostStepDoIt(TrackState* _track)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        // _track->fPos += _track->fPhysicsState.fPstep * _track->fDir;
+    }
 };
 
 template <typename ParticleType>

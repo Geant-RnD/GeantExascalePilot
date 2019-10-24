@@ -47,7 +47,7 @@ public:
   // >>> ACCESSORS
 
   double Charge() const { return fParDef.Charge(); }
-  Species_t Species() const { return fParDef.Species(); }
+  ParticleSpecies Species() const { return fParDef.Species(); }
   //! Rest mass (* c^2: same units as energy, since c=1)
   double Mass() const { return fParDef.fMass(); }
 

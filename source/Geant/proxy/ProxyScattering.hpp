@@ -17,89 +17,91 @@
 
 #pragma once
 
+#include "Geant/core/Logger.hpp"
 #include "Geant/core/Tuple.hpp"
 #include "Geant/particles/Types.hpp"
 #include "Geant/processes/Process.hpp"
-#include "Geant/core/Logger.hpp"
 
-namespace geantx {
-class ProxyScattering : public Process {
+namespace geantx
+{
+class ProxyScattering : public Process
+{
 public:
-  // Enable/disable GetPhysicalInteractionLength (GPIL) functions
-  static constexpr bool EnableAtRestGPIL    = false;
-  static constexpr bool EnableAlongStepGPIL = true;
-  static constexpr bool EnablePostStepGPIL  = false;
-  // Enable/disable DoIt functions
-  static constexpr bool EnableAtRestDoIt    = false;
-  static constexpr bool EnableAlongStepDoIt = true;
-  static constexpr bool EnablePostStepDoIt  = true;
+    // Enable/disable GetPhysicalInteractionLength (GPIL) functions
+    static constexpr bool EnableAtRestGPIL    = false;
+    static constexpr bool EnableAlongStepGPIL = true;
+    static constexpr bool EnablePostStepGPIL  = false;
+    // Enable/disable DoIt functions
+    static constexpr bool EnableAtRestDoIt    = false;
+    static constexpr bool EnableAlongStepDoIt = true;
+    static constexpr bool EnablePostStepDoIt  = true;
 
-  // for enable_if statements
-  template <typename _Tp>
-  static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
+    // for enable_if statements
+    template <typename _Tp>
+    static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
 
-  // provide no specializations
-  using specialized_types = std::tuple<CpuElectron>;
+    // provide no specializations
+    using specialized_types = std::tuple<CpuElectron>;
 
 public:
-  ProxyScattering()  = default;
-  ~ProxyScattering() = default;
+    using this_type = ProxyScattering;
 
-  // here the transportation proposed a step distance
-  double AlongStepGPIL(const TrackState *_track)
-  {
-    auto _safety = _track->fGeometryState.fSafety;
-    geantx::Log(kInfo) << GEANT_HERE << "calc GPIL: " << *_track;
+    ProxyScattering()  = default;
+    ~ProxyScattering() = default;
 
-    // inverse of the square of the safety
-    return (1.0 / (_safety * _safety));
-  }
-  // double PostStepGPIL(const TrackState*);
-  // double AtRestGPIL(const TrackState*);
+    // here the transportation proposed a step distance
+    double AlongStepGPIL(const TrackState* _track)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
 
-  // here the transportation is applied
-  void AlongStepDoIt(TrackState *_track)
-  {
-    _track->fDir.x() += 0.5;
-    _track->fDir.y() -= 0.1;
-    _track->fDir.z() += 0.2;
-    _track->fDir.Normalize();
-    geantx::Log(kInfo) << GEANT_HERE << "apply along: " << *_track;
-  }
-  void PostStepDoIt(TrackState *_track)
-  {
-    geantx::Log(kInfo) << GEANT_HERE << "ALWAYS-ON apply post: " << *_track;
-  }
-  // void AtRestDoIt(TrackState*);
+        auto _safety = (5.0 * get_rand() - _track->fGeometryState.fSafety);
+        if(_safety < 0.0) return std::numeric_limits<double>::max();
 
-  //------------------------------------------------------------------------------------//
-  //
-  //            Specialization for CpuElectron
-  //
-  //------------------------------------------------------------------------------------//
-  template <typename _Tp,
-            std::enable_if_t<(std::is_same<_Tp, CpuElectron>::value), int> = 0>
-  double AlongStepGPIL(const TrackState *_track)
-  {
-    geantx::Log(kInfo) << GEANT_HERE << "[CPU_ELECTRON] calc GPIL: " << *_track;
-    return std::numeric_limits<double>::max();
-  }
+        // inverse of the square of the safety
+        return (1.0 / (_safety * _safety));
+    }
 
-  template <typename _Tp,
-            std::enable_if_t<(std::is_same<_Tp, CpuElectron>::value), int> = 0>
-  void AlongStepDoIt(TrackState *_track)
-  {
-    _track->fPos += 1.0;
-    geantx::Log(kInfo) << GEANT_HERE << "[CPU_ELECTRON] apply along: " << *_track;
-  }
+    // here the transportation is applied
+    void AlongStepDoIt(TrackState* _track)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        ThreeVector rand = { get_rand(), get_rand(), get_rand() };
+        rand.Normalize();
+        _track->fDir = rand;
+    }
 
-  template <typename _Tp,
-            std::enable_if_t<(std::is_same<_Tp, CpuElectron>::value), int> = 0>
-  void PostStepDoIt(TrackState *_track)
-  {
-    geantx::Log(kInfo) << GEANT_HERE
-                       << "[ALWAYS-ON CPU_ELECTRON] apply post: " << *_track;
-  }
+    void PostStepDoIt(TrackState* _track) { GEANT_THIS_TYPE_TESTING_MARKER(""); }
+
+    //------------------------------------------------------------------------------------//
+    //
+    //            Specialization for CpuElectron
+    //
+    //------------------------------------------------------------------------------------//
+    template <typename _Tp,
+              std::enable_if_t<(std::is_same<_Tp, CpuElectron>::value), int> = 0>
+    double AlongStepGPIL(const TrackState* _track)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        return get_rand();
+    }
+
+    template <typename _Tp,
+              std::enable_if_t<(std::is_same<_Tp, CpuElectron>::value), int> = 0>
+    void AlongStepDoIt(TrackState* _track)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        auto        _dir = _track->fDir;
+        ThreeVector rand = { _dir.x() * get_rand(), _dir.y() * get_rand(), _dir.z() };
+        rand.Normalize();
+        _track->fDir = rand;
+    }
+
+    template <typename _Tp,
+              std::enable_if_t<(std::is_same<_Tp, CpuElectron>::value), int> = 0>
+    void PostStepDoIt(TrackState* _track)
+    {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+    }
 };
 
-} // namespace geantx
+}  // namespace geantx

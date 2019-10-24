@@ -94,7 +94,7 @@ public:
   //! Kill the particle
   void Kill() const
   {
-    fState.fStatus = kKilled;
+    fState.fStatus = TrackStatus::Killed;
     // XXX set ekin to zero?
   }
 
@@ -120,7 +120,7 @@ public:
     hist.fMother   = other.Id();
     hist.fParticle = newId;
     // Set status (TODO: should this reset anything???)
-    fState.fStatus = kNew;
+    fState.fStatus = TrackStatus::New;
   }
 
 private:

@@ -343,7 +343,7 @@ FUNCTION(CREATE_EXECUTABLE)
 ENDFUNCTION()
 
 #------------------------------------------------------------------------------#
-# macro add_googletest()
+# macro add_geant_google_test()
 #
 # Adds a unit test and links against googletest. Additional arguments are linked
 # against the test.
@@ -390,6 +390,8 @@ function(ADD_GEANT_GOOGLE_TEST TEST_NAME)
                         geant-headers
                         ${_LINK_LIBS}
         PROPERTIES      "${TEST_PROPERTIES}")
+
+    target_compile_definitions(${TEST_NAME} PRIVATE GEANT_TESTING)
 
     if("${TEST_COMMAND}" STREQUAL "")
         set(TEST_COMMAND $<TARGET_FILE:${TEST_NAME}>)

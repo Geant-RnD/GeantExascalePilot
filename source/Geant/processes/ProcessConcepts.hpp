@@ -15,9 +15,8 @@
 #pragma once
 
 #include "Geant/core/Logger.hpp"
+#include "Geant/core/Profiler.hpp"
 #include "Geant/core/Tuple.hpp"
-
-#include <timemory/timemory.hpp>
 
 #include <functional>
 #include <string>
@@ -49,7 +48,7 @@ struct AtRest
               std::enable_if_t<!(is_one_of<_Part, Specialized>::value), int> = 0>
     static double GPIL(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "at rest step generic";
+        // geantx::Log(kInfo) << GEANT_HERE << "at rest step generic";
         ProcessType p;
         return p.AtRestGPIL(std::forward<_Args>(args)...);
     }
@@ -59,7 +58,7 @@ struct AtRest
               std::enable_if_t<(is_one_of<_Part, Specialized>::value), int> = 0>
     static double GPIL(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "at rest step specific";
+        // geantx::Log(kInfo) << GEANT_HERE << "at rest step specific";
         ProcessType p;
         return p.template AtRestGPIL<ParticleType>(std::forward<_Args>(args)...);
     }
@@ -73,7 +72,7 @@ struct AtRest
               std::enable_if_t<!(is_one_of<_Part, Specialized>::value), int> = 0>
     static void DoIt(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "at rest step generic";
+        // geantx::Log(kInfo) << GEANT_HERE << "at rest step generic";
         ProcessType p;
         p.AtRestDoIt(std::forward<_Args>(args)...);
     }
@@ -83,7 +82,7 @@ struct AtRest
               std::enable_if_t<(is_one_of<_Part, Specialized>::value), int> = 0>
     static void DoIt(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "at rest step specific";
+        // geantx::Log(kInfo) << GEANT_HERE << "at rest step specific";
         ProcessType p;
         p.template AtRestDoIt<ParticleType>(std::forward<_Args>(args)...);
     }
@@ -110,7 +109,7 @@ struct AlongStep
               std::enable_if_t<!(is_one_of<_Part, Specialized>::value), int> = 0>
     static double GPIL(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "along step generic";
+        // geantx::Log(kInfo) << GEANT_HERE << "along step generic";
         ProcessType p;
         return p.AlongStepGPIL(std::forward<_Args>(args)...);
     }
@@ -120,7 +119,7 @@ struct AlongStep
               std::enable_if_t<(is_one_of<_Part, Specialized>::value), int> = 0>
     static double GPIL(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "along step specific";
+        // geantx::Log(kInfo) << GEANT_HERE << "along step specific";
         ProcessType p;
         return p.template AlongStepGPIL<ParticleType>(std::forward<_Args>(args)...);
     }
@@ -134,7 +133,7 @@ struct AlongStep
               std::enable_if_t<!(is_one_of<_Part, Specialized>::value), int> = 0>
     static void DoIt(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "along step generic";
+        // geantx::Log(kInfo) << GEANT_HERE << "along step generic";
         ProcessType p;
         p.AlongStepDoIt(std::forward<_Args>(args)...);
     }
@@ -144,7 +143,7 @@ struct AlongStep
               std::enable_if_t<(is_one_of<_Part, Specialized>::value), int> = 0>
     static void DoIt(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "along step specific";
+        // geantx::Log(kInfo) << GEANT_HERE << "along step specific";
         ProcessType p;
         p.template AlongStepDoIt<ParticleType>(std::forward<_Args>(args)...);
     }
@@ -171,7 +170,7 @@ struct PostStep
               std::enable_if_t<!(is_one_of<_Part, Specialized>::value), int> = 0>
     static double GPIL(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "post step generic";
+        // geantx::Log(kInfo) << GEANT_HERE << "post step generic";
         ProcessType p;
         return p.PostStepGPIL(std::forward<_Args>(args)...);
     }
@@ -181,7 +180,7 @@ struct PostStep
               std::enable_if_t<(is_one_of<_Part, Specialized>::value), int> = 0>
     static double GPIL(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "post step specific";
+        // geantx::Log(kInfo) << GEANT_HERE << "post step specific";
         ProcessType p;
         return p.template PostStepGPIL<ParticleType>(std::forward<_Args>(args)...);
     }
@@ -195,7 +194,7 @@ struct PostStep
               std::enable_if_t<!(is_one_of<_Part, Specialized>::value), int> = 0>
     static void DoIt(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "post step generic";
+        // geantx::Log(kInfo) << GEANT_HERE << "post step generic";
         ProcessType p;
         p.PostStepDoIt(std::forward<_Args>(args)...);
     }
@@ -205,7 +204,7 @@ struct PostStep
               std::enable_if_t<(is_one_of<_Part, Specialized>::value), int> = 0>
     static void DoIt(_Args&&... args)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "post step specific";
+        // geantx::Log(kInfo) << GEANT_HERE << "post step specific";
         ProcessType p;
         p.template PostStepDoIt<ParticleType>(std::forward<_Args>(args)...);
     }
@@ -219,10 +218,8 @@ struct PostStep
 template <typename ProcessType, typename ParticleType>
 struct AtRest
 {
-    using real_clock = tim::component::real_clock;
-    using peak_rss   = tim::component::peak_rss;
-    using toolset_t  = tim::auto_tuple<real_clock, peak_rss>;
-    using mpl_type   = mpl::AtRest<ProcessType, ParticleType>;
+    using this_type = AtRest<ProcessType, ParticleType>;
+    using mpl_type  = mpl::AtRest<ProcessType, ParticleType>;
 
     //
     //  Invoked for selection among processes that propose a PIL
@@ -232,7 +229,7 @@ struct AtRest
     AtRest(size_t _N, _Track* _track, intmax_t* _doit_idx, _Tp* _doit_value,
            _Func* _doit_apply)
     {
-        TIMEMORY_BASIC_MARKER(toolset_t, "");
+        GEANT_THIS_TYPE_TESTING_MARKER("");
         auto _value = mpl_type::GPIL(_track);
         if(_value < *_doit_value)
         {
@@ -260,7 +257,8 @@ struct AtRest
         std::enable_if_t<(!_Proc::EnableAtRestGPIL && _Proc::EnableAtRestDoIt), int> = 0>
     AtRest(_Track* _track)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "[ALWAYS ON AT-REST DO-IT]";
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        // geantx::Log(kInfo) << GEANT_HERE << "[ALWAYS ON AT-REST DO-IT]";
         mpl_type::DoIt(_track);
     }
 
@@ -280,10 +278,8 @@ struct AtRest
 template <typename ProcessType, typename ParticleType>
 struct AlongStep
 {
-    using real_clock = tim::component::real_clock;
-    using peak_rss   = tim::component::peak_rss;
-    using toolset_t  = tim::auto_tuple<real_clock, peak_rss>;
-    using mpl_type   = mpl::AlongStep<ProcessType, ParticleType>;
+    using this_type = AlongStep<ProcessType, ParticleType>;
+    using mpl_type  = mpl::AlongStep<ProcessType, ParticleType>;
 
     //
     //  Invoked for selection among processes that propose a PIL
@@ -293,7 +289,7 @@ struct AlongStep
     AlongStep(size_t _N, _Track*& _track, intmax_t* _doit_idx, _Tp* _doit_value,
               _Func* _doit_apply)
     {
-        TIMEMORY_BASIC_MARKER(toolset_t, "");
+        GEANT_THIS_TYPE_TESTING_MARKER("");
         auto _value = mpl_type::GPIL(_track);
         if(_value < *_doit_value)
         {
@@ -321,7 +317,8 @@ struct AlongStep
                   (!_Proc::EnableAlongStepGPIL && _Proc::EnableAlongStepDoIt), int> = 0>
     AlongStep(_Track* _track)
     {
-        geantx::Log(kInfo) << GEANT_HERE << "[ALWAYS ON ALONG-STEP DO-IT]";
+        GEANT_THIS_TYPE_TESTING_MARKER("");
+        // geantx::Log(kInfo) << GEANT_HERE << "[ALWAYS ON ALONG-STEP DO-IT]";
         mpl_type::DoIt(_track);
     }
 
@@ -341,17 +338,15 @@ struct AlongStep
 template <typename ProcessType, typename ParticleType>
 struct PostStep
 {
-    using real_clock = tim::component::real_clock;
-    using peak_rss   = tim::component::peak_rss;
-    using toolset_t  = tim::auto_tuple<real_clock, peak_rss>;
-    using mpl_type   = mpl::PostStep<ProcessType, ParticleType>;
+    using mpl_type  = mpl::PostStep<ProcessType, ParticleType>;
+    using this_type = PostStep<ProcessType, ParticleType>;
 
     template <typename _Track, typename _Tp, typename _Func, typename _Proc = ProcessType,
               std::enable_if_t<(_Proc::EnablePostStepGPIL), int> = 0>
     PostStep(size_t _N, _Track* _track, intmax_t* _doit_idx, _Tp* _doit_value,
              _Func* _doit_apply)
     {
-        TIMEMORY_BASIC_MARKER(toolset_t, "");
+        GEANT_THIS_TYPE_TESTING_MARKER("");
         auto _value = mpl_type::GPIL(_track);
         if(_value < *_doit_value)
         {
@@ -379,6 +374,7 @@ struct PostStep
                                int> = 0>
     PostStep(_Track* _track)
     {
+        GEANT_THIS_TYPE_TESTING_MARKER("");
         geantx::Log(kInfo) << GEANT_HERE << "[ALWAYS ON POST-STEP DO-IT]";
         mpl_type::DoIt(_track);
     }

@@ -1,6 +1,5 @@
 #include "Geant/magneticfield/FieldPropagationHandler.hpp"
 
-
 #include "Geant/track/TrackState.hpp"
 
 #include <sstream>
@@ -17,9 +16,9 @@
 #include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
 
 #if 0
-#include "Geant/ScalarNavInterfaceVG.h"
-#include "Geant/ScalarNavInterfaceVGM.h"
-#include "Geant/VectorNavInterface.h"
+#  include "Geant/ScalarNavInterfaceVG.h"
+#  include "Geant/ScalarNavInterfaceVGM.h"
+#  include "Geant/VectorNavInterface.h"
 #endif
 
 using Double_v = geantx::Double_v;
@@ -33,11 +32,11 @@ using Double_v = geantx::Double_v;
 // #define DEBUG_FIELD 1
 
 #ifdef CHECK_VS_HELIX
-#define CHECK_VS_SCALAR 1
+#  define CHECK_VS_SCALAR 1
 #endif
 
 #ifdef CHECK_VS_RK
-#define CHECK_VS_SCALAR 1
+#  define CHECK_VS_SCALAR 1
 #endif
 
 namespace geantx {
@@ -45,10 +44,9 @@ inline namespace GEANT_IMPL_NAMESPACE {
 
 constexpr double gEpsDeflection = 1.E-2 * units::cm;
 
-constexpr auto stageAfterCrossing = kPostPropagationStage;
+constexpr auto stageAfterCrossing = SimulationStage::PostPropagationStage;
 
-static constexpr double kB2C  = -0.299792458e-3;
-
+static constexpr double kB2C = -0.299792458e-3;
 
 //______________________________________________________________________________
 // Curvature for general field
@@ -67,17 +65,19 @@ double FieldPropagationHandler::Curvature(const TrackState &track) const
 
 // Needing a real implementation.
 
-double Charge(const TrackState &track) {
+double Charge(const TrackState &track)
+{
   return 1;
 }
-
 
 //______________________________________________________________________________
 // Curvature for general field
 VECCORE_ATT_HOST_DEVICE
-double FieldPropagationHandler::Curvature(const TrackState &track, const ThreeVector_t &magFld_in, double bmag) const
+double FieldPropagationHandler::Curvature(const TrackState &track,
+                                          const ThreeVector_t &magFld_in,
+                                          double bmag) const
 {
-  using ThreeVector_t            = vecgeom::Vector3D<double>;
+  // using ThreeVector_t            = vecgeom::Vector3D<double>;
   constexpr double tiny          = 1.E-30;
   constexpr double inv_kilogauss = 1.0 / units::kilogauss;
 
@@ -114,33 +114,34 @@ void FieldPropagationHandler::DoIt(TrackState &track, TaskData *td) const
   ThreeVector BfieldInitial;
   ThreeVector Position(track.fPos);
   FieldLookup::GetFieldValue(Position, BfieldInitial, bmag);
-  double step_field = Max(SafeLength(track, gEpsDeflection, BfieldInitial, bmag), track.fGeometryState.fSafety);
+  double step_field = Max(SafeLength(track, gEpsDeflection, BfieldInitial, bmag),
+                          track.fGeometryState.fSafety);
 
   double step = Min(step_geom_phys, step_field);
 
   // Propagate in magnetic field
   PropagateInVolume(track, step, BfieldInitial, bmag, td);
   // Update number of partial steps propagated in field
-  //td->fNmag++;
+  // td->fNmag++;
 
 #ifndef IMPLEMENTED_STATUS
-#warning "Propagation has no way to tell scheduler what to do yet."
+#  warning "Propagation has no way to tell scheduler what to do yet."
 #else
   // Set continuous processes stage as follow-up for tracks that reached the
   // physics process
-  if (track.fStatus() == kPhysics) {
+  if (track.fStatus() == SimulationStage::Physics) {
     // Update number of steps to physics and total number of steps
-    //td->fNphys++;
-    //td->fNsteps++;
+    // td->fNphys++;
+    // td->fNsteps++;
     track->SetStage(stageAfterCrossing); // Future: (kPostPropagationStage);
   } else {
     // Crossing tracks continue to continuous processes, the rest have to
     // query again the geometry
     if ((track->GetSafety() < 1.E-10) && !IsSameLocation(*track, td)) {
-      //td->fNcross++;
-      //td->fNsteps++;
+      // td->fNcross++;
+      // td->fNsteps++;
     } else {
-      track->SetStage(kGeometryStepStage);
+      track->SetStage(SimulationStage::GeometryStepStage);
     }
   }
 #endif
@@ -149,7 +150,7 @@ void FieldPropagationHandler::DoIt(TrackState &track, TaskData *td) const
 //______________________________________________________________________________
 VECCORE_ATT_HOST_DEVICE
 void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtstep,
-                                                const ThreeVector &BfieldInitial, 
+                                                const ThreeVector &BfieldInitial,
                                                 double bmag, TaskData *td) const
 {
   // Single track propagation in a volume. The method is to be called
@@ -160,13 +161,14 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
   // - safety step (bdr=0)
   // - snext step (bdr=1)
 
-  // std::cout << "FieldPropagationHandler::PropagateInVolume called for 1 track" << std::endl;
+  // std::cout << "FieldPropagationHandler::PropagateInVolume called for 1 track" <<
+  // std::endl;
 
   constexpr double toKiloGauss = 1.0 / units::kilogauss; // Converts to kilogauss
 
 #if ENABLE_MORE_COMPLEX_FIELD
-  bool useRungeKutta = td->fPropagator->fConfig->fUseRungeKutta;
-  auto fieldConfig   = FieldLookup::GetFieldConfig();
+  bool useRungeKutta   = td->fPropagator->fConfig->fUseRungeKutta;
+  auto fieldConfig     = FieldLookup::GetFieldConfig();
   auto fieldPropagator = td->fFieldPropagator;
 #endif
 
@@ -185,14 +187,14 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
 #endif
 
 #ifdef PRINT_STEP_SINGLE
-  double curvaturePlus =
-      fabs(kB2C * track.Charge() * (bmag * toKiloGauss)) / (track.P() + 1.0e-30); // norm for step
+  double curvaturePlus = fabs(kB2C * track.Charge() * (bmag * toKiloGauss)) /
+                         (track.P() + 1.0e-30); // norm for step
   const double angle = crtstep * curvaturePlus;
   Print("--PropagateInVolume(Single): ",
         "Momentum= %9.4g (MeV) Curvature= %9.4g (1/mm)  CurvPlus= %9.4g (1/mm)  step= "
         "%f (mm)  Bmag=%8.4g KG   angle= %g\n",
-        (track.P() / units::MeV), Curvature(track) * units::mm, curvaturePlus * units::mm, crtstep / units::mm,
-        bmag * toKiloGauss, angle);
+        (track.P() / units::MeV), Curvature(track) * units::mm, curvaturePlus * units::mm,
+        crtstep / units::mm, bmag * toKiloGauss, angle);
 // Print("\n");
 #endif
 
@@ -208,47 +210,55 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
 #if ENABLE_MORE_COMPLEX_FIELD
   if (useRungeKutta || !fieldConfig->IsFieldUniform()) {
     assert(fieldPropagator);
-    fieldPropagator->DoStep(Position, Direction, track.Charge(), track.P(), crtstep, PositionNew, DirectionNew);
+    fieldPropagator->DoStep(Position, Direction, track.Charge(), track.P(), crtstep,
+                            PositionNew, DirectionNew);
     assert((PositionNew - Position).Mag() < crtstep + 1.e-4);
-#ifdef DEBUG_FIELD
+#  ifdef DEBUG_FIELD
 // cross check
-#ifndef CHECK_VS_BZ
+#    ifndef CHECK_VS_BZ
     ConstFieldHelixStepper stepper(BfieldInitial * toKiloGauss);
-    stepper.DoStep<double>(Position, Direction, track.Charge(), track.P(), crtstep, PositionNewCheck,
-                           DirectionNewCheck);
-#else
+    stepper.DoStep<double>(Position, Direction, track.Charge(), track.P(), crtstep,
+                           PositionNewCheck, DirectionNewCheck);
+#    else
     double Bz = BfieldInitial[2] * toKiloGauss;
     ConstBzFieldHelixStepper stepper_bz(Bz); //
-    stepper_bz.DoStep<ThreeVector, double, int>(Position, Direction, track.Charge(), track.P(), crtstep,
-                                                PositionNewCheck, DirectionNewCheck);
-#endif
+    stepper_bz.DoStep<ThreeVector, double, int>(Position, Direction, track.Charge(),
+                                                track.P(), crtstep, PositionNewCheck,
+                                                DirectionNewCheck);
+#    endif
 
     double posShift = (PositionNew - PositionNewCheck).Mag();
     double dirShift = (DirectionNew - DirectionNewCheck).Mag();
 
     if (posShift > epsilonRK || dirShift > epsilonRK) {
-      std::cout << "*** position/direction shift RK vs. HelixConstBz :" << posShift << " / " << dirShift << "\n";
+      std::cout << "*** position/direction shift RK vs. HelixConstBz :" << posShift
+                << " / " << dirShift << "\n";
       if (verboseDiff) {
-        printf("%s End> Pos= %9.6f %9.6f %9.6f  Mom= %9.6f %9.6f %9.6f\n", " FPH::PiV(1)-RK: ", PositionNew.x(),
-               PositionNew.y(), PositionNew.z(), DirectionNew.x(), DirectionNew.y(), DirectionNew.z());
-        printf("%s End> Pos= %9.6f %9.6f %9.6f  Mom= %9.6f %9.6f %9.6f\n", " FPH::PiV(1)-Bz: ", PositionNewCheck.x(),
-               PositionNewCheck.y(), PositionNewCheck.z(), DirectionNewCheck.x(), DirectionNewCheck.y(),
+        printf("%s End> Pos= %9.6f %9.6f %9.6f  Mom= %9.6f %9.6f %9.6f\n",
+               " FPH::PiV(1)-RK: ", PositionNew.x(), PositionNew.y(), PositionNew.z(),
+               DirectionNew.x(), DirectionNew.y(), DirectionNew.z());
+        printf("%s End> Pos= %9.6f %9.6f %9.6f  Mom= %9.6f %9.6f %9.6f\n",
+               " FPH::PiV(1)-Bz: ", PositionNewCheck.x(), PositionNewCheck.y(),
+               PositionNewCheck.z(), DirectionNewCheck.x(), DirectionNewCheck.y(),
                DirectionNewCheck.z());
       }
     }
-#endif
+#  endif
 // method= 'R';
-#ifdef STATS_METHODS
+#  ifdef STATS_METHODS
     numRK++;
     numTot++;
-#endif
+#  endif
   } else {
 #endif
     // geant::
-    double BfieldArr[3] = {BfieldInitial.x() * toKiloGauss, BfieldInitial.y() * toKiloGauss,
-                            BfieldInitial.z() * toKiloGauss};
+    double BfieldArr[3] = {BfieldInitial.x() * toKiloGauss,
+                           BfieldInitial.y() * toKiloGauss,
+                           BfieldInitial.z() * toKiloGauss};
     ConstFieldHelixStepper stepper(BfieldArr);
-    stepper.DoStep<double>(Position, Direction, Charge(track), track.fPhysicsState.fMomentum, crtstep, PositionNew, DirectionNew);
+    stepper.DoStep<double>(Position, Direction, Charge(track),
+                           track.fPhysicsState.fMomentum, crtstep, PositionNew,
+                           DirectionNew);
 // method= 'v';
 #ifdef STATS_METHODS
     numHelixGen++;
@@ -259,19 +269,22 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
 #endif
 
 #ifdef PRINT_FIELD
-  // Print(" FPH::PiV(1): Start>", " Pos= %8.5f %8.5f %8.5f  Mom= %8.5f %8.5f %8.5f", Position.x(), Position.y(),
-  // Position.z(), Direction.x(), Direction.y(), Direction.z() );
-  // Print(" FPH::PiV(1): End>  ", " Pos= %8.5f %8.5f %8.5f  Mom= %8.5f %8.5f %8.5f", PositionNew.x(), PositionNew.y(),
-  // PositionNew.z(), DirectionNew.x(), DirectionNew.y(), DirectionNew.z() );
+  // Print(" FPH::PiV(1): Start>", " Pos= %8.5f %8.5f %8.5f  Mom= %8.5f %8.5f %8.5f",
+  // Position.x(), Position.y(), Position.z(), Direction.x(), Direction.y(), Direction.z()
+  // ); Print(" FPH::PiV(1): End>  ", " Pos= %8.5f %8.5f %8.5f  Mom= %8.5f %8.5f %8.5f",
+  // PositionNew.x(), PositionNew.y(), PositionNew.z(), DirectionNew.x(),
+  // DirectionNew.y(), DirectionNew.z() );
 
   // printf(" FPH::PiV(1): ");
-  printf(" FPH::PiV(1):: ev= %3d trk= %3d %3d %c ", track.Event(), track.Particle(), track.GetNsteps(), method);
-  printf("Start> Pos= %8.5f %8.5f %8.5f  Mom= %8.5f %8.5f %8.5f ", Position.x(), Position.y(), Position.z(),
-         Direction.x(), Direction.y(), Direction.z());
+  printf(" FPH::PiV(1):: ev= %3d trk= %3d %3d %c ", track.Event(), track.Particle(),
+         track.GetNsteps(), method);
+  printf("Start> Pos= %8.5f %8.5f %8.5f  Mom= %8.5f %8.5f %8.5f ", Position.x(),
+         Position.y(), Position.z(), Direction.x(), Direction.y(), Direction.z());
   printf(" s= %10.6f ang= %7.5f ", crtstep / units::mm, angle);
   printf( // " FPH::PiV(1): "
-      "End> Pos= %9.6f %9.6f %9.6f  Mom= %9.6f %9.6f %9.6f\n", PositionNew.x(), PositionNew.y(), PositionNew.z(),
-      DirectionNew.x(), DirectionNew.y(), DirectionNew.z());
+      "End> Pos= %9.6f %9.6f %9.6f  Mom= %9.6f %9.6f %9.6f\n", PositionNew.x(),
+      PositionNew.y(), PositionNew.z(), DirectionNew.x(), DirectionNew.y(),
+      DirectionNew.z());
 #endif
 
   // std::cout << " total calls: " << numTot << std::endl;
@@ -343,8 +356,7 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
   } else {
     double posShift = std::sqrt(posShiftSq);
     track.fGeometryState.fSafety -= posShift;
-    if (track.fGeometryState.fSafety < 1.E-10)
-       track.fGeometryState.fSafety = 0;
+    if (track.fGeometryState.fSafety < 1.E-10) track.fGeometryState.fSafety = 0;
   }
 
 #endif
@@ -385,16 +397,17 @@ bool FieldPropagationHandler::IsSameLocation(TrackState &track, TaskData *td) co
   // track.SetStatus(kBoundary);
   // if (track.NextPath()->IsOutside())
   //    track.SetStatus(kExitingSetup);
-  
+
   // if (track.GetStep() < 1.E-8) td->fNsmall++;
   return false;
 }
 
 #ifdef REPORT_AND_CHECK
-#define IsNan(x) (!(x > 0 || x <= 0.0))
+#  define IsNan(x) (!(x > 0 || x <= 0.0))
 //______________________________________________________________________________
 VECCORE_ATT_HOST_DEVICE
-void FieldPropagationHandler::CheckTrack(TrackState &track, const char *msg, double epsilon) const
+void FieldPropagationHandler::CheckTrack(TrackState &track, const char *msg,
+                                         double epsilon) const
 {
   // Ensure that values are 'sensible' - else print msg and track
   if (epsilon <= 0.0 || epsilon > 0.01) {
@@ -406,12 +419,15 @@ void FieldPropagationHandler::CheckTrack(TrackState &track, const char *msg, dou
   const double maxRadius = 10000.0; // Should be a property of the geometry
   const double maxRadXY  = 5000.0;  // Should be a property of the geometry
 
-  // const double maxUnitDev =  1.0e-4;  // Deviation from unit of the norm of the direction
+  // const double maxUnitDev =  1.0e-4;  // Deviation from unit of the norm of the
+  // direction
   double radiusXy2 = x * x + y * y;
   double radius2   = radiusXy2 + z * z;
-  badPosition      = badPosition || (radiusXy2 > maxRadXY * maxRadXY) || (radius2 > maxRadius * maxRadius);
+  badPosition      = badPosition || (radiusXy2 > maxRadXY * maxRadXY) ||
+                (radius2 > maxRadius * maxRadius);
 
-  const double maxUnitDev = epsilon; // Use epsilon for max deviation of direction norm from 1.0
+  const double maxUnitDev =
+      epsilon; // Use epsilon for max deviation of direction norm from 1.0
 
   double dx = track.Dx(), dy = track.Dy(), dz = track.Dz();
   double dirNorm2   = dx * dx + dy * dy + dz * dz;
@@ -431,8 +447,9 @@ void FieldPropagationHandler::CheckTrack(TrackState &track, const char *msg, dou
     // if( badDirection ) {
     //   Printf( " Norm^2 direction= %f ,  Norm -1 = %g", dirNorm2, sqrt(dirNorm2)-1.0 );
     // }
-    Printf("ERROR> Problem with track %p . Issue: %s. Info message: %s -- Mag^2(dir)= %9.6f Norm-1= %g", (void *)&track,
-           errMsg[iM], msg, dirNorm2, sqrt(dirNorm2) - 1.0);
+    Printf("ERROR> Problem with track %p . Issue: %s. Info message: %s -- Mag^2(dir)= "
+           "%9.6f Norm-1= %g",
+           (void *)&track, errMsg[iM], msg, dirNorm2, sqrt(dirNorm2) - 1.0);
     track.Print(msg);
   }
 }
