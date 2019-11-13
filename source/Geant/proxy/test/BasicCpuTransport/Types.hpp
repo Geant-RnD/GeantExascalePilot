@@ -26,6 +26,9 @@
 #include "Geant/proxy/ProxyStepLimiter.hpp"
 #include "Geant/proxy/ProxyTrackLimiter.hpp"
 
+#include "Geant/proxy/ProxyCompton.hpp"
+
+
 using namespace geantx;
 
 //===----------------------------------------------------------------------===//
@@ -80,19 +83,19 @@ struct PhysicsProcessPostStep<ParticleType, std::tuple<ProcessTypes...>>
 //===----------------------------------------------------------------------===//
 
 using CpuGammaPhysics =
-    PhysicsProcessList<CpuGamma, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<CpuGamma, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 using CpuElectronPhysics =
-    PhysicsProcessList<CpuElectron, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<CpuElectron, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 using GpuGammaPhysics =
-    PhysicsProcessList<GpuGamma, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<GpuGamma, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 using GpuElectronPhysics =
-    PhysicsProcessList<GpuElectron, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<GpuElectron, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 //===----------------------------------------------------------------------===//
