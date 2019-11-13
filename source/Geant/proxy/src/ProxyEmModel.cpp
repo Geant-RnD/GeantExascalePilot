@@ -12,7 +12,7 @@
  */
 //===----------------------------------------------------------------------===//
 
-#include "Geant/processes/ProxyEmModel.hpp"
+#include "Geant/proxy/ProxyEmModel.hpp"
 
 namespace geantx {
 

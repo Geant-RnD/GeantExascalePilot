@@ -17,9 +17,10 @@
 
 #pragma once
 
-//#include "Geant/core/Tuple.hpp"
-//#include "Geant/particles/Types.hpp"
+#include "Geant/core/SystemOfUnits.hpp"
+#include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/proxy/ProxyEmModel.hpp"
+#include <VecCore/VecCore>
 
 namespace geantx {
 class ProxyKleinNishina : public ProxyEmModel<ProxyKleinNishina> {
