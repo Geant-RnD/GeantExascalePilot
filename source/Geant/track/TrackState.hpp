@@ -153,6 +153,7 @@ struct TrackState
     /* don't use: TrackSchedulingState fSchedulingState; */
     TrackHistoryState  fHistoryState;
     TrackPhysicsState  fPhysicsState;
+    PhysicsProcessState  fPhysicsProcessState;
     TrackMaterialState fMaterialState;
     TrackGeometryState fGeometryState;
 
