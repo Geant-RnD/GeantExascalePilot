@@ -14,6 +14,7 @@
 #include "navigation/NavigationState.h"
 
 #include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
+#include "Geant/geometry/NavigationInterface.hpp"
 
 #if 0
 #  include "Geant/ScalarNavInterfaceVG.h"
@@ -379,14 +380,13 @@ bool FieldPropagationHandler::IsSameLocation(TrackState &track, TaskData *td) co
     return true;
   }
 
-  // Track may have crossed, check it
-  bool same = true;
+  // It might be advantageous to not create the state each time.
+  // vecgeom::NavigationState *tmpstate = td->GetPath();
+  vecgeom::NavigationState *tmpstate = vecgeom::NavigationState::MakeInstance(track.fGeometryState.fPath->GetMaxLevel());
 
-#warning "Need to interrogate the geom about boundary crossing"
-#if 0
-  vecgeom::NavigationState *tmpstate = td->GetPath();
-  ScalarNavInterfaceVGM::NavIsSameLocation(track, same, tmpstate);
-#endif
+  bool same = NavigationInterface::IsSameLocation(track, *tmpstate);
+
+  delete tmpstate;
 
   if (same) {
     track.fGeometryState.fBoundary = false;
