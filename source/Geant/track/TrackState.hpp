@@ -78,7 +78,9 @@ struct TrackGeometryState
 
 struct TrackMaterialState
 {
-    MaterialId_t fMaterial = 0;
+  MaterialId_t fMaterialId = 0;
+  Material_t*  fMaterial = nullptr; /** ptr to the current Material */
+  /* replace Material_t* by MaterialCut*  */
 };
 
 //---------------------------------------------------------------------------//

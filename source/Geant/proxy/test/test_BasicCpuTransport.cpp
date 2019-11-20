@@ -30,8 +30,16 @@
 #include "volumes/PlacedVolume.h"
 #include "volumes/Trapezoid.h"
 
+#include "navigation/HybridNavigator2.h"
+#include "navigation/NewSimpleNavigator.h"
+#include "navigation/SimpleABBoxLevelLocator.h"
+#include "navigation/SimpleABBoxNavigator.h"
+#include "navigation/VNavigator.h"
+
+
 #include "BasicCpuTransport/TrackManager.hpp"
 #include "BasicCpuTransport/Types.hpp"
+#include "BasicCpuTransport/ProxyDetectorConstruction.hpp"
 
 using namespace geantx;
 using namespace vecgeom;
@@ -268,13 +276,21 @@ DoStep(VariadicTrackManager<ParticleTypes...>* primary,
 // finished
 //
 Track*
-get_primary_particle()
+get_primary_particle(VolumePath_t *startpath)
 {
     TIMEMORY_BASIC_MARKER(toolset_t, "");
     Track* _track = new Track;
     _track->fDir  = { get_rand(), get_rand(), get_rand() };
     _track->fPos  = { get_rand(), get_rand(), get_rand() };
     _track->fDir.Normalize();
+
+    _track->fGeometryState.fPath = startpath;
+    _track->fGeometryState.fNextpath = startpath;
+    auto top = startpath->Top();
+    auto *vol = (top) ? top->GetLogicalVolume() : nullptr;
+    _track->fGeometryState.fVolume = vol;
+    _track->fMaterialState.fMaterial = ((Material_t *)vol->GetMaterialPtr());
+
     return _track;
 }
 
@@ -289,6 +305,7 @@ main(int argc, char** argv)
 
     TIMEMORY_BLANK_MARKER(toolset_t, argv[0]);
 
+    /*
     if(tim::get_env<bool>("TRANSPORT_GEOM", false))
     {
         initialize_geometry();
@@ -304,6 +321,26 @@ main(int argc, char** argv)
             }
         }
     }
+    */
+
+    // Create and configure run manager
+    geantx::RunManager *runMgr = NULL;
+
+    // Create CMS detector construction
+    userapplication::ProxyDetectorConstruction *det = new userapplication::ProxyDetectorConstruction(runMgr);
+    geantx::vector_t<geantx::Volume_t const *> volumes;
+
+    int numVolumes = 0;
+    if (det) {
+      det->CreateMaterials();
+      det->CreateGeometry();
+      numVolumes = det->SetupGeometry(volumes);
+    }
+    det->DetectorInfo();
+    std::cout << " Number of the maximum volume depth = " << numVolumes << std::endl;
+
+    // initialize negivation
+    det->InitNavigators();          
 
     VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> primary;
     VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> secondary;
@@ -346,21 +383,29 @@ main(int argc, char** argv)
               << std::endl;
     */
 
-    printf("\n");
-    // primary.PushTrack(get_primary_particle());
+    // at the beginning of an event/tracking - initialize the navigation path
+    int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
+    vecgeom::Vector3D<double> vertex(0.,0.,0.);
+    geantx::VolumePath_t *startpath = geantx::VolumePath_t::MakeInstance(maxDepth);
+    startpath->Clear();
+    vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), vertex, *startpath, true);
+
+    // prepare primary tracks - TODO: use a particle gun 
 
     printf("\n");
-    primary.PushTrack<CpuGamma>(get_primary_particle());
-    primary.PushTrack<CpuGamma>(get_primary_particle());
+    primary.PushTrack<CpuGamma>(get_primary_particle(startpath));
+    primary.PushTrack<CpuGamma>(get_primary_particle(startpath));
 
     printf("\n");
-    primary.PushTrack<GpuGamma>(get_primary_particle());
+    primary.PushTrack<GpuGamma>(get_primary_particle(startpath));
 
     printf("\n");
-    primary.PushTrack<CpuElectron>(get_primary_particle());
+    primary.PushTrack<CpuElectron>(get_primary_particle(startpath));
 
     printf("\n");
-    primary.PushTrack<GpuElectron>(get_primary_particle());
+    primary.PushTrack<GpuElectron>(get_primary_particle(startpath));
+
+    //stepping
 
     printf("\n");
     DoStep<CpuGammaPhysics>(&primary, &secondary);

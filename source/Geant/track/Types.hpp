@@ -24,6 +24,7 @@ namespace geantx
 using VolumePath_t    = VECGEOM_NAMESPACE::NavigationState;
 using Volume_t        = VECGEOM_NAMESPACE::LogicalVolume;
 using ThreeVector     = VECGEOM_NAMESPACE::Vector3D<double>;
+using Material_t      = geantx::Material;
 using ParticleId_t    = unsigned int;
 using ParticleDefId_t = unsigned int;
 using VolumeId_t      = unsigned int;
