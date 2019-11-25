@@ -27,6 +27,7 @@
 #include "Geant/proxy/ProxyTrackLimiter.hpp"
 
 #include "Geant/proxy/ProxyCompton.hpp"
+#include "Geant/proxy/ProxyIonization.hpp"
 
 
 using namespace geantx;
@@ -87,7 +88,7 @@ using CpuGammaPhysics =
                        ProxySecondaryGenerator, Transportation>;
 
 using CpuElectronPhysics =
-    PhysicsProcessList<CpuElectron, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<CpuElectron, ProxyIonization, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 using GpuGammaPhysics =
@@ -95,7 +96,7 @@ using GpuGammaPhysics =
                        ProxySecondaryGenerator, Transportation>;
 
 using GpuElectronPhysics =
-    PhysicsProcessList<GpuElectron, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<GpuElectron, ProxyIonization, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 //===----------------------------------------------------------------------===//
