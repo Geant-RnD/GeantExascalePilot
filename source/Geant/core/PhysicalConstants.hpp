@@ -101,6 +101,7 @@ static constexpr double kClassicElectronRadius     = kEMCoupling / kElectronMass
 static constexpr double kRedElectronComptonWLenght = kHBarPlanckCLight / kElectronMassC2;
 static constexpr double kBohrRadius = kRedElectronComptonWLenght / kFineStructConst;
 
+static constexpr double kTwopi_mc2_rcl2 = kTwoPi * kClassicElectronRadius * kClassicElectronRadius * kElectronMassC2;
 //
 //
 //
