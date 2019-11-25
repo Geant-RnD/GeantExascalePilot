@@ -58,7 +58,7 @@ public:
   {  
     GEANT_THIS_TYPE_TESTING_MARKER("");
     //TODO: connectivity to Material
-    int Z = 10;
+    double Z = 10;
 
     //TODO: implement MacroscopicCrossSection and CrossSectionPerAtom
 
@@ -66,12 +66,12 @@ public:
     return xsection;
   }
   
-  int FinalStateInteraction(int Z, double energy)
+  int FinalStateInteraction(TrackState* _track)
   {  
     GEANT_THIS_TYPE_TESTING_MARKER("");
 
     //update photon state and create an electron 
-    int nsecondaries = fModel->SampleSecondaries(Z, energy);
+    int nsecondaries = fModel->SampleSecondaries(_track);
 
     return nsecondaries;
   }

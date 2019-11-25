@@ -16,6 +16,9 @@
 
 #include <string>
 
+#include "Geant/track/TrackState.hpp"
+#include "Geant/proxy/ProxyRandom.hpp"
+
 namespace geantx {
 
 //----------------------------------------------------------------------------//
@@ -25,9 +28,10 @@ template <class TEmModel>
 class ProxyEmModel {
 
 public:
-  ProxyEmModel(const std::string &name) {}
-  ProxyEmModel()                = default;
+  //  ProxyEmModel() {} 
+  ProxyEmModel() { fRng = new ProxyRandom; }
   ~ProxyEmModel()               = default;
+
   ProxyEmModel(const ProxyEmModel &) = default;
   ProxyEmModel(ProxyEmModel &&)      = default;
 
@@ -40,20 +44,23 @@ public:
 
   void BuildAliasTable(bool atomicDependentModel = false) {}
 
-  double CrossSectionPerAtom(int Z, double energy) 
+  double CrossSectionPerAtom(double Z, double energy) 
   {  
     return static_cast<TEmModel *>(this) -> CrossSectionPerAtom(Z, energy);
   }
 
-  int SampleSecondaries(int Z, double energy) 
+  int SampleSecondaries(TrackState *track) 
   {  
-    return static_cast<TEmModel *>(this) -> SampleSecondaries(Z, energy);
+    return static_cast<TEmModel *>(this) -> SampleSecondaries(track);
   }
 
 protected:
+
   bool fAtomicDependentModel;
   double fLowEnergyLimit;
   double fHighEnergyLimit;
+
+  ProxyRandom *fRng = nullptr;
 };
 
 } // namespace geantx

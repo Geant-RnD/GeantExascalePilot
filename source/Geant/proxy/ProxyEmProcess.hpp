@@ -62,10 +62,6 @@ public:
     return static_cast<TEmProcess *>(this)-> MacroscopicXSection(_track);
   }    
 
-  //  int FinalStateInteraction(TrackState* _track)
-  //  {
-  //  }    
-
   //auxillary methods
   double MeanFreePath(TrackState* _track)
   {
@@ -127,12 +123,7 @@ template <typename TEmProcess>
 int ProxyEmProcess<TEmProcess>::PostStepDoIt(TrackState* track)
 {
   GEANT_THIS_TYPE_TESTING_MARKER("");
-  int nsec = 0;
-
-  //TODO: connective to Material
-  int Z = 10;
-
-  nsec = static_cast<TEmProcess *>(this)-> FinalStateInteraction(Z, track->fPhysicsState.fEkin);
+  int nsec = static_cast<TEmProcess *>(this)-> FinalStateInteraction(track);
 
   return nsec;
 }
