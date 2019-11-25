@@ -276,10 +276,11 @@ DoStep(VariadicTrackManager<ParticleTypes...>* primary,
 // finished
 //
 Track*
-get_primary_particle(VolumePath_t *startpath)
+get_primary_particle(VolumePath_t *startpath, double Ekin)
 {
     TIMEMORY_BASIC_MARKER(toolset_t, "");
     Track* _track = new Track;
+    _track->fPhysicsState.fEkin  = Ekin;
     _track->fDir  = { get_rand(), get_rand(), get_rand() };
     _track->fPos  = { get_rand(), get_rand(), get_rand() };
     _track->fDir.Normalize();
@@ -391,19 +392,20 @@ main(int argc, char** argv)
     vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), vertex, *startpath, true);
 
     // prepare primary tracks - TODO: use a particle gun 
+    double energy = 10. * geantx::units::GeV;
 
     printf("\n");
-    primary.PushTrack<CpuGamma>(get_primary_particle(startpath));
-    primary.PushTrack<CpuGamma>(get_primary_particle(startpath));
+    primary.PushTrack<CpuGamma>(get_primary_particle(startpath, energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(startpath, energy));
 
     printf("\n");
-    primary.PushTrack<GpuGamma>(get_primary_particle(startpath));
+    primary.PushTrack<GpuGamma>(get_primary_particle(startpath, energy));
 
     printf("\n");
-    primary.PushTrack<CpuElectron>(get_primary_particle(startpath));
+    primary.PushTrack<CpuElectron>(get_primary_particle(startpath, energy));
 
     printf("\n");
-    primary.PushTrack<GpuElectron>(get_primary_particle(startpath));
+    primary.PushTrack<GpuElectron>(get_primary_particle(startpath, energy));
 
     //stepping
 
