@@ -2,6 +2,7 @@
 add_subdirectory(core)
 add_subdirectory(geometry)
 add_subdirectory(magneticfield)
+add_subdirectory(cuts)
 add_subdirectory(material)
 add_subdirectory(particles)
 add_subdirectory(processes)
