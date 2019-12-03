@@ -27,10 +27,17 @@
 
 namespace geantx
 {
+
+class ProxyIonization;
+
+template <> struct Model_traits<ProxyIonization>
+{
+  using Model_t = ProxyMollerScattering;
+};
+
 class ProxyIonization : public ProxyEmProcess<ProxyIonization>
 {
   friend class ProxyEmProcess<ProxyIonization>;
-  ProxyMollerScattering *fModel = nullptr;    
 public:
   // Enable/disable GetPhysicalInteractionLength (GPIL) functions
   static constexpr bool EnableAtRestGPIL    = false;
@@ -51,27 +58,15 @@ public:
 public:
   using this_type = ProxyIonization;
   
-  ProxyIonization(){ fModel = new ProxyMollerScattering; }
+  ProxyIonization(){ /*fModel = new ProxyMollerScattering;*/ }
   ~ProxyIonization() = default;
-  
-  double MacroscopicXSection(TrackState* _track)
-  {  
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-    //TODO: connectivity to Material
-    double Z = 10;
-
-    //TODO: implement MacroscopicCrossSection and CrossSectionPerAtom
-
-    double xsection = fModel->CrossSectionPerAtom(Z, _track->fPhysicsState.fEkin);
-    return xsection;
-  }
   
   int FinalStateInteraction(TrackState* _track)
   {  
     GEANT_THIS_TYPE_TESTING_MARKER("");
 
-    //update photon state and create an electron 
-    int nsecondaries = fModel->SampleSecondaries(_track);
+    //update electron state and create an electron 
+    int nsecondaries = this->fModel->SampleSecondaries(_track);
 
     return nsecondaries;
   }

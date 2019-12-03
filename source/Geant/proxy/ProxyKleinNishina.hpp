@@ -9,7 +9,7 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file
+ * @file Geant/proxy/ProxyKleinNishina.hpp
  * @brief
  */
 //===----------------------------------------------------------------------===//
@@ -23,6 +23,7 @@
 #include <VecCore/VecCore>
 
 #include "Geant/core/math_wrappers.hpp"
+//#include "Geant/material/MaterialProperties.hpp"
 
 namespace geantx {
 class ProxyKleinNishina : public ProxyEmModel<ProxyKleinNishina> {
@@ -34,8 +35,9 @@ public:
 
   //mandatory methods
   double CrossSectionPerAtom(double Z, double energy);
-
   int SampleSecondaries(TrackState *track);
+
+  //auxiliary methods
 
 private:
 

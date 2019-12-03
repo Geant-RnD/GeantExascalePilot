@@ -9,7 +9,7 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file
+ * @file Geant/proxy/ProxyEmProcess.hpp
  * @brief
  */
 //===----------------------------------------------------------------------===//
@@ -26,10 +26,17 @@
 
 namespace geantx
 {
+
+template <typename TEmProcess> struct Model_traits;
+
 template <typename TEmProcess>
 class ProxyEmProcess : public Process
 {
 protected:
+
+  using Model_t = typename Model_traits<TEmProcess>::Model_t;
+
+  Model_t *fModel = nullptr;
   ProxyRandom *fRng = nullptr;
 
 public:
@@ -53,19 +60,18 @@ public:
 public:
   using this_type = ProxyEmProcess;
   
-  ProxyEmProcess(){ fRng = new ProxyRandom; }
+  ProxyEmProcess(){ 
+    fRng = new ProxyRandom; 
+    fModel = new  Model_t;
+  }
+
   ~ProxyEmProcess() = default;
   
   //mandatory methods
-  double MacroscopicXSection(TrackState* _track)
-  {
-    return static_cast<TEmProcess *>(this)-> MacroscopicXSection(_track);
-  }    
-
-  //auxillary methods
   double MeanFreePath(TrackState* _track)
   {
-    double xsection =  MacroscopicXSection(_track);
+    GEANT_THIS_TYPE_TESTING_MARKER("");
+    double xsection = fModel->MacroscopicCrossSection(_track);
     return (xsection <= 0.0) ? 0.0 : 1.0/xsection;
   }
   

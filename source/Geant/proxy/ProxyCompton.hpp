@@ -9,7 +9,7 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file
+ * @file Geant/proxy/ProxyCompton.hpp
  * @brief
  */
 //===----------------------------------------------------------------------===//
@@ -27,10 +27,17 @@
 
 namespace geantx
 {
+
+class ProxyCompton;
+
+template <> struct Model_traits<ProxyCompton>
+{
+  using Model_t = ProxyKleinNishina;
+};
+
 class ProxyCompton : public ProxyEmProcess<ProxyCompton>
 {
   friend class ProxyEmProcess<ProxyCompton>;
-  ProxyKleinNishina *fModel = nullptr;    
 public:
   // Enable/disable GetPhysicalInteractionLength (GPIL) functions
   static constexpr bool EnableAtRestGPIL    = false;
@@ -51,27 +58,15 @@ public:
 public:
   using this_type = ProxyCompton;
   
-  ProxyCompton(){ fModel = new ProxyKleinNishina; }
+  ProxyCompton(){}
   ~ProxyCompton() = default;
-  
-  double MacroscopicXSection(TrackState* _track)
-  {  
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-    //TODO: connectivity to Material
-    double Z = 10;
-
-    //TODO: implement MacroscopicCrossSection and CrossSectionPerAtom
-
-    double xsection = fModel->CrossSectionPerAtom(Z, _track->fPhysicsState.fEkin);
-    return xsection;
-  }
   
   int FinalStateInteraction(TrackState* _track)
   {  
     GEANT_THIS_TYPE_TESTING_MARKER("");
 
     //update photon state and create an electron 
-    int nsecondaries = fModel->SampleSecondaries(_track);
+    int nsecondaries = this->fModel->SampleSecondaries(_track);
 
     return nsecondaries;
   }

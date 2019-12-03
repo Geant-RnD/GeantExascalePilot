@@ -7,7 +7,7 @@
 // Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
 /**
- * @file Geant/processes/EmModel.hpp
+ * @file Geant/proxy/ProxyEmModel.hpp
  * @brief The base class of EM models
  */
 //===----------------------------------------------------------------------===//
@@ -18,6 +18,8 @@
 
 #include "Geant/track/TrackState.hpp"
 #include "Geant/proxy/ProxyRandom.hpp"
+#include "Geant/material/MaterialProperties.hpp"
+
 
 namespace geantx {
 
@@ -28,8 +30,7 @@ template <class TEmModel>
 class ProxyEmModel {
 
 public:
-  //  ProxyEmModel() {} 
-  ProxyEmModel() { fRng = new ProxyRandom; }
+  ProxyEmModel();
   ~ProxyEmModel()               = default;
 
   ProxyEmModel(const ProxyEmModel &) = default;
@@ -44,9 +45,24 @@ public:
 
   void BuildAliasTable(bool atomicDependentModel = false) {}
 
-  double CrossSectionPerAtom(double Z, double energy) 
+  double MacroscopicCrossSection(const TrackState *track) 
   {  
-    return static_cast<TEmModel *>(this) -> CrossSectionPerAtom(Z, energy);
+    double xsec = 0.0;
+    const double kinenergy = track->fPhysicsState.fEkin;
+
+    if (kinenergy <= fLowEnergyLimit || kinenergy > fHighEnergyLimit) {
+      return xsec;
+    }
+
+    const Material_t *mat = track->fMaterialState.fMaterial;
+    const Vector_t<Element *> &theElements  = mat->GetElementVector();
+    const double *theAtomicNumDensityVector = mat->GetMaterialProperties()->GetNumOfAtomsPerVolumeVect();
+
+    for (size_t iel = 0; iel < theElements.size() ; ++iel) {
+      xsec += theAtomicNumDensityVector[iel] * static_cast<TEmModel *>(this)->CrossSectionPerAtom(theElements[iel]->GetZ(), kinenergy);
+    }
+
+    return xsec;
   }
 
   int SampleSecondaries(TrackState *track) 
@@ -62,5 +78,14 @@ protected:
 
   ProxyRandom *fRng = nullptr;
 };
+
+template <typename TEmModel>
+ProxyEmModel<TEmModel>::ProxyEmModel() 
+  : fAtomicDependentModel(false), 
+    fLowEnergyLimit(100.0 * geantx::units::eV), 
+    fHighEnergyLimit(100.0 * geantx::units::TeV)
+{ 
+  fRng = new ProxyRandom; 
+}
 
 } // namespace geantx

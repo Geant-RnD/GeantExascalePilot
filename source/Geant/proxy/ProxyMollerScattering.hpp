@@ -9,8 +9,8 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file
- * @brief
+ * @file Geant/proxy/ProxyMollerScattering.hpp 
+ * @brief the Moller model of the electron ionization (e-e- scattering)
  */
 //===----------------------------------------------------------------------===//
 //
@@ -28,14 +28,15 @@ namespace geantx {
 class ProxyMollerScattering : public ProxyEmModel<ProxyMollerScattering> {
 
 public:
-  ProxyMollerScattering() { fLowEnergyLimit = 100.0 * geantx::units::eV;}
+  ProxyMollerScattering() { fLowEnergyLimit = 100.0 * geantx::units::eV; }
   ProxyMollerScattering(const ProxyMollerScattering &model) : ProxyEmModel<ProxyMollerScattering>() { this->fRng = model.fRng; }
   ~ProxyMollerScattering() = default;
 
   //mandatory methods
-  double CrossSectionPerAtom(double Z, double energy);
-
+  double CrossSectionPerAtom(double Z, double kineticEnergy);
   int SampleSecondaries(TrackState *track);
+
+  //auxiliary methods
 
 private:
 
@@ -46,14 +47,14 @@ private:
 // based on Geant4 processes/electromagnetic/standard/src/G4MollerBhabhaModel
 double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy)
 {
-  // Z * ComputeCrossSectionPerElectron(args ...)
+  double xsec = 0.0;
 
-  double xsecPerEectron = 0.0;
-  double cutEnergy = 100.0 * geantx::units::GeV; //temp
-  
+  //TODO: MaterialCuts by an argument
+  const double cutEnergy = 10.0 * geantx::units::eV; // matcut->GetProductionCutsInEnergy()[1];
+
   double tmax = Math::Min(fHighEnergyLimit, 0.5*kineticEnergy);
 
-  if(cutEnergy > tmax) return xsecPerEectron;
+  if(cutEnergy > tmax) return xsec;
 
   double xmin  = cutEnergy/kineticEnergy;
   double xmax  = tmax/kineticEnergy;
@@ -64,13 +65,13 @@ double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy
   
   //Moller (e-e-) scattering
   double gg = (2.0*gam - 1.0)/gamma2;
-  xsecPerEectron = ((xmax - xmin)*(1.0 - gg + 1.0/(xmin*xmax)
+  xsec = ((xmax - xmin)*(1.0 - gg + 1.0/(xmin*xmax)
 			  + 1.0/((1.0-xmin)*(1.0 - xmax)))
 	- gg*Math::Log( xmax*(1.0 - xmin)/(xmin*(1.0 - xmax)) ) ) / beta2;
   
-  xsecPerEectron *= geantx::units::kTwopi_mc2_rcl2/kineticEnergy;
+  xsec *= geantx::units::kTwopi_mc2_rcl2/kineticEnergy;
   
-  return Z*xsecPerEectron;
+  return Z * xsec;
 }
 
 // based on Geant4 processes/electromagnetic/standard/src/G4MollerBhabhaModel
