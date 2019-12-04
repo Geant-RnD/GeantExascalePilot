@@ -227,6 +227,114 @@ ApplyPostStep(Track* track, size_t idx)
     Apply<void>::apply<Apply_t>(track);
 }
 
+
+//--------------------------------------------------------------------------------------//
+// Inner part of one step for one track.
+//
+template <typename ParticleType, typename ProcessesFunction>
+auto
+InnerStep(Track *track,
+          ProcessesFunction processes)
+{
+    /// a. Integrate Equation of Motion
+    /// b. if !alive return
+    /// c. while did-not-reach-physics-length and did-not-cross-boundary
+    ///       Find next Geometry boundary
+    ///       Integrate Equation of Motion
+    ///       if !alive return
+    /// d. exec ProcessFunc
+
+/*
+    if (!Propagate<ParticleType>(track)) {
+        return; // Particle is no longer alive
+    }
+    while( !ReachedPhysicsLength(track) && !ReachedBoundary(track) ) {
+        FindNextBoundary(track);
+        if (!Propagate<ParticleType>(track)) {
+            return; // Particle is no longer alive
+        }
+    }
+*/
+    processes();
+}
+
+//--------------------------------------------------------------------------------------//
+// One step for one track.
+//
+template <typename ParticleType, typename ParticleTypeProcesses>
+auto
+OneStep(Track *track)
+{
+    using PostStepApply_t = typename PhysicsProcessPostStep<ParticleType, ParticleTypeProcesses>::type;
+    using AlongStepApply_t = typename PhysicsProcessAlongStep<ParticleType, ParticleTypeProcesses>::type;
+    using Funct_t = std::function<void()>;
+
+    TIMEMORY_BASIC_MARKER(toolset_t, "");
+
+/*
+    0. Reset track state for new 'step'
+    1. Select process (Along or Post) which shortest ‘proposed physics interaction length’ -> [ Process, Type, Length, ProcessFunc ]
+    2. Find next Geometry boundary
+    3. MSC preparation
+    4. InnerFunc(ProcessFunc)
+    5. Sensitive Hit recording
+    6. UserAction(s)
+*/
+    geantx::Log(kInfo) << GEANT_HERE << "One step for: " << *track;
+
+    intmax_t doit_idx   = -1;
+    double   proposedPhysLength = std::numeric_limits<double>::max();
+    Funct_t  doit_apply = [=]() {
+        geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
+    };
+    ///
+    /// Calculate all of the PIL lengths for all the PostStep processes and select one (or more)
+    ///
+    /// Note: G4 allow disabling of processes at run-time ....
+    /// Ideally the returned function (doit_apply) would be a precompiled function containing:
+    ///    For each along process
+    ///       AlongStepDoIt
+    ///       if stopped
+    ///          if alive && has-at-rest-processes
+    ///             exec AtRest
+    ///          return
+    ///
+    ///    For selected PostStep
+    ///       PostStepDoIt
+    ///      if stopped
+    ///          if alive && has-at-rest-processes
+    ///             exec AtRest
+    ///          return
+    /// With as much pre-computed as possible (eg has-at-rest-processes)
+    Apply<void>::unroll_indices<PostStepApply_t>(track, &doit_idx, &proposedPhysLength, &doit_apply);
+
+    ///
+    /// Calculate all of the PIL lengths for all the AlongStep processes
+    ///
+    /// If one of the AlongStep process has the smallest PIL, doit_apply should be updated to be 'only':
+    ///    For each along process
+    ///       AlongStepDoIt
+    ///       if stopped
+    ///          if alive && has-at-rest-processes
+    ///             exec AtRest
+    ///          return
+    Apply<void>::unroll_indices<AlongStepApply_t>(track, &doit_idx, &proposedPhysLength, &doit_apply);
+
+
+    /// FindNextBoundary(track);
+
+    /// Apply multiple scaterring if any.
+    /// ...
+
+    InnerStep<ParticleType>(track, doit_apply);
+
+    /// Apply/do sensitive hit recording
+    /// ....
+
+    /// Apply/do user actions
+    /// ....
+}
+
 //--------------------------------------------------------------------------------------//
 // converts all tracks to a vector (not-optimal) and then transport them in a loop
 //
@@ -341,7 +449,7 @@ main(int argc, char** argv)
     std::cout << " Number of the maximum volume depth = " << numVolumes << std::endl;
 
     // initialize negivation
-    det->InitNavigators();          
+    det->InitNavigators();
 
     VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> primary;
     VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> secondary;
@@ -391,7 +499,7 @@ main(int argc, char** argv)
     startpath->Clear();
     vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), vertex, *startpath, true);
 
-    // prepare primary tracks - TODO: use a particle gun 
+    // prepare primary tracks - TODO: use a particle gun
     double energy = 10. * geantx::units::GeV;
 
     printf("\n");
