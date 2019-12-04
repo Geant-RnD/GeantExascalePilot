@@ -333,6 +333,24 @@ OneStep(Track *track)
 
     /// Apply/do user actions
     /// ....
+
+    /// Apply post step updates.
+    ++track->fPhysicsState.fPstep;
+}
+
+//--------------------------------------------------------------------------------------//
+// First example of a step
+template <typename ParticleType, typename ParticleTypeProcesses>
+auto
+StepExample(Track *_track, size_t i)
+{
+    _track->fStatus = TrackStatus::Alive;
+    ApplyAtRest<ParticleType, ParticleTypeProcesses>(_track, i);
+    if(_track->fStatus != TrackStatus::Killed)
+        ApplyAlongStep<ParticleType, ParticleTypeProcesses>(_track, i);
+    if(_track->fStatus != TrackStatus::Killed)
+        ApplyPostStep<ParticleType, ParticleTypeProcesses>(_track, i);
+    ++_track->fPhysicsState.fPstep;
 }
 
 //--------------------------------------------------------------------------------------//
@@ -361,13 +379,7 @@ DoStep(VariadicTrackManager<ParticleTypes...>* primary,
             auto* _track = primary->template PopTrack<ParticleType>(i);
             if(!_track) break;
 
-            _track->fStatus = TrackStatus::Alive;
-            ApplyAtRest<ParticleType, ParticleTypeProcesses>(_track, i);
-            if(_track->fStatus != TrackStatus::Killed)
-                ApplyAlongStep<ParticleType, ParticleTypeProcesses>(_track, i);
-            if(_track->fStatus != TrackStatus::Killed)
-                ApplyPostStep<ParticleType, ParticleTypeProcesses>(_track, i);
-            ++_track->fPhysicsState.fPstep;
+            OneStep<ParticleType, ParticleTypeProcesses>(_track);
 
             ///
             /// Push the track back into primary
