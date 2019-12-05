@@ -32,6 +32,21 @@ VECCORE_ATT_HOST_DEVICE inline T Max(T const &val1, T const &val2)
   return vecCore::math::Max(val1, val2);
 }
 template <typename T>
+VECCORE_ATT_HOST_DEVICE inline T Floor(T const &val)
+{
+  return vecCore::math::Floor(val);
+}
+template <typename T>
+VECCORE_ATT_HOST_DEVICE inline T Tanh(T const &val)
+{
+  return vecCore::math::Tanh(val);
+}
+template <typename T>
+VECCORE_ATT_HOST_DEVICE inline T Sign(T const &val)
+{
+  return vecCore::math::Sign(val);
+}
+template <typename T>
 VECCORE_ATT_HOST_DEVICE inline T Sqrt(T const &val)
 {
   return vecCore::math::Sqrt(val);
