@@ -139,6 +139,8 @@ int ProxyKleinNishina::SampleSecondaries(TrackState *track)
     TrackState* electron = new TrackState;
 
     //TODO: push this secondary to the global secondary container
+    electron->fPhysicsState.fEkin = eKinEnergy;
+    electron->fDir = eDirection;
     ++nsecondaries;
   }
   else {
