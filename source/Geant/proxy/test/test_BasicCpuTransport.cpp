@@ -328,6 +328,12 @@ OneStep(Track *track)
 
     InnerStep<ParticleType>(track, doit_apply);
 
+    // The order is 'wrong' they need to be part of the doit_apply.
+    Apply<void>::apply<AlongStepApply_t>(track);
+    Apply<void>::apply<PostStepApply_t>(track);
+
+    /// "Forced" processes (don't proposed a PIL)
+
     /// Apply/do sensitive hit recording
     /// ....
 
