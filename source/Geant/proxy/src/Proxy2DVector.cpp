@@ -22,13 +22,13 @@ namespace geantx {
 GEANT_HOST_DEVICE 
 Proxy2DVector::Proxy2DVector()
 {
-  for(size_t j = 0; j<numberOfYNodes; ++j) {
+  for(size_t j = 0; j< brem::numberOfYNodes; ++j) {
     yVector[j] = 0.0;
   }
 
-  for(size_t i=0; i<numberOfXNodes; ++i) {
+  for(size_t i=0; i< brem::numberOfXNodes; ++i) {
     xVector[i] = 0.0;
-    for(size_t j=0; j<numberOfYNodes; ++j) {
+    for(size_t j=0; j< brem::numberOfYNodes; ++j) {
       value[j][i] = 0.0;
     }
   }
@@ -40,13 +40,13 @@ double Proxy2DVector::Value(double x, double y)
   // no interpolation outside the table
   if(x < xVector[0]) {
     x = xVector[0];
-  } else if(x > xVector[numberOfXNodes - 1]) {
-    x = xVector[numberOfXNodes - 1];
+  } else if(x > xVector[brem::numberOfXNodes - 1]) {
+    x = xVector[brem::numberOfXNodes - 1];
   }
   if(y < yVector[0]) {
     y = yVector[0];
-  } else if(y > yVector[numberOfYNodes - 1]) {
-    y = yVector[numberOfYNodes - 1];
+  } else if(y > yVector[brem::numberOfYNodes - 1]) {
+    y = yVector[brem::numberOfYNodes - 1];
   }
 
   // find bins
@@ -97,12 +97,12 @@ size_t Proxy2DVector::FindBinLocationX(double z)
   if(z < xVector[1]) {
     id = 0;
   }
-  else if(z >= xVector[numberOfXNodes-2]) {
-    id = numberOfXNodes - 2;
+  else if(z >= xVector[brem::numberOfXNodes-2]) {
+    id = brem::numberOfXNodes - 2;
   }
   else {
     size_t lowerBound = 0;
-    size_t upperBound = numberOfXNodes - 2;
+    size_t upperBound = brem::numberOfXNodes - 2;
 
     while (lowerBound <= upperBound) {
       size_t midBin = (lowerBound + upperBound)/2;
@@ -121,12 +121,12 @@ size_t Proxy2DVector::FindBinLocationY(double z)
   if(z < yVector[1]) {
     id = 0;
   }
-  else if(z >= yVector[numberOfYNodes-2]) {
-    id = numberOfYNodes - 2;
+  else if(z >= yVector[brem::numberOfYNodes-2]) {
+    id = brem::numberOfYNodes - 2;
   }
   else {
     size_t lowerBound = 0;
-    size_t upperBound = numberOfYNodes - 2;
+    size_t upperBound = brem::numberOfYNodes - 2;
 
     while (lowerBound <= upperBound) {
       size_t midBin = (lowerBound + upperBound)/2;
