@@ -102,6 +102,7 @@ public:
 template <typename TEmProcess>
 double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
 {
+  geantx::Log(kInfo) << GEANT_HERE << "ProxyEmProcess<TEmProcess>::PostStepGPIL: " << *track;
   GEANT_THIS_TYPE_TESTING_MARKER("");
   double step = std::numeric_limits<double>::max();
 
