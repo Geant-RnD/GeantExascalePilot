@@ -16,9 +16,15 @@
 
 namespace geantx {
 
+namespace brem {
+  
 // Proxy2DVector (SeltzerBerger data) - valid up to maximumZ = 92
 constexpr int maximumZ                = 92;
 constexpr unsigned int numberOfXNodes = 32;
 constexpr unsigned int numberOfYNodes = 57;
 
+constexpr double xgi[8] = {0.0199, 0.1017, 0.2372, 0.4083, 0.5917, 0.7628, 0.8983, 0.9801};
+constexpr double wgi[8] = {0.0506, 0.1112, 0.1569, 0.1813, 0.1813, 0.1569, 0.1112, 0.0506};
+} // namespace brem
+  
 } // namespace geantx
