@@ -28,6 +28,7 @@
 
 #include "Geant/proxy/ProxyCompton.hpp"
 #include "Geant/proxy/ProxyIonization.hpp"
+#include "Geant/proxy/ProxyBremsstrahlung.hpp"
 
 
 using namespace geantx;
@@ -88,16 +89,16 @@ using CpuGammaPhysics =
                        ProxySecondaryGenerator, Transportation>;
 
 using CpuElectronPhysics =
-    PhysicsProcessList<CpuElectron, ProxyIonization, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
-                       ProxySecondaryGenerator, Transportation>;
+    PhysicsProcessList<CpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter, 
+                       ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
 
 using GpuGammaPhysics =
     PhysicsProcessList<GpuGamma, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 using GpuElectronPhysics =
-    PhysicsProcessList<GpuElectron, ProxyIonization, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
-                       ProxySecondaryGenerator, Transportation>;
+    PhysicsProcessList<GpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter,
+                       ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
 
 //===----------------------------------------------------------------------===//
 //              A list of all particle + physics pairs
