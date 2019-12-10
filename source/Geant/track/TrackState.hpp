@@ -172,4 +172,17 @@ struct TrackState
     }
 };
 
+// Those need to be transfered to the appropriate State.
+GEANT_FORCE_INLINE
+bool IsAlive(const TrackState &state)
+{
+    return state.fStatus != TrackStatus::Killed;
+}
+
+GEANT_FORCE_INLINE
+bool IsStopped(const TrackState &state)
+{
+    return state.fPhysicsState.fEkin <= 0.0;
+}
+
 }  // namespace geantx

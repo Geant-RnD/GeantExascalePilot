@@ -228,14 +228,93 @@ ApplyPostStep(Track* track, size_t idx)
 }
 
 
+template <typename ParticleType, typename ProcessType, typename ParticleTypeProcesses>
+struct AlongStepAtRestWrap
+{
+    template <typename _Track, typename _Proc = ProcessType,
+            std::enable_if_t<(_Proc::EnableAlongStepDoIt), int> = 0>
+    AlongStepAtRestWrap(_Track* track)
+    {
+        using AtRestApply_t = typename PhysicsProcessAtRest<ParticleType, ParticleTypeProcesses>::type;
+
+        ProcessType p(track);
+        if (IsStopped(*track)) {
+            if (IsAlive(*track))
+                Apply<void>::apply<AtRestApply_t>(track);
+            // instead 'return' we want to say 'abort/break-out-of loop'
+            // for now we 'repeat pointlessly the test in AlongStep struct (in ProcessConcepts.hpp)
+            // return;
+        }
+    }
+
+    template <typename _Track, typename _Proc = ProcessType,
+            std::enable_if_t<!(_Proc::EnableAlongStepDoIt), int> = 0>
+    AlongStepAtRestWrap(_Track* track)
+    {
+    }
+};
+
+template <typename ParticleType, typename AllProcessTypesTuple, typename AlongStepProcessTypes>
+struct PhysicsProcessAlongStepAtRestWrap
+{};
+
+template <typename ParticleType, typename AllProcessTypesTuple, typename... AlongStepProcessTypes>
+struct PhysicsProcessAlongStepAtRestWrap<ParticleType, AllProcessTypesTuple, std::tuple<AlongStepProcessTypes...>>
+{
+    using type = std::tuple<AlongStepAtRestWrap<ParticleType, AlongStepProcessTypes, AllProcessTypesTuple>...>;
+};
+
+template <typename ParticleType, typename ProcessType, typename ParticleTypeProcesses>
+struct PostStepAtRestWrap
+{
+    template <typename _Track, typename _Proc = ProcessType,
+            std::enable_if_t<(_Proc::EnableAlwaysOnPostStepDoIt), int> = 0>
+    PostStepAtRestWrap(_Track* track)
+    {
+        using AtRestApply_t = typename PhysicsProcessAtRest<ParticleType, ParticleTypeProcesses>::type;
+
+        ProcessType p(track);
+        if (IsStopped(*track)) {
+            if (IsAlive(*track))
+                Apply<void>::apply<AtRestApply_t>(track);
+            // instead 'return' we want to say 'abort/break-out-of loop'
+            // for now we 'repeat pointlessly the test in PostStep struct (in ProcessConcepts.hpp)
+            // return;
+        }
+    }
+
+    template <typename _Track, typename _Proc = ProcessType,
+            std::enable_if_t<!(_Proc::EnableAlwaysOnPostStepDoIt), int> = 0>
+    PostStepAtRestWrap(_Track* track)
+    {
+    }
+};
+
+template <typename ParticleType, typename AllProcessTypesTuple, typename PostStepProcessTypes>
+struct PhysicsProcessPostStepAtRestWrap
+{};
+
+template <typename ParticleType, typename AllProcessTypesTuple, typename... PostStepProcessTypes>
+struct PhysicsProcessPostStepAtRestWrap<ParticleType, AllProcessTypesTuple, std::tuple<PostStepProcessTypes...>>
+{
+    using type = std::tuple<PostStepAtRestWrap<ParticleType, PostStepProcessTypes, AllProcessTypesTuple>...>;
+};
+
 //--------------------------------------------------------------------------------------//
 // Inner part of one step for one track.
 //
-template <typename ParticleType, typename ProcessesFunction>
+template <typename ParticleType, typename ParticleTypeProcesses, typename ProcessesFunction>
 auto
 InnerStep(Track *track,
           ProcessesFunction processes)
 {
+    using AtRestApply_t = typename PhysicsProcessAtRest<ParticleType, ParticleTypeProcesses>::type;
+    using AlongStepApply_t = typename PhysicsProcessCombinedAlongStep<ParticleType, ParticleTypeProcesses>::type;
+    using AlongStepAtRestApply_t = typename PhysicsProcessAlongStepAtRestWrap<ParticleType, ParticleTypeProcesses, AlongStepApply_t>::type;
+
+    using PostStepApply_t = typename PhysicsProcessCombinedPostStep<ParticleType, ParticleTypeProcesses>::type;
+    using PostStepAtRestApply_t = typename PhysicsProcessPostStepAtRestWrap<ParticleType, ParticleTypeProcesses, PostStepApply_t>::type;
+
     /// a. Integrate Equation of Motion
     /// b. if !alive return
     /// c. while did-not-reach-physics-length and did-not-cross-boundary
@@ -244,6 +323,7 @@ InnerStep(Track *track,
     ///       if !alive return
     /// d. exec ProcessFunc
 
+    geantx::Log(kInfo) << GEANT_HERE << "Inner step for: " << *track;
 /*
     if (!Propagate<ParticleType>(track)) {
         return; // Particle is no longer alive
@@ -255,7 +335,25 @@ InnerStep(Track *track,
         }
     }
 */
-    processes();
+
+    // Right now 'processes' is actually just the doit of the PostStep process if any,
+    // See OneStep(Track *track) for a way to remove some of the loop and if at compile time
+    // and then we could just have
+    //     processes();
+    // in the meantime be explicit:
+    Apply<void>::apply<AlongStepAtRestApply_t>(track);
+
+    // Currently there is only one selected PostStep and we are not yet creating the
+    // interwine loop ('selector' + always-on) so we do not in the wrong order.
+    if (!IsStopped(*track) && IsAlive(*track))
+        processes();
+    if (IsStopped(*track)) {
+        if (IsAlive(*track))
+           Apply<void>::apply<AtRestApply_t>(track);
+        return;
+    }
+    Apply<void>::apply<PostStepAtRestApply_t>(track);
+
 }
 
 //--------------------------------------------------------------------------------------//
@@ -326,13 +424,7 @@ OneStep(Track *track)
     /// Apply multiple scaterring if any.
     /// ...
 
-    InnerStep<ParticleType>(track, doit_apply);
-
-    // The order is 'wrong' they need to be part of the doit_apply.
-    Apply<void>::apply<AlongStepApply_t>(track);
-    Apply<void>::apply<PostStepApply_t>(track);
-
-    /// "Forced" processes (don't proposed a PIL)
+    InnerStep<ParticleType, ParticleTypeProcesses>(track, doit_apply);
 
     /// Apply/do sensitive hit recording
     /// ....

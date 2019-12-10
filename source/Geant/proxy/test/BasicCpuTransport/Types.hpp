@@ -71,14 +71,35 @@ struct PhysicsProcessAtRest<ParticleType, std::tuple<ProcessTypes...>>
 template <typename ParticleType, typename... ProcessTypes>
 struct PhysicsProcessAlongStep<ParticleType, std::tuple<ProcessTypes...>>
 {
+    using type = std::tuple<StandaloneAlongStep<ProcessTypes, ParticleType>...>;
+};
+
+template <typename ParticleType, typename... ProcessTypes>
+struct PhysicsProcessCombinedAlongStep
+{};
+
+template <typename ParticleType, typename... ProcessTypes>
+struct PhysicsProcessCombinedAlongStep<ParticleType, std::tuple<ProcessTypes...>>
+{
     using type = std::tuple<AlongStep<ProcessTypes, ParticleType>...>;
 };
 
 template <typename ParticleType, typename... ProcessTypes>
 struct PhysicsProcessPostStep<ParticleType, std::tuple<ProcessTypes...>>
 {
+    using type = std::tuple<StandalonePostStep<ProcessTypes, ParticleType>...>;
+};
+
+template <typename ParticleType, typename... ProcessTypes>
+struct PhysicsProcessCombinedPostStep
+{};
+
+template <typename ParticleType, typename... ProcessTypes>
+struct PhysicsProcessCombinedPostStep<ParticleType, std::tuple<ProcessTypes...>>
+{
     using type = std::tuple<PostStep<ProcessTypes, ParticleType>...>;
 };
+
 
 //===----------------------------------------------------------------------===//
 //              Specify the Physics for the Particles
