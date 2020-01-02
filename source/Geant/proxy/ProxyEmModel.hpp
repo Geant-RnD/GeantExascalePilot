@@ -70,6 +70,11 @@ public:
     return static_cast<TEmModel *>(this) -> SampleSecondaries(track);
   }
 
+  // accessor
+  inline double GetLowEnergyLimit() {return fLowEnergyLimit; };
+
+  inline double GetHighEnergyLimit() {return fHighEnergyLimit; };
+
 protected:
 
   bool fAtomicDependentModel;
