@@ -1,0 +1,33 @@
+MATERIAL-V3.0
+31
+                        liquidH2                    7.080000e-02
+                       Aluminium                    2.700000e+00
+                        Titanium                    4.540000e+00
+                            Iron                    7.870000e+00
+                          Copper                    8.960000e+00
+                        Tungsten                    1.930000e+01
+                            Gold                    1.932000e+01
+                         Uranium                    1.895000e+01
+                           Water                    1.000000e+00
+                     Polystyrene                    1.032000e+00
+                    Scintillator                    1.032000e+00
+                          Lucite                    1.185000e+00
+                         Silicon                    2.330000e+00
+                          quartz                    2.200000e+00
+                         NemaG10                    1.700000e+00
+                             CsI                    4.534000e+00
+                             BGO                    7.100000e+00
+                            SiNx                    3.100000e+00
+                          G4_AIR                    1.204790e-03
+                           Air20                    1.205407e-03
+                          G4_lAr                    1.396000e+00
+                     liquidArgon                    1.390000e+00
+                            Lead                    1.135000e+01
+                          LeadSb                    1.135000e+01
+                         Aerogel                    2.000000e-01
+                     CarbonicGas                    2.700000e-02
+                      WaterSteam                    1.000000e-03
+                        ArgonGas                    1.782000e-03
+                        Galactic                    1.000000e-25
+                            Beam                    1.000000e-05
+                           G4_Pb                    1.135000e+01
