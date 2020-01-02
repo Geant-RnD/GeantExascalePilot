@@ -32,12 +32,22 @@ class ProxyPhysicsTable {
   void Relocate(void *devPtr);
 
   GEANT_HOST_DEVICE 
+  inline size_t SizeOfTable() { return fTableSize; }
+
+  GEANT_HOST_DEVICE 
+  inline int  NumberOfVector() { return fNumPhysicsVector; }
+
+  GEANT_HOST_DEVICE 
+  double Value(int index, double energy);
+
+  GEANT_HOST_DEVICE 
   void Print();
 
   GEANT_HOST
   bool RetrievePhysicsTable(const std::string& fileName);
 
 private:
+  size_t fTableSize;
   int fNumPhysicsVector;
   ProxyPhysicsVector **fPhysicsVectors;
 };
