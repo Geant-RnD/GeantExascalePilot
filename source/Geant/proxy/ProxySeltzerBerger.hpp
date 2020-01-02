@@ -23,6 +23,7 @@
 
 #include "Geant/proxy/ProxyEmModel.hpp"
 #include "Geant/proxy/Proxy2DVector.hpp"
+#include "Geant/proxy/ProxyPhysicsTable.cuh"
 
 #include <VecCore/VecCore>
 
@@ -95,6 +96,7 @@ private:
   double fMax;
 
   Proxy2DVector *fDataSB;
+  ProxyPhysicsTable *fLambdaTable;
 };
 
 GEANT_HOST_DEVICE
@@ -120,18 +122,21 @@ ProxySeltzerBerger::~ProxySeltzerBerger()
 GEANT_HOST_DEVICE
 void ProxySeltzerBerger::Initialization()
 {
-  fDataSB = (Proxy2DVector *)malloc(brem::maximumZ * sizeof(Proxy2DVector));
+  fDataSB = (Proxy2DVector *)malloc(data::maximumZ * sizeof(Proxy2DVector));
 
   char sbDataFile[256];
 
-  for (int iZ = 0; iZ < brem::maximumZ; iZ++) {
-    sprintf(sbDataFile, "data/brem_SB/br%d", iZ + 1);
+  for (int iZ = 0; iZ < data::maximumZ; iZ++) {
+    sprintf(sbDataFile, "data/data_SB/br%d", iZ + 1);
     std::ifstream fin(sbDataFile);
     bool check = RetrieveSeltzerBergerData(fin, &fDataSB[iZ]);
     if (!check) {
       printf("Failed To open SeltzerBerger Data file for Z= %d\n", iZ + 1);
     }
   }
+
+  fLambdaTable = new ProxyPhysicsTable();  
+
 }
 
 GEANT_HOST_DEVICE
@@ -166,7 +171,7 @@ double ProxySeltzerBerger::CrossSectionPerAtom(double Z, double kineticEnergy)
   for (int l = 0; l < 8 ; l++) {
     for (int i = 0; i < 8; i++) {
 
-      double eg = Math::Exp(e0 + brem::xgi[i] * delta) * totalEnergy;
+      double eg = Math::Exp(e0 + data::xgi[i] * delta) * totalEnergy;
 
       if (totalEnergy > energyThresholdLPM) {
 	xs = ComputeRelDXSectionPerAtom(eg);
@@ -174,7 +179,7 @@ double ProxySeltzerBerger::CrossSectionPerAtom(double Z, double kineticEnergy)
         // TODo:syjun - select G4eBremsstrahlungRelMedel or G4SeltzerBergerModel
 	xs = ComputeDXSectionPerAtom(eg);
       }
-      xsec += brem::wgi[i] * xs / (1.0 + densityCorr / (eg * eg));
+      xsec += data::wgi[i] * xs / (1.0 + densityCorr / (eg * eg));
     }
     e0 += delta;
   }
@@ -247,7 +252,7 @@ int ProxySeltzerBerger::SampleSecondaries(TrackState *track)
 
   } while (v < vmax * this->fRng->uniform());
 
-  //create a bremsstrahlung photon
+  //create a datasstrahlung photon
   TrackState* photon = new TrackState;
 
   photon->fPhysicsState.fEkin = gammaEnergy;
@@ -481,22 +486,22 @@ bool ProxySeltzerBerger::RetrieveSeltzerBergerData(std::ifstream &in, Proxy2DVec
 
   // contents
   double valx, valy, val;
-  for (size_t i = 0; i < brem::numberOfXNodes; ++i) {
+  for (size_t i = 0; i < data::numberOfXNodes; ++i) {
     in >> valx;
     if (in.fail()) {
 	return false;
     }
     vec2D->PutX(i, valx);
   }
-  for (size_t j = 0; j < brem::numberOfYNodes; ++j) {
+  for (size_t j = 0; j < data::numberOfYNodes; ++j) {
     in >> valy;
     if (in.fail()) {
 	return false;
     }
     vec2D->PutY(j, valy);
   }
-  for (size_t j = 0; j < brem::numberOfYNodes; ++j) {
-    for (size_t i = 0; i < brem::numberOfXNodes; ++i) {
+  for (size_t j = 0; j < data::numberOfYNodes; ++j) {
+    for (size_t i = 0; i < data::numberOfXNodes; ++i) {
 	in >> val;
 	if (in.fail()) {
 	  return false;
