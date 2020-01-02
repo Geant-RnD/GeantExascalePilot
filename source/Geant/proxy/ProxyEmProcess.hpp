@@ -23,6 +23,7 @@
 #include "Geant/processes/Process.hpp"
 
 #include "Geant/proxy/ProxyRandom.hpp"
+#include "Geant/proxy/ProxyDataManager.cuh"
 
 namespace geantx
 {
@@ -38,6 +39,7 @@ protected:
 
   Model_t *fModel = nullptr;
   ProxyRandom *fRng = nullptr;
+  ProxyDataManager *fDataManager = nullptr;
 
 public:
   // Enable/disable GetPhysicalInteractionLength (GPIL) functions
@@ -63,6 +65,7 @@ public:
   ProxyEmProcess(){ 
     fRng = new ProxyRandom; 
     fModel = new  Model_t;
+    fDataManager = ProxyDataManager::Instance(); 
   }
 
   ~ProxyEmProcess() = default;
@@ -76,11 +79,7 @@ public:
   }
   
   // the proposed along step physical interaction length
-  double AlongStepGPIL(TrackState* _track)
-  {
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-    return  std::numeric_limits<double>::max();;
-  }
+  double AlongStepGPIL(TrackState* _track);
 
   // the proposed post step physical interaction length
   double PostStepGPIL(TrackState* _track);
@@ -100,9 +99,17 @@ public:
 };
 
 template <typename TEmProcess>
+double ProxyEmProcess<TEmProcess>::AlongStepGPIL(TrackState* track)
+{
+  GEANT_THIS_TYPE_TESTING_MARKER("");
+  //the default stepLimit
+  return std::numeric_limits<double>::max();
+}
+
+
+template <typename TEmProcess>
 double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
 {
-  geantx::Log(kInfo) << GEANT_HERE << "ProxyEmProcess<TEmProcess>::PostStepGPIL: " << *track;
   GEANT_THIS_TYPE_TESTING_MARKER("");
   double step = std::numeric_limits<double>::max();
 
