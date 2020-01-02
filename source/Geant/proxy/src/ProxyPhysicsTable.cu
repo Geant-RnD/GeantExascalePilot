@@ -22,9 +22,10 @@
 
 namespace geantx {
 
-GEANT_HOST_DEVICE 
+GEANT_HOST
 ProxyPhysicsTable::ProxyPhysicsTable() 
 {
+  fTableSize = 0;
   fNumPhysicsVector = 0;
   fPhysicsVectors = nullptr;
 }
@@ -64,14 +65,24 @@ bool ProxyPhysicsTable::RetrievePhysicsTable(const std::string& fileName)
     fIn >>  vType;
 
     fPhysicsVectors[idx] = new ProxyPhysicsVector();
+
     if (! (fPhysicsVectors[idx]->Retrieve(fIn)) )
     {
       fIn.close();
       return false;
     }
     fPhysicsVectors[idx]->SetType(vType);
+    fPhysicsVectors[idx]->SetSpline(true);
   } 
   fIn.close();
+
+  //calcuate the size of this table
+  int totalTableSize = 0;
+  for (int i = 0; i < fNumPhysicsVector; i++) totalTableSize += fPhysicsVectors[i]->SizeOfVector();
+  fTableSize = totalTableSize;
+
+  //fill drived values
+  
   return true;
 }
 
@@ -80,37 +91,39 @@ void ProxyPhysicsTable::Relocate(void *devPtr)
 {
   // device pointers in device memory
   ProxyPhysicsVector **fProxyPhysicsVector_d;
-
-  int totalTableSize = 0;
-  for (int i = 0; i < fNumPhysicsVector; i++) totalTableSize += fPhysicsVectors[i]->SizeOfVector();
-
-  cudaMalloc((void **)&fProxyPhysicsVector_d, sizeof(totalTableSize));
+  cudaMalloc((void **)&fProxyPhysicsVector_d, fNumPhysicsVector*fPhysicsVectors[0]->SizeOfVector());
 
   // device pointers in host memory
-  ProxyPhysicsVector *tables_d[fNumPhysicsVector];
+  ProxyPhysicsVector* temp_d[fNumPhysicsVector];
 
   // relocate pointers of this to the corresponding device pointers
   for (int i = 0; i < fNumPhysicsVector; ++i) {
-    cudaMalloc((void **)&tables_d[i], fPhysicsVectors[i]->SizeOfVector());
-    fPhysicsVectors[i]->Relocate(tables_d[i]);
+    cudaMalloc((void **)&temp_d[i], fPhysicsVectors[i]->SizeOfVector());
+    fPhysicsVectors[i]->Relocate(temp_d[i]);
   }
 
   // copy the pointer to alias table pointers from the host to the device
-  cudaMemcpy(fProxyPhysicsVector_d, tables_d, totalTableSize, cudaMemcpyHostToDevice);
+  cudaMemcpy(fProxyPhysicsVector_d, temp_d, fTableSize, cudaMemcpyHostToDevice);
+
   fPhysicsVectors = fProxyPhysicsVector_d;
 
   // copy the manager from host to device.
-  cudaMemcpy(devPtr, this, totalTableSize, cudaMemcpyHostToDevice);
+  cudaMemcpy(devPtr, this, fTableSize, cudaMemcpyHostToDevice);
 }
 #endif
 
-
+GEANT_HOST_DEVICE
+double ProxyPhysicsTable::Value(int index, double energy) 
+{
+  return fPhysicsVectors[index]->Value(energy);
+}
+  
 GEANT_HOST_DEVICE
 void ProxyPhysicsTable::Print() 
 {
   printf("%d\n",fNumPhysicsVector);
-  /*
   // check data
+  /*
   for(int idx=0; idx < fNumPhysicsVector ; ++idx){
     printf("%d\n", fPhysicsVectors[idx]->fType);
     printf("%f %f %d\n", fPhysicsVectors[idx]->fEdgeMin, fPhysicsVectors[idx]->fEdgeMax, fPhysicsVectors[idx]->fNumberOfNodes);
