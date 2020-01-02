@@ -60,7 +60,10 @@ public:
   
   ProxyBremsstrahlung(){ }
   ~ProxyBremsstrahlung() = default;
-  
+
+  // the proposed along step physical interaction length
+  double AlongStepGPIL(TrackState* _track);
+
   int FinalStateInteraction(TrackState* _track)
   {  
     GEANT_THIS_TYPE_TESTING_MARKER("");
@@ -70,6 +73,29 @@ public:
 
     return nsecondaries;
   }
-
 };
+
+double ProxyBremsstrahlung::AlongStepGPIL(TrackState* track)
+  {
+    GEANT_THIS_TYPE_TESTING_MARKER("");
+    double stepLimit = std::numeric_limits<double>::max();
+
+    int index = track->fMaterialState.fMaterialId;
+    double energy = track->fPhysicsState.fEkin;
+
+    double range = fDataManager->GetTable(ProxyPhysicsTableIndex::kRange_eIoni_eminus)->Value(index,energy);
+    double minE = this->fModel->GetLowEnergyLimit();
+    if(energy < minE) range *= energy/minE;
+
+    //production cuts index: electron = 1
+    double cut = fDataManager->GetCutValue(index,1);
+
+    double finR = vecCore::math::Min(data::finalRange, cut);
+
+    stepLimit = (range > finR) ? range*data::dRoverRange + finR*(1.0-data::dRoverRange)*(2.0*finR/range) : range;
+
+    return stepLimit;
+  }
+
+
 }  // namespace geantx
