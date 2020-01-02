@@ -50,9 +50,9 @@ public:
   size_t FindBinLocationY(double y);
 
 private:
-  double xVector[brem::numberOfXNodes];
-  double yVector[brem::numberOfYNodes];
-  double value[brem::numberOfYNodes][brem::numberOfXNodes];
+  double xVector[data::numberOfXNodes];
+  double yVector[data::numberOfYNodes];
+  double value[data::numberOfYNodes][data::numberOfXNodes];
 };
 
 } // namespace geantx
