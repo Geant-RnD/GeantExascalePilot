@@ -30,8 +30,8 @@ ProxyPhysicsVector::ProxyPhysicsVector()
   fEdgeMax = 0;
   fNumberOfNodes = 0;
   fUseSpline = false;
-  fDeltaBin = 0;
   fBaseBin = 0;
+  fDeltaBin = 0;
   fIsSecondDerivativeFilled = false;
 
   fDataVector = nullptr;
@@ -54,7 +54,6 @@ ProxyPhysicsVector::ProxyPhysicsVector(ProxyPhysicsVector& right)
   fEdgeMin = right.fEdgeMin;
   fEdgeMax = right.fEdgeMax;
   fDeltaBin = right.fDeltaBin;
-  fBaseBin = right.fBaseBin;
 
   for (int i = 0; i < fNumberOfNodes; ++i) {
     fDataVector[i] = right.fDataVector[i];
@@ -120,6 +119,11 @@ bool ProxyPhysicsVector::Retrieve(std::ifstream& fIn)
   fNumberOfNodes = siz;
   fEdgeMin = fBinVector[0];
   fEdgeMax = fBinVector[fNumberOfNodes-1];
+
+  //G4PhysicsLogVector - type 2 : check for InverseRange (type 4)
+  fDeltaBin = std::log(fBinVector[1]/fEdgeMin);
+  fBaseBin = std::log(fEdgeMin)/fDeltaBin;
+
   return true;
 }
 
@@ -359,7 +363,9 @@ void ProxyPhysicsVector::FillSecondDerivatives()
 GEANT_HOST_DEVICE
 int ProxyPhysicsVector::FindBinLocation(double energy)
 {
-  return int(log10(energy) / fDeltaBin - fBaseBin);
+  int bin = log(energy)/fDeltaBin - fBaseBin;
+  if(bin > 0 && energy < fBinVector[bin]) { --bin; }
+  return bin;
 }
 
 GEANT_HOST_DEVICE
@@ -388,11 +394,12 @@ double ProxyPhysicsVector::SplineInterpolation(double energy, int lastBin)
   double y1 = fDataVector[lastBin];
   double y2 = fDataVector[lastBin + 1];
   
+
   double res = a * y1 + b * y2
     + ((a * a * a - a) * fSecDerivative[lastBin]
        + (b * b * b - b) * fSecDerivative[lastBin + 1]) * delta
     * delta / 6.0;
-  
+
   return res;
 }
 
