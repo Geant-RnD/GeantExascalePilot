@@ -23,6 +23,7 @@ constexpr int nParticleForCuts =  4;
 
 constexpr double dRoverRange = 0.2; // 20%
 constexpr double finalRange  = 10*geantx::units::mm ; //CLHEP::mm, with pre-build Geant4 tables 
+constexpr double linLossLimit = 0.01;
 
 // ProxyPhysicsVector
 constexpr int maxPhysicsVector =  3;

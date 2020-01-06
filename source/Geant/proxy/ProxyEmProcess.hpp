@@ -24,6 +24,8 @@
 
 #include "Geant/proxy/ProxyRandom.hpp"
 #include "Geant/proxy/ProxyDataManager.cuh"
+#include "Geant/proxy/ProxyProcessIndex.cuh"
+#include "Geant/proxy/ProxyPhysicsTableIndex.hpp"
 
 namespace geantx
 {
@@ -37,6 +39,7 @@ protected:
 
   using Model_t = typename Model_traits<TEmProcess>::Model_t;
 
+  int fProcessIndex = kNullProcess;;
   Model_t *fModel = nullptr;
   ProxyRandom *fRng = nullptr;
   ProxyDataManager *fDataManager = nullptr;
@@ -71,13 +74,8 @@ public:
   ~ProxyEmProcess() = default;
   
   //mandatory methods
-  double MeanFreePath(TrackState* _track)
-  {
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-    double xsection = fModel->MacroscopicCrossSection(_track);
-    return (xsection <= 0.0) ? 0.0 : 1.0/xsection;
-  }
-  
+  double GetLambda(int index, double energy) { return static_cast<TEmProcess *>(this)->GetLambda(index,energy); }
+
   // the proposed along step physical interaction length
   double AlongStepGPIL(TrackState* _track);
 
@@ -85,27 +83,29 @@ public:
   double PostStepGPIL(TrackState* _track);
 
   // DoIt for the along step
-  void AlongStepDoIt(TrackState* _track)
-  {
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-    ThreeVector rand = { get_rand(), get_rand(), get_rand() };
-    rand.Normalize();
-    _track->fDir = rand;
-  }
-  
+  void AlongStepDoIt(TrackState* _track);
+
   // DoIt for the post step
   int PostStepDoIt(TrackState* _track);
-  
+
+  // Aux
+
 };
 
 template <typename TEmProcess>
 double ProxyEmProcess<TEmProcess>::AlongStepGPIL(TrackState* track)
 {
   GEANT_THIS_TYPE_TESTING_MARKER("");
+
   //the default stepLimit
   return std::numeric_limits<double>::max();
 }
 
+template <typename TEmProcess>
+void ProxyEmProcess<TEmProcess>::AlongStepDoIt(TrackState* track)
+{
+  GEANT_THIS_TYPE_TESTING_MARKER("");
+}
 
 template <typename TEmProcess>
 double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
@@ -113,7 +113,10 @@ double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
   GEANT_THIS_TYPE_TESTING_MARKER("");
   double step = std::numeric_limits<double>::max();
 
-  double lambda = MeanFreePath(track);
+  double energy = track->fPhysicsState.fEkin;
+  int index = track->fMaterialState.fMaterialId;
+
+  double lambda = GetLambda(index, energy);
 
   //reset or update the number of the interaction length left  
   if ( track->fPhysicsProcessState.fNumOfInteractLengthLeft <= 0.0 ) {
