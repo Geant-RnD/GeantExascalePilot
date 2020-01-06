@@ -96,7 +96,7 @@ private:
   double fMax;
 
   Proxy2DVector *fDataSB;
-  ProxyPhysicsTable *fLambdaTable;
+  //  ProxyPhysicsTable *fLambdaTable;
 };
 
 GEANT_HOST_DEVICE
@@ -110,7 +110,7 @@ ProxySeltzerBerger::ProxySeltzerBerger()
   lpmEnergy = xiLPM = phiLPM = gLPM = z13 = z23 = lnZ = Fel =
   Finel = fCoulomb = fMax = 0;
   // TODO - comment out when completed
-  //  Initialization();
+  Initialization();
 }
 
 GEANT_HOST_DEVICE
@@ -127,7 +127,7 @@ void ProxySeltzerBerger::Initialization()
   char sbDataFile[256];
 
   for (int iZ = 0; iZ < data::maximumZ; iZ++) {
-    sprintf(sbDataFile, "data/data_SB/br%d", iZ + 1);
+    sprintf(sbDataFile, "data/brem_SB/br%d", iZ + 1);
     std::ifstream fin(sbDataFile);
     bool check = RetrieveSeltzerBergerData(fin, &fDataSB[iZ]);
     if (!check) {
@@ -135,7 +135,7 @@ void ProxySeltzerBerger::Initialization()
     }
   }
 
-  fLambdaTable = new ProxyPhysicsTable();  
+  //  fLambdaTable = new ProxyPhysicsTable();  
 
 }
 
