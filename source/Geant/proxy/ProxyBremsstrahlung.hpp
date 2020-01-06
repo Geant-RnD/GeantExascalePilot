@@ -45,7 +45,7 @@ public:
   static constexpr bool EnablePostStepGPIL  = true;
   // Enable/disable DoIt functions
   static constexpr bool EnableAtRestDoIt    = false;
-  static constexpr bool EnableAlongStepDoIt = true;
+  static constexpr bool EnableAlongStepDoIt = false;
   static constexpr bool EnablePostStepDoIt  = true;
 
   // for enable_if statements
@@ -58,7 +58,7 @@ public:
 public:
   using this_type = ProxyBremsstrahlung;
   
-  ProxyBremsstrahlung(){ }
+  ProxyBremsstrahlung() { this->fProcessIndex = kProxyBremsstrahlung; }
   ~ProxyBremsstrahlung() = default;
 
   // the proposed along step physical interaction length
@@ -73,29 +73,17 @@ public:
 
     return nsecondaries;
   }
-};
 
-double ProxyBremsstrahlung::AlongStepGPIL(TrackState* track)
+  double GetLambda(int index, double energy) 
   {
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-    double stepLimit = std::numeric_limits<double>::max();
+    return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_eBrem_eminus)->Value(index,energy);
+  } 
 
-    int index = track->fMaterialState.fMaterialId;
-    double energy = track->fPhysicsState.fEkin;
-
-    double range = fDataManager->GetTable(ProxyPhysicsTableIndex::kRange_eIoni_eminus)->Value(index,energy);
-    double minE = this->fModel->GetLowEnergyLimit();
-    if(energy < minE) range *= energy/minE;
-
-    //production cuts index: electron = 1
-    double cut = fDataManager->GetCutValue(index,1);
-
-    double finR = vecCore::math::Min(data::finalRange, cut);
-
-    stepLimit = (range > finR) ? range*data::dRoverRange + finR*(1.0-data::dRoverRange)*(2.0*finR/range) : range;
-
-    return stepLimit;
+  double GetDEDX(int index, double energy) 
+  { 
+    return fDataManager->GetTable(ProxyPhysicsTableIndex::kDEDX_eBrem_eminus)->Value(index,energy);
   }
 
+};
 
 }  // namespace geantx
