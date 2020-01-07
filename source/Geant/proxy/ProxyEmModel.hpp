@@ -75,6 +75,9 @@ public:
 
   inline double GetHighEnergyLimit() {return fHighEnergyLimit; };
 
+
+  double ComputeCoulombFactor(double Zeff);
+
 protected:
 
   bool fAtomicDependentModel;
@@ -91,6 +94,23 @@ ProxyEmModel<TEmModel>::ProxyEmModel()
     fHighEnergyLimit(100.0 * geantx::units::TeV)
 { 
   fRng = new ProxyRandom; 
+}
+
+
+template <typename TEmModel>
+double ProxyEmModel<TEmModel>::ComputeCoulombFactor(double Zeff) 
+{
+  // Compute Coulomb correction factor (Phys Rev. D50 3-1 (1994) page 1254)
+
+  double k1 = 0.0083, k2 = 0.20206, k3 = 0.0020, k4 = 0.0369;
+  double fine_structure_const = (1.0 / 137); // check unit
+
+  double az1 = fine_structure_const * Zeff;
+  double az2 = az1 * az1;
+  double az4 = az2 * az2;
+
+  double coulombFactor = (k1 * az4 + k2 + 1. / (1. + az2)) * az2 - (k3 * az4 + k4) * az4;
+  return coulombFactor;
 }
 
 } // namespace geantx
