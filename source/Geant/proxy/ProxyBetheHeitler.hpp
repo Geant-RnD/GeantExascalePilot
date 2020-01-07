@@ -10,7 +10,7 @@
 //
 /**
  * @file Geant/proxy/ProxyBetheHeitler.hpp
- * @brief
+ * @brief pair production model of gamma
  */
 //===----------------------------------------------------------------------===//
 //

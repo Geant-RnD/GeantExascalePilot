@@ -10,7 +10,7 @@
 //
 /**
  * @file Geant/proxy/ProxyConversion.hpp
- * @brief
+ * @brief pair production process of gamma
  */
 //===----------------------------------------------------------------------===//
 //
