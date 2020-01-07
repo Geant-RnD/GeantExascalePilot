@@ -68,8 +68,4 @@ const std::string ProxyPhysicsTableName[kNumberPhysicsTable] = {
   "Range.eIoni.e+.asc"
 };
 
-
-  //static const char* ProxyPhysicsTableName[ProxyPhysicsTableIndex::kNumberPhysicsTable];
-  //static const char* ProxyPhysicsTableName[kNumberPhysicsTable];
-
 } // namespace geantx
