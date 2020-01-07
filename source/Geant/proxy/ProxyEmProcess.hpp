@@ -140,7 +140,8 @@ template <typename TEmProcess>
 int ProxyEmProcess<TEmProcess>::PostStepDoIt(TrackState* track)
 {
   GEANT_THIS_TYPE_TESTING_MARKER("");
-  int nsec = static_cast<TEmProcess *>(this)-> FinalStateInteraction(track);
+
+  int nsec = this->fModel->SampleSecondaries(track);
 
   return nsec;
 }
