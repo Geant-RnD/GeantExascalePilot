@@ -61,24 +61,13 @@ public:
   ProxyBremsstrahlung() { this->fProcessIndex = kProxyBremsstrahlung; }
   ~ProxyBremsstrahlung() = default;
 
-  // the proposed along step physical interaction length
-  double AlongStepGPIL(TrackState* _track);
-
-  int FinalStateInteraction(TrackState* _track)
-  {  
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-
-    //update electron state and create an electron 
-    int nsecondaries = this->fModel->SampleSecondaries(_track);
-
-    return nsecondaries;
-  }
-
+  // mandatory methods for static polymorphism
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_eBrem_eminus)->Value(index,energy);
   } 
 
+  // auxiliary 
   double GetDEDX(int index, double energy) 
   { 
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kDEDX_eBrem_eminus)->Value(index,energy);

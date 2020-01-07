@@ -24,7 +24,6 @@
 
 #include "Geant/proxy/ProxyEmProcess.hpp"
 #include "Geant/proxy/ProxyKleinNishina.hpp"
-//#include "Geant/proxy/ProxyPhysicsTableIndex.hpp"
 
 namespace geantx
 {
@@ -63,23 +62,11 @@ public:
   ~ProxyCompton() = default;
   
   // mandatory methods for static polymorphism
-  int FinalStateInteraction(TrackState* _track)
-  {  
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-
-    //update photon state and create an electron 
-    int nsecondaries = this->fModel->SampleSecondaries(_track);
-
-    return nsecondaries;
-  }
-
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_compt_gamma)->Value(index,energy);
   } 
 
 };
-
-
 
 }  // namespace geantx

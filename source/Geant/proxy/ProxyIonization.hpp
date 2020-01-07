@@ -24,7 +24,6 @@
 
 #include "Geant/proxy/ProxyEmProcess.hpp"
 #include "Geant/proxy/ProxyMollerScattering.hpp"
-//#include "Geant/proxy/ProxyPhysicsTableIndex.hpp"
 
 namespace geantx
 {
@@ -63,16 +62,6 @@ public:
   ~ProxyIonization() = default;
 
   // mandatory methods for static polymorphism
-  int FinalStateInteraction(TrackState* _track)
-  {  
-    GEANT_THIS_TYPE_TESTING_MARKER("");
-
-    //update electron state and create an electron 
-    int nsecondaries = this->fModel->SampleSecondaries(_track);
-
-    return nsecondaries;
-  }
-
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_eIoni_eminus)->Value(index,energy);
@@ -161,7 +150,6 @@ void ProxyIonization::AlongStepDoIt(TrackState* track)
   eloss = vecCore::math::Max(eloss, 0.0);
   track->fPhysicsState.fEkin = finalE;
   track->fPhysicsState.fEdep += eloss;
-
 
 }
 
