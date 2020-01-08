@@ -18,8 +18,8 @@
 #pragma once
 
 #include "Geant/particles/Particle.hpp"
-#include "Geant/core/PhysicalConstants.hpp"
-#include "Geant/core/SystemOfUnits.hpp"
+#include "Geant/proxy/ProxyPhysicalConstants.hpp"
+#include "Geant/proxy/ProxySystemOfUnits.hpp"
 
 namespace geantx {
 
@@ -53,8 +53,8 @@ class CpuElectron : public Particle {
 public:
   static CpuElectron *Definition()
   {
-    static CpuElectron instance("CpuElectron", 1, 1, geantx::units::kElectronMassC2,
-                                -1.0 * geantx::units::eplus);
+    static CpuElectron instance("CpuElectron", 1, 1, clhep::electron_mass_c2,
+                                -1.0 * clhep::eplus);
     return &instance;
   }
 
@@ -102,8 +102,8 @@ class GpuElectron : public Particle {
 public:
   static GpuElectron *Definition()
   {
-    static GpuElectron instance("GpuElectron", 3, 3, geantx::units::kElectronMassC2,
-                                -1.0 * geantx::units::eplus);
+    static GpuElectron instance("GpuElectron", 3, 3, clhep::electron_mass_c2,
+                                -1.0 * clhep::eplus);
     return &instance;
   }
 

@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Geant/core/SystemOfUnits.hpp"
-#include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/proxy/ProxySystemOfUnits.hpp"
+#include "Geant/proxy/ProxyPhysicalConstants.hpp"
 #include "Geant/proxy/ProxyEmModel.hpp"
 #include <VecCore/VecCore>
 
@@ -28,7 +28,7 @@ namespace geantx {
 class ProxyMollerScattering : public ProxyEmModel<ProxyMollerScattering> {
 
 public:
-  ProxyMollerScattering() { fLowEnergyLimit = 100.0 * geantx::units::eV; }
+  ProxyMollerScattering() { fLowEnergyLimit = 100.0 * clhep::eV; }
   ProxyMollerScattering(const ProxyMollerScattering &model) : ProxyEmModel<ProxyMollerScattering>() { this->fRng = model.fRng; }
   ~ProxyMollerScattering() = default;
 
@@ -50,7 +50,7 @@ double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy
   double xsec = 0.0;
 
   //TODO: MaterialCuts by an argument
-  const double cutEnergy = 10.0 * geantx::units::eV; // matcut->GetProductionCutsInEnergy()[1];
+  const double cutEnergy = 10.0 * clhep::eV; // matcut->GetProductionCutsInEnergy()[1];
 
   double tmax = Math::Min(fHighEnergyLimit, 0.5*kineticEnergy);
 
@@ -58,7 +58,7 @@ double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy
 
   double xmin  = cutEnergy/kineticEnergy;
   double xmax  = tmax/kineticEnergy;
-  double tau   = kineticEnergy/geantx::units::kElectronMassC2;
+  double tau   = kineticEnergy/clhep::electron_mass_c2;
   double gam   = tau + 1.0;
   double gamma2= gam*gam;
   double beta2 = tau*(tau + 2)/gamma2;
@@ -69,7 +69,7 @@ double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy
 			  + 1.0/((1.0-xmin)*(1.0 - xmax)))
 	- gg*Math::Log( xmax*(1.0 - xmin)/(xmin*(1.0 - xmax)) ) ) / beta2;
   
-  xsec *= geantx::units::kTwopi_mc2_rcl2/kineticEnergy;
+  xsec *= clhep::twopi_mc2_rcl2/kineticEnergy;
   
   return Z * xsec;
 }
@@ -81,8 +81,8 @@ int ProxyMollerScattering::SampleSecondaries(TrackState *track)
   double kineticEnergy = track->fPhysicsState.fEkin;
 
   //cut energy
-  double maxEnergy = 1.0 * geantx::units::TeV; //temp
-  double cutEnergy = 1.0 * geantx::units::keV; //temp
+  double maxEnergy = 1.0 * clhep::TeV; //temp
+  double cutEnergy = 1.0 * clhep::keV; //temp
 
   double tmin = cutEnergy;  
   double tmax = 0.5*kineticEnergy; 
@@ -90,10 +90,10 @@ int ProxyMollerScattering::SampleSecondaries(TrackState *track)
   if(maxEnergy < tmax) { tmax = maxEnergy; }
   if(tmin >= tmax) { return nsecondaries; }
 
-  double energy = kineticEnergy + geantx::units::kElectronMassC2;
+  double energy = kineticEnergy + clhep::electron_mass_c2;
   double xmin   = tmin/kineticEnergy;
   double xmax   = tmax/kineticEnergy;
-  double gam    = energy/geantx::units::kElectronMassC2;
+  double gam    = energy/clhep::electron_mass_c2;
   double gamma2 = gam*gam;
   double x, z, grej;
 
@@ -113,13 +113,13 @@ int ProxyMollerScattering::SampleSecondaries(TrackState *track)
   double deltaKinEnergy = x * kineticEnergy;
   
   //angle of the scatterred electron
-  double totalMomentum = Math::Sqrt(kineticEnergy  * (kineticEnergy + 2.0* geantx::units::kElectronMassC2));
-  double deltaMomentum = Math::Sqrt(deltaKinEnergy * (deltaKinEnergy + 2.0* geantx::units::kElectronMassC2));
-  double cost =  deltaKinEnergy * (energy +  geantx::units::kElectronMassC2) / (deltaMomentum * totalMomentum);
+  double totalMomentum = Math::Sqrt(kineticEnergy  * (kineticEnergy + 2.0* clhep::electron_mass_c2));
+  double deltaMomentum = Math::Sqrt(deltaKinEnergy * (deltaKinEnergy + 2.0* clhep::electron_mass_c2));
+  double cost =  deltaKinEnergy * (energy +  clhep::electron_mass_c2) / (deltaMomentum * totalMomentum);
   if(cost > 1.0) { cost = 1.0; }
   double sint = Math::Sqrt((1.0 - cost)*(1. + cost));
 
-  double phi = geantx::units::kTwoPi * this->fRng->uniform();
+  double phi = clhep::twopi * this->fRng->uniform();
 
   double xhat = sint*Math::Cos(phi);
   double yhat = sint*Math::Sin(phi);

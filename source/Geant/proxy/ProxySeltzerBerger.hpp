@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Geant/core/SystemOfUnits.hpp"
-#include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/proxy/ProxySystemOfUnits.hpp"
+#include "Geant/proxy/ProxyPhysicalConstants.hpp"
 #include "Geant/core/math_wrappers.hpp"
 
 #include "Geant/proxy/ProxyEmModel.hpp"
@@ -102,7 +102,7 @@ private:
 GEANT_HOST_DEVICE
 ProxySeltzerBerger::ProxySeltzerBerger() 
 { 
-  fLowEnergyLimit = 100.0 * geantx::units::eV; 
+  fLowEnergyLimit = 100.0 * clhep::eV; 
 
   densityFactor = 0;
   currentZ = 0;
@@ -145,10 +145,10 @@ double ProxySeltzerBerger::CrossSectionPerAtom(double Z, double kineticEnergy)
   double xsec = 0.0;
 
   //get cut from the material cut
-  double cut = 10.0*geantx::units::keV;
+  double cut = 10.0*clhep::keV;
 
   // number of intervals and integration step
-  double totalEnergy = kineticEnergy + geantx::units::kElectronMassC2;
+  double totalEnergy = kineticEnergy + clhep::electron_mass_c2;
   double vcut        = Math::Log(cut / totalEnergy);
   double vmax        = Math::Log(kineticEnergy / totalEnergy);
   int n              = Math::Floor(0.45 * (vmax - vcut)) + 4;
@@ -200,8 +200,8 @@ int ProxySeltzerBerger::SampleSecondaries(TrackState *track)
   //  double emax = Min(maxEnergy, kineticEnergy);
   //@@@syj cutEnergy should be get from the material table (cut table).
   // other hard coded numbers are also temporary and will be replaced properly
-  double cut  = Math::Min(1.0 * geantx::units::keV, kineticEnergy);
-  double emax = Math::Min(1.0 * geantx::units::TeV, kineticEnergy);
+  double cut  = Math::Min(1.0 * clhep::keV, kineticEnergy);
+  double emax = Math::Min(1.0 * clhep::TeV, kineticEnergy);
   if (cut >= emax) {
     return nsecondaries;
   }
@@ -209,11 +209,11 @@ int ProxySeltzerBerger::SampleSecondaries(TrackState *track)
   //TODO: select random Z 
   int Z = 10; 
 
-  double totalEnergy = kineticEnergy + geantx::units::kElectronMassC2;
+  double totalEnergy = kineticEnergy + clhep::electron_mass_c2;
   double densityCorr = densityFactor * totalEnergy * totalEnergy;
   double xmin = Math::Log(cut * cut + densityCorr);
   double xmax = Math::Log(emax * emax + densityCorr);
-  double y    = Math::Log(kineticEnergy / geantx::units::MeV);
+  double y    = Math::Log(kineticEnergy / clhep::MeV);
 
   double v;
 
@@ -221,8 +221,8 @@ int ProxySeltzerBerger::SampleSecondaries(TrackState *track)
   double x0   = cut / kineticEnergy;
   double vmax = fDataSB[Z].Value(x0, y) * 1.02;
 
-  double_t epeaklimit = 300 * geantx::units::MeV;
-  double_t elowlimit  = 10 * geantx::units::keV;
+  double_t epeaklimit = 300 * clhep::MeV;
+  double_t elowlimit  = 10 * clhep::keV;
 
   // majoranta corrected for e-
   bool isElectron = true;
@@ -267,7 +267,7 @@ int ProxySeltzerBerger::SampleSecondaries(TrackState *track)
   ++nsecondaries;
 
   //update the primary
-  double totalMomentum = Math::Sqrt(kineticEnergy*(totalEnergy + geantx::units::kElectronMassC2));
+  double totalMomentum = Math::Sqrt(kineticEnergy*(totalEnergy + clhep::electron_mass_c2));
   track->fPhysicsState.fEkin -= gammaEnergy;
   track->fDir = (totalMomentum*track->fDir - gammaEnergy*gammaDirection).Unit();
 
@@ -289,13 +289,13 @@ ThreeVector ProxySeltzerBerger::SamplePhotonDirection(double energyIn)
 
   double cosTheta = cofA - 1.0 / cofA;
 
-  double tau  = energyIn / geantx::units::kElectronMassC2;
+  double tau  = energyIn / clhep::electron_mass_c2;
   double beta = Math::Sqrt(tau * (tau + 2.0)) / (tau + 1.0);
 
   cosTheta = (cosTheta + beta) / (1.0 + cosTheta * beta);
 
   double sinTheta = Math::Sqrt((1.0 - cosTheta) * (1.0 + cosTheta));
-  double phi = geantx::units::kTwoPi * this->fRng->uniform();
+  double phi = clhep::twopi * this->fRng->uniform();
 
   ThreeVector gammaDirection(sinTheta*Math::Cos(phi),sinTheta*Math::Sin(phi),cosTheta);
 
@@ -311,7 +311,7 @@ double ProxySeltzerBerger::ComputeRelDXSectionPerAtom(double gammaEnergy)
 
   if (gammaEnergy < 0.0) return 0.0;
 
-  double totalEnergy = gammaEnergy +  geantx::units::kElectronMassC2;
+  double totalEnergy = gammaEnergy +  clhep::electron_mass_c2;
 
   double y     = gammaEnergy / totalEnergy;
   double y2    = y * y * .25;
@@ -341,7 +341,7 @@ double ProxySeltzerBerger::ComputeDXSectionPerAtom(double gammaEnergy)
 
   if (gammaEnergy < 0.0) return 0.0;
 
-  double totalEnergy = gammaEnergy + geantx::units::kElectronMassC2;
+  double totalEnergy = gammaEnergy + clhep::electron_mass_c2;
   double y    = gammaEnergy / totalEnergy;
 
   double main = 0., secondTerm = 0.;
@@ -355,7 +355,7 @@ double ProxySeltzerBerger::ComputeDXSectionPerAtom(double gammaEnergy)
   } else {
     // ** intermediate screening using Thomas-Fermi FF from Tsai
     // only valid for Z >= 5 **
-    double dd  = 100. * geantx::units::kElectronMassC2 * y / (totalEnergy - gammaEnergy);
+    double dd  = 100. * clhep::electron_mass_c2 * y / (totalEnergy - gammaEnergy);
     double gg  = dd / z13;
     double eps = dd / z23;
     double phi1   = Phi1(gg);

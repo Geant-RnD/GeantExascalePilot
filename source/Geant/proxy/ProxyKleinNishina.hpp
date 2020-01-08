@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Geant/core/SystemOfUnits.hpp"
-#include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/proxy/ProxySystemOfUnits.hpp"
+#include "Geant/proxy/ProxyPhysicalConstants.hpp"
 #include "Geant/proxy/ProxyEmModel.hpp"
 #include <VecCore/VecCore>
 
@@ -29,7 +29,7 @@ namespace geantx {
 class ProxyKleinNishina : public ProxyEmModel<ProxyKleinNishina> {
 
 public:
-  ProxyKleinNishina() { fLowEnergyLimit = 100.0 * geantx::units::eV;}
+  ProxyKleinNishina() { fLowEnergyLimit = 100.0 * clhep::eV;}
   ProxyKleinNishina(const ProxyKleinNishina &model) : ProxyEmModel<ProxyKleinNishina>() { this->fRng = model.fRng; }
   ~ProxyKleinNishina() = default;
 
@@ -56,17 +56,17 @@ double ProxyKleinNishina::CrossSectionPerAtom(double Z, double gammaEnergy)
   double p3 =  6.7527    + -7.3913e-2 * Z +  6.0480e-5 * Z2;
   double p4 = -1.9798e+1 +  2.7079e-2 * Z +  3.0274e-4 * Z2;
 
-  double T0 = (Z < 1.5) ? 40.0 * geantx::units::keV : 15.0 * geantx::units::keV;
+  double T0 = (Z < 1.5) ? 40.0 * clhep::keV : 15.0 * geantx::units::keV;
 
-  double X  = Math::Max(gammaEnergy, T0)/geantx::units::kElectronMassC2 ;
+  double X  = Math::Max(gammaEnergy, T0)/clhep::electron_mass_c2 ;
   double X2 = X*X;
 
   xSection = p1 * Math::Log(1. + 2.*X)/X + (p2 + p3 * X + p4 * X2)/(1. + 20. * X + 230. * X2 + 440. * X2 * X);
 
   //  modification for low energy. (special case for Hydrogen)
   if (gammaEnergy < T0) {
-    const double dT0 = geantx::units::keV;
-    X  = (T0 + dT0)/geantx::units::kElectronMassC2;
+    const double dT0 = clhep::keV;
+    X  = (T0 + dT0)/clhep::electron_mass_c2;
     X2 = X*X;
     double sigma = p1 * Math::Log(1. + 2.*X)/X + (p2 + p3 * X + p4 * X2)/(1. + 20. * X + 230. * X2 + 440. * X2 * X);
     double c1 = -T0 * (sigma - xSection) / (xSection * dT0);
@@ -75,7 +75,7 @@ double ProxyKleinNishina::CrossSectionPerAtom(double Z, double gammaEnergy)
     xSection *= Math::Exp(-y * (c1 + c2 * y));
   }
   
-  return Z*xSection*geantx::units::barn;
+  return Z*xSection*clhep::barn;
 }
 
 // based on Geant4 processes/electromagnetic/standard/src/G4KleinNishinaModel.cc
@@ -89,7 +89,7 @@ int ProxyKleinNishina::SampleSecondaries(TrackState *track)
 
   double epsilon, epsilonsq, onecost, sint2, greject;
 
-  double E0_m = gammaEnergy0/geantx::units::kElectronMassC2;
+  double E0_m = gammaEnergy0/clhep::electron_mass_c2;
   
   double eps0 = 1. / (1. + 2. * E0_m);
   double epsilon0sq = eps0 * eps0;
@@ -114,7 +114,7 @@ int ProxyKleinNishina::SampleSecondaries(TrackState *track)
 
   //update kinematics for scattered gamma
   double sinTheta = (sint2 < 0.0) ? 0.0 : vecCore::math::Sqrt(sint2);
-  double Phi     = geantx::units::kTwoPi * this->fRng->uniform();
+  double Phi     = clhep::twopi * this->fRng->uniform();
   double gammaEnergy = epsilon * gammaEnergy0;
 
   ThreeVector gammaDirection(sinTheta*cos(Phi), sinTheta*sin(Phi), 1. - onecost);

@@ -10,15 +10,15 @@
 //
 /**
  * @file Geant/proxy/ProxyBetheHeitler.hpp
- * @brief pair production model of gamma
+ * @brief
  */
 //===----------------------------------------------------------------------===//
 //
 
 #pragma once
 
-#include "Geant/core/SystemOfUnits.hpp"
-#include "Geant/core/PhysicalConstants.hpp"
+#include "Geant/proxy/ProxySystemOfUnits.hpp"
+#include "Geant/proxy/ProxyPhysicalConstants.hpp"
 #include "Geant/proxy/ProxyEmModel.hpp"
 #include <VecCore/VecCore>
 
@@ -28,7 +28,7 @@ namespace geantx {
 class ProxyBetheHeitler : public ProxyEmModel<ProxyBetheHeitler> {
 
 public:
-  ProxyBetheHeitler() { fLowEnergyLimit = 2.0*geantx::units::kElectronMassC2;}
+  ProxyBetheHeitler() { fLowEnergyLimit = 2.0*clhep::electron_mass_c2;}
   ProxyBetheHeitler(const ProxyBetheHeitler &model) : ProxyEmModel<ProxyBetheHeitler>() { this->fRng = model.fRng; }
   ~ProxyBetheHeitler() = default;
 
@@ -52,14 +52,14 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
 
   double gammaEnergy = track->fPhysicsState.fEkin;
 
-  double epsil0 = geantx::units::kElectronMassC2/gammaEnergy;
+  double epsil0 = clhep::electron_mass_c2/gammaEnergy;
   if( epsil0 > 0.5) return nsecondaries;
 
   // select randomly one element constituing the material - input
   //  int index = track->fMaterialState.fMaterialId;
   int elementZ = 10; //@@@syjun: temporay
 
-  const double Egsmall = 2. * geantx::units::MeV;  //@@@syjun: check unit
+  const double Egsmall = 2. * clhep::MeV;  //@@@syjun: check unit
 
   double epsil;
 
@@ -71,7 +71,7 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
 
     double logZ3 = vecCore::math::Log(1.0 * int(elementZ + 0.5)) / 3.0;
     double FZ    = 8. * logZ3; //(anElement->GetIonisation()->GetlogZ3());
-    if (gammaEnergy > 50. * geantx::units::MeV) { //@@@syjun: check unit
+    if (gammaEnergy > 50. * clhep::MeV) { //@@@syjun: check unit
       FZ += 8. * ComputeCoulombFactor(elementZ);
     }
 
@@ -120,12 +120,12 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
   double aa0 = -vecCore::math::Log(this->fRng->uniform()*this->fRng->uniform());
   double u = (0.25 > this->fRng->uniform()) ? aa0/0.625 : aa0/1.875;
 
-  double phi = geantx::units::kTwoPi * this->fRng->uniform();
+  double phi = clhep::twopi * this->fRng->uniform();
   double cosp = vecCore::math::Cos(phi);
   double sinp = vecCore::math::Sin(phi);
 
   //secondary electron 
-  double cost = u * geantx::units::kElectronMassC2/ electTotEnergy; 
+  double cost = u * clhep::electron_mass_c2/ electTotEnergy; 
   double sint = vecCore::math::Sqrt((1. - cost)*(1. + cost));
 
   double xhat = sint*cosp;
@@ -136,12 +136,12 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
   Math::RotateToLabFrame(xhat, yhat, zhat, track->fDir.x(), track->fDir.y(), track->fDir.z());
   ThreeVector electronDirection(xhat, yhat, zhat);
 
-  electron->fPhysicsState.fEkin = electTotEnergy - geantx::units::kElectronMassC2;
+  electron->fPhysicsState.fEkin = electTotEnergy - clhep::electron_mass_c2;
   electron->fDir = electronDirection;
   ++nsecondaries;
 
   //secondary positron
-  cost = u * geantx::units::kElectronMassC2/ positTotEnergy; 
+  cost = u * clhep::electron_mass_c2/ positTotEnergy; 
   sint = vecCore::math::Sqrt((1. - cost)*(1. + cost));
 
   xhat = -sint*cosp;
@@ -152,7 +152,7 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
   Math::RotateToLabFrame(xhat, yhat, zhat, track->fDir.x(), track->fDir.y(), track->fDir.z());
   ThreeVector positronDirection(xhat, yhat, zhat);
 
-  positron->fPhysicsState.fEkin = positTotEnergy - geantx::units::kElectronMassC2;
+  positron->fPhysicsState.fEkin = positTotEnergy - clhep::electron_mass_c2;
   positron->fDir = positronDirection;
   ++nsecondaries;
 

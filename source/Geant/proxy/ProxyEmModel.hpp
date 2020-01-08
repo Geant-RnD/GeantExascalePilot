@@ -18,8 +18,8 @@
 
 #include "Geant/track/TrackState.hpp"
 #include "Geant/proxy/ProxyRandom.hpp"
+#include "Geant/proxy/ProxySystemOfUnits.hpp"
 #include "Geant/material/MaterialProperties.hpp"
-
 
 namespace geantx {
 
@@ -90,8 +90,8 @@ protected:
 template <typename TEmModel>
 ProxyEmModel<TEmModel>::ProxyEmModel() 
   : fAtomicDependentModel(false), 
-    fLowEnergyLimit(100.0 * geantx::units::eV), 
-    fHighEnergyLimit(100.0 * geantx::units::TeV)
+    fLowEnergyLimit(100.0 * clhep::eV), 
+    fHighEnergyLimit(100.0 * clhep::TeV)
 { 
   fRng = new ProxyRandom; 
 }

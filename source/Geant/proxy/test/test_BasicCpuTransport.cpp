@@ -19,7 +19,7 @@
 #include "Geant/core/Logger.hpp"
 #include "Geant/core/Memory.hpp"
 #include "Geant/core/MemoryPool.hpp"
-#include "Geant/core/SystemOfUnits.hpp"
+#include "Geant/proxy/ProxySystemOfUnits.hpp"
 #include "Geant/geometry/UserDetectorConstruction.hpp"
 #include "Geant/track/TrackState.hpp"
 
@@ -610,7 +610,7 @@ main(int argc, char** argv)
     vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), vertex, *startpath, true);
 
     // prepare primary tracks - TODO: use a particle gun
-    double energy = 10. * geantx::units::GeV;
+    double energy = 10. * geantx::clhep::GeV;
 
     printf("\n");
     primary.PushTrack<CpuGamma>(get_primary_particle(startpath, energy));
