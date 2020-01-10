@@ -14,8 +14,7 @@
 
 #pragma once
 
-#include <VecMath/Rng.h>
-#include <VecCore/VecCore>
+#include "Geant/random/MRG32k3a.hpp"
 
 namespace geantx {
 
@@ -23,18 +22,16 @@ class ProxyRandom {
 public:
   ProxyRandom()
   {
-    void *buff     = vecCore::AlignedAlloc(32, sizeof(vecRng::MRG32k3a<vecCore::backend::Scalar>));
-    mrg32k3a = new (buff) vecRng::MRG32k3a<vecCore::backend::Scalar>;
+    mrg32k3a = new MRG32k3a();
     mrg32k3a->Initialize();
   }
 
   ~ProxyRandom()
   {
-    mrg32k3a->~MRG32k3a();
-    vecCore::AlignedFree(mrg32k3a);
+    delete mrg32k3a;
   }
 
-  double uniform() { return mrg32k3a->Uniform<vecCore::backend::Scalar>(); }
+  double uniform() { return mrg32k3a->Uniform(); }
 
   double uniform(double a, double b) { return a + (b - a) * uniform(); }
 
@@ -45,10 +42,8 @@ public:
     }
   }
 
-  double Gauss(double mean, double sigma) { return mrg32k3a->Gauss<vecCore::backend::Scalar>(mean, sigma); }
-
 private:
-  vecRng::MRG32k3a<vecCore::backend::Scalar> *mrg32k3a;
+  MRG32k3a *mrg32k3a;
 };
 
 } // namespace geantx
