@@ -17,9 +17,9 @@
 #include "Geant/core/Config.hpp"
 #include "Geant/core/VectorTypes.hpp"
 #include "Geant/material/Material.hpp"
-#include "navigation/NavigationState.h"
-#include "volumes/LogicalVolume.h"
-#include "volumes/PlacedVolume.h"
+#include "VecGeom/navigation/NavigationState.h"
+#include "VecGeom/volumes/LogicalVolume.h"
+#include "VecGeom/volumes/PlacedVolume.h"
 
 #ifdef GEANT_CUDA
 #  include "base/Vector.h"
