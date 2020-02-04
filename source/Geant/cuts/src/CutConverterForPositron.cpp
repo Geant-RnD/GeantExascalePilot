@@ -23,32 +23,33 @@
 #include <cmath>
 #include <iostream>
 
-namespace geantx {  
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 
-
-CutConverterForPositron::CutConverterForPositron(int numebins, double mincutenergy, double maxcutenergy)
+CutConverterForPositron::CutConverterForPositron(int numebins, double mincutenergy,
+                                                 double maxcutenergy)
     : CutConverter(2, numebins, mincutenergy, maxcutenergy)
 {
   if (fMinCutEnergy >= fMaxCutEnergy) {
-    std::cerr << "  *** ERROR in CutConverterForPositron::CutConverterForPositron() " << std::endl
+    std::cerr << "  *** ERROR in CutConverterForPositron::CutConverterForPositron() "
+              << std::endl
               << "       minenergy = " << mincutenergy / geantx::units::GeV
-              << " [GeV] >= maxenergy = " << maxcutenergy / geantx::units::GeV << " [GeV]" << std::endl;
+              << " [GeV] >= maxenergy = " << maxcutenergy / geantx::units::GeV << " [GeV]"
+              << std::endl;
     exit(-1);
   }
   Initialise();
 }
 
-// must be called before using the Convert method if new element has been inserted into the Element table!
+// must be called before using the Convert method if new element has been inserted into
+// the Element table!
 void CutConverterForPositron::Initialise()
 {
   CutConverter::Initialise();
   BuildElossOrAbsXsecTable();
 }
 
-CutConverterForPositron::~CutConverterForPositron()
-{
-}
+CutConverterForPositron::~CutConverterForPositron() {}
 
 double CutConverterForPositron::ComputeELossOrAbsXsecPerAtom(double zet, double ekin)
 {
@@ -61,7 +62,8 @@ double CutConverterForPositron::ComputeELossOrAbsXsecPerAtom(double zet, double 
   const double mass  = geantx::units::kElectronMassC2;
   const double taul  = tlow / mass;
   const double cpot  = 1.6e-5 * geantx::units::MeV;
-  const double fact  = geantx::units::kTwoPi * geantx::units::kElectronMassC2 * geantx::units::kClassicElectronRadius *
+  const double fact  = geantx::units::kTwoPi * geantx::units::kElectronMassC2 *
+                      geantx::units::kClassicElectronRadius *
                       geantx::units::kClassicElectronRadius;
 
   double ionpot    = cpot * Math::Exp(0.9 * Math::Log(zet)) / mass;
@@ -76,8 +78,10 @@ double CutConverterForPositron::ComputeELossOrAbsXsecPerAtom(double zet, double 
     double tsq   = taul * taul;
     double beta2 = taul * t2 / (t1 * t1);
     // this is different compared to e-
-    double f = 2. * Math::Log(taul) -
-               (6. * taul + 1.5 * tsq - taul * (1. - tsq / 3.) / t2 - tsq * (0.5 - tsq / 12.) / (t2 * t2)) / (t1 * t1);
+    double f =
+        2. * Math::Log(taul) - (6. * taul + 1.5 * tsq - taul * (1. - tsq / 3.) / t2 -
+                                tsq * (0.5 - tsq / 12.) / (t2 * t2)) /
+                                   (t1 * t1);
     dEdx        = (Math::Log(2. * taul + 4.) - 2. * ionpotlog + f) / beta2;
     dEdx        = fact * zet * dEdx;
     double clow = dEdx * std::sqrt(taul);
@@ -88,8 +92,9 @@ double CutConverterForPositron::ComputeELossOrAbsXsecPerAtom(double zet, double 
     double tsq   = tau * tau;
     double beta2 = tau * t2 / (t1 * t1);
     // this is different compared to e-
-    double f = 2. * Math::Log(tau) -
-               (6. * tau + 1.5 * tsq - tau * (1. - tsq / 3.) / t2 - tsq * (0.5 - tsq / 12.) / (t2 * t2)) / (t1 * t1);
+    double f = 2. * Math::Log(tau) - (6. * tau + 1.5 * tsq - tau * (1. - tsq / 3.) / t2 -
+                                      tsq * (0.5 - tsq / 12.) / (t2 * t2)) /
+                                         (t1 * t1);
     dEdx = (Math::Log(2. * tau + 4.) - 2. * ionpotlog + f) / beta2;
     dEdx = fact * zet * dEdx;
     // loss from bremsstrahlung follows

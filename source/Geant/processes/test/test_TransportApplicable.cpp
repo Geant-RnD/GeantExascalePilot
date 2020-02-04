@@ -36,91 +36,90 @@ using namespace geantx;
 using std::cout;
 using std::endl;
 
-class TransportApplicable : public ::testing::Test
-{};
+class TransportApplicable : public ::testing::Test {};
 
 TEST_F(TransportApplicable, Electron)
 {
-    auto value = Transportation::IsApplicable<Electron>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<Electron>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, Gamma)
 {
-    auto value = Transportation::IsApplicable<Gamma>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<Gamma>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, KaonLong)
 {
-    auto value = Transportation::IsApplicable<KaonLong>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<KaonLong>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, KaonMinus)
 {
-    auto value = Transportation::IsApplicable<KaonMinus>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<KaonMinus>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, KaonPlus)
 {
-    auto value = Transportation::IsApplicable<KaonPlus>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<KaonPlus>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, KaonShort)
 {
-    auto value = Transportation::IsApplicable<KaonShort>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<KaonShort>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, KaonZero)
 {
-    auto value = Transportation::IsApplicable<KaonZero>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<KaonZero>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, Neutron)
 {
-    auto value = Transportation::IsApplicable<Neutron>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<Neutron>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, Particle)
 {
-    auto value = Transportation::IsApplicable<Particle>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<Particle>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, PionMinus)
 {
-    auto value = Transportation::IsApplicable<PionMinus>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<PionMinus>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, PionPlus)
 {
-    auto value = Transportation::IsApplicable<PionPlus>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<PionPlus>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, PionZero)
 {
-    auto value = Transportation::IsApplicable<PionZero>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<PionZero>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, Positron)
 {
-    auto value = Transportation::IsApplicable<Positron>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<Positron>;
+  ASSERT_TRUE(value);
 }
 
 TEST_F(TransportApplicable, Proton)
 {
-    auto value = Transportation::IsApplicable<Proton>;
-    ASSERT_TRUE(value);
+  auto value = Transportation::IsApplicable<Proton>;
+  ASSERT_TRUE(value);
 }
 //
 //  Test something other than a particle and make sure it is not
@@ -128,6 +127,6 @@ TEST_F(TransportApplicable, Proton)
 //
 TEST_F(TransportApplicable, PhysicsParameters)
 {
-    auto value = Transportation::IsApplicable<PhysicsParameters>;
-    ASSERT_FALSE(value);
+  auto value = Transportation::IsApplicable<PhysicsParameters>;
+  ASSERT_FALSE(value);
 }

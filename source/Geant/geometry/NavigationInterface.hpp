@@ -30,31 +30,33 @@ inline namespace GEANT_IMPL_NAMESPACE {
 
 namespace NavigationInterface {
 
-  /** @brief Function for navigation that checks if location is the same or not 
-   *  
-   *  @param track TrackState to be checked and updated with the new NavigationPath
-   *  @param tmpstate Temporary navigation state to be used internally (to avoid redundant allocations)
-   *  @return true if the location is still the same
-  */
-  VECCORE_ATT_HOST_DEVICE
-  bool IsSameLocation(TrackState &track, VolumePath_t &tmpstate)
-  {
-    //#### NOT USING YET THE NEW NAVIGATORS ####//
-    using Vector3D_t = vecgeom::Vector3D<vecgeom::Precision>;
+/** @brief Function for navigation that checks if location is the same or not
+ *
+ *  @param track TrackState to be checked and updated with the new NavigationPath
+ *  @param tmpstate Temporary navigation state to be used internally (to avoid redundant
+ * allocations)
+ *  @return true if the location is still the same
+ */
+VECCORE_ATT_HOST_DEVICE
+bool IsSameLocation(TrackState &track, VolumePath_t &tmpstate)
+{
+  //#### NOT USING YET THE NEW NAVIGATORS ####//
+  using Vector3D_t = vecgeom::Vector3D<vecgeom::Precision>;
 
-    // TODO: not using the direction yet here !!
-    bool samepath = vecgeom::GlobalLocator::HasSamePath(Vector3D_t(track.fPos.x(), track.fPos.y(), track.fPos.z()), *track.fGeometryState.fPath, tmpstate);
+  // TODO: not using the direction yet here !!
+  bool samepath = vecgeom::GlobalLocator::HasSamePath(
+      Vector3D_t(track.fPos.x(), track.fPos.y(), track.fPos.z()),
+      *track.fGeometryState.fPath, tmpstate);
 
-    if (!samepath) {
-      tmpstate.CopyTo(track.fGeometryState.fNextpath);
+  if (!samepath) {
+    tmpstate.CopyTo(track.fGeometryState.fNextpath);
 #ifdef VECGEOM_CACHED_TRANS
-      track.fGeometryState.fNextPath->UpdateTopMatrix();
+    track.fGeometryState.fNextPath->UpdateTopMatrix();
 #endif
-    }
-    return samepath;
   }
+  return samepath;
+}
 
-
-} // NavigationInterface
-} // GEANT_IMPL_NAMESPACE
-} // geantx
+} // namespace NavigationInterface
+} // namespace GEANT_IMPL_NAMESPACE
+} // namespace geantx

@@ -24,19 +24,16 @@
 
 #include "Geant/proxy/ProxyRandom.hpp"
 
-namespace geantx
-{
-
-template <typename TEmProcess> struct Model_traits;
+namespace geantx {
+template <typename TEmProcess>
+struct Model_traits;
 
 template <typename TEmProcess>
-class ProxyEmProcess : public Process
-{
+class ProxyEmProcess : public Process {
 protected:
-
   using Model_t = typename Model_traits<TEmProcess>::Model_t;
 
-  Model_t *fModel = nullptr;
+  Model_t *fModel   = nullptr;
   ProxyRandom *fRng = nullptr;
 
 public:
@@ -49,90 +46,92 @@ public:
   static constexpr bool EnableAtRestDoIt    = false;
   static constexpr bool EnableAlongStepDoIt = true;
   static constexpr bool EnablePostStepDoIt  = true;
-  
+
   // for enable_if statements
   template <typename _Tp>
   static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
-  
+
   // provide no specializations
   using specialized_types = std::tuple<>;
-  
+
 public:
   using this_type = ProxyEmProcess;
-  
-  ProxyEmProcess(){ 
-    fRng = new ProxyRandom; 
-    fModel = new  Model_t;
+
+  ProxyEmProcess()
+  {
+    fRng   = new ProxyRandom;
+    fModel = new Model_t;
   }
 
   ~ProxyEmProcess() = default;
-  
-  //mandatory methods
-  double MeanFreePath(TrackState* _track)
+
+  // mandatory methods
+  double MeanFreePath(TrackState *_track)
   {
     GEANT_THIS_TYPE_TESTING_MARKER("");
     double xsection = fModel->MacroscopicCrossSection(_track);
-    return (xsection <= 0.0) ? 0.0 : 1.0/xsection;
+    return (xsection <= 0.0) ? 0.0 : 1.0 / xsection;
   }
-  
+
   // the proposed along step physical interaction length
-  double AlongStepGPIL(TrackState* _track)
+  double AlongStepGPIL(TrackState *_track)
   {
     GEANT_THIS_TYPE_TESTING_MARKER("");
-    return  std::numeric_limits<double>::max();;
+    return std::numeric_limits<double>::max();
+    ;
   }
 
   // the proposed post step physical interaction length
-  double PostStepGPIL(TrackState* _track);
+  double PostStepGPIL(TrackState *_track);
 
   // DoIt for the along step
-  void AlongStepDoIt(TrackState* _track)
+  void AlongStepDoIt(TrackState *_track)
   {
     GEANT_THIS_TYPE_TESTING_MARKER("");
-    ThreeVector rand = { get_rand(), get_rand(), get_rand() };
+    ThreeVector rand = {get_rand(), get_rand(), get_rand()};
     rand.Normalize();
     _track->fDir = rand;
   }
-  
+
   // DoIt for the post step
-  int PostStepDoIt(TrackState* _track);
-  
+  int PostStepDoIt(TrackState *_track);
 };
 
 template <typename TEmProcess>
-double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
+double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState *track)
 {
-  geantx::Log(kInfo) << GEANT_HERE << "ProxyEmProcess<TEmProcess>::PostStepGPIL: " << *track;
+  geantx::Log(kInfo) << GEANT_HERE
+                     << "ProxyEmProcess<TEmProcess>::PostStepGPIL: " << *track;
   GEANT_THIS_TYPE_TESTING_MARKER("");
   double step = std::numeric_limits<double>::max();
 
   double lambda = MeanFreePath(track);
 
-  //reset or update the number of the interaction length left  
-  if ( track->fPhysicsProcessState.fNumOfInteractLengthLeft <= 0.0 ) {
-    track->fPhysicsProcessState.fNumOfInteractLengthLeft = -vecCore::math::Log(fRng->uniform());
+  // reset or update the number of the interaction length left
+  if (track->fPhysicsProcessState.fNumOfInteractLengthLeft <= 0.0) {
+    track->fPhysicsProcessState.fNumOfInteractLengthLeft =
+        -vecCore::math::Log(fRng->uniform());
+  } else {
+    track->fPhysicsProcessState.fNumOfInteractLengthLeft -=
+        track->fPhysicsState.fPstep / track->fPhysicsProcessState.fPhysicsInteractLength;
   }
-  else {
-    track->fPhysicsProcessState.fNumOfInteractLengthLeft
-      -=  track->fPhysicsState.fPstep/track->fPhysicsProcessState.fPhysicsInteractLength;
-  }    
 
   step = lambda * track->fPhysicsProcessState.fNumOfInteractLengthLeft;
 
-  //save lambda and the current step
+  // save lambda and the current step
   track->fPhysicsProcessState.fPhysicsInteractLength = lambda;
-  track->fPhysicsState.fPstep = step;
+  track->fPhysicsState.fPstep                        = step;
 
   return step;
 }
 
 template <typename TEmProcess>
-int ProxyEmProcess<TEmProcess>::PostStepDoIt(TrackState* track)
+int ProxyEmProcess<TEmProcess>::PostStepDoIt(TrackState *track)
 {
   GEANT_THIS_TYPE_TESTING_MARKER("");
-  int nsec = static_cast<TEmProcess *>(this)-> FinalStateInteraction(track);
+  int nsec = static_cast<TEmProcess *>(this)->FinalStateInteraction(track);
 
   return nsec;
 }
 
-}  // namespace geantx
+} // namespace geantx

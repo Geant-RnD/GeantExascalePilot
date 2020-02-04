@@ -14,12 +14,11 @@
 
 #pragma once
 
+#include "Geant/track/ParticleDefinitions.hpp"
 #include "Geant/track/TrackAccessor.hpp"
 #include "Geant/track/TrackState.hpp"
-#include "Geant/track/ParticleDefinitions.hpp"
 
 namespace geantx {
-
 //---------------------------------------------------------------------------//
 /*!
  * \class TrackPhysicsAccessor

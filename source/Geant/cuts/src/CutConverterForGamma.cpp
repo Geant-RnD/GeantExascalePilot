@@ -28,35 +28,39 @@
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 
-CutConverterForGamma::CutConverterForGamma(int numebins, double mincutenergy, double maxcutenergy)
-    : CutConverter(0, numebins, mincutenergy, maxcutenergy), fZ(-1.), fS200keV(0.), fTmin(0.), fSmin(0.), fCmin(0.),
-      fTlow(0.), fSlow(0.), fS1keV(0.), fClow(0.), fChigh(0.)
+CutConverterForGamma::CutConverterForGamma(int numebins, double mincutenergy,
+                                           double maxcutenergy)
+    : CutConverter(0, numebins, mincutenergy, maxcutenergy), fZ(-1.), fS200keV(0.),
+      fTmin(0.), fSmin(0.), fCmin(0.), fTlow(0.), fSlow(0.), fS1keV(0.), fClow(0.),
+      fChigh(0.)
 {
   if (fMinCutEnergy >= fMaxCutEnergy) {
-    std::cerr << "  *** ERROR in CutConverterForGamma::CutConverterForGamma() " << std::endl
+    std::cerr << "  *** ERROR in CutConverterForGamma::CutConverterForGamma() "
+              << std::endl
               << "       minenergy = " << mincutenergy / geantx::units::GeV
-              << " [GeV] >= maxenergy = " << maxcutenergy / geantx::units::GeV << " [GeV]" << std::endl;
+              << " [GeV] >= maxenergy = " << maxcutenergy / geantx::units::GeV << " [GeV]"
+              << std::endl;
     exit(-1);
   }
   Initialise();
 }
 
-// must be called before using the Convert method if new element has been inserted into the Element table!
+// must be called before using the Convert method if new element has been inserted into
+// the Element table!
 void CutConverterForGamma::Initialise()
 {
   CutConverter::Initialise();
   BuildElossOrAbsXsecTable();
 }
 
-CutConverterForGamma::~CutConverterForGamma()
-{
-}
+CutConverterForGamma::~CutConverterForGamma() {}
 
 void CutConverterForGamma::BuildLengthVector(const Material *mat)
 {
-  const Vector_t<Element *> elemVect      = mat->GetElementVector();
-  const double *theAtomicNumDensityVector = mat->GetMaterialProperties()->GetNumOfAtomsPerVolumeVect();
-  int numElements                         = elemVect.size();
+  const Vector_t<Element *> elemVect = mat->GetElementVector();
+  const double *theAtomicNumDensityVector =
+      mat->GetMaterialProperties()->GetNumOfAtomsPerVolumeVect();
+  int numElements = elemVect.size();
 
   double maxAbsLenght = -1.0;
   for (int iener = 0; iener < fNumEBins; ++iener) {
@@ -75,8 +79,9 @@ void CutConverterForGamma::BuildLengthVector(const Material *mat)
   }
 }
 
-// Compute the photon "absorption" cross section: sum of destructive (approximated) cross sections like
-// pair production, Compton scattering and photoelectric effect (taken from Geant4)
+// Compute the photon "absorption" cross section: sum of destructive (approximated) cross
+// sections like pair production, Compton scattering and photoelectric effect (taken from
+// Geant4)
 double CutConverterForGamma::ComputeELossOrAbsXsecPerAtom(double zet, double ekin)
 {
   const double t1keV   = 1.0 * geantx::units::keV;
@@ -91,13 +96,15 @@ double CutConverterForGamma::ComputeELossOrAbsXsecPerAtom(double zet, double eki
     // set some Z dependent variables
     fS200keV = (0.2651 - 0.1501 * Zlog + 0.02283 * Zlogsquare) * Zsquare;
     fTmin    = (0.552 + 218.5 / fZ + 557.17 / Zsquare) * geantx::units::MeV;
-    fSmin    = (0.01239 + 0.005585 * Zlog - 0.000923 * Zlogsquare) * Math::Exp(1.5 * Zlog);
-    fCmin    = Math::Log(fS200keV / fSmin) / (Math::Log(fTmin / t200keV) * Math::Log(fTmin / t200keV));
-    fTlow    = 0.2 * Math::Exp(-7.355 / std::sqrt(fZ)) * geantx::units::MeV;
-    fSlow    = fS200keV * Math::Exp(0.042 * fZ * Math::Log(t200keV / fTlow) * Math::Log(t200keV / fTlow));
-    fS1keV   = 300.0 * Zsquare;
-    fClow    = Math::Log(fS1keV / fSlow) / Math::Log(fTlow / t1keV);
-    fChigh   = (7.55e-5 - 0.0542e-5 * fZ) * Zsquare * fZ / Math::Log(t100MeV / fTmin);
+    fSmin = (0.01239 + 0.005585 * Zlog - 0.000923 * Zlogsquare) * Math::Exp(1.5 * Zlog);
+    fCmin = Math::Log(fS200keV / fSmin) /
+            (Math::Log(fTmin / t200keV) * Math::Log(fTmin / t200keV));
+    fTlow  = 0.2 * Math::Exp(-7.355 / std::sqrt(fZ)) * geantx::units::MeV;
+    fSlow  = fS200keV * Math::Exp(0.042 * fZ * Math::Log(t200keV / fTlow) *
+                                 Math::Log(t200keV / fTlow));
+    fS1keV = 300.0 * Zsquare;
+    fClow  = Math::Log(fS1keV / fSlow) / Math::Log(fTlow / t1keV);
+    fChigh = (7.55e-5 - 0.0542e-5 * fZ) * Zsquare * fZ / Math::Log(t100MeV / fTmin);
   }
   // calculate the absorption cross section (using an approximate empirical formula)
   double xs = 0.0;
@@ -107,7 +114,8 @@ double CutConverterForGamma::ComputeELossOrAbsXsecPerAtom(double zet, double eki
     else
       xs = fSlow * Math::Exp(fClow * Math::Log(fTlow / ekin));
   } else if (ekin < t200keV) {
-    xs = fS200keV * Math::Exp(0.042 * fZ * Math::Log(t200keV / ekin) * Math::Log(t200keV / ekin));
+    xs = fS200keV *
+         Math::Exp(0.042 * fZ * Math::Log(t200keV / ekin) * Math::Log(t200keV / ekin));
   } else if (ekin < fTmin) {
     double dum = Math::Log(fTmin / ekin);
     xs         = fSmin * Math::Exp(fCmin * dum * dum);
@@ -117,5 +125,5 @@ double CutConverterForGamma::ComputeELossOrAbsXsecPerAtom(double zet, double eki
   return xs * geantx::units::barn;
 }
 
-} // namespace GEANT_IMPL_NAMESPACE                                                                                                                           
+} // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantx

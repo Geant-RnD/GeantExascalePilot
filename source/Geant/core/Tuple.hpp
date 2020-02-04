@@ -16,9 +16,9 @@
 
 #include "Geant/core/Config.hpp"
 
-#include <utility>
 #include <tuple>
 #include <type_traits>
+#include <utility>
 
 //======================================================================================//
 
@@ -2099,7 +2099,6 @@ struct Apply {
 
 template <>
 struct Apply<void> {
-
   //----------------------------------------------------------------------------------//
 
   template <typename _Access, typename... _Args,

@@ -14,12 +14,11 @@
 
 #pragma once
 
+#include "Geant/track/TrackState.hpp"
 #include <cstdint>
 #include <vector>
-#include "Geant/track/TrackState.hpp"
 
 namespace geantx {
-
 class TrackCollection {
 public:
   using size_type = std::size_t;

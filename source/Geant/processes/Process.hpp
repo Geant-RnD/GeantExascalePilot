@@ -22,50 +22,46 @@
 #include <random>
 #include <string>
 
-namespace geantx
-{
+namespace geantx {
 //----------------------------------------------------------------------------//
 // This trait is marked by the source code as applicable to certain type
 // of particle
 //
 template <typename ProcessType, typename ParticleType>
-struct ProcessAvailable : std::false_type
-{};
+struct ProcessAvailable : std::false_type {};
 
 //----------------------------------------------------------------------------//
 // This trait is marked by the user code as applicable to certain type
 // of particle
 //
 template <typename ProcessType, typename ParticleType>
-struct ProcessEnabled : std::false_type
-{};
+struct ProcessEnabled : std::false_type {};
 
 //----------------------------------------------------------------------------//
 // This is the base class for a process
 //
-class Process
-{
+class Process {
 public:
-    Process(const std::string& name, const double& factor);
-    Process()               = default;
-    ~Process()              = default;
-    Process(const Process&) = default;
-    Process(Process&&)      = default;
+  Process(const std::string &name, const double &factor);
+  Process()                = default;
+  ~Process()               = default;
+  Process(const Process &) = default;
+  Process(Process &&)      = default;
 
-    Process& operator=(const Process&) = delete;
-    Process& operator=(Process&&) = default;
+  Process &operator=(const Process &) = delete;
+  Process &operator=(Process &&) = default;
 
 public:
-    double GetPILFactor() const { return fPILfactor; }
-    void   SetPILFactor(const double& val) { fPILfactor = val; }
+  double GetPILFactor() const { return fPILfactor; }
+  void SetPILFactor(const double &val) { fPILfactor = val; }
 
-    const std::string& GetName() { return fName; }
-    void               SetName(const std::string& val) { fName = val; }
+  const std::string &GetName() { return fName; }
+  void SetName(const std::string &val) { fName = val; }
 
 protected:
-    double                fPILfactor = 0.0;
-    std::string           fName      = "unknown";
-    static constexpr auto fMaxPIL    = std::numeric_limits<double>::max();
+  double fPILfactor             = 0.0;
+  std::string fName             = "unknown";
+  static constexpr auto fMaxPIL = std::numeric_limits<double>::max();
 };
 
 //===----------------------------------------------------------------------===//
@@ -76,15 +72,14 @@ protected:
 // being slow.
 //
 //#if defined(GEANT_TESTING)
-inline double
-get_rand()
+inline double get_rand()
 {
-    static auto _get_generator = []() {
-        std::mt19937_64 gen(tim::get_env<uintmax_t>("GEANT_TESTING_SEED", 15432483));
-        return gen;
-    };
-    static thread_local auto _gen = _get_generator();
-    return std::generate_canonical<double, 10>(_gen);
+  static auto _get_generator = []() {
+    std::mt19937_64 gen(tim::get_env<uintmax_t>("GEANT_TESTING_SEED", 15432483));
+    return gen;
+  };
+  static thread_local auto _gen = _get_generator();
+  return std::generate_canonical<double, 10>(_gen);
 }
 //#endif
-}  // namespace geantx
+} // namespace geantx

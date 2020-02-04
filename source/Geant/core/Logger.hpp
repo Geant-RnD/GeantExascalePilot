@@ -10,46 +10,42 @@
 #include <memory>
 
 #ifndef __NVCC__
-#    include "Geant/core/LoggerStatement.hpp"
+#  include "Geant/core/LoggerStatement.hpp"
 #else
-#    include "Geant/core/NullLoggerStatement.hpp"
+#  include "Geant/core/NullLoggerStatement.hpp"
 #endif
 
-namespace geantx
-{
+namespace geantx {
 // To be moved to its own header/source file.
-uintmax_t
-GetThisThreadID();
+uintmax_t GetThisThreadID();
 
 //! Delayed evaluation of output for GEANT_HERE
-struct StreamHere
-{
-    const char* fFunction;
-    const char* fFile;
-    int         fLine;
+struct StreamHere {
+  const char *fFunction;
+  const char *fFile;
+  int fLine;
 };
 
-inline std::ostream&
-operator<<(std::ostream& os, const StreamHere& s)
+inline std::ostream &operator<<(std::ostream &os, const StreamHere &s)
 {
-    // this is a bit of a hack to make things more readable during initial dev
-    // (J. Madsen)
-    std::string file = s.fFile;
-    if(file.find("/source/") != std::string::npos)
-        file = file.substr(file.find("/source/") + 8);
-    if(file.find("/include/") != std::string::npos)
-        file = file.substr(file.find("/include/") + 9);
-    static uintmax_t maxw = file.length();
-    maxw                  = std::max<uintmax_t>(maxw, file.length());
+  // this is a bit of a hack to make things more readable during initial dev
+  // (J. Madsen)
+  std::string file = s.fFile;
+  if (file.find("/source/") != std::string::npos)
+    file = file.substr(file.find("/source/") + 8);
+  if (file.find("/include/") != std::string::npos)
+    file = file.substr(file.find("/include/") + 9);
+  static uintmax_t maxw = file.length();
+  maxw                  = std::max<uintmax_t>(maxw, file.length());
 
-    // Format string below "[%lu]> %s @ %s:%i "
-    std::stringstream ss;
+  // Format string below "[%lu]> %s @ %s:%i "
+  std::stringstream ss;
 
-    ss << '[' << geantx::GetThisThreadID() << "]> " << std::setw(16) << std::left
-       << s.fFunction << " @ " << std::setw(maxw) << file << ':' << std::setw(4)
-       << s.fLine << ": ";
-    os << ss.str();
-    return os;
+  ss << '[' << geantx::GetThisThreadID() << "]> " << std::setw(16) << std::left
+     << s.fFunction << " @ " << std::setw(maxw) << file << ':' << std::setw(4) << s.fLine
+     << ": ";
+  os << ss.str();
+  return os;
 }
 
 //========================================================= =================//
@@ -63,8 +59,8 @@ operator<<(std::ostream& os, const StreamHere& s)
  * \endcode
  */
 #if !defined(GEANT_HERE)
-#    define GEANT_HERE                                                                   \
-        StreamHere { __FUNCTION__, __FILE__, __LINE__ }
+#  define GEANT_HERE \
+    StreamHere { __FUNCTION__, __FILE__, __LINE__ }
 #endif
 
 //---------------------------------------------------------------------------//
@@ -109,16 +105,15 @@ operator<<(std::ostream& os, const StreamHere& s)
 
 //===========================================================================//
 //! Enumeration for logging level.
-enum LogLevel
-{
-    kPrint = 0,   //!< Debugging messages
-    kDiagnostic,  //!< Diagnostics about current program execution
-    kStatus,      //!< Program execution status (what stage is beginning)
-    kInfo,        //!< Important informational messages
-    kWarning,     //!< Warnings about unusual events
-    kError,       //!< Something went wrong, but execution continues
-    kFatal,       //!< Something went terribly wrong; we're aborting now! Bye!
-    kEndLogLevel
+enum LogLevel {
+  kPrint = 0,  //!< Debugging messages
+  kDiagnostic, //!< Diagnostics about current program execution
+  kStatus,     //!< Program execution status (what stage is beginning)
+  kInfo,       //!< Important informational messages
+  kWarning,    //!< Warnings about unusual events
+  kError,      //!< Something went wrong, but execution continues
+  kFatal,      //!< Something went terribly wrong; we're aborting now! Bye!
+  kEndLogLevel
 };
 
 #ifndef __NVCC__
@@ -156,129 +151,120 @@ enum LogLevel
  */
 //===========================================================================//
 
-class Logger
-{
+class Logger {
 public:
-    //@{
-    //! Type aliases
-    using ostream_t = LoggerStatement::ostream_t;
-    using SpOstream = std::shared_ptr<ostream_t>;
-    //@}
+  //@{
+  //! Type aliases
+  using ostream_t = LoggerStatement::ostream_t;
+  using SpOstream = std::shared_ptr<ostream_t>;
+  //@}
 
 private:
-    // >>> DATA
+  // >>> DATA
 
-    //! Local and global minimum log levels
-    LogLevel fLocalLevel;
-    LogLevel fGlobalLevel;
+  //! Local and global minimum log levels
+  LogLevel fLocalLevel;
+  LogLevel fGlobalLevel;
 
 public:
-    // >>> CONFIGURATION
+  // >>> CONFIGURATION
 
-    // Set MINIMUM verbosity level for local log calls to be logged.
-    void SetLocalLevel(LogLevel level);
+  // Set MINIMUM verbosity level for local log calls to be logged.
+  void SetLocalLevel(LogLevel level);
 
-    // Set MINIMUM verbosity level for global log calls to be logged.
-    void SetGlobalLevel(LogLevel level);
+  // Set MINIMUM verbosity level for global log calls to be logged.
+  void SetGlobalLevel(LogLevel level);
 
-    // Set output stream from a shared pointer
-    void Set(const std::string& key, SpOstream stream_sp, LogLevel min_level);
+  // Set output stream from a shared pointer
+  void Set(const std::string &key, SpOstream stream_sp, LogLevel min_level);
 
-    // Set output stream from a raw pointer (UNSAFE EXCEPT WITH GLOBAL OSTREAM!)
-    void Set(const std::string& key, ostream_t* stream_ptr, LogLevel min_level);
+  // Set output stream from a raw pointer (UNSAFE EXCEPT WITH GLOBAL OSTREAM!)
+  void Set(const std::string &key, ostream_t *stream_ptr, LogLevel min_level);
 
-    // Remove an output stream
-    void Remove(const std::string& key);
+  // Remove an output stream
+  void Remove(const std::string &key);
 
-    // >>> STREAMING
+  // >>> STREAMING
 
-    // Return a stream appropriate to the level for "master" thread output
-    LoggerStatement GlobalStream(LogLevel level);
+  // Return a stream appropriate to the level for "master" thread output
+  LoggerStatement GlobalStream(LogLevel level);
 
-    // Return a stream appropriate to the level for local-thread output
-    LoggerStatement LocalStream(LogLevel level);
+  // Return a stream appropriate to the level for local-thread output
+  LoggerStatement LocalStream(LogLevel level);
 
-    // >>> STATIC METHODS
+  // >>> STATIC METHODS
 
-    static Logger& GetInstance();
-
-private:
-    Logger();
-    Logger(const Logger&);
-    Logger& operator=(const Logger&);
-
-    // >>> STATIC DATA
-
-    // Prefixes for debug/info/etc e.g. "***"
-    static const char* kLogPrefix[kEndLogLevel];
+  static Logger &GetInstance();
 
 private:
-    //! Struct for output levels
-    struct Sink
+  Logger();
+  Logger(const Logger &);
+  Logger &operator=(const Logger &);
+
+  // >>> STATIC DATA
+
+  // Prefixes for debug/info/etc e.g. "***"
+  static const char *kLogPrefix[kEndLogLevel];
+
+private:
+  //! Struct for output levels
+  struct Sink {
+    std::string name;     //!< Name of output sink
+    LogLevel level;       //!< Output only if message >= this level
+    SpOstream stream_ptr; //!< SP to keep pointer alive
+
+    Sink(const std::string &n, LogLevel lev) : name(n), level(lev), stream_ptr()
     {
-        std::string name;        //!< Name of output sink
-        LogLevel    level;       //!< Output only if message >= this level
-        SpOstream   stream_ptr;  //!< SP to keep pointer alive
+      /* * */
+    }
+  };
 
-        Sink(const std::string& n, LogLevel lev)
-        : name(n)
-        , level(lev)
-        , stream_ptr()
-        {
-            /* * */
-        }
-    };
-
-    using VecOstream = LoggerStatement::VecOstream;
+  using VecOstream = LoggerStatement::VecOstream;
 
 private:
-    // Instead of doing something complicated like a sorted vector on name,
-    // just have one sink for screen output, one for "log file" output
-    Sink fScreenOutput;
-    Sink fFileOutput;
+  // Instead of doing something complicated like a sorted vector on name,
+  // just have one sink for screen output, one for "log file" output
+  Sink fScreenOutput;
+  Sink fFileOutput;
 
-    // Find the sink given this name
-    Sink& Find(const std::string& key);
+  // Find the sink given this name
+  Sink &Find(const std::string &key);
 
-    // Build output streams based on the given level
-    VecOstream BuildStreams(LogLevel level) const;
+  // Build output streams based on the given level
+  VecOstream BuildStreams(LogLevel level) const;
 };
 
 //---------------------------------------------------------------------------//
 //! Return an ostream for global (master thread only) messages
-inline LoggerStatement
-LogMaster(LogLevel level = kInfo)
+inline LoggerStatement LogMaster(LogLevel level = kInfo)
 {
-    return Logger::GetInstance().GlobalStream(level);
+  return Logger::GetInstance().GlobalStream(level);
 }
 
 //---------------------------------------------------------------------------//
 //! Return an ostream for local messages
-inline LoggerStatement
-Log(LogLevel level = kInfo)
+inline LoggerStatement Log(LogLevel level = kInfo)
 {
-    return Logger::GetInstance().LocalStream(level);
+  return Logger::GetInstance().LocalStream(level);
 }
 //---------------------------------------------------------------------------//
-#else  // for __NVCC__ defined:
+#else // for __NVCC__ defined:
 //---------------------------------------------------------------------------//
 
 class Logger;
 
-inline NullLoggerStatement
-LogMaster(LogLevel level = kInfo)
+inline NullLoggerStatement LogMaster(LogLevel level = kInfo)
 {
-    (void) sizeof(level);
-    return {};
+  (void)sizeof(level);
+  return {};
 }
 
-inline NullLoggerStatement
-Log(LogLevel level = kInfo)
+inline NullLoggerStatement Log(LogLevel level = kInfo)
 {
-    (void) sizeof(level);
-    return {};
+  (void)sizeof(level);
+  return {};
 }
 
 #endif
 //---------------------------------------------------------------------------//
-}  // end namespace geantx
+} // end namespace geantx

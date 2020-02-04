@@ -1,6 +1,7 @@
 //
 //  Test GUIntegrationDriver
-//   * compares with the output of a reference stepper (high accuracy) - ok for small steps
+//   * compares with the output of a reference stepper (high accuracy) - ok for small
+//   steps
 //
 //  Based on testStepperFixed.cc
 //    which was started from the work of Somnath Banerjee in GSoC 2015
@@ -13,10 +14,9 @@
 #include "base/Vector3D.h"
 typedef vecgeom::Vector3D<double> ThreeVector;
 
-
 #if ENABLE_MORE_COMPLEX_FIELD
-#include "Geant/ScalarUniformMagField.h"
-#include "Geant/ScalarMagFieldEquation.h"
+#  include "Geant/ScalarUniformMagField.h"
+#  include "Geant/ScalarMagFieldEquation.h"
 #endif
 
 // #include "IntegrationStepper.h"
@@ -70,15 +70,16 @@ int main(int argc, char *args[])
 
   if (argc > 1) step_len_mm = (float)(stof(args[1])); // *mm);
   if (argc > 2) no_of_steps = atoi(args[2]);
-  if (argc > 3) x_field_in  = (float)(stof(args[3])); // tesla
-  if (argc > 4) y_field_in  = (float)(stof(args[4])); // tesla
-  if (argc > 5) z_field_in  = (float)(stof(args[5])); // tesla
+  if (argc > 3) x_field_in = (float)(stof(args[3])); // tesla
+  if (argc > 4) y_field_in = (float)(stof(args[4])); // tesla
+  if (argc > 5) z_field_in = (float)(stof(args[5])); // tesla
 
   double step_len = step_len_mm * geantx::units::millimeter;
 
   // Set Charge etc.
-  double particleCharge = +1.0; // in e+ units
-                                //  magneticMoment= 0.0,            // ignore the magnetic moment
+  double particleCharge =
+      +1.0; // in e+ units
+            //  magneticMoment= 0.0,            // ignore the magnetic moment
 
   // Choice of output coordinates
   int columns[] = {
@@ -118,25 +119,29 @@ int main(int argc, char *args[])
       y_pos = 0., z_pos = 0.;
   double x_mom = 0.0, // mom - momentum  : input unit = GeV / c
       y_mom = 0.5 * std::sqrt(2.0), z_mom = 0.5 * std::sqrt(2.0);
-  double x_field                    = 1.0, // Uniform Magnetic Field (x,y,z)
-      y_field                       = 0.0, //  Tesla // *tesla ;
-      z_field                       = 0.0;
+  double x_field = 1.0, // Uniform Magnetic Field (x,y,z)
+      y_field    = 0.0, //  Tesla // *tesla ;
+      z_field    = 0.0;
   if (x_field_in < DBL_MAX) x_field = x_field_in;
   if (y_field_in < DBL_MAX) y_field = y_field_in;
   if (z_field_in < DBL_MAX) z_field = z_field_in;
 
 #if ENABLE_MORE_COMPLEX_FIELD
   // Field
-  auto gvField = new ScalarUniformMagField(geantx::units::tesla * ThreeVector(x_field, y_field, z_field));
+  auto gvField = new ScalarUniformMagField(geantx::units::tesla *
+                                           ThreeVector(x_field, y_field, z_field));
 
-  cout << "#  Initial  Field strength (GeantV) = " << x_field << " , " << y_field << " , " << z_field
+  cout << "#  Initial  Field strength (GeantV) = " << x_field << " , " << y_field << " , "
+       << z_field
        // << (1.0/geantx::units::tesla) * gvField->GetValue()->X() << ",  "
        << " Tesla " << endl;
-  cout << "#  Initial  momentum * c = " << x_mom << " , " << y_mom << " , " << z_mom << " GeV " << endl;
+  cout << "#  Initial  momentum * c = " << x_mom << " , " << y_mom << " , " << z_mom
+       << " GeV " << endl;
 #endif
 
-  const double hminimum  = 0.0001 * geantx::units::millimeter; // Minimum step = 0.1 microns
-  const double epsTolDef = 1.0e-5;                            // Relative error tolerance
+  const double hminimum =
+      0.0001 * geantx::units::millimeter; // Minimum step = 0.1 microns
+  const double epsTolDef = 1.0e-5;        // Relative error tolerance
 
   const double epsTol = (epsTolInp < 0.0) ? epsTolDef : epsTolInp;
   cout << "#  Driver parameters:  eps_tol= " << epsTol << "  h_min= " << hminimum << endl;
@@ -152,11 +157,13 @@ int main(int argc, char *args[])
 
   // Initialising coordinates
   const double mmGVf = geantx::units::millimeter;
-  const double ppGVf = geantx::units::GeV; //   it is really  momentum * c_light
-                                          //   Else it must be divided by geantx::c_light;
+  const double ppGVf =
+      geantx::units::GeV; //   it is really  momentum * c_light
+                          //   Else it must be divided by geantx::c_light;
   // = geantx::units::GeV / Constants::c_light;     // OLD
 
-  double yIn[] = {x_pos * mmGVf, y_pos * mmGVf, z_pos * mmGVf, x_mom * ppGVf, y_mom * ppGVf, z_mom * ppGVf};
+  double yIn[] = {x_pos * mmGVf, y_pos * mmGVf, z_pos * mmGVf,
+                  x_mom * ppGVf, y_mom * ppGVf, z_mom * ppGVf};
 
   // double yInX[] = {x_pos * mmGVf, y_pos * mmGVf ,z_pos * mmGVf,
   //                 x_mom * ppGVf ,y_mom * ppGVf ,z_mom * ppGVf};
@@ -174,14 +181,18 @@ int main(int argc, char *args[])
   // Creating the baseline stepper
   auto exactStepperGV = new GUTCashKarpRKF45<GvEquationType, Nposmom>(gvEquation2);
   // new TClassicalRK4<GvEquationType,Nposmom>(gvEquation2);
-  cout << "#  Reference stepper is: GUTCashKarpRKF45 <GvEquationType,Nposmom>(gvEquation2);" << endl;
-  // cout << "#  Reference stepper is: TClassicalRK4 <GvEquationType,Nposmom>(gvEquation2);" << endl;
-  // new TSimpleRunge<GvEquationType,Nposmom>(gvEquation2);
-  // new GUExactHelixStepper(gvEquation2);
+  cout << "#  Reference stepper is: GUTCashKarpRKF45 "
+          "<GvEquationType,Nposmom>(gvEquation2);"
+       << endl;
+  // cout << "#  Reference stepper is: TClassicalRK4
+  // <GvEquationType,Nposmom>(gvEquation2);" << endl; new
+  // TSimpleRunge<GvEquationType,Nposmom>(gvEquation2); new
+  // GUExactHelixStepper(gvEquation2);
 
   // Configure Stepper for current particle
-  // exactStepperGV->InitializeCharge( particleCharge ); // Passes to Equation, is cached by stepper
-  // gvEquation2->InitializeCharge( particleCharge ); //  Different way - in case this works
+  // exactStepperGV->InitializeCharge( particleCharge ); // Passes to Equation, is cached
+  // by stepper gvEquation2->InitializeCharge( particleCharge ); //  Different way - in
+  // case this works
 
   auto exactStepper = exactStepperGV;
 #endif
@@ -189,16 +200,19 @@ int main(int argc, char *args[])
   std::cout << "# step_len_mm = " << step_len_mm;
   std::cout << " mmRef= " << mmRef << "   ppRef= " << ppRef << std::endl;
 
-  double yInX[] = {x_pos * mmRef, y_pos * mmRef, z_pos * mmRef, x_mom * ppRef, y_mom * ppRef, z_mom * ppRef};
+  double yInX[] = {x_pos * mmRef, y_pos * mmRef, z_pos * mmRef,
+                   x_mom * ppRef, y_mom * ppRef, z_mom * ppRef};
 
   double stepLengthRef = step_len_mm * mmRef;
 
   // Empty buckets for results
-  double dydx[8] = {0., 0., 0., 0., 0., 0., 0., 0.}, // 2 extra safety buffer
-      dydxRef[8] = {0., 0., 0., 0., 0., 0., 0., 0.}, yout[8] = {0., 0., 0., 0., 0., 0., 0., 0.},
+  double dydx[8]  = {0., 0., 0., 0., 0., 0., 0., 0.}, // 2 extra safety buffer
+      dydxRef[8]  = {0., 0., 0., 0., 0., 0., 0., 0.},
+         yout[8]  = {0., 0., 0., 0., 0., 0., 0., 0.},
          youtX[8] = {0., 0., 0., 0., 0., 0., 0., 0.},
          // yerr [8] = {0.,0.,0.,0.,0.,0.,0.,0.},
-      yerrX[8] = {0., 0., 0., 0., 0., 0., 0., 0.}, yDiff[8] = {0., 0., 0., 0., 0., 0., 0., 0.},
+      yerrX[8]    = {0., 0., 0., 0., 0., 0., 0., 0.},
+         yDiff[8] = {0., 0., 0., 0., 0., 0., 0., 0.},
          yAver[8] = {0., 0., 0., 0., 0., 0., 0., 0.};
   /*-----------------------END PREPARING STEPPER---------------------------*/
 
@@ -299,8 +313,10 @@ int main(int argc, char *args[])
 
     cout << setw(6) << j; // Printing Step number
 #if ENABLE_MORE_COMPLEX_FIELD
-    // myStepper->RightHandSide(yIn, dydx);               //compute dydx - to supply the stepper
-    exactStepper->RightHandSideVIS(yInX, particleCharge, dydxRef); // compute the value of dydx for the exact stepper
+    // myStepper->RightHandSide(yIn, dydx);               //compute dydx - to supply the
+    // stepper
+    exactStepper->RightHandSideVIS(
+        yInX, particleCharge, dydxRef); // compute the value of dydx for the exact stepper
 #endif
 
     // Driver begins at the start !
@@ -310,8 +326,9 @@ int main(int argc, char *args[])
     {
       total_step += step_len;
       // goodAdvance=
-      helixStepper.DoStep<double>(startPosition, startDirection, particleCharge, startMomentumMag, total_step,
-                                  PositionOut, DirectionOut);
+      helixStepper.DoStep<double>(startPosition, startDirection, particleCharge,
+                                  startMomentumMag, total_step, PositionOut,
+                                  DirectionOut);
       yout[0]                 = PositionOut.x();
       yout[1]                 = PositionOut.y();
       yout[2]                 = PositionOut.z();
@@ -322,17 +339,19 @@ int main(int argc, char *args[])
 
 #if ENABLE_MORE_COMPLEX_FIELD
 
-// bool goodAdvance=
-//   integrDriver->AccurateAdvance( yTrackIn, total_step, epsTol, yTrackOut ); // , hInitial );
-// *****************************
+      // bool goodAdvance=
+      //   integrDriver->AccurateAdvance( yTrackIn, total_step, epsTol, yTrackOut ); // ,
+      //   hInitial );
+      // *****************************
 
-// Compare with a high-quality stepper -- expect it works well for this step size (check!)
-//   This builds on its previous step to create the solution !
-      exactStepperGV->StepWithErrorEstimate(yInX, dydxRef, particleCharge, stepLengthRef, youtX,
+      // Compare with a high-quality stepper -- expect it works well for this step size
+      // (check!)
+      //   This builds on its previous step to create the solution !
+      exactStepperGV->StepWithErrorEstimate(yInX, dydxRef, particleCharge, stepLengthRef,
+                                            youtX,
                                             yerrX); // call the reference stepper
 #endif
     }
-
 
     // Check the results
     double sumDiffPos2 = 0.0, sumDiffMom2 = 0.0; // Mag^2 |X-Xref|, |P-Pref|

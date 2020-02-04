@@ -28,7 +28,8 @@ class Material;
  */
 class CutConverterForGamma : public CutConverter {
 public:
-  CutConverterForGamma(int numebins = 301, double mincutenergy = 100.0 * geantx::units::eV,
+  CutConverterForGamma(int numebins        = 301,
+                       double mincutenergy = 100.0 * geantx::units::eV,
                        double maxcutenergy = 10.0 * geantx::units::GeV);
   virtual ~CutConverterForGamma();
 
@@ -39,7 +40,8 @@ protected:
   virtual double ComputeELossOrAbsXsecPerAtom(double zet, double ekin);
 
 private:
-  // some Z dependent cached variables for the approximated absorption cross section computation
+  // some Z dependent cached variables for the approximated absorption cross section
+  // computation
   double fZ;
   double fS200keV;
   double fTmin;
@@ -54,4 +56,3 @@ private:
 
 } // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantx
-

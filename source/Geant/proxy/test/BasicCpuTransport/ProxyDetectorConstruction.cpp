@@ -34,7 +34,6 @@ using namespace geantx::units;
 // using kelvin = geantx::units::kelvin;
 
 namespace userapplication {
-
 ProxyDetectorConstruction::ProxyDetectorConstruction(geantx::RunManager *runmgr)
     : geantx::UserDetectorConstruction(runmgr)
 {
@@ -66,10 +65,10 @@ ProxyDetectorConstruction::~ProxyDetectorConstruction()
 void ProxyDetectorConstruction::SetNumberOfAbsorbersPerLayer(int numabs)
 {
   if (numabs > gMaxNumAbsorbers) {
-    std::cerr
-        << "  **** ERROR: ProxyDetectorConstruction::SetNumberOfAbsorbersPerLayer() \n"
-           "    Number of absorbers per layer "
-        << numabs << " > maximum " << gMaxNumAbsorbers << std::endl;
+    std::cerr << "  **** ERROR: "
+                 "ProxyDetectorConstruction::SetNumberOfAbsorbersPerLayer() \n"
+                 "    Number of absorbers per layer "
+              << numabs << " > maximum " << gMaxNumAbsorbers << std::endl;
     exit(-1);
   }
   fNumberOfAbsorbers = numabs;
@@ -100,7 +99,7 @@ double ProxyDetectorConstruction::GetAbsorberThickness(int absindx) const
 }
 
 void ProxyDetectorConstruction::SetAbsorberMaterialName(int absindx,
-                                                          const std::string &matname)
+                                                        const std::string &matname)
 {
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: ProxyDetectorConstruction::SetAbsorberMaterialName() \n"
@@ -113,7 +112,7 @@ void ProxyDetectorConstruction::SetAbsorberMaterialName(int absindx,
 }
 
 void ProxyDetectorConstruction::SetAbsorberMaterial(int absindx,
-                                                      const std::string &matname)
+                                                    const std::string &matname)
 {
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: ProxyDetectorConstruction::SetAbsorberMaterial() \n"
@@ -127,8 +126,7 @@ void ProxyDetectorConstruction::SetAbsorberMaterial(int absindx,
   fAbsorberMaterials[absindx] = mat;
 }
 
-const geantx::Material *ProxyDetectorConstruction::GetAbsorberMaterial(
-    int absindx) const
+const geantx::Material *ProxyDetectorConstruction::GetAbsorberMaterial(int absindx) const
 {
   if (absindx >= fNumberOfAbsorbers) {
     std::cerr << "  **** ERROR: ProxyDetectorConstruction::GetAbsorberMaterial() \n"
@@ -231,8 +229,8 @@ void ProxyDetectorConstruction::CreateGeometry()
 
   // // create one region (with the production cut in length)
   // // all logical volume will be assigned to this region (i.e. enough to set for the
-  // world) vecgeom::Region *aRegion = new vecgeom::Region("Region", true, fProductionCut,
-  // fProductionCut, fProductionCut);
+  // world) vecgeom::Region *aRegion = new vecgeom::Region("Region", true,
+  // fProductionCut, fProductionCut, fProductionCut);
 
   // create geometry
   vecgeom::UnplacedBox *world =

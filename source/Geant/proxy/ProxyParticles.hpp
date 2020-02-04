@@ -17,12 +17,11 @@
 
 #pragma once
 
-#include "Geant/particles/Particle.hpp"
 #include "Geant/core/PhysicalConstants.hpp"
 #include "Geant/core/SystemOfUnits.hpp"
+#include "Geant/particles/Particle.hpp"
 
 namespace geantx {
-
 //======================================================================================//
 
 class CpuGamma : public Particle {

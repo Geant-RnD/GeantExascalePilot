@@ -27,7 +27,8 @@ inline namespace GEANT_IMPL_NAMESPACE {
  */
 class CutConverterForElectron : public CutConverter {
 public:
-  CutConverterForElectron(int numebins = 301, double mincutenergy = 100.0 * geantx::units::eV,
+  CutConverterForElectron(int numebins        = 301,
+                          double mincutenergy = 100.0 * geantx::units::eV,
                           double maxcutenergy = 10.0 * geantx::units::GeV);
   virtual ~CutConverterForElectron();
 
@@ -37,5 +38,5 @@ protected:
   virtual double ComputeELossOrAbsXsecPerAtom(double zet, double ekin);
 };
 
-} // namespace GEANT_IMPL_NAMESPACE                                                                                                                         
+} // namespace GEANT_IMPL_NAMESPACE
 } // namespace geantx

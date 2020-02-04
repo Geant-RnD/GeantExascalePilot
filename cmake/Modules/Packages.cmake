@@ -10,34 +10,18 @@ add_library(geantx-external INTERFACE)
 
 add_library(geantx-cuda INTERFACE)
 add_library(geantx-threading INTERFACE)
-
 add_library(geantx-coverage INTERFACE)
-add_library(geantx-gperftools INTERFACE)
-add_library(geantx-ittnotify INTERFACE)
-add_library(geantx-nvtx INTERFACE)
 
 set(GEANTX_EXTERNAL_INTERFACES
     geantx-cuda
     geantx-threading
-    )
+)
 
 target_link_libraries(geantx-external INTERFACE ${GEANTX_EXTERNAL_INTERFACES})
 
 # if option is enabled, have geantx-external always provide tools listed below:
 if(GEANT_USE_COVERAGE)
     target_link_libraries(geantx-external INTERFACE geantx-coverage)
-endif()
-
-if(GEANT_USE_GPERF)
-    target_link_libraries(geantx-external INTERFACE geantx-gperftools)
-endif()
-
-if(GEANT_USE_ITTNOTIFY)
-    target_link_libraries(geantx-external INTERFACE geantx-ittnotify)
-endif()
-
-if(GEANT_USE_NVTX)
-    target_link_libraries(geantx-external INTERFACE geantx-nvtx)
 endif()
 
 
@@ -146,55 +130,3 @@ else()
     target_link_libraries(geantx-coverage INTERFACE gcov)
 endif()
 
-
-################################################################################
-#
-#                               Google PerfTools
-#
-################################################################################
-
-find_package(GPerfTools COMPONENTS profiler)
-
-if(GPerfTools_FOUND)
-    # populate interface target with defs, includes, link-libs
-    target_compile_definitions(geantx-gperftools INTERFACE GEANT_USE_GPERF)
-    target_include_directories(geantx-gperftools INTERFACE ${GPerfTools_INCLUDE_DIRS})
-    target_link_libraries(geantx-gperftools INTERFACE ${GPerfTools_LIBRARIES})
-endif()
-
-
-################################################################################
-#
-#                               ITTNOTIFY (for VTune)
-#
-################################################################################
-
-find_package(ittnotify)
-
-if(ittnotify_FOUND)
-    target_compile_definitions(geantx-ittnotify INTERFACE GEANT_USE_ITTNOTIFY)
-    target_include_directories(geantx-ittnotify INTERFACE ${ITTNOTIFY_INCLUDE_DIRS})
-    target_link_libraries(geantx-ittnotify INTERFACE ${ITTNOTIFY_LIBRARIES})
-else()
-    message(WARNING "ittnotify not found. Set \"VTUNE_AMPLIFIER_201{7,8,9}_DIR\" or \"VTUNE_AMPLIFIER_XE_201{7,8,9}_DIR\" in environment")
-endif()
-
-
-################################################################################
-#
-#                               NVTX
-#
-################################################################################
-
-if(GEANT_USE_NVTX)
-    find_package(NVTX)
-endif()
-
-if(NVTX_FOUND)
-    target_link_libraries(geantx-nvtx INTERFACE ${NVTX_LIBRARIES})
-    target_include_directories(geantx-nvtx INTERFACE ${NVTX_INCLUDE_DIRS})
-    target_compile_definitions(geantx-nvtx INTERFACE GEANT_USE_NVTX)
-else()
-    set(GEANT_USE_NVTX OFF)
-    message(WARNING "NVTX not found. GEANT_USE_NVTX is disabled")
-endif()

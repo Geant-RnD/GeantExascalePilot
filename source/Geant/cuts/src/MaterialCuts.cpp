@@ -32,8 +32,8 @@ inline namespace GEANT_IMPL_NAMESPACE {
 
 Vector_t<MaterialCuts *> MaterialCuts::gTheMaterialCutsTable;
 
-MaterialCuts::MaterialCuts(int regionindx, const Material *mat, bool iscutinlength, double gcut, double emcut,
-                           double epcut)
+MaterialCuts::MaterialCuts(int regionindx, const Material *mat, bool iscutinlength,
+                           double gcut, double emcut, double epcut)
     : fIsProductionCutsGivenInLength(iscutinlength), fMaterial(mat)
 {
   if (iscutinlength) {
@@ -74,9 +74,10 @@ const MaterialCuts *MaterialCuts::GetMaterialCut(int indx)
     return gTheMaterialCutsTable[indx];
   } else {
     std::cerr << "  ***  ERROR:  MaterialCuts::GetMaterialCut() \n"
-              << "        Requested MaterialCuts by index = " << indx << " cannot be find in the table! \n"
-              << "        Index should be:   0 <= index < number of MaterialCuts = " << gTheMaterialCutsTable.size()
-              << std::endl;
+              << "        Requested MaterialCuts by index = " << indx
+              << " cannot be find in the table! \n"
+              << "        Index should be:   0 <= index < number of MaterialCuts = "
+              << gTheMaterialCutsTable.size() << std::endl;
     exit(-1);
   }
 }
@@ -85,12 +86,15 @@ void MaterialCuts::ConvertAll()
 {
   CutConverter **converters = new CutConverter *[3];
   // get the min/max secondary production values; they are the same in each reagion
-  converters[0] = new CutConverterForGamma(301, PhysicsParameters::GetMinAllowedGammaCutEnergy(),
-                                           PhysicsParameters::GetMaxAllowedGammaCutEnergy());
-  converters[1] = new CutConverterForElectron(301, PhysicsParameters::GetMinAllowedElectronCutEnergy(),
-                                              PhysicsParameters::GetMaxAllowedElectronCutEnergy());
-  converters[2] = new CutConverterForPositron(301, PhysicsParameters::GetMinAllowedPositronCutEnergy(),
-                                              PhysicsParameters::GetMaxAllowedPositronCutEnergy());
+  converters[0] =
+      new CutConverterForGamma(301, PhysicsParameters::GetMinAllowedGammaCutEnergy(),
+                               PhysicsParameters::GetMaxAllowedGammaCutEnergy());
+  converters[1] = new CutConverterForElectron(
+      301, PhysicsParameters::GetMinAllowedElectronCutEnergy(),
+      PhysicsParameters::GetMaxAllowedElectronCutEnergy());
+  converters[2] = new CutConverterForPositron(
+      301, PhysicsParameters::GetMinAllowedPositronCutEnergy(),
+      PhysicsParameters::GetMaxAllowedPositronCutEnergy());
 
   for (unsigned long i = 0; i < gTheMaterialCutsTable.size(); ++i) {
     MaterialCuts *matcut = gTheMaterialCutsTable[i];
@@ -113,8 +117,8 @@ void MaterialCuts::ConvertAll()
   delete[] converters;
 }
 
-// create all MaterialCuts by using the Region table; this will be the standard way of automatically creating all
-// MaterialCuts in the detetector
+// create all MaterialCuts by using the Region table; this will be the standard way of
+// automatically creating all MaterialCuts in the detetector
 void MaterialCuts::CreateAll()
 {
   // clear all if there were any created before

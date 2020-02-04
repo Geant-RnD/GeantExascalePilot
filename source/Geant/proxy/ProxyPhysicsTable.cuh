@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 /**
  * @file Geant/proxy/ProxyPhysicsTable.cuh
- * @brief 
+ * @brief
  */
 //===----------------------------------------------------------------------===//
 
@@ -21,21 +21,21 @@ namespace geantx {
 
 class ProxyPhysicsTable {
 
- public:
-  GEANT_HOST_DEVICE 
+public:
+  GEANT_HOST_DEVICE
   ProxyPhysicsTable();
 
-  GEANT_HOST_DEVICE 
+  GEANT_HOST_DEVICE
   ~ProxyPhysicsTable();
 
   GEANT_HOST
   void Relocate(void *devPtr);
 
-  GEANT_HOST_DEVICE 
+  GEANT_HOST_DEVICE
   void Print();
 
   GEANT_HOST
-  bool RetrievePhysicsTable(const std::string& fileName);
+  bool RetrievePhysicsTable(const std::string &fileName);
 
 private:
   int fNumPhysicsVector;
@@ -43,4 +43,3 @@ private:
 };
 
 } // namespace geantx
-

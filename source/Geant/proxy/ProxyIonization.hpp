@@ -25,19 +25,17 @@
 #include "Geant/proxy/ProxyEmProcess.hpp"
 #include "Geant/proxy/ProxyMollerScattering.hpp"
 
-namespace geantx
-{
-
+namespace geantx {
 class ProxyIonization;
 
-template <> struct Model_traits<ProxyIonization>
-{
+template <>
+struct Model_traits<ProxyIonization> {
   using Model_t = ProxyMollerScattering;
 };
 
-class ProxyIonization : public ProxyEmProcess<ProxyIonization>
-{
+class ProxyIonization : public ProxyEmProcess<ProxyIonization> {
   friend class ProxyEmProcess<ProxyIonization>;
+
 public:
   // Enable/disable GetPhysicalInteractionLength (GPIL) functions
   static constexpr bool EnableAtRestGPIL    = false;
@@ -51,25 +49,26 @@ public:
   // for enable_if statements
   template <typename _Tp>
   static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
-  
+
   // provide no specializations
   using specialized_types = std::tuple<>;
-  
+
 public:
   using this_type = ProxyIonization;
-  
-  ProxyIonization(){ /*fModel = new ProxyMollerScattering;*/ }
+
+  ProxyIonization()
+  { /*fModel = new ProxyMollerScattering;*/
+  }
   ~ProxyIonization() = default;
-  
-  int FinalStateInteraction(TrackState* _track)
-  {  
+
+  int FinalStateInteraction(TrackState *_track)
+  {
     GEANT_THIS_TYPE_TESTING_MARKER("");
 
-    //update electron state and create an electron 
+    // update electron state and create an electron
     int nsecondaries = this->fModel->SampleSecondaries(_track);
 
     return nsecondaries;
   }
-
 };
-}  // namespace geantx
+} // namespace geantx

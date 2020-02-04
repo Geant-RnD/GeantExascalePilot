@@ -16,7 +16,7 @@
 
 #include "Geant/cuts/CutConverter.hpp"
 
-namespace geantx {  
+namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 
 /**
@@ -27,7 +27,8 @@ inline namespace GEANT_IMPL_NAMESPACE {
  */
 class CutConverterForPositron : public CutConverter {
 public:
-  CutConverterForPositron(int numebins = 301, double mincutenergy = 100.0 * geantx::units::eV,
+  CutConverterForPositron(int numebins        = 301,
+                          double mincutenergy = 100.0 * geantx::units::eV,
                           double maxcutenergy = 10.0 * geantx::units::GeV);
   virtual ~CutConverterForPositron();
 

@@ -29,12 +29,12 @@
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
 
-CutConverter::CutConverter(int particleindx, int numebins, double mincutenergy, double maxcutenergy)
-    : fParticleIndx(particleindx), fMaxZet(-1), fNumEBins(numebins), fMinCutEnergy(mincutenergy),
-      fMaxCutEnergy(maxcutenergy), fEnergyGrid(nullptr), fLengthVector(nullptr), fElossOrAbsXsecTable(nullptr),
-      fMaxLengthIndx(-1)
-{
-}
+CutConverter::CutConverter(int particleindx, int numebins, double mincutenergy,
+                           double maxcutenergy)
+    : fParticleIndx(particleindx), fMaxZet(-1), fNumEBins(numebins),
+      fMinCutEnergy(mincutenergy), fMaxCutEnergy(maxcutenergy), fEnergyGrid(nullptr),
+      fLengthVector(nullptr), fElossOrAbsXsecTable(nullptr), fMaxLengthIndx(-1)
+{}
 
 CutConverter::~CutConverter()
 {
@@ -86,26 +86,29 @@ void CutConverter::Initialise()
   int numElements                     = elemTable.size();
   double maxZet                       = 0.0;
   for (int i = 0; i < numElements; ++i) {
-    double zet               = elemTable[i]->GetZ();
+    double zet = elemTable[i]->GetZ();
     if (zet > maxZet) maxZet = zet;
   }
   fMaxZet = std::lrint(maxZet);
   // allocate space for atomic energyloss or absorption x-section data vectors
   fElossOrAbsXsecTable = new double *[fMaxZet]();
   for (int i = 0; i < numElements; ++i) {
-    int izet                                                            = std::lrint(elemTable[i]->GetZ());
-    if (!fElossOrAbsXsecTable[izet - 1]) fElossOrAbsXsecTable[izet - 1] = new double[fNumEBins]();
+    int izet = std::lrint(elemTable[i]->GetZ());
+    if (!fElossOrAbsXsecTable[izet - 1])
+      fElossOrAbsXsecTable[izet - 1] = new double[fNumEBins]();
   }
-  // allocate space for the length vector that will be used to compute the macroscopic length (range or absorption)
+  // allocate space for the length vector that will be used to compute the macroscopic
+  // length (range or absorption)
   fLengthVector = new double[fNumEBins]();
-  // allocate space and generate the energy grid: logspacing between fMinCutEnergy-fMaxCutEnergy with fNumEBins bin
+  // allocate space and generate the energy grid: logspacing between
+  // fMinCutEnergy-fMaxCutEnergy with fNumEBins bin
   double delta = Math::Log(fMaxCutEnergy / fMinCutEnergy) / (fNumEBins - 1);
   double base  = Math::Log(fMinCutEnergy) / delta;
   fEnergyGrid  = new double[fNumEBins]();
   int i        = 0;
   for (; i < fNumEBins - 1; ++i)
     fEnergyGrid[i] = Math::Exp((base + i) * delta);
-  fEnergyGrid[i]   = fMaxCutEnergy;
+  fEnergyGrid[i] = fMaxCutEnergy;
 }
 
 // converts production cut given in length/energy to energy/legth
@@ -114,7 +117,8 @@ double CutConverter::Convert(const Material *mat, double cut, bool isfromlength)
   fMaxLengthIndx = -1;
   BuildLengthVector(mat);
   if (!isfromlength)
-    return ConvertKineticEnergyToLength(cut); // NOTE: ONLY INFORMAL i.e. NO lenght-energy-length conversion guaranted
+    return ConvertKineticEnergyToLength(
+        cut); // NOTE: ONLY INFORMAL i.e. NO lenght-energy-length conversion guaranted
   // go for length - to - energy conversation
   double cutInEnergy = ConvertLengthToKineticEnergy(cut);
   // low energy correction for e-/e+
@@ -135,9 +139,10 @@ double CutConverter::Convert(const Material *mat, double cut, bool isfromlength)
 // Builds the energy-length function
 void CutConverter::BuildLengthVector(const Material *mat)
 {
-  const Vector_t<Element *> elemVect      = mat->GetElementVector();
-  const double *theAtomicNumDensityVector = mat->GetMaterialProperties()->GetNumOfAtomsPerVolumeVect();
-  int numElements                         = elemVect.size();
+  const Vector_t<Element *> elemVect = mat->GetElementVector();
+  const double *theAtomicNumDensityVector =
+      mat->GetMaterialProperties()->GetNumOfAtomsPerVolumeVect();
+  int numElements = elemVect.size();
   // fill lossvect with the material dE/dx
   double *lossvect = new double[fNumEBins]();
   for (int iener = 0; iener < fNumEBins; ++iener) {
@@ -149,9 +154,10 @@ void CutConverter::BuildLengthVector(const Material *mat)
     }
     lossvect[iener] = eloss;
   }
-  // integrate 1/dE/dx to get the range like in Geant4; //NOTE: that it is not correct in Geant4 neithr here because
-  // the integral between [0,E_1] is missing!!! We keep it like this to guarantee consistency with Geant4 since it is
-  // only used when production cut is given in length.
+  // integrate 1/dE/dx to get the range like in Geant4; //NOTE: that it is not correct in
+  // Geant4 neithr here because the integral between [0,E_1] is missing!!! We keep it like
+  // this to guarantee consistency with Geant4 since it is only used when production cut
+  // is given in length.
   double deltae = Math::Log(fMaxCutEnergy / fMinCutEnergy);
   deltae /= (fNumEBins - 1);
   fLengthVector[0] = fEnergyGrid[0] / lossvect[0] * deltae;
@@ -162,7 +168,8 @@ void CutConverter::BuildLengthVector(const Material *mat)
     fLengthVector[i] = (sum - 0.5 * q) * deltae;
   }
   //  for (int i=0; i<fNumEBins; ++i)
-  //    std::cerr<<fEnergyGrid[i]/geantx::units::MeV<<" "<<fLengthVector[i]/geantx::units::mm<<std::endl;
+  //    std::cerr<<fEnergyGrid[i]/geantx::units::MeV<<"
+  //    "<<fLengthVector[i]/geantx::units::mm<<std::endl;
 }
 
 // must be called only once
@@ -183,10 +190,12 @@ void CutConverter::BuildElossOrAbsXsecTable()
 double CutConverter::ConvertLengthToKineticEnergy(double cutlenght)
 {
   /*
-  // This is a more compact and accurate way that results in a more exact (compared to geant4) lenght-energy-length
+  // This is a more compact and accurate way that results in a more exact (compared to
+  geant4) lenght-energy-length
   // conversions
   std::cerr<<" --- "<<fMaxLengthIndx<<std::endl;
-    // if it is photon(i.e. fMaxLengthIndx was set) and the cut length is higher than the maximum photoabsorption lenght
+    // if it is photon(i.e. fMaxLengthIndx was set) and the cut length is higher than the
+  maximum photoabsorption lenght
     // then return with the maximum production energy threshold
     if (fMaxLengthIndx>-1 && cutlenght>=fLengthVector[fMaxLengthIndx])
       return fMaxCutEnergy;
@@ -204,7 +213,8 @@ double CutConverter::ConvertLengthToKineticEnergy(double cutlenght)
     return res;
   */
   //
-  // NOTE: This is the less efficient and accurate way a la Geant4. We keep this to guarantee consistency with Geant4
+  // NOTE: This is the less efficient and accurate way a la Geant4. We keep this to
+  // guarantee consistency with Geant4
   //       since it is used only if the production cut is given in length.
   //
   // THIS the Geant4 like way to do it i.e. using bisection.
@@ -221,8 +231,8 @@ double CutConverter::ConvertLengthToKineticEnergy(double cutlenght)
 
   int i = 0;
   for (; i < fNumEBins; ++i) {
-    double T           = fEnergyGrid[i];
-    double r           = fLengthVector[i];
+    double T = fEnergyGrid[i];
+    double r = fLengthVector[i];
     if (r > rmax) rmax = r;
     if (r < cutlenght) {
       T1 = T;
@@ -272,7 +282,8 @@ double CutConverter::ConvertKineticEnergyToLength(double cutenergy)
     }
   }
 
-  Spline *sp         = new Spline(&(fEnergyGrid[istart]), &(fLengthVector[istart]), numdata, true);
+  Spline *sp =
+      new Spline(&(fEnergyGrid[istart]), &(fLengthVector[istart]), numdata, true);
   double cutInLenght = sp->GetValueAt(cutenergy);
   delete sp;
   return cutInLenght;

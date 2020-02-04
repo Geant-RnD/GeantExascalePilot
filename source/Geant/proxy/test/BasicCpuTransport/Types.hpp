@@ -6,13 +6,13 @@
 // For the licensing terms see LICENSE file.
 // For the list of contributors see CREDITS file.
 // Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 //
 /**
  * @file
  * @brief
  */
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 //
 
 #pragma once
@@ -26,345 +26,314 @@
 #include "Geant/proxy/ProxyStepLimiter.hpp"
 #include "Geant/proxy/ProxyTrackLimiter.hpp"
 
-#include "Geant/proxy/ProxyCompton.hpp"
-#include "Geant/proxy/ProxyIonization.hpp"
-#include "Geant/proxy/ProxyBremsstrahlung.hpp"
-
+// #include "Geant/proxy/ProxyBremsstrahlung.hpp"
+// #include "Geant/proxy/ProxyCompton.hpp"
+// #include "Geant/proxy/ProxyIonization.hpp"
 
 using namespace geantx;
 
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
+//              Sorting the Type-Traits
+//===--------------------------------------------------------------------------------===//
+
+template <bool _Val, typename _Lhs, typename _Rhs>
+using conditional_t = typename std::conditional<_Val, _Lhs, _Rhs>::type;
+
+//--------------------------------------------------------------------------------------//
+
+template <template <typename> class _Prio, typename _Beg, typename _Tp, typename _End>
+struct SortT;
+
+//--------------------------------------------------------------------------------------//
+
+template <template <typename> class _Prio, typename _Tuple>
+using Sort = typename SortT<_Prio, _Tuple, std::tuple<>, std::tuple<>>::type;
+
+//--------------------------------------------------------------------------------------//
+//  Initiate recursion (zeroth sort operation)
+//
+template <template <typename> class _Prio, typename _In, typename... _InT>
+struct SortT<_Prio, std::tuple<_In, _InT...>, std::tuple<>, std::tuple<>> {
+  using type =
+      typename SortT<_Prio, std::tuple<_InT...>, std::tuple<>, std::tuple<_In>>::type;
+};
+
+//--------------------------------------------------------------------------------------//
+//  Initiate recursion (zeroth sort operation)
+//
+template <template <typename> class _Prio, typename _In, typename... _InT>
+struct SortT<_Prio, std::tuple<std::tuple<_In, _InT...>>, std::tuple<>, std::tuple<>> {
+  using type =
+      typename SortT<_Prio, std::tuple<_InT...>, std::tuple<>, std::tuple<_In>>::type;
+};
+
+//--------------------------------------------------------------------------------------//
+//  Terminate recursion (last sort operation)
+//
+template <template <typename> class _Prio, typename... _BegT, typename... _EndT>
+struct SortT<_Prio, std::tuple<>, std::tuple<_BegT...>, std::tuple<_EndT...>> {
+  using type = std::tuple<_BegT..., _EndT...>;
+};
+
+//--------------------------------------------------------------------------------------//
+//  If no current end, transfer begin to end ()
+//
+template <template <typename> class _Prio, typename _In, typename... _InT,
+          typename... _BegT>
+struct SortT<_Prio, std::tuple<_In, _InT...>, std::tuple<_BegT...>, std::tuple<>> {
+  using type = typename SortT<_Prio, std::tuple<_In, _InT...>, std::tuple<>,
+                              std::tuple<_BegT...>>::type;
+};
+
+//--------------------------------------------------------------------------------------//
+//  Specialization for first sort operation
+//
+template <template <typename> class _Prio, typename _In, typename _Tp, typename... _InT>
+struct SortT<_Prio, std::tuple<_In, _InT...>, std::tuple<>, std::tuple<_Tp>> {
+  static constexpr bool value = (_Prio<_In>::value < _Prio<_Tp>::value);
+
+  using type =
+      typename std::conditional<(value),
+                                typename SortT<_Prio, std::tuple<_InT...>, std::tuple<>,
+                                               std::tuple<_In, _Tp>>::type,
+                                typename SortT<_Prio, std::tuple<_InT...>, std::tuple<>,
+                                               std::tuple<_Tp, _In>>::type>::type;
+};
+
+//--------------------------------------------------------------------------------------//
+//  Specialization for second sort operation
+//
+template <template <typename> class _Prio, typename _In, typename _Ta, typename _Tb,
+          typename... _BegT, typename... _InT>
+struct SortT<_Prio, std::tuple<_In, _InT...>, std::tuple<_BegT...>,
+             std::tuple<_Ta, _Tb>> {
+  static constexpr bool iavalue = (_Prio<_In>::value < _Prio<_Ta>::value);
+  static constexpr bool ibvalue = (_Prio<_In>::value < _Prio<_Tb>::value);
+  static constexpr bool abvalue = (_Prio<_Ta>::value <= _Prio<_Tb>::value);
+
+  using type = typename std::conditional<
+      (iavalue),
+      typename SortT<
+          _Prio, std::tuple<_InT...>, Sort<_Prio, std::tuple<_BegT..., _In>>,
+          conditional_t<(abvalue), std::tuple<_Ta, _Tb>, std::tuple<_Tb, _Ta>>>::type,
+      typename SortT<_Prio, std::tuple<_InT...>, Sort<_Prio, std::tuple<_BegT..., _Ta>>,
+                     conditional_t<(ibvalue), std::tuple<_In, _Tb>,
+                                   std::tuple<_Tb, _In>>>::type>::type;
+};
+
+//--------------------------------------------------------------------------------------//
+//  Specialization for all other sort operations after first and second
+//
+template <template <typename> class _Prio, typename _In, typename _Tp, typename... _InT,
+          typename... _BegT, typename... _EndT>
+struct SortT<_Prio, std::tuple<_In, _InT...>, std::tuple<_BegT...>,
+             std::tuple<_Tp, _EndT...>> {
+  static constexpr bool value = (_Prio<_In>::value < _Prio<_Tp>::value);
+
+  using type = typename std::conditional<
+      (value),
+      typename SortT<_Prio, std::tuple<_InT...>, std::tuple<>,
+                     std::tuple<_BegT..., _In, _Tp, _EndT...>>::type,
+      typename SortT<_Prio, std::tuple<_In, _InT...>,
+                     Sort<_Prio, Sort<_Prio, std::tuple<_BegT..., _Tp>>>,
+                     std::tuple<_EndT...>>::type>::type;
+};
+
+//===--------------------------------------------------------------------------------===//
 //              A list of all the particles for unrolling
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 
 using ParticleTypes = std::tuple<CpuGamma, CpuElectron, GpuGamma, GpuElectron>;
 
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
+//              Priority Type-Traits
+//===--------------------------------------------------------------------------------===//
+
+template <typename _Tp>
+struct PhysicsProcessAtRestPriority : std::integral_constant<int, 0> {};
+
+template <typename _Tp>
+struct PhysicsProcessAlongStepPriority : std::integral_constant<int, 0> {};
+
+template <typename _Tp>
+struct PhysicsProcessPostStepPriority : std::integral_constant<int, 0> {};
+
+//===--------------------------------------------------------------------------------===//
+
+template <>
+struct PhysicsProcessPostStepPriority<ProxyStepLimiter>
+    : std::integral_constant<int, -100> {};
+
+template <>
+struct PhysicsProcessPostStepPriority<ProxyScattering> : std::integral_constant<int, 0> {
+};
+
+template <>
+struct PhysicsProcessPostStepPriority<ProxyTrackLimiter>
+    : std::integral_constant<int, 10> {};
+
+template <>
+struct PhysicsProcessPostStepPriority<Transportation> : std::integral_constant<int, 100> {
+};
+
+//===--------------------------------------------------------------------------------===//
 //              Type information class for Physics available to Particle
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 
 template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessList
-{
-    using particle = ParticleType;
-    using physics  = std::tuple<ProcessTypes...>;
+struct PhysicsProcessList {
+  using particle = ParticleType;
+  using physics  = std::tuple<ProcessTypes...>;
 };
+
+//===--------------------------------------------------------------------------------===//
+//              Generic stage expansion
+//===--------------------------------------------------------------------------------===//
+
+template <typename ParticleType, template <typename, typename> class StageType,
+          typename... ProcessTypes>
+struct PhysicsProcessStage {
+  using type = std::tuple<StageType<ProcessTypes, ParticleType>...>;
+};
+
+template <typename ParticleType, template <typename, typename> class StageType,
+          typename... ProcessTypes>
+struct PhysicsProcessStage<ParticleType, StageType, std::tuple<ProcessTypes...>> {
+  using type = std::tuple<StageType<ProcessTypes, ParticleType>...>;
+};
+
+//===--------------------------------------------------------------------------------===//
+//              AtRest, AlongStep, PostStep stages
+//===--------------------------------------------------------------------------------===//
 
 template <typename ParticleType, typename... ProcessTypes>
 struct PhysicsProcessAtRest
-{};
+    : PhysicsProcessStage<
+          ParticleType, AtRest,
+          Sort<PhysicsProcessAtRestPriority, std::tuple<ProcessTypes...>>> {
+  using ParticleTypeProcesses =
+      Sort<PhysicsProcessAtRestPriority, std::tuple<ProcessTypes...>>;
+};
+
+//===--------------------------------------------------------------------------------===//
 
 template <typename ParticleType, typename... ProcessTypes>
 struct PhysicsProcessAlongStep
-{};
+    : PhysicsProcessStage<
+          ParticleType, AlongStep,
+          Sort<PhysicsProcessAlongStepPriority, std::tuple<ProcessTypes...>>> {
+  using process_type = Sort<PhysicsProcessAlongStepPriority, std::tuple<ProcessTypes...>>;
+  using base_type    = PhysicsProcessStage<ParticleType, AlongStep, process_type>;
+  using this_type    = PhysicsProcessAlongStep<ParticleType, ProcessTypes...>;
+
+  template <typename _Track, typename AtRestApply_t, typename _Process>
+  struct AtRestDoIt {
+    template <typename _Proc = _Process, std::enable_if_t<(_Proc::EnableDoIt), int> = 0>
+    AtRestDoIt(_Track *track)
+    {
+      GEANT_THIS_TYPE_TESTING_MARKER("");
+      geantx::Log(kInfo) << GEANT_HERE << "[ALONG-STEP AT-REST DO-IT] "
+                         << tim::demangle<_Proc>();
+      _Process p(track);
+      if (IsStopped(*track)) {
+        if (IsAlive(*track)) Apply<void>::apply<AtRestApply_t>(track);
+        // instead 'return' we want to say 'abort/break-out-of loop'
+        // for now we 'repeat pointlessly the test in AlongStep struct (in
+        // ProcessConcepts.hpp) return;
+      }
+    }
+
+    template <typename _Proc = _Process, std::enable_if_t<!(_Proc::EnableDoIt), int> = 0>
+    AtRestDoIt(_Track *track)
+    {}
+  };
+
+  template <typename _Track, typename AtRestApply_t, typename _Process>
+  struct ApplyAtRest_T;
+
+  template <typename _Track, typename AtRestApply_t, template <typename...> class _Tuple,
+            typename... _Process>
+  struct ApplyAtRest_T<_Track, AtRestApply_t, _Tuple<_Process...>> {
+    using type = _Tuple<AtRestDoIt<_Track, AtRestApply_t, _Process>...>;
+  };
+
+  template <typename _Track, typename AtRestApply_t>
+  using ApplyAtRest =
+      typename ApplyAtRest_T<_Track, AtRestApply_t, typename base_type::type>::type;
+};
+
+//===--------------------------------------------------------------------------------===//
 
 template <typename ParticleType, typename... ProcessTypes>
 struct PhysicsProcessPostStep
-{};
+    : PhysicsProcessStage<
+          ParticleType, PostStep,
+          Sort<PhysicsProcessPostStepPriority, std::tuple<ProcessTypes...>>> {
+  using process_type = Sort<PhysicsProcessPostStepPriority, std::tuple<ProcessTypes...>>;
+  using base_type    = PhysicsProcessStage<ParticleType, PostStep, process_type>;
+  using this_type    = PhysicsProcessPostStep<ParticleType, ProcessTypes...>;
 
-template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessAtRest<ParticleType, std::tuple<ProcessTypes...>>
-{
-    using type = std::tuple<AtRest<ProcessTypes, ParticleType>...>;
+  template <typename _Track, typename AtRestApply_t, typename _Process>
+  struct AtRestDoIt {
+    template <typename _Proc = _Process, std::enable_if_t<(_Proc::EnableDoIt), int> = 0>
+    AtRestDoIt(_Track *track)
+    {
+      GEANT_THIS_TYPE_TESTING_MARKER("");
+      geantx::Log(kInfo) << GEANT_HERE << "[POST-STEP AT-REST DO-IT] "
+                         << tim::demangle<_Proc>();
+      _Process p(track);
+      if (IsStopped(*track)) {
+        if (IsAlive(*track)) Apply<void>::apply<AtRestApply_t>(track);
+        // instead 'return' we want to say 'abort/break-out-of loop'
+        // for now we 'repeat pointlessly the test in AlongStep struct (in
+        // ProcessConcepts.hpp) return;
+      }
+    }
+
+    template <typename _Proc = _Process, std::enable_if_t<!(_Proc::EnableDoIt), int> = 0>
+    AtRestDoIt(_Track *track)
+    {}
+  };
+
+  template <typename _Track, typename AtRestApply_t, typename _Process>
+  struct ApplyAtRest_T;
+
+  template <typename _Track, typename AtRestApply_t, template <typename...> class _Tuple,
+            typename... _Process>
+  struct ApplyAtRest_T<_Track, AtRestApply_t, _Tuple<_Process...>> {
+    using type = _Tuple<AtRestDoIt<_Track, AtRestApply_t, _Process>...>;
+  };
+
+  template <typename _Track, typename AtRestApply_t>
+  using ApplyAtRest =
+      typename ApplyAtRest_T<_Track, AtRestApply_t, typename base_type::type>::type;
 };
 
-template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessAlongStep<ParticleType, std::tuple<ProcessTypes...>>
-{
-    using type = std::tuple<StandaloneAlongStep<ProcessTypes, ParticleType>...>;
-};
-
-template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessCombinedAlongStep
-{};
-
-template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessCombinedAlongStep<ParticleType, std::tuple<ProcessTypes...>>
-{
-    using type = std::tuple<AlongStep<ProcessTypes, ParticleType>...>;
-};
-
-template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessPostStep<ParticleType, std::tuple<ProcessTypes...>>
-{
-    using type = std::tuple<StandalonePostStep<ProcessTypes, ParticleType>...>;
-};
-
-template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessCombinedPostStep
-{};
-
-template <typename ParticleType, typename... ProcessTypes>
-struct PhysicsProcessCombinedPostStep<ParticleType, std::tuple<ProcessTypes...>>
-{
-    using type = std::tuple<PostStep<ProcessTypes, ParticleType>...>;
-};
-
-
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 //              Specify the Physics for the Particles
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 
 using CpuGammaPhysics =
-    PhysicsProcessList<CpuGamma, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<CpuGamma, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 using CpuElectronPhysics =
-    PhysicsProcessList<CpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter, 
-                       ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
+    PhysicsProcessList<CpuElectron, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+                       ProxySecondaryGenerator, Transportation>;
 
 using GpuGammaPhysics =
-    PhysicsProcessList<GpuGamma, ProxyCompton, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+    PhysicsProcessList<GpuGamma, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
                        ProxySecondaryGenerator, Transportation>;
 
 using GpuElectronPhysics =
-    PhysicsProcessList<GpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter,
-                       ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
+    PhysicsProcessList<GpuElectron, ProxyScattering, ProxyStepLimiter, ProxyTrackLimiter,
+                       ProxySecondaryGenerator, Transportation>;
 
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 //              A list of all particle + physics pairs
-//===----------------------------------------------------------------------===//
+//===--------------------------------------------------------------------------------===//
 
 using ParticlePhysicsTypes =
     std::tuple<CpuGammaPhysics, CpuElectronPhysics, GpuGammaPhysics, GpuElectronPhysics>;
 
-//===----------------------------------------------------------------------===//
-//              Priority Type-Traits
-//===----------------------------------------------------------------------===//
-
-//
-// This will eventually provide a re-ordering for the sequence of which the
-// processes are applied. So one can do something like:
-//
-//      template <>
-//      struct PhysicsProcessPostStepPriority<Transportation>
-//      : std::integral_constant<int, -100>
-//      {};
-//
-//      template <>
-//      struct PhysicsProcessPostStepPriority<ProxyStepLimiter>
-//      : std::integral_constant<int, 100>
-//      {};
-//
-//  so that for the PostStep stage, Transportation is prioritized ahead of
-//  other processes and ProxyStepLimiter is, in general, applied after
-//  most other processes
-//
-
-//
-//      In general, this is still a WIP -- writing a quicksort of templates
-//      is not trivial...
-//
-
-template <typename _Tp>
-struct PhysicsProcessAtRestPriority : std::integral_constant<int, 0>
-{};
-
-template <typename _Tp>
-struct PhysicsProcessAlongStepPriority : std::integral_constant<int, 0>
-{};
-
-template <typename _Tp>
-struct PhysicsProcessPostStepPriority : std::integral_constant<int, 0>
-{};
-
-template <>
-struct PhysicsProcessPostStepPriority<Transportation> : std::integral_constant<int, -100>
-{};
-
-template <>
-struct PhysicsProcessPostStepPriority<ProxyStepLimiter> : std::integral_constant<int, 100>
-{};
-
-template <>
-struct PhysicsProcessPostStepPriority<ProxyScattering> : std::integral_constant<int, 10>
-{};
-
-//===----------------------------------------------------------------------===//
-//              Sorting the Type-Traits
-//===----------------------------------------------------------------------===//
-
-template <typename _Tp>
-struct PhysicsProcessPriority
-{
-    static constexpr intmax_t AtRestPriority = PhysicsProcessAtRestPriority<_Tp>::value;
-    static constexpr intmax_t AlongStepPriority =
-        PhysicsProcessAlongStepPriority<_Tp>::value;
-    static constexpr intmax_t PostStepPriority =
-        PhysicsProcessPostStepPriority<_Tp>::value;
-};
-
-template <typename _Lhs, typename _Rhs>
-struct SortPhysicsProcessAtRest
-: std::conditional<(PhysicsProcessPriority<_Lhs>::AtRestPriority >
-                    PhysicsProcessPriority<_Rhs>::AtRestPriority),
-                   std::true_type, std::false_type>::type
-{};
-
-template <typename _Lhs, typename _Rhs>
-struct SortPhysicsProcessAlongStep
-: std::conditional<(PhysicsProcessPriority<_Lhs>::AlongStepPriority >
-                    PhysicsProcessPriority<_Rhs>::AlongStepPriority),
-                   std::true_type, std::false_type>::type
-{};
-
-template <typename _Lhs, typename _Rhs>
-struct SortPhysicsProcessPostStep
-: std::conditional<(PhysicsProcessPriority<_Lhs>::PostStepPriority >
-                    PhysicsProcessPriority<_Rhs>::PostStepPriority),
-                   std::true_type, std::false_type>::type
-{};
-
-/*
-struct sort
-{
-    struct meta
-    {
-        template <typename T, T, typename>
-        struct prepend;
-
-        template <typename T, T Add, template <T...> class Z, T... Is>
-        struct prepend<T, Add, Z<Is...>>
-        {
-            using type = Z<Add, Is...>;
-        };
-
-        template <typename T, typename Pack1, typename Pack2>
-        struct concat;
-
-        template <typename T, template <T...> class Z, T... Ts, T... Us>
-        struct concat<T, Z<Ts...>, Z<Us...>>
-        {
-            using type = Z<Ts..., Us...>;
-        };
-    };
-
-    template <typename _Tp, typename _Up>
-    struct less_than
-    : std::conditional<(_Tp::value < _Up::value), std::true_type, std::false_type>::type
-    {};
-
-    template <template <typename> class T, typename Types>
-    struct sort;
-
-    template <typename T, template <T...> class Z>
-    struct sort<T, Z<>, Comparator>
-    {
-        using type = Z<>;
-    };
-
-    template <typename T, typename Pack, template <T> class UnaryPredicate>
-    struct filter;
-
-    template <typename T, template <T...> class Z, template <T> class UnaryPredicate, T I,
-              T... Is>
-    struct filter<T, Z<I, Is...>, UnaryPredicate>
-    {
-        using type = typename std::conditional<
-            UnaryPredicate<I>::value,
-            typename meta::prepend<
-                T, I, typename filter<T, Z<Is...>, UnaryPredicate>::type>::type,
-            typename filter<T, Z<Is...>, UnaryPredicate>::type>::type;
-    };
-
-    template <typename T, template <T...> class Z, template <T> class UnaryPredicate>
-    struct filter<T, Z<>, UnaryPredicate>
-    {
-        using type = Z<>;
-    };
-
-    template <typename T, template <T...> class Z, T N, T... Is,
-              template <T, T> class Comparator>
-    struct sort<T, Z<N, Is...>, Comparator>
-    {
-        // Using the quicksort method.
-        template <T I>
-        struct less_than : std::integral_constant<bool, Comparator<I, N>::value>
-        {};
-        template <T I>
-        struct more_than : std::integral_constant<bool, !Comparator<I, N>::value>
-        {};
-        using subsequence_less_than_N = typename filter<T, Z<Is...>, less_than>::type;
-        using subsequence_more_than_N = typename filter<T, Z<Is...>, more_than>::type;
-        using type                    = typename meta::concat<
-            T, typename sort<T, subsequence_less_than_N, Comparator>::type,
-            typename meta::prepend<
-                T, N,
-                typename sort<T, subsequence_more_than_N, Comparator>::type>::type>::type;
-    };
-};
-*/
-
-template <typename... Types>
-struct IsEmpty
-: std::conditional<(sizeof...(Types) > 0), std::true_type, std::false_type>::type
-{};
-
-template <typename... Types>
-struct IsEmpty<std::tuple<Types...>>
-: std::conditional<(sizeof...(Types) > 0), std::true_type, std::false_type>::type
-{};
-
-template <typename List>
-struct FrontT
-{
-    using type = List;
-};
-
-template <typename Head, typename... Tail>
-struct FrontT<std::tuple<Head, Tail...>>
-{
-    using type = Head;
-};
-
-template <typename List>
-using Front = typename FrontT<List>::type;
-
-template <typename List, typename NewElement>
-struct PushFrontT;
-
-template <typename... Elements, typename NewElement>
-struct PushFrontT<std::tuple<Elements...>, NewElement>
-{
-    using type = std::tuple<NewElement, Elements...>;
-};
-
-template <typename List, typename NewElement>
-using PushFront = typename PushFrontT<List, NewElement>::type;
-
-// yield T when using member Type:
-template <typename T>
-struct IdentityT
-{
-    using type = T;
-};
-
-template <typename List, typename Element,
-          template <typename T, typename U> class Compare, bool = IsEmpty<List>::value>
-struct InsertSortedT;
-
-template <typename List, typename Element,
-          template <typename T, typename U> class Compare>
-struct InsertSortedT<List, Element, Compare, false>
-{
-    // compute the tail of the resulting list:
-    using tail =
-        typename std::conditional<Compare<Element, Front<List>>::value, IdentityT<List>,
-                                  InsertSortedT<PopFront<List>, Element, Compare>>::type;
-    // compute the head of the resulting list:
-    using head =
-        std::conditional<Compare<Element, Front<List>>::value, Element, Front<List>>;
-
-    using type = PushFront<head, tail>;
-};
-
-template <typename List, typename Element,
-          template <typename T, typename U> class Compare>
-struct InsertSortedT<List, Element, Compare, true>
-{
-    using type = std::tuple<Element>;
-};
-
-template <typename List, typename Element,
-          template <typename T, typename U> class Compare>
-using InsertSorted = typename InsertSortedT<List, Element, Compare>::type;
+//--------------------------------------------------------------------------------------//

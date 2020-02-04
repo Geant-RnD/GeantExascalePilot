@@ -14,13 +14,12 @@
 
 #pragma once
 
-#include "Geant/track/TrackState.hpp"
 #include "Geant/track/TrackAccessor.hpp"
-#include "Geant/track/TrackPhysicsAccessor.hpp"
 #include "Geant/track/TrackCollection.hpp"
+#include "Geant/track/TrackPhysicsAccessor.hpp"
+#include "Geant/track/TrackState.hpp"
 
 namespace geantx {
-
 template <typename PD>
 class TrackModifier {
   using Base = TrackAccessor;

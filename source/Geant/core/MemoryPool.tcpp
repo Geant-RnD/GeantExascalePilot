@@ -20,108 +20,97 @@
 //#include "Geant/core/CudaUtils.hpp"
 //#include "Geant/core/Tuple.hpp"
 
-namespace geantx
-{
+namespace geantx {
 //======================================================================================//
 
-namespace details
-{
+namespace details {
 //======================================================================================//
 //  a page of memory on a device
 //
 template <typename _Tp, typename _Mem>
-MemoryPage<_Tp, _Mem>::MemoryPage()
-: m_page(_alloc(m_allocs_per_page))
+MemoryPage<_Tp, _Mem>::MemoryPage() : m_page(_alloc(m_allocs_per_page))
 {
-    if(m_allocs_per_page < 1)
-    {
-        std::stringstream msg;
-        msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__ << ": type "
-            << typeid(type).name() << " of size " << sizeof(type) << " is larger than "
-            << "the page size of " << GetPageSize();
-        throw std::runtime_error(msg.str());
-    }
+  if (m_allocs_per_page < 1) {
+    std::stringstream msg;
+    msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+        << " :: type " << typeid(type).name() << " of size " << sizeof(type)
+        << " is larger than "
+        << "the page size of " << GetPageSize();
+    fprintf(stderr, "%s\n", msg.str().c_str());
+  }
 }
 
 template <typename _Tp, typename _Mem>
 MemoryPage<_Tp, _Mem>::~MemoryPage()
 {
-    _free(static_cast<void*>(m_page));
+  _free(static_cast<void *>(m_page));
 }
 
 template <typename _Tp, typename _Mem>
-std::tuple<_Tp*, int64_t> MemoryPage<_Tp, _Mem>::alloc(const int64_t& _offset)
+std::tuple<_Tp *, int64_t> MemoryPage<_Tp, _Mem>::alloc(const int64_t &_offset)
 {
-    m_offset = _offset;
-    if(m_offset < 0 || m_page == nullptr)
-        return std::tuple<_Tp*, int64_t>(nullptr, -1);
-    type* ptr = m_page + m_offset;
-    insert(ptr, m_offset);
-    return std::make_tuple(ptr, m_offset);
+  m_offset = _offset;
+  if (m_offset < 0 || m_page == nullptr) return std::tuple<_Tp *, int64_t>(nullptr, -1);
+  type *ptr = m_page + m_offset;
+  insert(ptr, m_offset);
+  return std::make_tuple(ptr, m_offset);
 }
 
 template <typename _Tp, typename _Mem>
-void MemoryPage<_Tp, _Mem>::free(_Tp* ptr)
+void MemoryPage<_Tp, _Mem>::free(_Tp *ptr)
 {
-    if(m_page == nullptr)
-    {
-        std::stringstream msg;
-        msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__
-            << ": page is not allocated";
-        throw std::runtime_error(msg.str());
-    }
+  if (m_page == nullptr) {
+    std::stringstream msg;
+    msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+        << " :: page is not allocated";
+    fprintf(stderr, "%s\n", msg.str().c_str());
+  }
 
-    if(m_associated.find(ptr) == m_associated.end())
-    {
-        std::stringstream msg;
-        msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__ << ": pointer " << ptr
-            << " now owned by MemoryPage instance";
-        throw std::runtime_error(msg.str());
-    }
-    erase(ptr);
+  if (m_associated.find(ptr) == m_associated.end()) {
+    std::stringstream msg;
+    msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+        << " :: pointer " << ptr << " now owned by MemoryPage instance";
+    fprintf(stderr, "%s\n", msg.str().c_str());
+  }
+  erase(ptr);
 }
 
 template <typename _Tp, typename _Mem>
-void MemoryPage<_Tp, _Mem>::insert(type* ptr, const size_type& idx)
+void MemoryPage<_Tp, _Mem>::insert(type *ptr, const size_type &idx)
 {
-    if(ptr)
-    {
-        ++m_used;
-        m_associated[ptr] = idx;
-        m_available[idx]  = false;
-    }
+  if (ptr) {
+    ++m_used;
+    m_associated[ptr] = idx;
+    m_available[idx]  = false;
+  }
 }
 
 template <typename _Tp, typename _Mem>
-void MemoryPage<_Tp, _Mem>::erase(type* ptr)
+void MemoryPage<_Tp, _Mem>::erase(type *ptr)
 {
-    auto idx         = m_associated.find(ptr)->second;
-    m_available[idx] = true;
-    m_used--;
+  auto idx         = m_associated.find(ptr)->second;
+  m_available[idx] = true;
+  m_used--;
 }
 
 template <typename _Tp, typename _Mem>
-void MemoryPage<_Tp, _Mem>::erase(const size_type& idx)
+void MemoryPage<_Tp, _Mem>::erase(const size_type &idx)
 {
-    m_available[idx] = true;
-    m_used--;
+  m_available[idx] = true;
+  m_used--;
 }
 
 template <typename _Tp, typename _Mem>
 int64_t MemoryPage<_Tp, _Mem>::next() const
 {
-    if(m_used == m_allocs_per_page)
-        return -1;
-    auto _offset = m_offset + 1;
-    if(_offset == m_allocs_per_page)
-    {
-        for(size_type i = 0; i < m_available.size(); ++i)
-        {
-            if(m_available[i])
-                return i;
-        }
+  if (m_used == m_allocs_per_page) return -1;
+  auto _offset = m_offset + 1;
+  if (_offset == m_allocs_per_page) {
+    for (size_type i = 0; i < m_available.size(); ++i) {
+      if (m_available[i]) return i;
     }
-    return _offset;
+  }
+  return _offset;
 }
 
 //======================================================================================//
@@ -129,164 +118,146 @@ int64_t MemoryPage<_Tp, _Mem>::next() const
 template <typename _Tp, typename _Mem>
 MemoryPoolImpl<_Tp, _Mem>::MemoryPoolImpl(size_type npages)
 {
-    npages = std::max(npages, static_cast<size_type>(1));
-    for(size_type i = 0; i < npages; ++i)
-        m_page_list.push_back(new page_type());
+  npages = std::max(npages, static_cast<size_type>(1));
+  for (size_type i = 0; i < npages; ++i)
+    m_page_list.push_back(new page_type());
 }
 
 template <typename _Tp, typename _Mem>
 MemoryPoolImpl<_Tp, _Mem>::~MemoryPoolImpl()
 {
-    for(auto& itr : m_page_list)
-        delete itr;
+  for (auto &itr : m_page_list)
+    delete itr;
 }
 
 template <typename _Tp, typename _Mem>
-std::tuple<_Tp*, int64_t, int64_t> MemoryPoolImpl<_Tp, _Mem>::alloc()
+std::tuple<_Tp *, int64_t, int64_t> MemoryPoolImpl<_Tp, _Mem>::alloc()
 {
-    auto _return = [&](std::tuple<_Tp*, int64_t>& ptr) {
-        m_associated[std::get<0>(ptr)] = m_last_page;
-        return std::make_tuple(std::get<0>(ptr), std::get<1>(ptr), m_last_page);
-    };
-    auto ptr = m_page_list[m_last_page]->alloc();
-    if(std::get<0>(ptr))
-    {
-        return _return(ptr);
-    } else
-    {
-        for(size_type i = 0; i < m_page_list.size(); ++i)
-        {
-            ptr = m_page_list[i]->alloc();
-            if(std::get<0>(ptr))
-            {
-                m_last_page = i;
-                return _return(ptr);
-            }
-        }
-    }
-
-    if(!add_page())
-    {
-        std::stringstream msg;
-        msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__
-            << ": page allocation error";
-        throw std::runtime_error(msg.str());
-    }
-
-    // re-run with m_page_list[m_last_page]->alloc();
-    ptr = m_page_list[m_last_page]->alloc();
-    assert(std::get<0>(ptr) != nullptr);
+  auto _return = [&](std::tuple<_Tp *, int64_t> &ptr) {
+    m_associated[std::get<0>(ptr)] = m_last_page;
+    return std::make_tuple(std::get<0>(ptr), std::get<1>(ptr), m_last_page);
+  };
+  auto ptr = m_page_list[m_last_page]->alloc();
+  if (std::get<0>(ptr)) {
     return _return(ptr);
+  } else {
+    for (size_type i = 0; i < m_page_list.size(); ++i) {
+      ptr = m_page_list[i]->alloc();
+      if (std::get<0>(ptr)) {
+        m_last_page = i;
+        return _return(ptr);
+      }
+    }
+  }
+
+  if (!add_page()) {
+    std::stringstream msg;
+    msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+        << " :: page allocation error";
+    fprintf(stderr, "%s\n", msg.str().c_str());
+  }
+
+  // re-run with m_page_list[m_last_page]->alloc();
+  ptr = m_page_list[m_last_page]->alloc();
+  assert(std::get<0>(ptr) != nullptr);
+  return _return(ptr);
 }
 
 template <typename _Tp, typename _Mem>
 typename MemoryPoolImpl<_Tp, _Mem>::tuple_type MemoryPoolImpl<_Tp, _Mem>::alloc(
-    const tuple_type& _other)
+    const tuple_type &_other)
 {
-    auto _return = [&](std::tuple<_Tp*, int64_t>& ptr) {
-        m_associated[std::get<0>(ptr)] = m_last_page;
-        return std::make_tuple(std::get<0>(ptr), std::get<1>(ptr), m_last_page);
-    };
-    auto _last_page = std::get<2>(_other);
-    auto _page_idx  = std::get<1>(_other);
+  auto _return = [&](std::tuple<_Tp *, int64_t> &ptr) {
+    m_associated[std::get<0>(ptr)] = m_last_page;
+    return std::make_tuple(std::get<0>(ptr), std::get<1>(ptr), m_last_page);
+  };
+  auto _last_page = std::get<2>(_other);
+  auto _page_idx  = std::get<1>(_other);
 
-    if(static_cast<size_type>(_last_page) >= m_page_list.size())
-    {
-        if(!add_page())
-        {
-            std::stringstream msg;
-            msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__
-                << ": page allocation error";
-            throw std::runtime_error(msg.str());
-        }
+  if (static_cast<size_type>(_last_page) >= m_page_list.size()) {
+    if (!add_page()) {
+      std::stringstream msg;
+      msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+          << " :: page allocation error";
+      fprintf(stderr, "%s\n", msg.str().c_str());
     }
+  }
 
-    m_last_page = _last_page;
-    auto ptr    = m_page_list[m_last_page]->alloc(_page_idx);
-    if(std::get<0>(ptr) == nullptr)
-    {
-        std::stringstream msg;
-        msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__
-            << ": Nooooooo! I'm sorry but I found a nullptr... Something went wrong when "
-               "I "
-               "tried to get the matching page + offset pointer to another allocation... "
-               "It's possible there isn't a device available or you are out of memory "
-               "but I "
-               "can't say for certain...";
-        throw std::runtime_error(msg.str());
-    }
-    return _return(ptr);
+  m_last_page = _last_page;
+  auto ptr    = m_page_list[m_last_page]->alloc(_page_idx);
+  if (std::get<0>(ptr) == nullptr) {
+    std::stringstream msg;
+    msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+        << " :: nullptr... Something went wrong when "
+           "matching page + offset pointer to another allocation... "
+           "possible causes: no device available or out of memory...";
+    fprintf(stderr, "%s\n", msg.str().c_str());
+  }
+  return _return(ptr);
 }
 
 template <typename _Tp, typename _Mem>
-void MemoryPoolImpl<_Tp, _Mem>::free(_Tp* ptr)
+void MemoryPoolImpl<_Tp, _Mem>::free(_Tp *ptr)
 {
-    if(ptr == nullptr)
-        return;
-    if(m_associated.find(ptr) == m_associated.end())
-    {
-        std::stringstream msg;
-        msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__ << ": pointer " << ptr
-            << " not owned by MemoryPool::MemoryPage instance";
-        throw std::runtime_error(msg.str());
-    }
-    auto idx = m_associated.find(ptr)->second;
-    auto itr = m_page_list[idx];
-    if(itr->owns(ptr))
-    {
-        itr->free(ptr);
-        return;
-    }
+  if (ptr == nullptr) return;
+  if (m_associated.find(ptr) == m_associated.end()) {
     std::stringstream msg;
-    msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__ << ": pointer " << ptr
-        << " not owned by any MemoryPool instance";
-    throw std::runtime_error(msg.str());
+    msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+        << " :: pointer " << ptr << " not owned by MemoryPool::MemoryPage instance";
+    fprintf(stderr, "%s\n", msg.str().c_str());
+  }
+  auto idx = m_associated.find(ptr)->second;
+  auto itr = m_page_list[idx];
+  if (itr->owns(ptr)) {
+    itr->free(ptr);
+    return;
+  }
+  std::stringstream msg;
+  msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+      << " :: pointer " << ptr << " not owned by any MemoryPool instance";
+  fprintf(stderr, "%s\n", msg.str().c_str());
 }
 
 template <typename _Tp, typename _Mem>
 bool MemoryPoolImpl<_Tp, _Mem>::add_page()
 {
-    m_last_page = m_page_list.size();
-    m_page_list.push_back(new page_type());
-    return m_page_list.back()->valid();
+  m_last_page = m_page_list.size();
+  m_page_list.push_back(new page_type());
+  return m_page_list.back()->valid();
 }
 
 template <typename _Tp, typename _Mem>
 void MemoryPoolImpl<_Tp, _Mem>::delete_page()
 {
-    auto _delete_page = [&](size_type idx) {
-        if(m_page_list[idx]->utilized())
-            return false;
+  auto _delete_page = [&](size_type idx) {
+    if (m_page_list[idx]->utilized()) return false;
 
-        delete m_page_list[idx];
-        if(idx + 1 == m_page_list.size())
-        {
-            m_page_list.pop_back();
-        } else
-        {
-            auto itr = m_page_list.begin();
-            std::advance(itr, idx);
-            m_page_list.erase(itr);
-        }
-        return true;
-    };
-
-    for(size_type i = 0; i < m_page_list.size(); ++i)
-    {
-        auto idx = m_page_list.size() - i - 1;
-        if(_delete_page(idx))
-            return;
+    delete m_page_list[idx];
+    if (idx + 1 == m_page_list.size()) {
+      m_page_list.pop_back();
+    } else {
+      auto itr = m_page_list.begin();
+      std::advance(itr, idx);
+      m_page_list.erase(itr);
     }
-    std::stringstream msg;
-    msg << "Error! " << __FUNCTION__ << " @ line " << __LINE__ << ": cannot delete page "
-        << "because all pages are being utilized";
-    throw std::runtime_error(msg.str());
+    return true;
+  };
+
+  for (size_type i = 0; i < m_page_list.size(); ++i) {
+    auto idx = m_page_list.size() - i - 1;
+    if (_delete_page(idx)) return;
+  }
+  std::stringstream msg;
+  msg << "Warning! " << __FUNCTION__ << " @ " << __FILE__ << ":" << __LINE__
+      << " :: cannot delete page "
+      << "because all pages are being utilized";
+  fprintf(stderr, "%s\n", msg.str().c_str());
 }
 
 //======================================================================================//
 
-}  // namespace details
+} // namespace details
 
 //======================================================================================//
 
-}  // namespace geantx
+} // namespace geantx

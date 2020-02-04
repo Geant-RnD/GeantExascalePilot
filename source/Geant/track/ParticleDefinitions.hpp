@@ -18,38 +18,35 @@
 #include <cstdint>
 #include <vector>
 
-namespace geantx
-{
+namespace geantx {
 // FIXME: placeholder
-class ParticleDefinition
-{
+class ParticleDefinition {
 public:
-    double    Charge() const { return 0; }
-    ParticleSpecies Species() const { return ParticleSpecies::Hadron; }
-    double    Mass() const { return 1.0; }
+  double Charge() const { return 0; }
+  ParticleSpecies Species() const { return ParticleSpecies::Hadron; }
+  double Mass() const { return 1.0; }
 };
 
 // FIXME: interface is TBD
-class ParticleDefinitions
-{
+class ParticleDefinitions {
 public:
-    using size_type = std::size_t;
-    using PDefId_t  = size_type;
+  using size_type = std::size_t;
+  using PDefId_t  = size_type;
 
 private:
-    std::vector<ParticleDefinition> fPdef;
+  std::vector<ParticleDefinition> fPdef;
 
 private:
-    using value_type = ParticleDefinition;
+  using value_type = ParticleDefinition;
 
-    // FIXME: temporary implementation
-    const value_type& Get(PDefId_t i) const { return fPdef.at(i); }
-    value_type&       Get(PDefId_t i) { return fPdef.at(i); }
+  // FIXME: temporary implementation
+  const value_type &Get(PDefId_t i) const { return fPdef.at(i); }
+  value_type &Get(PDefId_t i) { return fPdef.at(i); }
 
-    template <typename PT>
-    friend class TrackModifier;
-    template <typename PT>
-    friend class TrackPhysicsAccessor;
+  template <typename PT>
+  friend class TrackModifier;
+  template <typename PT>
+  friend class TrackPhysicsAccessor;
 };
 
-}  // namespace geantx
+} // namespace geantx

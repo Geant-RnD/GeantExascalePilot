@@ -14,8 +14,8 @@
 
 #include "../NullLoggerStatement.hpp"
 
-#include <atomic>
 #include "gtest/gtest.h"
+#include <atomic>
 
 using namespace geantx;
 using std::cout;

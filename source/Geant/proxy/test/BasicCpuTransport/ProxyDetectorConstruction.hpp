@@ -19,9 +19,7 @@ class Material;
 } // namespace geantx
 
 namespace userapplication {
-
 class ProxyDetectorConstruction : public geantx::UserDetectorConstruction {
-
 public:
   // CTR
   ProxyDetectorConstruction(geantx::RunManager *runmgr);

@@ -12,8 +12,6 @@
  */
 //===----------------------------------------------------------------------===//
 
-#include "Geant/proxy/ProxyEmModel.hpp"
+// #include "Geant/proxy/ProxyEmModel.hpp"
 
-namespace geantx {
-
-} // namespace geantx
+namespace geantx {} // namespace geantx

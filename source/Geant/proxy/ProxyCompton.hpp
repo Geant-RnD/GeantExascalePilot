@@ -25,19 +25,17 @@
 #include "Geant/proxy/ProxyEmProcess.hpp"
 #include "Geant/proxy/ProxyKleinNishina.hpp"
 
-namespace geantx
-{
-
+namespace geantx {
 class ProxyCompton;
 
-template <> struct Model_traits<ProxyCompton>
-{
+template <>
+struct Model_traits<ProxyCompton> {
   using Model_t = ProxyKleinNishina;
 };
 
-class ProxyCompton : public ProxyEmProcess<ProxyCompton>
-{
+class ProxyCompton : public ProxyEmProcess<ProxyCompton> {
   friend class ProxyEmProcess<ProxyCompton>;
+
 public:
   // Enable/disable GetPhysicalInteractionLength (GPIL) functions
   static constexpr bool EnableAtRestGPIL    = false;
@@ -51,25 +49,24 @@ public:
   // for enable_if statements
   template <typename _Tp>
   static constexpr bool IsApplicable = std::is_base_of<Particle, _Tp>::value;
-  
+
   // provide no specializations
   using specialized_types = std::tuple<>;
-  
+
 public:
   using this_type = ProxyCompton;
-  
-  ProxyCompton(){}
+
+  ProxyCompton() {}
   ~ProxyCompton() = default;
-  
-  int FinalStateInteraction(TrackState* _track)
-  {  
+
+  int FinalStateInteraction(TrackState *_track)
+  {
     GEANT_THIS_TYPE_TESTING_MARKER("");
 
-    //update photon state and create an electron 
+    // update photon state and create an electron
     int nsecondaries = this->fModel->SampleSecondaries(_track);
 
     return nsecondaries;
   }
-
 };
-}  // namespace geantx
+} // namespace geantx

@@ -27,11 +27,9 @@ add_feature(CMAKE_C_STANDARD "C languae standard")
 add_feature(CMAKE_CXX_STANDARD "C++11 STL standard")
 
 # options (always available)
-add_option(GEANT_USE_GPERF "Enable Google perftools profiler" OFF)
 add_option(GEANT_USE_ARCH "Enable architecture specific flags" OFF)
 add_option(GEANT_USE_SANITIZER "Enable sanitizer" OFF)
 add_option(GEANT_USE_COVERAGE "Enable code coverage" OFF)
-add_option(GEANT_USE_NVTX "Enable NVTX for Nsight" OFF)
 add_option(GEANT_USE_CLANG_TIDY "Enable running clang-tidy" OFF)
 add_option(GEANT_USE_SUBMODULES "Use git submodules instead of find_package" OFF)
 add_option(GEANT_BUILD_EXAMPLES "Build the examples" ON)
@@ -48,10 +46,6 @@ if(BUILD_SHARED_LIBS)
     set(GEANT_LIBTARGET_EXT -shared)
 else()
     set(GEANT_LIBTARGET_EXT -static)
-endif()
-
-if(GEANT_USE_ARCH)
-    add_option(GEANT_USE_AVX512 "Enable AVX-512 flags (if available)" OFF)
 endif()
 
 # RPATH settings
@@ -85,10 +79,3 @@ if(GEANT_USE_CLANG_TIDY)
 endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/.clang-tidy ${PROJECT_SOURCE_DIR}/.clang-tidy COPYONLY)
-
-if(GEANT_USE_GPERF)
-    configure_file(${PROJECT_SOURCE_DIR}/tools/gperf-cpu-profile.sh
-        ${PROJECT_BINARY_DIR}/gperf-cpu-profile.sh COPYONLY)
-    configure_file(${PROJECT_SOURCE_DIR}/tools/gperf-heap-profile.sh
-        ${PROJECT_BINARY_DIR}/gperf-heap-profile.sh COPYONLY)
-endif()

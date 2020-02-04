@@ -46,27 +46,27 @@ inline void init_thread_data(ThreadPool *tp)
 
 //======================================================================================//
 
-inline TaskRunManager *cpu_run_manager()
+inline std::unique_ptr<TaskRunManager> &cpu_run_manager()
 {
-  typedef std::shared_ptr<TaskRunManager> pointer;
+  typedef std::unique_ptr<TaskRunManager> pointer;
   static thread_local pointer _instance = pointer(
       new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
-  return _instance.get();
+  return _instance;
 }
 
 //======================================================================================//
 
-inline TaskRunManager *gpu_run_manager()
+inline std::unique_ptr<TaskRunManager> &gpu_run_manager()
 {
-  typedef std::shared_ptr<TaskRunManager> pointer;
+  typedef std::unique_ptr<TaskRunManager> pointer;
   static thread_local pointer _instance = pointer(
       new TaskRunManager(GetEnv<bool>("GEANT_USE_TBB", false, "Enable TBB backend")));
-  return _instance.get();
+  return _instance;
 }
 
 //======================================================================================//
 
-inline void init_run_manager(TaskRunManager *run_man,
+inline void init_run_manager(std::unique_ptr<TaskRunManager> &run_man,
                              uintmax_t nthreads = GetEnv<uintmax_t>(
                                  "GEANT_NUM_THREADS", std::thread::hardware_concurrency(),
                                  "Number of threads"))
