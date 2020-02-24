@@ -305,6 +305,7 @@ struct PhysicsProcessPostStepAtRestWrap<ParticleType, AllProcessTypesTuple, std:
 void FindNextBoundary(Track *track)
 {
   TIMEMORY_BASIC_MARKER(toolset_t, "");
+  track->fPhysicsState.fPstep = 1.e8;  // should be proposed by physics processes
   ScalarNavInterfaceVG::NavFindNextBoundaryAndStep(*track);
 }
 
@@ -519,7 +520,14 @@ get_primary_particle(double Ekin)
     auto *vol = (top) ? top->GetLogicalVolume() : nullptr;
     _track->fGeometryState.fVolume = vol;
     _track->fMaterialState.fMaterial = ((Material_t *)vol->GetMaterialPtr());
+
+    // initialize safety for currrent volume
+    auto *safetyEstimator = top->GetLogicalVolume()->GetNavigator()->GetSafetyEstimator();
+    double safety = safetyEstimator->ComputeSafety(_track->fPos, *_track->fGeometryState.fPath);
+    _track->fGeometryState.fSafety = safety;
+
     std::cout<<"* getPrimPart: pos="<< _track->fPos <<", dir="<< _track->fDir
+	     <<", safety="<< _track->fGeometryState.fSafety
 	     <<", volume=<"<< _track->fGeometryState.fPath->Top()->GetLabel() <<">\n";
 
     return _track;
