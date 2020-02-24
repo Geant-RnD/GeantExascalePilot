@@ -21,9 +21,9 @@
 #include "Geant/track/TrackState.hpp"
 
 // VecGeom
-#include "navigation/NavigationState.h"
-#include "navigation/GlobalLocator.h"
-#include "base/Vector3D.h"
+#include "VecGeom/navigation/NavigationState.h"
+#include "VecGeom/navigation/GlobalLocator.h"
+#include "VecGeom/base/Vector3D.h"
 
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {
