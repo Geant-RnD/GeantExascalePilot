@@ -538,7 +538,7 @@ DoStep(VariadicTrackManager<ParticleTypes...>* primary,
 // finished
 //
 Track*
-get_primary_particle(int maxdepth, double Ekin)
+get_primary_particle(double Ekin)
 {
     TIMEMORY_BASIC_MARKER(toolset_t, "");
     Track* _track = new Track;
@@ -547,16 +547,18 @@ get_primary_particle(int maxdepth, double Ekin)
     _track->fPos  = { get_rand(), get_rand(), get_rand() };
     _track->fDir.Normalize();
 
-    auto startpath = _track->fGeometryState.fPath = geantx::VolumePath_t::MakeInstance(maxdepth);
-    vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), _track->fPos, *_track->fGeometryState.fPath, true);
-    _track->fGeometryState.fNextpath = geantx::VolumePath_t::MakeInstance(maxdepth);
+    // set volume path
+    vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), _track->fPos,
+					      *_track->fGeometryState.fPath, true);
 
-    auto top = startpath->Top();
+    auto top = _track->fGeometryState.fPath->Top();
     auto *vol = (top) ? top->GetLogicalVolume() : nullptr;
     _track->fGeometryState.fVolume = vol;
     _track->fMaterialState.fMaterial = ((Material_t *)vol->GetMaterialPtr());
     //TODO: Get material index correctly
     _track->fMaterialState.fMaterialId = _track->fMaterialState.fMaterial->GetIndex() - 1;
+    std::cout<<"* getPrimPart: pos="<< _track->fPos <<", dir="<< _track->fDir
+	     <<", volume=<"<< _track->fGeometryState.fPath->Top()->GetLabel() <<">\n";
 
     return _track;
 }
@@ -606,7 +608,7 @@ main(int argc, char** argv)
 
     std::cout << " Number of the maximum volume depth = " << numVolumes << std::endl;
 
-    // initialize negivation
+    // initialize navigation
     det->InitNavigators();
 
     VariadicTrackManager<CpuGamma, CpuElectron, GpuGamma, GpuElectron> primary;
@@ -650,28 +652,21 @@ main(int argc, char** argv)
               << std::endl;
     */
 
-    // at the beginning of an event/tracking - initialize the navigation path
-    int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
-    vecgeom::Vector3D<double> vertex(0.,0.,0.);
-    geantx::VolumePath_t *startpath = geantx::VolumePath_t::MakeInstance(maxDepth);
-    startpath->Clear();
-    vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), vertex, *startpath, true);
-
     // prepare primary tracks - TODO: use a particle gun
     double energy = 10. * geantx::clhep::GeV;
 
     printf("\n");
-    primary.PushTrack<CpuGamma>(get_primary_particle(maxDepth, energy));
-    primary.PushTrack<CpuGamma>(get_primary_particle(maxDepth, energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
 
     printf("\n");
-    primary.PushTrack<GpuGamma>(get_primary_particle(maxDepth, energy));
+    primary.PushTrack<GpuGamma>(get_primary_particle(energy));
 
     printf("\n");
-    primary.PushTrack<CpuElectron>(get_primary_particle(maxDepth, energy));
+    primary.PushTrack<CpuElectron>(get_primary_particle(energy));
 
     printf("\n");
-    primary.PushTrack<GpuElectron>(get_primary_particle(maxDepth, energy));
+    primary.PushTrack<GpuElectron>(get_primary_particle(energy));
 
     //stepping
 
