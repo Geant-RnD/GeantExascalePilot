@@ -63,13 +63,28 @@ struct TrackHistoryState
 
 struct TrackGeometryState
 {
+    TrackGeometryState() {
+      int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
+      fPath     = geantx::VolumePath_t::MakeInstance(maxDepth);
+      fNextpath = geantx::VolumePath_t::MakeInstance(maxDepth);
+    }
+
+    ~TrackGeometryState() {
+      geantx::VolumePath_t::ReleaseInstance(fPath);
+      geantx::VolumePath_t::ReleaseInstance(fNextpath);
+    }
+
+    TrackGeometryState(const TrackGeometryState&);
+    TrackGeometryState(TrackGeometryState&&);
+    TrackGeometryState& operator=(const TrackGeometryState&) = default;
+    TrackGeometryState& operator=(TrackGeometryState&&) = default;
+
     // TODO: fVolume is a cached 'fPath->Top()->GetLogicalVolume()'
     Volume_t const* fVolume   = nullptr; /** Current volume the particle is in */
     VolumePath_t*   fPath     = nullptr; /** Current volume state */
     VolumePath_t*   fNextpath = nullptr; /** Next volume state */
     double          fSnext    = 0;       /** Straight distance to next boundary */
     double          fSafety   = 0;       /** Safe distance to any boundary */
-    int             fMaxDepth = 0;       /** Maximum geometry depth */
     bool            fIsOnBoundaryPreStp =
         false;              /** Particle was on boundary at the pre-step point */
     bool fBoundary = false; /** Starting from boundary */
