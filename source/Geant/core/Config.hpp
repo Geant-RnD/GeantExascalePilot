@@ -19,7 +19,7 @@
 #endif
 
 // Include global definitions from VecCore and VecGeom
-#include "base/Global.h"
+#include "VecGeom/base/Global.h"
 
 #if !defined(GEANT_CUDA) && defined(VECCORE_CUDA)
 #  define GEANT_CUDA

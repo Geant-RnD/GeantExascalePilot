@@ -24,18 +24,18 @@
 #include "Geant/track/TrackState.hpp"
 #include "Geant/geometry/NavigationInterface.hpp"
 
-#include "management/GeoManager.h"
-#include "volumes/Box.h"
-#include "volumes/LogicalVolume.h"
-#include "volumes/Orb.h"
-#include "volumes/PlacedVolume.h"
-#include "volumes/Trapezoid.h"
+#include "VecGeom/management/GeoManager.h"
+#include "VecGeom/volumes/Box.h"
+#include "VecGeom/volumes/LogicalVolume.h"
+#include "VecGeom/volumes/Orb.h"
+#include "VecGeom/volumes/PlacedVolume.h"
+#include "VecGeom/volumes/Trapezoid.h"
 
-#include "navigation/HybridNavigator2.h"
-#include "navigation/NewSimpleNavigator.h"
-#include "navigation/SimpleABBoxLevelLocator.h"
-#include "navigation/SimpleABBoxNavigator.h"
-#include "navigation/VNavigator.h"
+#include "VecGeom/navigation/HybridNavigator2.h"
+#include "VecGeom/navigation/NewSimpleNavigator.h"
+#include "VecGeom/navigation/SimpleABBoxLevelLocator.h"
+#include "VecGeom/navigation/SimpleABBoxNavigator.h"
+#include "VecGeom/navigation/VNavigator.h"
 
 #include "Geant/magneticfield/FieldPropagationHandler.hpp"
 #include "Geant/magneticfield/FieldPropagationHandler.hpp"
@@ -434,8 +434,8 @@ OneStep(Track *track)
     ///    For each along process
     ///       AlongStepDoIt
     ///       if stopped
-    ///          if alive && has-at-rest-processes
-    ///             exec AtRest
+    ///          if alive && has-alongStep-processes
+    ///             exec AlongStep
     ///          return
     ///
     ///    For selected PostStep

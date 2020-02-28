@@ -15,9 +15,9 @@
 #pragma once
 
 #include "Geant/core/Typedefs.hpp"
-#include <base/Vector3D.h>
-#include <navigation/NavigationState.h>
-#include <volumes/LogicalVolume.h>
+#include "VecGeom/base/Vector3D.h"
+#include "VecGeom/navigation/NavigationState.h"
+#include "VecGeom/volumes/LogicalVolume.h"
 
 namespace geantx
 {

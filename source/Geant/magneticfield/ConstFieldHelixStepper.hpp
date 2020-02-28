@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <base/Vector3D.h>
+#include "VecGeom/base/Vector3D.h"
 #include <Geant/core/Config.hpp>
 #include <Geant/core/VectorTypes.hpp>
 

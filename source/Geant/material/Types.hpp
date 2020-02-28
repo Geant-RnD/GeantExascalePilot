@@ -14,8 +14,8 @@
 #include "Geant/core/Config.hpp"
 
 #ifdef USE_VECGEOM_CONTAINERS
-#  include "base/Map.h"
-#  include "base/Vector.h"
+#  include "VecGeom/base/Map.h"
+#  include "VecGeom/base/Vector.h"
 #else
 #  include <map>
 #  include <vector>
