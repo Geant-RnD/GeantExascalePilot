@@ -15,8 +15,8 @@
 #pragma once
 
 #include <Geant/core/Config.hpp>
-#include <base/Global.h>
-#include <base/Vector3D.h>
+#include "VecGeom/base/Global.h"
+#include "VecGeom/base/Vector3D.h"
 
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {

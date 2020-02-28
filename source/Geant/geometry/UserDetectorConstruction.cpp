@@ -1,4 +1,4 @@
-#include "UserDetectorConstruction.hpp"
+#include "Geant/geometry/UserDetectorConstruction.hpp"
 
 #include "Geant/core/Logger.hpp"
 //#include "Geant/core/Region.h"
@@ -8,17 +8,17 @@
 
 #include "Geant/material/Element.hpp"
 #include "Geant/material/Material.hpp"
-#include "navigation/HybridNavigator2.h"
-#include "navigation/NewSimpleNavigator.h"
-#include "navigation/SimpleABBoxLevelLocator.h"
-#include "navigation/SimpleABBoxNavigator.h"
-#include "navigation/VNavigator.h"
+#include "VecGeom/navigation/HybridNavigator2.h"
+#include "VecGeom/navigation/NewSimpleNavigator.h"
+#include "VecGeom/navigation/SimpleABBoxLevelLocator.h"
+#include "VecGeom/navigation/SimpleABBoxNavigator.h"
+#include "VecGeom/navigation/VNavigator.h"
 #ifdef USE_ROOT
 #  include "TGeoRegion.h"
-#  include "management/RootGeoManager.h"
+#  include "VecGeom/management/RootGeoManager.h"
 #endif
-#include "volumes/LogicalVolume.h"
-#include "volumes/PlacedVolume.h"
+#include "VecGeom/volumes/LogicalVolume.h"
+#include "VecGeom/volumes/PlacedVolume.h"
 
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {

@@ -21,9 +21,9 @@
 //#include "Geant/MaterialCuts.h"
 /////////////////////////////////
 // VecGeom includes
-#include "management/GeoManager.h"
-#include "volumes/Box.h"
-#include "volumes/LogicalVolume.h"
+#include "VecGeom/management/GeoManager.h"
+#include "VecGeom/volumes/Box.h"
+#include "VecGeom/volumes/LogicalVolume.h"
 /////////////////////////////////
 
 using namespace geantx::units;

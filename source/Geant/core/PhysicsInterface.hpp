@@ -20,7 +20,7 @@
 #include "Geant/core/Typedefs.hpp"
 
 #include "Geant/core/Fwd.hpp"
-#include "base/Global.h"
+#include "VecGeom/base/Global.h"
 
 namespace geantx {
 inline namespace GEANT_IMPL_NAMESPACE {

@@ -22,7 +22,7 @@
 #include "VecGeom/volumes/PlacedVolume.h"
 
 #ifdef GEANT_CUDA
-#  include "base/Vector.h"
+#  include "VecGeom/base/Vector.h"
 #else
 #  include <vector>
 #  ifdef GEANT_USE_NUMA

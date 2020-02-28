@@ -11,7 +11,7 @@
 
 //#include "Geant/WorkspaceForFieldPropagation.h"
 
-#include "navigation/NavigationState.h"
+#include "VecGeom/navigation/NavigationState.h"
 
 #include "Geant/magneticfield/ConstFieldHelixStepper.hpp"
 #include "Geant/geometry/NavigationInterface.hpp"

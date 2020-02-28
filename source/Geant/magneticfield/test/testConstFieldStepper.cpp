@@ -10,7 +10,7 @@
 
 #include "Geant/core/SystemOfUnits.hpp"
 
-#include "base/Vector3D.h"
+#include "VecGeom/base/Vector3D.h"
 typedef vecgeom::Vector3D<double> ThreeVector;
 
 
