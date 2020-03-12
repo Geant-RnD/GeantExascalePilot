@@ -60,6 +60,15 @@ public:
   inline double GetRadlen() const { return fRadlen; }
 
   GEANT_HOST_DEVICE
+  inline double GetAtomDensity() const { return fAtomDensity; }
+
+  GEANT_HOST_DEVICE
+  inline double GetElectronDensity() const { return fElectronDensity; }
+
+  GEANT_HOST_DEVICE
+  inline double* GetNumberOfAtomsPerVolume() const { return fNumberOfAtomsPerVolume; }
+
+  GEANT_HOST_DEVICE
   inline ProxyElement** GetElementVector() const { return fElementVector; }
 
   GEANT_HOST_DEVICE
@@ -68,17 +77,14 @@ public:
   // member methods
 
   GEANT_HOST
-  void ComputeRadiationLength();
-  
+  void AddElement(ProxyElement* element, int nAtoms);
+
   GEANT_HOST
   void AddElement(ProxyElement* element, double fraction);
 
   GEANT_HOST
   void Relocate(void* devicePtr);
   
-//  GEANT_HOST
-//  inline void AddToMaterialTable(void* this) { ; /* dummy for now */ }
-
   GEANT_HOST_DEVICE
   inline size_t MemorySize();
 
@@ -87,22 +93,37 @@ public:
 
 private:
 
-  const char*    fName;              // name of the element
-  size_t         fIndex;             // index in the material table
-  MaterialState  fState;
+  GEANT_HOST
+  void ComputeDerivedQuantities();
+  
+  GEANT_HOST
+  void StoreMaterial();
 
-  double         fDensity;       
-  double         fRadlen;
+private:
+
+  const char*    fName;                    // name of the element
+  size_t         fIndex;                   // index in the material table 
+  MaterialState  fState;                   // physical state of material
 
   int            fNumberOfElements;
-  ProxyElement** fElementVector;
+  int*           fAtomsVector;             // array of atom counters
 
+  double         fDensity;                 // material density
+  double         fRadlen;                  // radiation lenght
+  double         fAtomDensity;             // number of atoms per volume
+  double         fElectronDensity;         // number of electrons per volume 
+  double*        fMassFractionVector;      // array of mass fractions
+  double*        fNumberOfAtomsPerVolume;  // arrary of numbers of atoms per volume 
+
+  ProxyElement** fElementVector;           // array of elements
 };
 
 GEANT_HOST_DEVICE
 size_t ProxyMaterial::MemorySize() {
 
-  size_t bufferSize = sizeof(fName)+ sizeof(int) + sizeof(size_t) + sizeof(MaterialState) +2*sizeof(double);
+  size_t bufferSize = sizeof(fName) + + sizeof(size_t) + sizeof(MaterialState)
+                    + (1+fNumberOfElements)*sizeof(int)  
+                    + (4+2*fNumberOfElements)*sizeof(double);
 
   if( fNumberOfElements > 0 ) {
     for(int i = 0 ; i < fNumberOfElements ; ++i ) {
@@ -115,7 +136,6 @@ size_t ProxyMaterial::MemorySize() {
       
   return bufferSize;
 }  
-
 
 GEANT_HOST_DEVICE 
 void ProxyMaterial::Print()
@@ -130,6 +150,5 @@ void ProxyMaterial::Print()
     }
   }
 }
-
 
 } // namespace geantx

@@ -17,60 +17,73 @@
 #include "Geant/proxy/ProxyMaterial.cuh"
 #include "Geant/proxy/ProxyMaterialTable.cuh"
 #include "Geant/proxy/ProxyPhysicalConstants.hpp"
+#include "Geant/proxy/ProxyElementUtils.cuh"
 
 namespace geantx {
 
 GEANT_HOST
-ProxyMaterial::ProxyMaterial(const char* name, double density, double z, double a, MaterialState state)
+ProxyMaterial::ProxyMaterial(const char* name, double density, 
+                             double z, double a, MaterialState state) 
+  : fName(name), fState(state)
 {
 
-  fName = name;
   fNumberOfElements = 1;
   fState = state;
   
   fDensity  = density; 
 
-  //  ProxyElement* aElement = new ProxyElement(z,a);
   AddElement(new ProxyElement("",z,a),1.0);
 
-  ComputeRadiationLength();
+  ComputeDerivedQuantities();
 
   fState = (fState == kNullState && fDensity > clhep::kGasThreshold) ? kSolid : kGas;
   
   //add to the table
-  fIndex = ProxyMaterialTable::Instance()->size();
-  ProxyMaterialTable::Instance()->push_back(this);
+  StoreMaterial();
 }
 
 GEANT_HOST
-ProxyMaterial::ProxyMaterial(const char* name, double density, int nElements,
-			   MaterialState state)
+ProxyMaterial::ProxyMaterial(const char* name, double density, 
+                             int nElements, MaterialState state)
+  : fName(name), fState(state)
 {
-  fName = name;
   fNumberOfElements = 0;
-  fState = state;
   
   fDensity  = density; 
   fRadlen = 0;
 
+  fIndex = -nElements; // use fIndex as a tempoary counter until this material is filled
+
+  fAtomsVector = new int [nElements];
+  fMassFractionVector = new double [nElements];
   fElementVector  = new ProxyElement * [nElements];
+
   for(int i = 0 ; i < nElements ; ++i) {
     fElementVector[i] = new ProxyElement;
-  }
+    fAtomsVector[i] = 0;
+    fMassFractionVector[i] = 1.0;
+ }
 
   fState = (fState == kNullState && fDensity > clhep::kGasThreshold) ? kSolid : kGas;
   
-  //add to the table
-  fIndex = ProxyMaterialTable::Instance()->size();
-  ProxyMaterialTable::Instance()->push_back(this);
-
+  StoreMaterial();
 }
 
 GEANT_HOST
 ProxyMaterial::~ProxyMaterial()
 {
   delete fElementVector;
+  delete fMassFractionVector;
+  delete fNumberOfAtomsPerVolume;
 }  
+
+GEANT_HOST
+void ProxyMaterial::StoreMaterial()
+{
+  //add this to the material table
+  fIndex = ProxyMaterialTable::Instance()->size();
+  ProxyMaterialTable::Instance()->push_back(this);
+}
 
 GEANT_HOST
 void ProxyMaterial::Relocate(void* devPtr)
@@ -85,7 +98,6 @@ void ProxyMaterial::Relocate(void* devPtr)
 
   ProxyElement** h_fElementVector = fElementVector;
 
-  size_t bufferSize = 0;
   size_t vectorSize = 0;
 
   if( fNumberOfElements > 0 ) {
@@ -107,13 +119,8 @@ void ProxyMaterial::Relocate(void* devPtr)
 
     fElementVector = d_fElementVector;
   }
-  else {
-    vectorSize = sizeof(ProxyElement**);
-  }
 
-  bufferSize = vectorSize + sizeof(int) + sizeof(size_t) + sizeof(fName)+sizeof(MaterialState) + 2*sizeof(double);
-
-  cudaMemcpy(devPtr, this, bufferSize, cudaMemcpyHostToDevice);
+  cudaMemcpy(devPtr, this, MemorySize(), cudaMemcpyHostToDevice);
 
   // persistency
   fElementVector = h_fElementVector;
@@ -121,17 +128,53 @@ void ProxyMaterial::Relocate(void* devPtr)
 
 #endif
 }
-
   
 GEANT_HOST
-void ProxyMaterial::ComputeRadiationLength()
+void ProxyMaterial::ComputeDerivedQuantities()
 {
   double radinv = 0.0 ;
-  for (size_t i=0;i<fNumberOfElements;++i) {
-    //    radinv += VecNbOfAtomsPerVolume[i]*GPElement_GetfRadTsai(&(fElementVector[i]));
-    ;
+
+  for (size_t i=0 ; i < fNumberOfElements ; ++i) {
+
+    double Zi = fElementVector[i]->GetZ();
+    double Ai = fElementVector[i]->GetA();
+
+    fNumberOfAtomsPerVolume[i] = clhep::Avogadro*fDensity*fMassFractionVector[i]/Ai;
+    fAtomDensity += fNumberOfAtomsPerVolume[i];
+    fElectronDensity += fNumberOfAtomsPerVolume[i]*Zi;
+
+    radinv += fNumberOfAtomsPerVolume[i]*ProxyElementUtils::ComputeLradTsaiFactor(Zi);
   }
+
   fRadlen = (radinv <= 0.0 ? DBL_MAX : 1./radinv);
+}
+
+GEANT_HOST
+void ProxyMaterial::AddElement(ProxyElement *element, int nAtoms)
+{
+  if(nAtoms <= 0) assert(0); 
+
+  fElementVector[fNumberOfElements] = element;
+  fAtomsVector[fNumberOfElements] = nAtoms;
+
+  ++fNumberOfElements;
+  ++fIndex;
+
+   //filled by all proposed numbers of elements
+  if(fIndex == 0) {
+    double Amol = 0.;
+    for (int i=0; i < fNumberOfElements; ++i) {
+      fMassFractionVector[i] = fAtomsVector[i]*fElementVector[i]->GetA();
+      Amol += fMassFractionVector[i];
+    }
+
+    for (int i=0; i < fNumberOfElements; ++i) {
+      fMassFractionVector[i] /= Amol;
+    }
+
+    //calcuate derived quantities
+    ComputeDerivedQuantities();
+  }
 }
 
 GEANT_HOST
@@ -141,31 +184,26 @@ void ProxyMaterial::AddElement(ProxyElement *element, double fraction)
     assert(0); 
   }
 
-//  double Zi, Ai;
-
   fElementVector[fNumberOfElements] = element;
+  fMassFractionVector[fNumberOfElements] = fraction;
 
-  //  fMassFractionVector[fNumberOfElements] = fraction;
+  ++fNumberOfElements;
+  ++fIndex;
 
-//  Zi = element->GetZ();
-//  Ai = element->GetA();
+   //filled by all proposed numbers of elements
+  if(fIndex == 0) {
+    double Amol = 0.;
+    for (int i=0; i < fNumberOfElements; ++i) {
+      Amol += fMassFractionVector[i]*fElementVector[i]->GetA();
+    }
 
-//  fZ += Zi*fraction;
-//  fA += Ai*fraction;
+    for (int i=0; i < fNumberOfElements; ++i) {
+      fAtomsVector[i] = std::lrint(fMassFractionVector[i]*Amol/fElementVector[i]->GetA());
+    }
 
-  /*
-  VecNbOfAtomsPerVolume[fNumberOfElements] = 
-    Avogadro*fDensity*fMassFractionVector[fNumberOfElements]/Ai;
-  TotNbOfAtomsPerVolume += 
-    VecNbOfAtomsPerVolume[fNumberOfElements];
-  TotNbOfElectPerVolume += 
-    VecNbOfAtomsPerVolume[fNumberOfElements]*Zi;
-  */
-  ++(fNumberOfElements);
-
-
-  //update radiation length
-  ComputeRadiationLength();
+    //calcuate derived quantities
+    ComputeDerivedQuantities();
+  }
 }
 
 } //namespace geantx

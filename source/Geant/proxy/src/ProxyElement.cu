@@ -19,6 +19,7 @@
 #include "Geant/proxy/ProxyIsotope.cuh"
 #include "Geant/proxy/ProxyElement.cuh"
 #include "Geant/proxy/ProxyElementTable.cuh"
+#include "Geant/proxy/NistElementManager.cuh"
 #include "Geant/proxy/ProxyPhysicalConstants.hpp"
 
 #include <iostream>
@@ -33,6 +34,8 @@ ProxyElement::ProxyElement(const char* name, double zeff, double aeff)
   fNeff = fAeff/(clhep::g/clhep::mole);
 
   if(fNeff < 1.0) fNeff = 1.0;
+
+  AddNaturalIsotopes();
 
   StoreElement();
 
@@ -174,6 +177,33 @@ void ProxyElement::Relocate(void* devPtr)
   fWeights = h_fWeights;
   
 #endif
+}
+
+GEANT_HOST
+void ProxyElement::AddNaturalIsotopes() {
+  NistElementManager* elementManager = NistElementManager::Instance();
+
+  int Z =  static_cast<int>(fZeff + 0.5) ;
+  int niso  = elementManager->GetNumberOfIsotopes(Z);
+  int firstN = elementManager->GetFirstMassNumber(Z);
+
+  fNumberOfIsotopes = 0;
+  
+  for(int i = 0 ; i < niso ; ++i) {
+    if(elementManager->GetIsotopicComposition(Z, firstN+i) > 0.0) ++fNumberOfIsotopes; 
+  }
+
+  fWeights = new double[fNumberOfIsotopes];
+  fIsotopeVector = new ProxyIsotope * [fNumberOfIsotopes];
+
+  int index = 0;
+  for(int i = 0 ; i < niso ; ++i) {
+    if(elementManager->GetIsotopicComposition(Z, firstN+i) > 0.0) {
+       fWeights[index] = elementManager->GetIsotopicComposition(Z, firstN+i);
+       fIsotopeVector[index] = new ProxyIsotope("",Z,firstN+i);
+       ++index;
+    } 
+  }
 }
 
 } // namespace geantx

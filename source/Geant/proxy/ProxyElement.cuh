@@ -40,9 +40,6 @@ public:
   ~ProxyElement();
 
   GEANT_HOST
-  void StoreElement();
-
-  GEANT_HOST
   void Relocate(void* devPtr);
 
   GEANT_HOST
@@ -77,6 +74,14 @@ public:
 
   GEANT_HOST_DEVICE
   inline void Print();
+
+private:
+
+  GEANT_HOST
+  void StoreElement();
+
+  GEANT_HOST
+  void AddNaturalIsotopes();
 
 private:
 
