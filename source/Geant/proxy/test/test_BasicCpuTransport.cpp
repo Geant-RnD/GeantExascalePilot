@@ -459,6 +459,8 @@ OneStep(Track *track)
     ///          return
     Apply<void>::unroll_indices<AlongStepApply_t>(track, &doit_idx, &proposedPhysLength, &doit_apply);
 
+    track->fPhysicsState.fPstep = proposedPhysLength;
+
     NavigationInterface::FindNextBoundary(*track);
 
     /// Apply multiple scaterring if any.
