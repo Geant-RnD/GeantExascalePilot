@@ -99,7 +99,7 @@ struct PhysicsProcessState
 
 // DEPRECATED: J. Madsen (10/18/19)
 //      - handling this elsewhere
-// constexpr size_t kNumPhysicsProcess = 10;
+ constexpr size_t kNumPhysicsProcess = 3;
 
 //---------------------------------------------------------------------------//
 /*!
@@ -155,7 +155,7 @@ struct TrackState
     /* don't use: TrackSchedulingState fSchedulingState; */
     TrackHistoryState  fHistoryState;
     TrackPhysicsState  fPhysicsState;
-    PhysicsProcessState  fPhysicsProcessState;
+    PhysicsProcessState  fPhysicsProcessState[kNumPhysicsProcess];
     TrackMaterialState fMaterialState;
     TrackGeometryState fGeometryState;
 

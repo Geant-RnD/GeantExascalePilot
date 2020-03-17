@@ -39,7 +39,7 @@ protected:
 
   using Model_t = typename Model_traits<TEmProcess>::Model_t;
 
-  int fProcessIndex = kNullProcess;;
+  int fProcessIndex = -1;
   Model_t *fModel = nullptr;
   ProxyRandom *fRng = nullptr;
   ProxyDataManager *fDataManager = nullptr;
@@ -115,23 +115,21 @@ double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
 
   double energy = track->fPhysicsState.fEkin;
   int index = track->fMaterialState.fMaterialId;
-
   double lambda = GetLambda(index, energy);
 
   //reset or update the number of the interaction length left  
-  if ( track->fPhysicsProcessState.fNumOfInteractLengthLeft <= 0.0 ) {
-    track->fPhysicsProcessState.fNumOfInteractLengthLeft = -vecCore::math::Log(fRng->uniform());
+  if ( track->fPhysicsProcessState[fProcessIndex].fNumOfInteractLengthLeft <= 0.0 ) {
+    track->fPhysicsProcessState[fProcessIndex].fNumOfInteractLengthLeft = -vecCore::math::Log(fRng->uniform());
   }
   else {
-    track->fPhysicsProcessState.fNumOfInteractLengthLeft
-      -=  track->fPhysicsState.fPstep/track->fPhysicsProcessState.fPhysicsInteractLength;
+    track->fPhysicsProcessState[fProcessIndex].fNumOfInteractLengthLeft
+      -=  track->fPhysicsState.fPstep/track->fPhysicsProcessState[fProcessIndex].fPhysicsInteractLength;
   }    
 
-  step = lambda * track->fPhysicsProcessState.fNumOfInteractLengthLeft;
+  step = track->fPhysicsProcessState[fProcessIndex].fNumOfInteractLengthLeft/lambda;
 
   //save lambda and the current step
-  track->fPhysicsProcessState.fPhysicsInteractLength = lambda;
-  track->fPhysicsState.fPstep = step;
+  track->fPhysicsProcessState[fProcessIndex].fPhysicsInteractLength = 1.0/lambda;
 
   return step;
 }
@@ -141,6 +139,7 @@ int ProxyEmProcess<TEmProcess>::PostStepDoIt(TrackState* track)
 {
   GEANT_THIS_TYPE_TESTING_MARKER("");
 
+  track->fPhysicsProcessState[fProcessIndex].fNumOfInteractLengthLeft = -1;
   int nsec = this->fModel->SampleSecondaries(track);
 
   return nsec;

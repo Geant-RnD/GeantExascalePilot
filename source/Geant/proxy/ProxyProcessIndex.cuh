@@ -20,21 +20,29 @@
 
 namespace geantx {
 
-enum ProxyProcessIndex {
-  kNullProcess = -1,          // 
+enum EletonProcessIndex {
+  kNullElectronProcess = -1,  // 
   kProxyBremsstrahlung,       // e- Bremsstrahlung
   kProxyIonization,           // e- Ionization
   kProxyMSC,                  // e- Multiple Scattering
+  kNumberElectronProcess         // number of physics processes    
+};
+
+enum GammaProcessIndex {
+  kNullGammaProcess = -1,     // 
   kProxyCompton,              // gamma Compton
   kProxyConversion,           // gamma Conversion (pair production)
   kProxyPhotoElectric,        // gamma PhotoElectricEffect
-  kNumberProxyProcess         // number of physics processes    
+  kNumberGammaProcess         // number of physics processes    
 };
 
-const std::string ProxyProcessName[kNumberProxyProcess] = {
+const std::string ElectronProcessName[kNumberElectronProcess] = {
   "eBrem",
   "eIoni",
-  "eMsc",
+  "eMsc"
+};
+
+const std::string GammaProcessName[kNumberGammaProcess] = {
   "gComp",
   "gConv",
   "gPhot"

@@ -40,6 +40,7 @@
 #include "BasicCpuTransport/TrackManager.hpp"
 #include "BasicCpuTransport/Types.hpp"
 #include "BasicCpuTransport/ProxyDetectorConstruction.hpp"
+#include "BasicCpuTransport/HepDetectorConstruction.hpp"
 
 using namespace geantx;
 using namespace vecgeom;
@@ -418,7 +419,6 @@ OneStep(Track *track)
     ///          return
     Apply<void>::unroll_indices<AlongStepApply_t>(track, &doit_idx, &proposedPhysLength, &doit_apply);
 
-
     /// FindNextBoundary(track);
 
     /// Apply multiple scaterring if any.
@@ -433,7 +433,9 @@ OneStep(Track *track)
     /// ....
 
     /// Apply post step updates.
-    ++track->fPhysicsState.fPstep;
+    //    ++track->fPhysicsState.fPstep;
+    track->fPhysicsState.fPstep = proposedPhysLength;
+    track->fStep = proposedPhysLength;
 }
 
 //--------------------------------------------------------------------------------------//
@@ -509,6 +511,8 @@ get_primary_particle(VolumePath_t *startpath, double Ekin)
     auto *vol = (top) ? top->GetLogicalVolume() : nullptr;
     _track->fGeometryState.fVolume = vol;
     _track->fMaterialState.fMaterial = ((Material_t *)vol->GetMaterialPtr());
+    //TODO: Get material index correctly
+    _track->fMaterialState.fMaterialId = _track->fMaterialState.fMaterial->GetIndex() - 1;
 
     return _track;
 }
@@ -545,17 +549,25 @@ main(int argc, char** argv)
     // Create and configure run manager
     geantx::RunManager *runMgr = NULL;
 
-    // Create CMS detector construction
-    userapplication::ProxyDetectorConstruction *det = new userapplication::ProxyDetectorConstruction(runMgr);
-    geantx::vector_t<geantx::Volume_t const *> volumes;
+    // Create detector construction
+    geantx::UserDetectorConstruction *det;
+   
+    if(argc > 1) {
+      det = new userapplication::HepDetectorConstruction(runMgr);
+    }
+    else {
+      //default: a simple calorimeter
+      det = new userapplication::ProxyDetectorConstruction(runMgr);
+    }
 
+    geantx::vector_t<geantx::Volume_t const *> volumes;
     int numVolumes = 0;
     if (det) {
       det->CreateMaterials();
       det->CreateGeometry();
       numVolumes = det->SetupGeometry(volumes);
     }
-    det->DetectorInfo();
+
     std::cout << " Number of the maximum volume depth = " << numVolumes << std::endl;
 
     // initialize negivation
