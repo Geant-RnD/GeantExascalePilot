@@ -173,16 +173,63 @@ struct TrackState
 };
 
 // Those need to be transfered to the appropriate State.
+VECCORE_ATT_HOST_DEVICE
 GEANT_FORCE_INLINE
 bool IsAlive(const TrackState &state)
 {
     return state.fStatus != TrackStatus::Killed;
 }
 
+VECCORE_ATT_HOST_DEVICE
 GEANT_FORCE_INLINE
 bool IsStopped(const TrackState &state)
 {
     return state.fPhysicsState.fEkin <= 0.0;
 }
+
+VECCORE_ATT_HOST_DEVICE
+GEANT_FORCE_INLINE
+void LinearStep(TrackState &state, double step)
+{
+    state.fPhysicsState.fPstep -= step;
+    state.fStep += step;
+    state.fGeometryState.fSafety -= step;
+    state.fGeometryState.fSnext -= step;
+    state.fPos.x() += step * state.fDir.x();
+    state.fPos.y() += step * state.fDir.y();
+    state.fPos.z() += step * state.fDir.z();
+}
+
+VECCORE_ATT_HOST_DEVICE
+GEANT_FORCE_INLINE
+bool ReachedPhysicsLength(TrackState &state)
+{
+    return state.fStatus == TrackStatus::Physics;
+}
+
+   /** @brief Function that updates the current volume the particle is in */
+  VECCORE_ATT_HOST_DEVICE
+  GEANT_FORCE_INLINE
+  void UpdateVolume(TrackGeometryState &state)
+  {
+    auto top = state.fPath->Top();
+    // const vecgeom::LogicalVolume* vol = nullptr;
+    // if( top ) vol = top->GetLogicalVolume();
+    auto *vol = (top) ? top->GetLogicalVolume() : nullptr;
+    state.fVolume   = vol;
+  }
+
+/** @brief Function that swaps path and next path */
+  VECCORE_ATT_HOST_DEVICE
+  GEANT_FORCE_INLINE
+  void UpdateSwapPath(TrackState &state)
+  {
+    VolumePath_t *tmp              = state.fGeometryState.fNextpath;
+    state.fGeometryState.fNextpath = state.fGeometryState.fPath;
+    state.fGeometryState.fPath     = tmp;
+    UpdateVolume(state.fGeometryState);
+  }
+
+
 
 }  // namespace geantx

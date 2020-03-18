@@ -18,7 +18,7 @@ if(BUILD_STATIC_LIBS)
         HEADERS                 ${headers}
         SOURCES                 ${sources}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
-        LINK_LIBRARIES          core random geometry material particles processes
+        LINK_LIBRARIES          core random geometry material particles processes magneticfield
     )
     set(LINK_TARGET ${LIBNAME}-static)
 endif()
@@ -34,7 +34,7 @@ if(BUILD_SHARED_LIBS)
         SOURCES                 ${sources}
         INCLUDE_DIRECTORIES     ${CMAKE_CURRENT_LIST_DIR}
         PROPERTIES              VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR}
-        LINK_LIBRARIES          core random geometry material particles processes
+        LINK_LIBRARIES          core random geometry material particles processes magneticfield
     )
     set(LINK_TARGET ${LIBNAME}-shared)
 endif()

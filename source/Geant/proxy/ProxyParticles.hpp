@@ -35,6 +35,7 @@ public:
 
   static constexpr int PdgCode = 0;
   static constexpr int IntCode = 0;
+  static constexpr bool kCharged = false;
 
   // copy CTR and assignment operators are deleted
   CpuGamma(const CpuGamma &) = delete;
@@ -60,6 +61,7 @@ public:
 
   static constexpr int PdgCode = 1;
   static constexpr int IntCode = 1;
+  static constexpr bool kCharged = true;
 
   // copy CTR and assignment operators are deleted
   CpuElectron(const CpuElectron &) = delete;
@@ -86,8 +88,10 @@ public:
   GpuGamma(const GpuGamma &) = delete;
   GpuGamma &operator=(const GpuGamma &) = delete;
 
-  static constexpr int PdgCode = 2;
+  static constexpr int PdgCode = 0;
   static constexpr int IntCode = 2;
+  static constexpr bool kCharged = false;
+
 
 private:
   GEANT_HOST_DEVICE GpuGamma(const std::string &name, int pdgcode, int intcode,
@@ -107,8 +111,9 @@ public:
     return &instance;
   }
 
-  static constexpr int PdgCode = 3;
+  static constexpr int PdgCode = 1;
   static constexpr int IntCode = 3;
+  static constexpr bool kCharged = true;
 
   // copy CTR and assignment operators are deleted
   GpuElectron(const GpuElectron &) = delete;
