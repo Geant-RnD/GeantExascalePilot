@@ -22,6 +22,7 @@
 #include "Geant/proxy/ProxySystemOfUnits.hpp"
 #include "Geant/geometry/UserDetectorConstruction.hpp"
 #include "Geant/track/TrackState.hpp"
+#include "Geant/track/TrackModifier.hpp"
 #include "Geant/geometry/NavigationInterface.hpp"
 
 #include "VecGeom/management/GeoManager.h"
@@ -544,7 +545,11 @@ get_primary_particle(double Ekin)
 {
     TIMEMORY_BASIC_MARKER(toolset_t, "");
     Track* _track = new Track;
-    _track->fPhysicsState.fEkin  = Ekin;
+
+    //TrackModifier<CpuElectron> trk(_track);
+
+    //_track->fPhysicsState.fEkin  = Ekin;
+    UpdateEkin(*_track, Ekin);
     _track->fDir  = { get_rand(), get_rand(), get_rand() };
     _track->fPos  = { get_rand(), get_rand(), get_rand() };
     _track->fDir.Normalize();
@@ -560,7 +565,8 @@ get_primary_particle(double Ekin)
     //TODO: Get material index correctly
     _track->fMaterialState.fMaterialId = _track->fMaterialState.fMaterial->GetIndex() - 1;
     std::cout<<"* getPrimPart: pos="<< _track->fPos <<", dir="<< _track->fDir
-	     <<", volume=<"<< _track->fGeometryState.fPath->Top()->GetLabel() <<">\n";
+	     <<", volume=<"<< _track->fGeometryState.fPath->Top()->GetLabel()
+	     <<"> : "<< *_track <<"\n";
 
     return _track;
 }

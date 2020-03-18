@@ -180,8 +180,8 @@ struct TrackState
         // to join the entries with second separator and then join the paired
         // entries with the first separator
         using apply_t = tim::apply<std::tuple<std::string>>;
-        auto&& labels = std::make_tuple("addr", "status", "step", "pos", "dir", "time");
-        auto&& values = std::make_tuple(&t, t.fStatus, t.fStep, t.fPos, t.fDir, t.fTime);
+        auto&& labels = std::make_tuple("addr", "status", "step", "Pstep", "pos", "dir", "time");
+        auto&& values = std::make_tuple(&t, t.fStatus, t.fStep, t.fPhysicsState.fPstep, t.fPos, t.fDir, t.fTime);
         os << apply_t::join(", ", "=", labels, values);
         return os;
     }
@@ -208,11 +208,12 @@ void LinearStep(TrackState &state, double step)
 {
     state.fPhysicsState.fPstep -= step;
     state.fStep += step;
-    state.fGeometryState.fSafety -= step;
+    state.fGeometryState.fSafety -= step;  // TODO: recalculate safety
     state.fGeometryState.fSnext -= step;
     state.fPos.x() += step * state.fDir.x();
     state.fPos.y() += step * state.fDir.y();
     state.fPos.z() += step * state.fDir.z();
+    // TODO: update fBoundary
 }
 
 VECCORE_ATT_HOST_DEVICE
@@ -246,5 +247,19 @@ bool ReachedPhysicsLength(TrackState &state)
   }
 
 
+/** @brief Function that swaps path and next path */
+  VECCORE_ATT_HOST_DEVICE
+  GEANT_FORCE_INLINE
+  void UpdateEkin(TrackState &state, double ekin)
+  {
+    // Update energy & momentum
+    state.fPhysicsState.fEkin = ekin;
+    //state.fPhysicsState.fMomentum = std::sqrt(ekin * (ekin + 2. * Particle.Mass()));
+
+    // GL: Temporarily using hardcoded e- mass for now
+    state.fPhysicsState.fMomentum = std::sqrt(ekin * (ekin + 2. * geantx::units::kElectronMassC2));
+    // TODO: take mass value from ParticleDefinition
+    //state.fPhysicsState.fMomentum = std::sqrt(ekin * (ekin + 2. * Particle.Mass()));
+  }
 
 }  // namespace geantx

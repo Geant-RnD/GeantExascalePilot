@@ -69,6 +69,16 @@ public:
   }
 
   //! Collision: change direction and energy
+  void UpdateEnergy(double newEkin) const
+  {
+    REQUIRE(newEkin >= 0);
+
+    // Update energy & momentum
+    fState.fPhysicsState.fEkin = newEkin;
+    fState.fPhysicsState.fMomentum = std::sqrt(newEkin * (newEkin + 2. * fParDef.Mass()));
+  }
+
+  //! Collision: change direction and energy
   void Collide(const ThreeVector &new_direction, double newKineticEnergy) const
   {
     REQUIRE(newKineticEnergy >= 0);
@@ -122,6 +132,13 @@ public:
     // Set status (TODO: should this reset anything???)
     fState.fStatus = TrackStatus::New;
   }
+
+protected:
+    // >>> IMPLEMENTATION DETAILS
+    explicit TrackModifier(const TrackState& state)
+    : fState(state)
+    {}
+    const TrackState& State() const { return fState; }
 
 private:
   void StepImpl(double step) const
