@@ -538,7 +538,7 @@ DoStep(VariadicTrackManager<ParticleTypes...>* primary,
 // finished
 //
 Track*
-get_primary_particle(VolumePath_t *startpath, double Ekin)
+get_primary_particle(int maxdepth, double Ekin)
 {
     TIMEMORY_BASIC_MARKER(toolset_t, "");
     Track* _track = new Track;
@@ -547,8 +547,10 @@ get_primary_particle(VolumePath_t *startpath, double Ekin)
     _track->fPos  = { get_rand(), get_rand(), get_rand() };
     _track->fDir.Normalize();
 
-    _track->fGeometryState.fPath = startpath;
-    _track->fGeometryState.fNextpath = startpath;
+    auto startpath = _track->fGeometryState.fPath = geantx::VolumePath_t::MakeInstance(maxdepth);
+    vecgeom::GlobalLocator::LocateGlobalPoint(vecgeom::GeoManager::Instance().GetWorld(), _track->fPos, *_track->fGeometryState.fPath, true);
+    _track->fGeometryState.fNextpath = geantx::VolumePath_t::MakeInstance(maxdepth);
+
     auto top = startpath->Top();
     auto *vol = (top) ? top->GetLogicalVolume() : nullptr;
     _track->fGeometryState.fVolume = vol;
@@ -659,17 +661,17 @@ main(int argc, char** argv)
     double energy = 10. * geantx::clhep::GeV;
 
     printf("\n");
-    primary.PushTrack<CpuGamma>(get_primary_particle(startpath, energy));
-    primary.PushTrack<CpuGamma>(get_primary_particle(startpath, energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(maxDepth, energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(maxDepth, energy));
 
     printf("\n");
-    primary.PushTrack<GpuGamma>(get_primary_particle(startpath, energy));
+    primary.PushTrack<GpuGamma>(get_primary_particle(maxDepth, energy));
 
     printf("\n");
-    primary.PushTrack<CpuElectron>(get_primary_particle(startpath, energy));
+    primary.PushTrack<CpuElectron>(get_primary_particle(maxDepth, energy));
 
     printf("\n");
-    primary.PushTrack<GpuElectron>(get_primary_particle(startpath, energy));
+    primary.PushTrack<GpuElectron>(get_primary_particle(maxDepth, energy));
 
     //stepping
 
