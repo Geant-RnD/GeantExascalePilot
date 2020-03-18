@@ -98,7 +98,7 @@ double FieldPropagationHandler::Curvature(const TrackState &track,
 
 //______________________________________________________________________________
 VECCORE_ATT_HOST_DEVICE
-void FieldPropagationHandler::DoIt(TrackState &track, TaskData *td) const
+bool FieldPropagationHandler::Propagate(TrackState &track, TaskData *td) const
 {
   // Scalar geometry length computation. The track is moved into the output basket.
   using vecCore::math::Max;
@@ -126,7 +126,8 @@ void FieldPropagationHandler::DoIt(TrackState &track, TaskData *td) const
   // td->fNmag++;
 
 #ifndef IMPLEMENTED_STATUS
-#  warning "Propagation has no way to tell scheduler what to do yet."
+// Code moved one level up
+// #  warning "Propagation has no way to tell scheduler what to do yet."
 #else
   // Set continuous processes stage as follow-up for tracks that reached the
   // physics process
@@ -146,6 +147,8 @@ void FieldPropagationHandler::DoIt(TrackState &track, TaskData *td) const
     }
   }
 #endif
+
+   return true;
 }
 
 //______________________________________________________________________________
@@ -342,13 +345,14 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
   track.fPhysicsState.fPstep -= crtstep;
   if (track.fPhysicsState.fPstep < 1.E-10) {
     track.fPhysicsState.fPstep = 0;
-    // track.SetStatus(kPhysics);
+    track.fStatus = TrackStatus::Physics; // track.SetStatus(kPhysics);
   }
 
   track.fGeometryState.fSnext -= crtstep;
   if (track.fGeometryState.fSnext < 1.E-10) {
     track.fGeometryState.fSnext = 0;
-    // if (track.Boundary()) track.SetStatus(kBoundary);
+    if (track.fGeometryState.fBoundary) // if (track.Boundary()) track.SetStatus(kBoundary);
+       track.fStatus = TrackStatus::Boundary;
   }
 
   const auto preSafety = track.fGeometryState.fSafety;

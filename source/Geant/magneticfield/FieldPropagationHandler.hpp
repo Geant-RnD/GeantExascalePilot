@@ -8,7 +8,9 @@
 //===----------------------------------------------------------------------===//
 /**
  * @file
- * @brief Interface between the scheduler or the field integrator.
+ * @brief Interface between the scheduler and the field integrator.
+ *
+ * Originated from GeantV
  */
 //===----------------------------------------------------------------------===//
 
@@ -50,7 +52,7 @@ public:
    double Curvature(const TrackState &track, const ThreeVector_t &magFld, double bmag) const;
 
    VECCORE_ATT_HOST_DEVICE
-   void DoIt(TrackState &track, TaskData *td) const;
+   bool Propagate(TrackState &track, TaskData *td) const;
 
    VECCORE_ATT_HOST_DEVICE
    void PropagateInVolume(TrackState &track, double crtstep, const ThreeVector &BfieldInitial, 
@@ -78,3 +80,4 @@ public:
 
 } // GEANT_IMPL_NAMESPACE
 } // geantx
+

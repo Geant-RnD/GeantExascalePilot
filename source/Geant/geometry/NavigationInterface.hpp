@@ -21,6 +21,8 @@
 #include "Geant/track/TrackState.hpp"
 
 // VecGeom
+#include "VecCore/VecMath.h"
+#include "navigation/VNavigator.h"
 #include "navigation/NavigationState.h"
 #include "navigation/GlobalLocator.h"
 #include "base/Vector3D.h"
@@ -52,6 +54,35 @@ namespace NavigationInterface {
 #endif
     }
     return samepath;
+  }
+
+  //______________________________________________________________________________
+  VECCORE_ATT_HOST_DEVICE
+  void FindNextBoundary(TrackState &track)
+  {
+    constexpr double gTolerance = 1.e-9;
+    // back-up the pre-step point boundary flag
+    bool onboundary = track.fGeometryState.fIsOnBoundaryPreStp = track.fGeometryState.fBoundary;
+
+    // Find distance to next boundary, within proposed step.
+    typedef vecgeom::Vector3D<vecgeom::Precision> Vector3D_t;
+
+    // Retrieve navigator for the track
+    vecgeom::VNavigator const *newnav = track.fGeometryState.fVolume->GetNavigator();
+    // Check if current safety allows for the proposed step
+    double safety = track.fGeometryState.fSafety;
+    const double pstep = track.fPhysicsState.fPstep;
+    if (safety > pstep) {
+      track.fGeometryState.fSnext = pstep;
+      track.fGeometryState.fBoundary = (false);
+      return;
+    }
+    const double snext  = newnav->ComputeStepAndSafety(
+        Vector3D_t(track.fPos.x(), track.fPos.y(), track.fPos.z()), Vector3D_t(track.fDir.x(), track.fDir.y(), track.fDir.z()),
+        vecCore::math::Min<double>(1.E20, pstep), *track.fGeometryState.fPath, !onboundary, safety);
+    track.fGeometryState.fBoundary = (snext < pstep);
+    track.fGeometryState.fSnext = (vecCore::math::Max<double>(2. * gTolerance, snext + 2. * gTolerance));
+    track.fGeometryState.fSafety = (vecCore::math::Max<double>(safety, 0));
   }
 
 
