@@ -47,6 +47,11 @@ public:
     TrackStatus Status() const { return this->State().fStatus; }
     bool          Alive() const { return this->Status() != TrackStatus::Killed; }
 
+    double Momentum() const { return this->State().fPhysicsState.fMomentum; }
+    double KineticEnergy() const { return this->State().fPhysicsState.fEkin; }
+    double Pstep() const { return this->State().fPhysicsState.fPstep; }
+    double Safety() const { return this->State().fGeometryState.fSafety; }
+
 protected:
     // >>> IMPLEMENTATION DETAILS
 
