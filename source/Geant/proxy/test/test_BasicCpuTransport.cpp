@@ -550,15 +550,7 @@ main(int argc, char** argv)
     geantx::RunManager *runMgr = NULL;
 
     // Create detector construction
-    geantx::UserDetectorConstruction *det;
-   
-    if(argc > 1) {
-      det = new userapplication::HepDetectorConstruction(runMgr);
-    }
-    else {
-      //default: a simple calorimeter
-      det = new userapplication::ProxyDetectorConstruction(runMgr);
-    }
+    geantx::UserDetectorConstruction *det = new userapplication::ProxyDetectorConstruction(runMgr);
 
     geantx::vector_t<geantx::Volume_t const *> volumes;
     int numVolumes = 0;

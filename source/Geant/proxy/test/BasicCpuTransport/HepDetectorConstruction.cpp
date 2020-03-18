@@ -17,7 +17,7 @@
 #include "HepDetectorConstruction.hpp"
 
 #include "Geant/geometry/RunManager.hpp"
-#include "VecGeom/gdml/Frontend.h"
+//#include "VecGeom/gdml/Frontend.h"
 
 #include "Geant/geometry/RunManager.hpp"
 
@@ -37,14 +37,17 @@ void HepDetectorConstruction::CreateGeometry()
 {
   std::cout << "  **** LOADING GEOMETRY FROM GDML = " << fGDMLFileName << std::endl;
 
+  /*
   auto const loaded = vgdml::Frontend::Load(fGDMLFileName);
 
   if (!loaded) std::cout << "*** Fail to Load GDML ***" << std::endl;
   else DetectorInfo();
+  */
 }
 
 void HepDetectorConstruction::DetectorInfo() 
 {
+  /*
   std::cout << "\n ====    Detector Info    ===== " << std::endl;
   std::cout << "Have depth " << vecgeom::GeoManager::Instance().getMaxDepth() << std::endl;
 
@@ -56,6 +59,7 @@ void HepDetectorConstruction::DetectorInfo()
   std::vector<vecgeom::VPlacedVolume *> v2;
   geoManager.getAllPlacedVolumes(v2);
   std::cout << "Have placed volumes " << v2.size() << std::endl;
+  */
 }
 
 } // namespace userapplication
