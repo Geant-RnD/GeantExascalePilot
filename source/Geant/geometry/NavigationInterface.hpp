@@ -22,6 +22,7 @@
 
 // VecGeom
 #include "VecCore/VecMath.h"
+#include "VecGeom/management/GeoManager.h"
 #include "VecGeom/navigation/VNavigator.h"
 #include "VecGeom/navigation/NavigationState.h"
 #include "VecGeom/navigation/GlobalLocator.h"
@@ -68,7 +69,9 @@ namespace NavigationInterface {
     typedef vecgeom::Vector3D<vecgeom::Precision> Vector3D_t;
 
     // Retrieve navigator for the track
-    vecgeom::VNavigator const *newnav = track.fGeometryState.fVolume->GetNavigator();
+    Volume_t const* vol = track.fGeometryState.fVolume;
+    if (!vol) vol = vecgeom::GeoManager::Instance().GetWorld()->GetLogicalVolume();
+    vecgeom::VNavigator const *newnav = vol->GetNavigator();
     // Check if current safety allows for the proposed step
     double safety = track.fGeometryState.fSafety;
     const double pstep = track.fPhysicsState.fPstep;

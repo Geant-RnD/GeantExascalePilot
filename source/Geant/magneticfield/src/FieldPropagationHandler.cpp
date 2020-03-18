@@ -338,6 +338,7 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
   track.fDir = DirectionUnit;
   // TODO: need to add normlization of track.
   // Normalize(track)
+  track.fDir.Normalize();
 
   // track.SetStatus(kInFlight);
   track.fStep += crtstep;
