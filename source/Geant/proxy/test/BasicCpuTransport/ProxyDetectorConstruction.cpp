@@ -181,9 +181,9 @@ void ProxyDetectorConstruction::DetectorInfo()
 
 void ProxyDetectorConstruction::CreateMaterials()
 {
-  geantx::Element *elH  = geantx::Element::NISTElement(1);
-  geantx::Element *elC  = geantx::Element::NISTElement(6);
-  geantx::Element *elPb = geantx::Element::NISTElement(82);
+  //  geantx::Element *elH  = geantx::Element::NISTElement(1);
+  //  geantx::Element *elC  = geantx::Element::NISTElement(6);
+  //  geantx::Element *elPb = geantx::Element::NISTElement(82);
   //
   // create material Galactic
   double density     = kUniverseMeanDensity;
@@ -193,8 +193,10 @@ void ProxyDetectorConstruction::CreateMaterials()
   double a           = 1.008 * g / mole;
   new geantx::Material("Galactic", z, a, density, geantx::MaterialState::kStateGas,
                        temperature, pressure);
+ 
   //
   // create material Lead (by mass fraction)
+  /* 
   double massfraction       = 1.;
   int ncomponents           = 1;
   density                   = 11.35 * g / cm3;
@@ -217,6 +219,7 @@ void ProxyDetectorConstruction::CreateMaterials()
   massfraction             = 1.;
   geantx::Material *lArEm3 = new geantx::Material("liquidArgon", density, ncomponents);
   lArEm3->AddMaterial(matlAr, massfraction);
+  */
 }
 
 void ProxyDetectorConstruction::CreateGeometry()
