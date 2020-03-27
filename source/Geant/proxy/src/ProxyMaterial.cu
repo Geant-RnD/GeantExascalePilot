@@ -23,7 +23,7 @@ namespace geantx {
 
 GEANT_HOST
 ProxyMaterial::ProxyMaterial(const char* name, double density, 
-                             double z, double a, MaterialState state) 
+                             double z, double a, ProxyMaterialState state) 
   : fName(name), fState(state)
 {
 
@@ -44,7 +44,7 @@ ProxyMaterial::ProxyMaterial(const char* name, double density,
 
 GEANT_HOST
 ProxyMaterial::ProxyMaterial(const char* name, double density, 
-                             int nElements, MaterialState state)
+                             int nElements, ProxyMaterialState state)
   : fName(name), fState(state)
 {
   fNumberOfElements = 0;

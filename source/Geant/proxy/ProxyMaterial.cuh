@@ -22,7 +22,7 @@
 namespace geantx
 {
 
-enum MaterialState { kNullState = 0, kSolid, kLiquid, kGas};
+enum ProxyMaterialState { kNullState = 0, kSolid, kLiquid, kGas};
 
 class ProxyMaterial 
 {
@@ -33,11 +33,11 @@ public:
 
   GEANT_HOST
   ProxyMaterial(const char* name, double density, double z, double a,
-                MaterialState state = kNullState);
+                ProxyMaterialState state = kNullState);
 
   GEANT_HOST
   ProxyMaterial(const char* name, double density, int nElements,
-                MaterialState state = kNullState);
+                ProxyMaterialState state = kNullState);
 
   GEANT_HOST_DEVICE
   ~ProxyMaterial();
@@ -103,7 +103,7 @@ private:
 
   const char*    fName;                    // name of the element
   size_t         fIndex;                   // index in the material table 
-  MaterialState  fState;                   // physical state of material
+  ProxyMaterialState  fState;                   // physical state of material
 
   int            fNumberOfElements;
   int*           fAtomsVector;             // array of atom counters
@@ -121,7 +121,7 @@ private:
 GEANT_HOST_DEVICE
 size_t ProxyMaterial::MemorySize() {
 
-  size_t bufferSize = sizeof(fName) + + sizeof(size_t) + sizeof(MaterialState)
+  size_t bufferSize = sizeof(fName) + + sizeof(size_t) + sizeof(ProxyMaterialState)
                     + (1+fNumberOfElements)*sizeof(int)  
                     + (4+2*fNumberOfElements)*sizeof(double);
 
