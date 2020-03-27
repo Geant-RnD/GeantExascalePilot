@@ -40,3 +40,4 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 add_subdirectory(test)
+add_subdirectory(validation)
