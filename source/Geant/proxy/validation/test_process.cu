@@ -15,6 +15,10 @@
 //#include "Geant/proxy/ProxyEmProcess.cuh"
 //#include "Geant/proxy/ProxyCompton.cuh"
 
+#ifndef ADDED_SUPPORT_FOR_SEPARABLE_COMPILATION
+#include "../src/ProxyProcess.cu"
+#endif
+
 using namespace geantx;
 
 __global__ void kernel_process()
