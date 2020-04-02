@@ -15,8 +15,20 @@
 #include "Geant/processes/Process.hpp"
 
 namespace geantx {
-Process::Process(const std::string &name, const double &factor)
-    : fPILfactor(factor), fName(name)
+
+GEANT_HOST
+Process::Process(char* name)
+      : fName(name)
+  {}
+
+GEANT_HOST
+Process::Process()
+    : fThreadId(-1)
+{}
+
+GEANT_HOST_DEVICE
+Process::Process(int tid)
+    : fThreadId(tid)
 {}
 
 } // namespace geantx

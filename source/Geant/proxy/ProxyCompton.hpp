@@ -62,6 +62,7 @@ public:
   ~ProxyCompton() = default;
   
   // mandatory methods for static polymorphism
+  GEANT_HOST_DEVICE
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_compt_gamma)->Value(index,energy);

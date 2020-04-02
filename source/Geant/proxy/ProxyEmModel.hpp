@@ -30,8 +30,15 @@ template <class TEmModel>
 class ProxyEmModel {
 
 public:
+
+  GEANT_HOST
   ProxyEmModel();
-  ~ProxyEmModel()               = default;
+
+  GEANT_HOST_DEVICE
+  ProxyEmModel(int tid) : fThreadId(tid) {}
+
+  GEANT_HOST_DEVICE
+  ~ProxyEmModel() {}
 
   ProxyEmModel(const ProxyEmModel &) = default;
   ProxyEmModel(ProxyEmModel &&)      = default;
@@ -80,6 +87,7 @@ public:
 
 protected:
 
+  int fThreadId;
   bool fAtomicDependentModel;
   double fLowEnergyLimit;
   double fHighEnergyLimit;
@@ -89,13 +97,13 @@ protected:
 
 template <typename TEmModel>
 ProxyEmModel<TEmModel>::ProxyEmModel() 
-  : fAtomicDependentModel(false), 
+  : fThreadId(-1),
+    fAtomicDependentModel(false), 
     fLowEnergyLimit(100.0 * clhep::eV), 
     fHighEnergyLimit(100.0 * clhep::TeV)
 { 
   fRng = new ProxyRandom; 
 }
-
 
 template <typename TEmModel>
 double ProxyEmModel<TEmModel>::ComputeCoulombFactor(double Zeff) 

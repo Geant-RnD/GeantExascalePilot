@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "Geant/core/Config.hpp"
 #include "Geant/core/Tuple.hpp"
 #include "Geant/particles/Types.hpp"
 #include "Geant/track/TrackAccessor.hpp"
@@ -46,26 +47,45 @@ struct ProcessEnabled : std::false_type
 class Process
 {
 public:
-    Process(const std::string& name, const double& factor);
-    Process()               = default;
-    ~Process()              = default;
+    GEANT_HOST
+    Process(char* name);
+
+    GEANT_HOST
+    Process();
+
+    GEANT_HOST_DEVICE
+    Process(int tid);
+
+    GEANT_HOST_DEVICE
+    ~Process() {}
+
     Process(const Process&) = default;
+
     Process(Process&&)      = default;
 
     Process& operator=(const Process&) = delete;
+
     Process& operator=(Process&&) = default;
 
-public:
-    double GetPILFactor() const { return fPILfactor; }
-    void   SetPILFactor(const double& val) { fPILfactor = val; }
+    GEANT_HOST_DEVICE
+    inline void Print() { printf("fThreadId = %d\n",fThreadId); }
 
-    const std::string& GetName() { return fName; }
-    void               SetName(const std::string& val) { fName = val; }
+public:
+    GEANT_HOST_DEVICE
+    int GetPILFactor() const { return fThreadId; }
+
+    GEANT_HOST_DEVICE
+    void SetPILFactor(int tid) { fThreadId = tid; }
+
+    GEANT_HOST
+    char* GetName() { return fName; }
+
+    GEANT_HOST
+    void SetName(char* val) { fName = val; }
 
 protected:
-    double                fPILfactor = 0.0;
-    std::string           fName      = "unknown";
-    static constexpr auto fMaxPIL    = std::numeric_limits<double>::max();
+    char*           fName;
+    int             fThreadId;
 };
 
 //===----------------------------------------------------------------------===//
@@ -76,6 +96,7 @@ protected:
 // being slow.
 //
 //#if defined(GEANT_TESTING)
+GEANT_HOST
 inline double
 get_rand()
 {

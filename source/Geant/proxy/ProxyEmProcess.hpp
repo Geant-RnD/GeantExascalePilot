@@ -65,15 +65,28 @@ public:
 public:
   using this_type = ProxyEmProcess;
   
-  ProxyEmProcess(){ 
+  GEANT_HOST
+  ProxyEmProcess()
+  { 
     fRng = new ProxyRandom; 
     fModel = new  Model_t;
     fDataManager = ProxyDataManager::Instance(); 
   }
 
-  ~ProxyEmProcess() = default;
+  GEANT_HOST_DEVICE
+  ProxyEmProcess(int tid) : Process(tid) {}
+
+  GEANT_HOST_DEVICE
+  ~ProxyEmProcess() {}
+
+  GEANT_HOST_DEVICE
+  void SetModel(Model_t *model) { fModel = model; }
+
+  GEANT_HOST_DEVICE
+  void SetDataManager(ProxyDataManager *manager) { fDataManager = manager; }
   
   //mandatory methods
+  GEANT_HOST_DEVICE
   double GetLambda(int index, double energy) { return static_cast<TEmProcess *>(this)->GetLambda(index,energy); }
 
   // the proposed along step physical interaction length
@@ -95,7 +108,7 @@ public:
 template <typename TEmProcess>
 double ProxyEmProcess<TEmProcess>::AlongStepGPIL(TrackState* track)
 {
-  GEANT_THIS_TYPE_TESTING_MARKER("");
+  //  GEANT_THIS_TYPE_TESTING_MARKER("");
 
   //the default stepLimit
   return std::numeric_limits<double>::max();
@@ -104,17 +117,20 @@ double ProxyEmProcess<TEmProcess>::AlongStepGPIL(TrackState* track)
 template <typename TEmProcess>
 void ProxyEmProcess<TEmProcess>::AlongStepDoIt(TrackState* track)
 {
-  GEANT_THIS_TYPE_TESTING_MARKER("");
+  //  GEANT_THIS_TYPE_TESTING_MARKER("");
+  ;
 }
 
 template <typename TEmProcess>
 double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
 {
-  GEANT_THIS_TYPE_TESTING_MARKER("");
+  //  GEANT_THIS_TYPE_TESTING_MARKER("");
   double step = std::numeric_limits<double>::max();
 
   double energy = track->fPhysicsState.fEkin;
   int index = track->fMaterialState.fMaterialId;
+
+  index =2;
   double lambda = GetLambda(index, energy);
 
   //reset or update the number of the interaction length left  
@@ -137,7 +153,7 @@ double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
 template <typename TEmProcess>
 int ProxyEmProcess<TEmProcess>::PostStepDoIt(TrackState* track)
 {
-  GEANT_THIS_TYPE_TESTING_MARKER("");
+  //  GEANT_THIS_TYPE_TESTING_MARKER("");
 
   track->fPhysicsProcessState[fProcessIndex].fNumOfInteractLengthLeft = -1;
   int nsec = this->fModel->SampleSecondaries(track);

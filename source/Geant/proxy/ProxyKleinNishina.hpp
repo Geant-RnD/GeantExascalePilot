@@ -30,6 +30,10 @@ class ProxyKleinNishina : public ProxyEmModel<ProxyKleinNishina> {
 
 public:
   ProxyKleinNishina() { fLowEnergyLimit = 100.0 * clhep::eV;}
+
+  GEANT_HOST_DEVICE
+  ProxyKleinNishina(int tid) : ProxyEmModel(tid) {}
+
   ProxyKleinNishina(const ProxyKleinNishina &model) : ProxyEmModel<ProxyKleinNishina>() { this->fRng = model.fRng; }
   ~ProxyKleinNishina() = default;
 
