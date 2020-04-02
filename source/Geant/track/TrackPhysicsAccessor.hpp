@@ -79,7 +79,7 @@ public:
     return std::log(this->Ekin());
   }
 
-  MaterialId_t Material() const { return this->State().fMaterialState.fMaterial; }
+  Material_t* Material() const { return this->State().fMaterialState.fMaterial; }
 
 protected:
   // >>> IMPLEMENTATION DETAILS
