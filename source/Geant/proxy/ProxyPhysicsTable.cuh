@@ -46,6 +46,13 @@ class ProxyPhysicsTable {
   GEANT_HOST
   bool RetrievePhysicsTable(const std::string& fileName);
 
+  //for tests
+  GEANT_HOST
+  ProxyPhysicsVector* GetPhysicsVector(int index) { return fPhysicsVectors[index]; }
+
+  GEANT_HOST
+  ProxyPhysicsVector** GetPhysicsVectors() { return fPhysicsVectors; }
+
 private:
   size_t fTableSize;
   int fNumPhysicsVector;

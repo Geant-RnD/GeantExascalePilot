@@ -127,6 +127,18 @@ bool ProxyPhysicsVector::Retrieve(std::ifstream& fIn)
   return true;
 }
 
+GEANT_HOST
+void ProxyPhysicsVector::Print()
+{
+  printf("%d\n", fType);
+  printf("%f %f %d\n", fEdgeMin, fEdgeMax, fNumberOfNodes);
+  printf("%d\n", fNumberOfNodes);
+  for(int i = 0; i < fNumberOfNodes ; ++i)
+  {
+    printf("%f %f\n", fBinVector[i], fDataVector[i]);
+  }
+}
+
 GEANT_HOST_DEVICE
 int ProxyPhysicsVector::SizeOfVector()
 {
@@ -138,18 +150,26 @@ int ProxyPhysicsVector::SizeOfVector()
 GEANT_HOST
 void ProxyPhysicsVector::Relocate(void *devPtr)
 {
+  // save ptrs for persistency on host
+  double *h_binVector = fBinVector;
+  double *h_dataVector = fDataVector;
+  double *h_secDerivative = fSecDerivative;
+
+  // allocate memory for device ptrs
   double *d_binVector;
   double *d_dataVector;
   double *d_secDerivative;
 
-  cudaMalloc((void **)&(d_binVector), sizeof(double) * fNumberOfNodes);
-  cudaMalloc((void **)&(d_dataVector), sizeof(double) * fNumberOfNodes);
-  cudaMalloc((void **)&(d_secDerivative), sizeof(double) * fNumberOfNodes);
+  int asize = sizeof(double) * fNumberOfNodes;
 
-  // Copy array contents from host to device.
-  cudaMemcpy(d_binVector, fBinVector, sizeof(double) * fNumberOfNodes, cudaMemcpyHostToDevice);
-  cudaMemcpy(d_dataVector, fDataVector, sizeof(double) * fNumberOfNodes, cudaMemcpyHostToDevice);
-  cudaMemcpy(d_secDerivative, fSecDerivative, sizeof(int) * fNumberOfNodes, cudaMemcpyHostToDevice);
+  cudaMalloc((void **)&(d_binVector), asize);
+  cudaMalloc((void **)&(d_dataVector), asize);
+  cudaMalloc((void **)&(d_secDerivative), asize);
+
+  // copy array contents from host to device.
+  cudaMemcpy(d_binVector, fBinVector, asize, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_dataVector, fDataVector, asize, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_secDerivative, fSecDerivative, asize, cudaMemcpyHostToDevice);
 
   // point to device pointer in host struct.
   fBinVector = d_binVector;
@@ -157,6 +177,11 @@ void ProxyPhysicsVector::Relocate(void *devPtr)
   fSecDerivative = d_secDerivative;
 
   cudaMemcpy(devPtr, this, SizeOfVector(), cudaMemcpyHostToDevice);
+
+  // persistency on host
+  fBinVector = h_binVector;
+  fDataVector = h_dataVector;
+  fSecDerivative = h_secDerivative;
 }
 #endif
 
@@ -445,7 +470,7 @@ GEANT_HOST_DEVICE
 double ProxyPhysicsVector::Value(double energy)
 {
   double value = 0.0;
-  
+
   if (energy <= fEdgeMin) {
     value = fDataVector[0];
   } else if (energy >= fEdgeMax) {

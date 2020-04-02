@@ -89,8 +89,11 @@ class ProxyPhysicsVector {
   GEANT_HOST_DEVICE 
   inline void SetType(int type) { fType = type; }
 
-private:
+  //accessors
+  GEANT_HOST_DEVICE 
+  void Print();
 
+private:
   int fType;             // The type of PhysicsVector
   bool fUseSpline;
   bool fIsSecondDerivativeFilled;

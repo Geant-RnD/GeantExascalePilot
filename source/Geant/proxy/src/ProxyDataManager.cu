@@ -36,7 +36,8 @@ ProxyDataManager *ProxyDataManager::Instance()
 GEANT_HOST
 ProxyDataManager::ProxyDataManager() 
 {
-  fSizeOfObject = 2*sizeof(int);
+  fSizeOfObject = sizeof(fInstance) + 3*sizeof(int);
+
   fNumPhysicsTables = ProxyPhysicsTableIndex::kNumberPhysicsTable;
   fPhysicsTables = new ProxyPhysicsTable * [fNumPhysicsTables];
 
@@ -65,7 +66,6 @@ bool ProxyDataManager::RetrievePhysicsData(/* const std::string& dir */)
 
     sprintf(filename,"data/table/%s",ProxyPhysicsTableName[it].c_str());
 
-    ++fNumPhysicsTables;
     fPhysicsTables[it] = new ProxyPhysicsTable();
 
     bool status = fPhysicsTables[it]->RetrievePhysicsTable(filename);
@@ -83,6 +83,7 @@ bool ProxyDataManager::RetrievePhysicsData(/* const std::string& dir */)
     else {
       std::cout << "Failed to retrieve " << filename << std::endl;
     }
+  
   }
 
   return true;
@@ -124,35 +125,50 @@ bool ProxyDataManager::RetrieveCutsTable(/* const std::string& dir */)
     }
   }
 
+  fSizeOfObject += sizeof(double)*data::nParticleForCuts*fNumOfCuts;
+
   return true;
 }
 
 #ifdef GEANT_CUDA
 void ProxyDataManager::RelocatePhysicsData(void *devPtr)
 {
-  // device pointers in device memory
+  // allocate mapped device pointers on the host memory
   ProxyPhysicsTable **fProxyPhysicsTables_d;
+  cudaHostAlloc((void **)&fProxyPhysicsTables_d, 
+                fNumPhysicsTables*sizeof(ProxyPhysicsTable*), cudaHostAllocMapped);
 
-  int totalTableSize = 0;
-  for (int it = 0; it < fNumPhysicsTables; it++) totalTableSize += fPhysicsTables[it]->SizeOfTable();
+  // save fPhysicsTables on the host
+  ProxyPhysicsTable **fProxyPhysicsTables_h = fPhysicsTables;
 
-  cudaMalloc((void **)&fProxyPhysicsTables_d, sizeof(totalTableSize));
-
-  // device pointers in host memory
+  // device pointers on the host memory
   ProxyPhysicsTable *tables_d[fNumPhysicsTables];
 
   // relocate pointers of this to the corresponding device pointers
-  for (int i = 0; i < fNumPhysicsTables; ++i) {
+  for (int i = 0; i < fNumPhysicsTables ; ++i) {
     cudaMalloc((void **)&tables_d[i], fPhysicsTables[i]->SizeOfTable());
     fPhysicsTables[i]->Relocate(tables_d[i]);
+    fProxyPhysicsTables_d[i] = tables_d[i];
   }
-
-  // copy the pointer to alias table pointers from the host to the device
-  cudaMemcpy(fProxyPhysicsTables_d, tables_d, totalTableSize, cudaMemcpyHostToDevice);
   fPhysicsTables = fProxyPhysicsTables_d;
 
-  // copy the manager from host to device.
-  cudaMemcpy(devPtr, this, totalTableSize, cudaMemcpyHostToDevice);
+  // copy cuts table
+  int ncuts = data::nParticleForCuts*fNumOfCuts;
+
+  double *fCutsTable_d;
+  cudaMalloc((void **)&(fCutsTable_d), sizeof(double)*ncuts);
+
+  double *fCutsTable_h = fCutsTable;
+
+  cudaMemcpy(fCutsTable_d, fCutsTable, sizeof(double) * ncuts, cudaMemcpyHostToDevice);
+  fCutsTable = fCutsTable_d;
+
+  // copy the whole content of this from host to device.
+  cudaMemcpy(devPtr, this, fSizeOfObject, cudaMemcpyHostToDevice);
+
+  // persistency on host
+  fPhysicsTables = fProxyPhysicsTables_h;
+  fCutsTable = fCutsTable_h;
 }
 #endif
 
@@ -174,6 +190,5 @@ void ProxyDataManager::PrintCutsTable()
   }
 
 }
-
 
 } // namespace geantx

@@ -76,12 +76,13 @@ bool ProxyPhysicsTable::RetrievePhysicsTable(const std::string& fileName)
   } 
   fIn.close();
 
-  //calcuate the size of this table
-  int totalTableSize = 0;
-  for (int i = 0; i < fNumPhysicsVector; i++) totalTableSize += fPhysicsVectors[i]->SizeOfVector();
-  fTableSize = totalTableSize;
+  // update the size of this table
+  fTableSize = sizeof(size_t) + sizeof(int);
+  for (int i = 0; i < fNumPhysicsVector; i++) {
+    fTableSize += fPhysicsVectors[i]->SizeOfVector();
+  }
 
-  //fill drived values
+  //TODO: fill drived values
   
   return true;
 }
@@ -89,26 +90,31 @@ bool ProxyPhysicsTable::RetrievePhysicsTable(const std::string& fileName)
 #ifdef GEANT_CUDA
 void ProxyPhysicsTable::Relocate(void *devPtr)
 {
-  // device pointers in device memory
-  ProxyPhysicsVector **fProxyPhysicsVector_d;
-  cudaMalloc((void **)&fProxyPhysicsVector_d, fNumPhysicsVector*fPhysicsVectors[0]->SizeOfVector());
+  // allocate mapped device pointers on the host memory
+  ProxyPhysicsVector** fProxyPhysicsVector_d;
+  cudaHostAlloc((void **)&fProxyPhysicsVector_d, 
+                fNumPhysicsVector*sizeof(ProxyPhysicsVector*), cudaHostAllocMapped);
 
-  // device pointers in host memory
+  // save fPhysicsVectors on the host
+  ProxyPhysicsVector **fProxyPhysicsVector_h = fPhysicsVectors;
+
+  // device pointers in the host memory
   ProxyPhysicsVector* temp_d[fNumPhysicsVector];
 
-  // relocate pointers of this to the corresponding device pointers
+  // relocate pointers
   for (int i = 0; i < fNumPhysicsVector; ++i) {
     cudaMalloc((void **)&temp_d[i], fPhysicsVectors[i]->SizeOfVector());
     fPhysicsVectors[i]->Relocate(temp_d[i]);
+    fProxyPhysicsVector_d[i] = temp_d[i];
   }
-
-  // copy the pointer to alias table pointers from the host to the device
-  cudaMemcpy(fProxyPhysicsVector_d, temp_d, fTableSize, cudaMemcpyHostToDevice);
-
   fPhysicsVectors = fProxyPhysicsVector_d;
 
-  // copy the manager from host to device.
+  // copy the manager from host to device
   cudaMemcpy(devPtr, this, fTableSize, cudaMemcpyHostToDevice);
+
+  // persistency on host
+  fPhysicsVectors = fProxyPhysicsVector_h;
+
 }
 #endif
 

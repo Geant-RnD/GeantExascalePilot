@@ -23,12 +23,12 @@ namespace geantx {
 
 class ProxyDataManager {
 
+  GEANT_HOST
+  ProxyDataManager();
+
 public:
   GEANT_HOST
   static ProxyDataManager *Instance();
-
-  GEANT_HOST
-  ProxyDataManager();
 
   GEANT_HOST_DEVICE 
   ~ProxyDataManager();
