@@ -42,7 +42,6 @@ public:
   GEANT_HOST_DEVICE
   ~RNG() { delete fState; }
 
-  GEANT_HOST_DEVICE
   RNG(const RNG &rng) = default;
 
   // Static interfaces (Required methods)
