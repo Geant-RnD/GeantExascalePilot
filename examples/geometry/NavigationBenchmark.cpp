@@ -25,13 +25,13 @@
 #endif
 
 #include "VecGeom/benchmarking/NavigationBenchmarker.h"
-#include "VecGeom/test/benchmark/ArgParser.h"
 #include "VecGeom/volumes/utilities/VolumeUtilities.h"
 
 #include "VecGeom/management/GeoManager.h"
 #include "VecGeom/volumes/Box.h"
 #include "VecGeom/volumes/Orb.h"
 #include "VecGeom/volumes/Trapezoid.h"
+#include "ArgParser.hpp"
 
 using namespace VECGEOM_NAMESPACE;
 
