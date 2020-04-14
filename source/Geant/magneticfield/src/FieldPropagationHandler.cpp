@@ -387,11 +387,12 @@ bool FieldPropagationHandler::IsSameLocation(TrackState &track, TaskData *td) co
 
   // It might be advantageous to not create the state each time.
   // vecgeom::NavigationState *tmpstate = td->GetPath();
-  vecgeom::NavigationState *tmpstate = vecgeom::NavigationState::MakeInstance(track.fGeometryState.fPath->GetMaxLevel());
+  //vecgeom::NavigationState *tmpstate = vecgeom::NavigationState::MakeInstance(track.fGeometryState.fPath->GetMaxLevel());
+  //bool same = NavigationInterface::IsSameLocation(track, *tmpstate);
 
-  bool same = NavigationInterface::IsSameLocation(track, *tmpstate);
+  bool same = NavigationInterface::IsSameLocation(track);
 
-  delete tmpstate;
+  //delete tmpstate;
 
   if (same) {
     track.fGeometryState.fBoundary = false;

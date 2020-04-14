@@ -74,10 +74,11 @@ bool LinearPropagationHandler::IsSameLocation(TrackState &track, TaskData *td) c
 
   // It might be advantageous to not create the state each time.
   // vecgeom::NavigationState *tmpstate = td->GetPath();
-  vecgeom::NavigationState *tmpstate =
-      vecgeom::NavigationState::MakeInstance(track.fGeometryState.fPath->GetMaxLevel());
+  //vecgeom::NavigationState *tmpstate =
+  //    vecgeom::NavigationState::MakeInstance(track.fGeometryState.fPath->GetMaxLevel());
 
-  bool same = NavigationInterface::IsSameLocation(track, *tmpstate);
+  //bool same = NavigationInterface::IsSameLocation(track, *tmpstate);
+  bool same = NavigationInterface::IsSameLocation(track);
   if (same) return true;
   if (track.fGeometryState.fNextpath->IsOutside())
     track.fStatus = TrackStatus::ExitingSetup;
