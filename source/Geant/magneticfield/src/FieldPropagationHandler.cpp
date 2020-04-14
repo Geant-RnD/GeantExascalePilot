@@ -400,9 +400,10 @@ bool FieldPropagationHandler::IsSameLocation(TrackState &track, TaskData *td) co
   }
 
   track.fGeometryState.fBoundary = true;
-  // track.SetStatus(kBoundary);
-  // if (track.NextPath()->IsOutside())
-  //    track.SetStatus(kExitingSetup);
+  //track.SetStatus(kBoundary);
+  if (track.fGeometryState.fNextpath->IsOutside()) {
+    track.fStatus = TrackStatus::ExitingSetup;
+  }
 
   // if (track.GetStep() < 1.E-8) td->fNsmall++;
   return false;
