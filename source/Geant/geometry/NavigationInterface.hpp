@@ -78,14 +78,17 @@ namespace NavigationInterface {
     // Check if current safety allows for the proposed step
     double safety = track.fGeometryState.fSafety;
     const double pstep = track.fPhysicsState.fPstep;
+
+    const double snext  = newnav->ComputeStepAndSafety( track.fPos, track.fDir,
+        vecCore::math::Min<double>(1.E20, pstep), *track.fGeometryState.fPath, !onboundary, safety);
+
     if (safety > pstep) {
       track.fGeometryState.fSnext = pstep;
       track.fGeometryState.fBoundary = (false);
       return;
     }
-    const double snext  = newnav->ComputeStepAndSafety(
-        Vector3D_t(track.fPos.x(), track.fPos.y(), track.fPos.z()), Vector3D_t(track.fDir.x(), track.fDir.y(), track.fDir.z()),
-        vecCore::math::Min<double>(1.E20, pstep), *track.fGeometryState.fPath, !onboundary, safety);
+
+    // updates
     track.fGeometryState.fBoundary = (snext < pstep);
     track.fGeometryState.fSnext = (vecCore::math::Max<double>(2. * gTolerance, snext + 2. * gTolerance));
     track.fGeometryState.fSafety = (vecCore::math::Max<double>(safety, 0));
