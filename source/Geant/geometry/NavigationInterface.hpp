@@ -65,7 +65,7 @@ namespace NavigationInterface {
   {
     constexpr double gTolerance = 1.e-9;
     // back-up the pre-step point boundary flag
-    bool onboundary = track.fGeometryState.fIsOnBoundaryPreStp = track.fGeometryState.fBoundary;
+    bool onboundary = track.fGeometryState.fIsOnBoundaryPreStp = track.fGeometryState.fPath->IsOnBoundary();
 
     // Find distance to next boundary, within proposed step.
     //typedef vecgeom::Vector3D<vecgeom::Precision> Vector3D_t;
