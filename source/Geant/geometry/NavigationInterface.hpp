@@ -39,17 +39,19 @@ namespace NavigationInterface {
    *  @param tmpstate Temporary navigation state to be used internally (to avoid redundant allocations)
    *  @return true if the location is still the same
   */
+  //bool IsSameLocation(TrackState &track, VolumePath_t &tmpstate)
   VECCORE_ATT_HOST_DEVICE
-  bool IsSameLocation(TrackState &track, VolumePath_t &tmpstate)
+  bool IsSameLocation(TrackState &track)
   {
     //#### NOT USING YET THE NEW NAVIGATORS ####//
-    using Vector3D_t = vecgeom::Vector3D<vecgeom::Precision>;
+    //using Vector3D_t = vecgeom::Vector3D<vecgeom::Precision>;
 
     // TODO: not using the direction yet here !!
-    bool samepath = vecgeom::GlobalLocator::HasSamePath(Vector3D_t(track.fPos.x(), track.fPos.y(), track.fPos.z()), *track.fGeometryState.fPath, tmpstate);
+    //bool samepath = vecgeom::GlobalLocator::HasSamePath(Vector3D_t(track.fPos.x(), track.fPos.y(), track.fPos.z()), *track.fGeometryState.fPath, tmpstate);
+    bool samepath = vecgeom::GlobalLocator::HasSamePath(track.fPos, *track.fGeometryState.fPath, *track.fGeometryState.fNextpath);
 
     if (!samepath) {
-      tmpstate.CopyTo(track.fGeometryState.fNextpath);
+      //tmpstate.CopyTo(track.fGeometryState.fNextpath);
 #ifdef VECGEOM_CACHED_TRANS
       track.fGeometryState.fNextPath->UpdateTopMatrix();
 #endif
@@ -66,12 +68,13 @@ namespace NavigationInterface {
     bool onboundary = track.fGeometryState.fIsOnBoundaryPreStp = track.fGeometryState.fBoundary;
 
     // Find distance to next boundary, within proposed step.
-    typedef vecgeom::Vector3D<vecgeom::Precision> Vector3D_t;
+    //typedef vecgeom::Vector3D<vecgeom::Precision> Vector3D_t;
 
     // Retrieve navigator for the track
     Volume_t const* vol = track.fGeometryState.fVolume;
     if (!vol) vol = vecgeom::GeoManager::Instance().GetWorld()->GetLogicalVolume();
     vecgeom::VNavigator const *newnav = vol->GetNavigator();
+
     // Check if current safety allows for the proposed step
     double safety = track.fGeometryState.fSafety;
     const double pstep = track.fPhysicsState.fPstep;
