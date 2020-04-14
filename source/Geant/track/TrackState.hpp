@@ -17,6 +17,7 @@
 
 #include "Geant/track/Types.hpp"
 #include "timemory/timemory.hpp"
+#include "VecGeom/navigation/VSafetyEstimator.h"
 
 #include <sstream>
 
@@ -208,12 +209,18 @@ void LinearStep(TrackState &state, double step)
 {
     state.fPhysicsState.fPstep -= step;
     state.fStep += step;
-    state.fGeometryState.fSafety -= step;  // TODO: recalculate safety
     state.fGeometryState.fSnext -= step;
     state.fPos.x() += step * state.fDir.x();
     state.fPos.y() += step * state.fDir.y();
     state.fPos.z() += step * state.fDir.z();
+
+    // recompute safety
+    Volume_t const* vol = state.fGeometryState.fVolume;
+    if (!vol) vol = vecgeom::GeoManager::Instance().GetWorld()->GetLogicalVolume();
+    state.fGeometryState.fSafety = vol->GetSafetyEstimator()->ComputeSafety(state.fPos, *(state.fGeometryState.fPath));
+
     // TODO: update fBoundary
+    state.fGeometryState.fBoundary = (fabs(state.fGeometryState.fSafety) < vecgeom::kTolerance);
 }
 
 VECCORE_ATT_HOST_DEVICE
