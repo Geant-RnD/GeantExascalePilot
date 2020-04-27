@@ -23,17 +23,15 @@
 
 namespace geantx {
 
-#if 0
 //---------------------------------------------------------------------------//
 /*!
  * \brief Internals for scheduling.
  */
 struct TrackSchedulingState {
-  int fGVcode = 0; /** GV particle code */
+  int fGVcode = 0; /** PDG particle id */
   int fBindex = 0; /** Index in the track block */
   int fEvslot = 0; /** Event slot */
 };
-#endif
 
 //---------------------------------------------------------------------------//
 /*!
@@ -168,7 +166,7 @@ struct TrackState
     /* unused: bool fownpath = false; */
     /* unused: bool fprepropagationdone = false; */
 
-    /* don't use: TrackSchedulingState fSchedulingState; */
+    TrackSchedulingState fSchedulingState;
     TrackHistoryState  fHistoryState;
     TrackPhysicsState  fPhysicsState;
     PhysicsProcessState  fPhysicsProcessState[kNumPhysicsProcess];
