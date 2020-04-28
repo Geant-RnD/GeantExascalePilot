@@ -213,9 +213,11 @@ void LinearStep(TrackState &state, double step)
     state.fPos.z() += step * state.fDir.z();
 
     // recompute safety
+    state.fGeometryState.fSafety = 0.0;
     Volume_t const* vol = state.fGeometryState.fVolume;
-    if (!vol) vol = vecgeom::GeoManager::Instance().GetWorld()->GetLogicalVolume();
-    state.fGeometryState.fSafety = vol->GetSafetyEstimator()->ComputeSafety(state.fPos, *(state.fGeometryState.fPath));
+    if (vol) {
+      vol->GetSafetyEstimator()->ComputeSafety(state.fPos, *(state.fGeometryState.fPath));
+    }
 
     // TODO: update fBoundary
     state.fGeometryState.fBoundary = (fabs(state.fGeometryState.fSafety) < vecgeom::kTolerance);
