@@ -235,7 +235,8 @@ void LinearStep(TrackState &state, double step)
     state.fGeometryState.fSafety = 0.0;
     Volume_t const* vol = state.fGeometryState.fVolume;
     if (vol) {
-      vol->GetSafetyEstimator()->ComputeSafety(state.fPos, *(state.fGeometryState.fPath));
+      double safety = vol->GetSafetyEstimator()->ComputeSafety(state.fPos, *(state.fGeometryState.fPath));
+      state.fGeometryState.fSafety = vecCore::Max(safety, 0.0);
     }
 
     // TODO: update fBoundary

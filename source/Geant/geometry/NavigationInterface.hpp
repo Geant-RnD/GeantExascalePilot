@@ -65,7 +65,6 @@ namespace NavigationInterface {
   {
     constexpr double gTolerance = 1.e-9;
     // back-up the pre-step point boundary flag
-    bool onboundary = track.fGeometryState.fIsOnBoundaryPreStp = track.fGeometryState.fPath->IsOnBoundary();
 
     // Find distance to next boundary, within proposed step.
     //typedef vecgeom::Vector3D<vecgeom::Precision> Vector3D_t;
@@ -79,9 +78,12 @@ namespace NavigationInterface {
     double safety = track.fGeometryState.fSafety;
     const double pstep = track.fPhysicsState.fPstep;
 
-    const double snext  = newnav->ComputeStepAndSafety( track.fPos, track.fDir,
-        vecCore::math::Min<double>(1.E20, pstep), *track.fGeometryState.fPath, !onboundary, safety);
-
+    double snext = 0;
+    newnav->FindNextBoundaryAndStepAndSafety( track.fPos, track.fDir,
+					      *track.fGeometryState.fPath,
+					      *track.fGeometryState.fNextpath,
+					      vecCore::math::Min<double>(1.E20, pstep),
+					      snext, true, safety);
     if (safety > pstep) {
       track.fGeometryState.fSnext = pstep;
       track.fGeometryState.fBoundary = (false);
