@@ -210,7 +210,7 @@ VECCORE_ATT_HOST_DEVICE
 GEANT_FORCE_INLINE
 bool IsAlive(const TrackState &state)
 {
-    return state.fStatus != TrackStatus::Killed;
+  return (state.fStatus != TrackStatus::Killed) && (state.fStatus != TrackStatus::ExitingSetup);
 }
 
 VECCORE_ATT_HOST_DEVICE
