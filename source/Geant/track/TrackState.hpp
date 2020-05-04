@@ -124,6 +124,13 @@ struct PhysicsProcessState
  */
 struct TrackPhysicsState
 {
+    TrackPhysicsState() {}
+    ~TrackPhysicsState() {}
+    TrackPhysicsState(TrackPhysicsState&&) = default;
+    TrackPhysicsState(const TrackPhysicsState&) = default;
+    TrackPhysicsState& operator=(const TrackPhysicsState&) = default;
+    TrackPhysicsState& operator=(TrackPhysicsState&&) = default;
+
     ParticleDefId_t fParticleDefId = 0; /** Index into possible particle definitions */
 
     double fEkin     = 0; /** Kinetic energy */
