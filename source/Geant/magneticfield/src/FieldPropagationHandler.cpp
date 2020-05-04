@@ -54,12 +54,10 @@ static constexpr double kB2C = -0.299792458e-3;
 VECCORE_ATT_HOST_DEVICE
 double FieldPropagationHandler::Curvature(const TrackState &track) const
 {
-
   ThreeVector_t magFld;
   double bmag = 0.0;
 
-  ThreeVector_t Position(track.fPos);
-  FieldLookup::GetFieldValue(Position, magFld, bmag); // , td);
+  FieldLookup::GetFieldValue(track.fPos, magFld, bmag); // , td);
 
   return Curvature(track, magFld, bmag);
 }
