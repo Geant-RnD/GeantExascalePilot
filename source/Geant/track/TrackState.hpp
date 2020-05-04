@@ -173,8 +173,9 @@ struct TrackState
     TrackState& operator=(TrackState&&) = default;
 
     TrackStatus fStatus = TrackStatus::Alive; /** Track status */
-    double        fStep   = 0.0;                  /** Step length being travelled */
-    double        fTime   = 0.0;                  /** Time at beginning of step */
+    double        fStep        = 0.0;                  /** Step length being travelled */
+    double        fTime        = 0.0;                  /** Time at beginning of step */
+    double        fTotalLength = 0.0;
 
     ThreeVector fPos = { 0.0, 0.0, 0.0 }; /** Position */
     ThreeVector fDir = { 0.0, 0.0, 0.0 }; /** Direction */
@@ -198,9 +199,15 @@ struct TrackState
         // to join the entries with second separator and then join the paired
         // entries with the first separator
         using apply_t = tim::apply<std::tuple<std::string>>;
-        auto&& labels = std::make_tuple("addr", "status", "step", "Pstep", "pos", "dir", "time");
-        auto&& values = std::make_tuple(&t, t.fStatus, t.fStep, t.fPhysicsState.fPstep, t.fPos, t.fDir, t.fTime);
-        os << apply_t::join(", ", "=", labels, values);
+        auto&& labels1 = std::make_tuple("addr", "status", "#steps", "step", "Pstep", "snext", "safety", "time", "totLen");
+        auto&& values1 = std::make_tuple(&t, t.fStatus, t.fHistoryState.fNsteps, t.fStep, t.fPhysicsState.fPstep,
+					 t.fGeometryState.fSnext, t.fGeometryState.fSafety, t.fTime, t.fTotalLength);
+        os << apply_t::join(", ", "=", labels1, values1) <<"\n";
+        auto&& labels2 = std::make_tuple("addr", "pos", "dir", "boundary");
+        auto&& values2 = std::make_tuple(&t, t.fPos, t.fDir, t.fGeometryState.fBoundary);
+        os << apply_t::join(", ", "=", labels2, values2) <<", fPaths:\n";
+        t.fGeometryState.fPath->Print();
+        t.fGeometryState.fNextpath->Print();
         return os;
     }
 };
