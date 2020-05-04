@@ -466,7 +466,7 @@ OneStep(Track *track)
 
     NavigationInterface::FindNextBoundary(*track);
 
-    /// Apply multiple scaterring if any.
+    /// Apply multiple scattering if any.
     /// ...
 
     InnerStep<ParticleType, ParticleTypeProcesses>(track, doit_apply);
