@@ -25,7 +25,7 @@ inline namespace GEANT_IMPL_NAMESPACE {
 class TaskData;
 
 /**
- * @brief Handler grouping charged tracks and performing field propagation.
+ * @brief Handler grouping neutral tracks and performing linear propagation.
  */
 
 class LinearPropagationHandler {

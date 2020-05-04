@@ -69,7 +69,7 @@ namespace NavigationInterface {
     // Find distance to next boundary, within proposed step.
     //typedef vecgeom::Vector3D<vecgeom::Precision> Vector3D_t;
 
-    // Retrieve navigator for the track
+    // Retrieve navigator for the volume where track is located
     Volume_t const* vol = track.fGeometryState.fVolume;
     if (!vol) vol = vecgeom::GeoManager::Instance().GetWorld()->GetLogicalVolume();
     vecgeom::VNavigator const *newnav = vol->GetNavigator();
@@ -83,7 +83,8 @@ namespace NavigationInterface {
 					      *track.fGeometryState.fPath,
 					      *track.fGeometryState.fNextpath,
 					      vecCore::math::Min<double>(1.E20, pstep),
-					      snext, true, safety);
+					      snext, true, safety);  // updates: snext, safety, fNextPath
+
     if (safety > pstep) {
       track.fGeometryState.fSnext = pstep;
       track.fGeometryState.fBoundary = (false);
