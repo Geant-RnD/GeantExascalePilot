@@ -320,8 +320,10 @@ VECCORE_ATT_HOST_DEVICE
 GEANT_FORCE_INLINE
 bool Propagate(TrackState &track, PropagationHandler &h, TaskData *td)
 {
-    if ( ! h.Propagate(track, td))
+    if ( ! h.Propagate(track, td)) {
       return false;
+    }
+    ++(track.fHistoryState.fNsteps);
     while ( ! ReachedPhysicsLength(track) && !ReachedBoundary(track, h, td)) {
         NavigationInterface::FindNextBoundary(track);
         if ( ! h.Propagate(track, td))
