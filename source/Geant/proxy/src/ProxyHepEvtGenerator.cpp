@@ -97,15 +97,28 @@ ProxyEvent* ProxyHepEvtGenerator::GenerateOneEvent()
   std::cout << "numParticles = " <<  numParticles << std::endl;
 
   //proxy: ignore secondary vertices and set stable particles to the primary vertex
-  //TODO: implement something similar with G4PrimaryParticle -> G4PrimaryTransformer -> G4Track
+  //TODO: implement something like G4PrimaryParticle->G4PrimaryTransformer->G4Track
 
   ProxyVertex *primaryVertex = new ProxyVertex();
 
   for( int i = 0; i < NHEP; ++i) {
     if( (hepg[i].ISTHEP == -1) &&  (hepg[i].JDAHEP1 == 0) ) { 
       TrackState* atrack = new TrackState();
-      atrack->fPhysicsState.fMomentum =  hepg[i].PHEP1;
-      atrack->fSchedulingState.fGVcode =  hepg[i].IDHEP;
+   
+      //fill TrackState from hepg
+      double p = std::sqrt(hepg[i].PHEP1*hepg[i].PHEP1 + hepg[i].PHEP2*hepg[i].PHEP2
+			   + hepg[i].PHEP3*hepg[i].PHEP3);
+      double mass = hepg[i].PHEP4*hepg[i].PHEP4;
+
+      ThreeVector direction(hepg[i].PHEP1,hepg[i].PHEP2,hepg[i].PHEP3);
+
+      atrack->fPhysicsState.fMomentum = p;
+      atrack->fPhysicsState.fEkin = p*p/(sqrt(p*p + mass*mass) + mass);;
+
+      atrack->fSchedulingState.fGVcode = hepg[i].IDHEP;
+      atrack->fDir = direction.Unit();
+
+      //add to the primary vertex
       primaryVertex->AddParticle(atrack);
     }
   }
