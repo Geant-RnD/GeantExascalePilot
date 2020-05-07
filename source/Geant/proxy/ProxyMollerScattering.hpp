@@ -29,11 +29,19 @@ class ProxyMollerScattering : public ProxyEmModel<ProxyMollerScattering> {
 
 public:
   ProxyMollerScattering() { fLowEnergyLimit = 100.0 * clhep::eV; }
-  ProxyMollerScattering(const ProxyMollerScattering &model) : ProxyEmModel<ProxyMollerScattering>() { this->fRng = model.fRng; }
+
+  GEANT_HOST_DEVICE
+  ProxyMollerScattering(int tid) : 
+   ProxyEmModel(tid) { fLowEnergyLimit = 100.0 * clhep::eV; }
+
+  ProxyMollerScattering(const ProxyMollerScattering &model) 
+   : ProxyEmModel<ProxyMollerScattering>() { this->fRng = model.fRng; }
+
   ~ProxyMollerScattering() = default;
 
   //mandatory methods
   double CrossSectionPerAtom(double Z, double kineticEnergy);
+
   int SampleSecondaries(TrackState *track);
 
   //auxiliary methods

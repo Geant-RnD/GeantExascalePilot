@@ -24,6 +24,7 @@
 
 #include "Geant/proxy/ProxyEmProcess.hpp"
 #include "Geant/proxy/ProxyMollerScattering.hpp"
+#include "Geant/proxy/ProxyConstants.hpp"
 
 namespace geantx
 {
@@ -59,9 +60,12 @@ public:
   using this_type = ProxyIonization;
   
   ProxyIonization() { this->fProcessIndex = kProxyIonization; }
+
   ~ProxyIonization() = default;
 
   // mandatory methods for static polymorphism
+
+  GEANT_HOST_DEVICE
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_eIoni_eminus)->Value(index,energy);
@@ -70,19 +74,23 @@ public:
   // specialization for the ionization process
   double AlongStepGPIL(TrackState* _track);
 
+  GEANT_HOST_DEVICE
   void AlongStepDoIt(TrackState* _track);
   
   // auxiliary 
+  GEANT_HOST_DEVICE
   double GetDEDX(int index, double energy) 
   { 
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kDEDX_eIoni_eminus)->Value(index,energy);
   }
 
+  GEANT_HOST_DEVICE
   double GetRange(int index, double energy) 
   { 
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kRange_eIoni_eminus)->Value(index,energy);
   }
 
+  GEANT_HOST_DEVICE
   double GetInverseRange(int index, double energy) 
   { 
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kInverseRange_eIoni_eminus)->Value(index,energy);
@@ -92,9 +100,10 @@ public:
 
 double ProxyIonization::AlongStepGPIL(TrackState* track)
 {
-  GEANT_THIS_TYPE_TESTING_MARKER("");
+  //  GEANT_THIS_TYPE_TESTING_MARKER("");
 
-  double stepLimit = std::numeric_limits<double>::max();
+  //  double stepLimit = std::numeric_limits<double>::max();
+  double stepLimit = DBL_MAX;
 
   int index = track->fMaterialState.fMaterialId;
   double energy = track->fPhysicsState.fEkin;
@@ -114,9 +123,10 @@ double ProxyIonization::AlongStepGPIL(TrackState* track)
 
 }
 
+GEANT_HOST_DEVICE
 void ProxyIonization::AlongStepDoIt(TrackState* track)
 {
-  GEANT_THIS_TYPE_TESTING_MARKER("");
+  //  GEANT_THIS_TYPE_TESTING_MARKER("");
 
   double stepLength = track->fPhysicsState.fPstep;
   double energy = track->fPhysicsState.fEkin;

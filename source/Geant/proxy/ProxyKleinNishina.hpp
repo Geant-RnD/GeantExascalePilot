@@ -29,16 +29,20 @@ namespace geantx {
 class ProxyKleinNishina : public ProxyEmModel<ProxyKleinNishina> {
 
 public:
-  ProxyKleinNishina() { fLowEnergyLimit = 100.0 * clhep::eV;}
+  ProxyKleinNishina() { fLowEnergyLimit = 100.0 * clhep::eV; }
 
   GEANT_HOST_DEVICE
-  ProxyKleinNishina(int tid) : ProxyEmModel(tid) {}
+  ProxyKleinNishina(int tid) 
+    : ProxyEmModel(tid) { fLowEnergyLimit = 100.0 * clhep::eV; }
 
-  ProxyKleinNishina(const ProxyKleinNishina &model) : ProxyEmModel<ProxyKleinNishina>() { this->fRng = model.fRng; }
+  ProxyKleinNishina(const ProxyKleinNishina &model) 
+    : ProxyEmModel<ProxyKleinNishina>() { this->fRng = model.fRng; }
+
   ~ProxyKleinNishina() = default;
 
   //mandatory methods
   double CrossSectionPerAtom(double Z, double energy);
+
   int SampleSecondaries(TrackState *track);
 
   //auxiliary methods

@@ -93,6 +93,7 @@ public:
   double AlongStepGPIL(TrackState* _track);
 
   // the proposed post step physical interaction length
+  GEANT_HOST_DEVICE
   double PostStepGPIL(TrackState* _track);
 
   // DoIt for the along step
@@ -122,10 +123,12 @@ void ProxyEmProcess<TEmProcess>::AlongStepDoIt(TrackState* track)
 }
 
 template <typename TEmProcess>
+GEANT_HOST_DEVICE
 double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
 {
   //  GEANT_THIS_TYPE_TESTING_MARKER("");
-  double step = std::numeric_limits<double>::max();
+  //  double step = std::numeric_limits<double>::max();
+  double step = DBL_MAX;
 
   double energy = track->fPhysicsState.fEkin;
   int index = track->fMaterialState.fMaterialId;

@@ -78,11 +78,13 @@ public:
   }
 
   // accessor
+  GEANT_HOST_DEVICE
   inline double GetLowEnergyLimit() {return fLowEnergyLimit; };
 
+  GEANT_HOST_DEVICE
   inline double GetHighEnergyLimit() {return fHighEnergyLimit; };
 
-
+  GEANT_HOST_DEVICE
   double ComputeCoulombFactor(double Zeff);
 
 protected:
