@@ -668,6 +668,10 @@ main(int argc, char** argv)
     printf("\n");
     primary.PushTrack<CpuGamma>(get_primary_particle(energy));
     primary.PushTrack<CpuGamma>(get_primary_particle(energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
+    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
 
     printf("\n");
     primary.PushTrack<GpuGamma>(get_primary_particle(energy));
