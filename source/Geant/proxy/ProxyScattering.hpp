@@ -66,8 +66,8 @@ public:
     {
         GEANT_THIS_TYPE_TESTING_MARKER("");
         ThreeVector rand = { get_rand(), get_rand(), get_rand() };
-        rand.Normalize();
-        _track->fDir = rand;
+        _track->fDir = _track->fDir + 0.02 * rand;
+        _track->fDir.Normalize();
     }
 
     void PostStepDoIt(TrackState* _track) { GEANT_THIS_TYPE_TESTING_MARKER(""); }
@@ -90,10 +90,9 @@ public:
     void AlongStepDoIt(TrackState* _track)
     {
         GEANT_THIS_TYPE_TESTING_MARKER("");
-        auto        _dir = _track->fDir;
-        ThreeVector rand = { _dir.x() * get_rand(), _dir.y() * get_rand(), _dir.z() };
-        rand.Normalize();
-        _track->fDir = rand;
+        ThreeVector rand = { get_rand(), get_rand(), get_rand() };
+        _track->fDir = _track->fDir + 0.05 * rand;
+        _track->fDir.Normalize();
     }
 
     template <typename _Tp,
