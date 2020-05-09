@@ -83,6 +83,8 @@ private:
 
   EventManager_t* fEventManager = nullptr;
 
+  ProxyDataManager* fDataManager_d = nullptr;
+
   //for validation
   int fNPhotons = 0;
   int fNElectrons = 0;

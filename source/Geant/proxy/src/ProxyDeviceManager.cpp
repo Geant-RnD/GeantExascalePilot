@@ -32,6 +32,7 @@ template <typename T>
 GEANT_HOST
 ProxyDeviceManager<T>::~ProxyDeviceManager()
 {
+  cudaFree(fDataManager_d);
   cudaStreamDestroy(fStream);
   cudaEventDestroy(fStart);
   cudaEventDestroy(fStop);
@@ -59,6 +60,12 @@ void ProxyDeviceManager<T>::Initialize()
   //create cuda events
   cudaEventCreate(&fStart);
   cudaEventCreate(&fStop);
+
+  //relocate/create the data manager on the device
+  ProxyDataManager* dm = ProxyDataManager::Instance();
+  cudaMalloc((void **)&fDataManager_d, dm->SizeOfObject());
+  dm->RelocatePhysicsData(fDataManager_d);
+
 }
 
 template <typename T>
@@ -176,18 +183,11 @@ void ProxyDeviceManager<T>::DoStep()
 {
   if(fPerformance) StartTimer();
 
-  ProxyDataManager * dm = ProxyDataManager::Instance();
-  ProxyDataManager *dm_d;
-  cudaMalloc((void **)&dm_d, dm->SizeOfObject());
-  dm->RelocatePhysicsData(dm_d);
-
-  //prepare random engines on the device
-  // cudaMalloc(&fRandomStates, fNBlocks*fNThreads* sizeof(curandState));
-  // curand_setup_gpu(fRandomStates, time(NULL), fNBlocks, fNThreads);
-
-  GPILElectronProcess(fNElectrons, fElectrons_d, dm_d, fNBlocks, fNThreads, fStream);
-
-  GPILGammaProcess(fNPhotons, fPhotons_d, dm_d, fNBlocks, fNThreads, fStream);
+  GPILElectronProcess(fNElectrons, fElectrons_d, fDataManager_d, 
+                      fNBlocks, fNThreads, fStream);
+ 
+  GPILGammaProcess(fNPhotons, fPhotons_d, fDataManager_d, 
+                   fNBlocks, fNThreads, fStream);
 
   //  cudaFree(fRandomStates);
  
