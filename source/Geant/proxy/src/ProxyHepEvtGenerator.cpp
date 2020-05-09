@@ -52,7 +52,6 @@ ProxyEvent* ProxyHepEvtGenerator::GenerateOneEvent()
   int NHEP = 0;  // number of entries
   if (fInputFile.is_open()) {
     fInputFile >> NHEP;
-    std::cout << " NHEP =  " <<  NHEP << std::endl;
   }
   else {
     std::cout << " cannot open file " << std::endl;
@@ -94,7 +93,7 @@ ProxyEvent* ProxyHepEvtGenerator::GenerateOneEvent()
     }
   }
 
-  std::cout << "numParticles = " <<  numParticles << std::endl;
+  //  std::cout << "NHEP = " << NHEP << " numParticles = " <<  numParticles << std::endl;
 
   //proxy: ignore secondary vertices and set stable particles to the primary vertex
   //TODO: implement something like G4PrimaryParticle->G4PrimaryTransformer->G4Track
