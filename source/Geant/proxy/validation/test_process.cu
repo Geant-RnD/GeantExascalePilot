@@ -21,8 +21,7 @@ int main(int argc, char* argv[]) {
 
   // run manager - register generator, detector, physics list and user actions
 
-  ProxyRunManager<ProxyHepEvtGenerator> *runMgr 
-    = ProxyRunManager<ProxyHepEvtGenerator>::Instance();
+  auto *runMgr = ProxyRunManager<ProxyHepEvtGenerator>::Instance();
 
   ProxyHepEvtGenerator* agen = 
     new ProxyHepEvtGenerator(number_of_events_to_process,

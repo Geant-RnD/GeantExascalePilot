@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 /**
  * @file Geant/proxy/ProxyMaterialTable.hpp
- * @brief 
+ * @brief the material table
  */
 //===----------------------------------------------------------------------===//
 
@@ -16,19 +16,20 @@
 
 #include "Geant/core/Config.hpp"
 #include "Geant/proxy/ProxyVector.cuh"
+#include "Geant/proxy/ProxySingleton.hpp"
 #include "Geant/proxy/ProxyMaterial.cuh"
 
 namespace geantx {
 
-class ProxyMaterialTable : public ProxyVector<ProxyMaterial*>
+class ProxyMaterialTable 
+  : public ProxyVector<ProxyMaterial*>, public ProxySingleton<ProxyMaterialTable>
 {
-
-public:
-  GEANT_HOST
-  static ProxyMaterialTable *Instance();
-
   GEANT_HOST
   ProxyMaterialTable() {}
+
+  friend class ProxySingleton<ProxyMaterialTable>;
+
+public:
 
   GEANT_HOST
   ~ProxyMaterialTable() {}
@@ -51,9 +52,6 @@ public:
 
   GEANT_HOST
   inline size_t MemorySize();
-
-private:
-  static ProxyMaterialTable *fInstance;
 
 };
 

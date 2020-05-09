@@ -9,8 +9,8 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file Geant/proxy/NistMaterialManager.cu
- * @brief
+ * @file Geant/proxy/src/NistMaterialManager.cu
+ * @brief the NIST material manager
  */
 //===----------------------------------------------------------------------===//
 //
@@ -21,15 +21,6 @@
 #include <iomanip>
 
 namespace geantx {
-
-NistMaterialManager *NistMaterialManager::fInstance = 0;
-
-GEANT_HOST
-NistMaterialManager *NistMaterialManager::Instance()
-{
-  if (fInstance == 0) fInstance = new NistMaterialManager();
-  return fInstance;
-}
 
 GEANT_HOST
 NistMaterialManager::NistMaterialManager()  

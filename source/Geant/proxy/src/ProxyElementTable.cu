@@ -9,8 +9,8 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file Geant/proxy/ProxyElementTable.cu
- * @brief
+ * @file Geant/proxy/src/ProxyElementTable.cu
+ * @brief the element table
  */
 //===----------------------------------------------------------------------===//
 //
@@ -18,15 +18,6 @@
 #include "Geant/proxy/ProxyElementTable.cuh"
 
 namespace geantx {
-
-ProxyElementTable *ProxyElementTable::fInstance = 0;
-
-GEANT_HOST
-ProxyElementTable *ProxyElementTable::Instance()
-{
-  if (fInstance == 0) fInstance = new ProxyElementTable();
-  return fInstance;
-}
 
 GEANT_HOST
 void ProxyElementTable::Relocate(void* devPtr)

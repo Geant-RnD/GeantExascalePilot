@@ -9,8 +9,8 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file Geant/proxy/NistElementManager.cu
- * @brief
+ * @file Geant/proxy/src/NistElementManager.cu
+ * @brief the NIST element manager
  */
 //===----------------------------------------------------------------------===//
 //
@@ -21,15 +21,6 @@
 #include <iomanip>
 
 namespace geantx {
-
-NistElementManager *NistElementManager::fInstance = 0;
-
-GEANT_HOST
-NistElementManager *NistElementManager::Instance()
-{
-  if (fInstance == 0) fInstance = new NistElementManager();
-  return fInstance;
-}
 
 GEANT_HOST
 NistElementManager::NistElementManager()  

@@ -8,14 +8,14 @@
 //===----------------------------------------------------------------------===//
 /**
  * @file Geant/proxy/NistElementManager.hpp
- * @brief 
+ * @brief the NIST element manager
  */
 //===----------------------------------------------------------------------===//
 
 #pragma once
 
 #include "Geant/core/Config.hpp"
-
+#include "Geant/proxy/ProxySingleton.hpp"
 #include "Geant/proxy/ProxyElement.cuh"
 
 #include <string>
@@ -38,15 +38,14 @@ struct NistIsotope {
   double fComposition; 
 };
 
-class NistElementManager 
+class NistElementManager : public ProxySingleton<NistElementManager>
 {
-public:
-
-  GEANT_HOST
-  static NistElementManager *Instance();
-
   GEANT_HOST
   NistElementManager();
+
+  friend class ProxySingleton<NistElementManager>;
+
+public:
 
   GEANT_HOST
   ~NistElementManager() {}
@@ -97,8 +96,6 @@ private:
   int GetIsotopeIndex(int z, int n) const;
 
 private:
-  static NistElementManager *fInstance;
-
   int fNumberOfElements;
   int fNumberOfIsotopes;
   NistElement* fElement;

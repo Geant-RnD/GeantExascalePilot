@@ -8,13 +8,14 @@
 //===----------------------------------------------------------------------===//
 /**
  * @file Geant/proxy/NistMaterialManager.hpp
- * @brief 
+ * @brief the NIST material manager
  */
 //===----------------------------------------------------------------------===//
 
 #pragma once
 
 #include "Geant/core/Config.hpp"
+#include "Geant/proxy/ProxySingleton.hpp"
 #include "Geant/proxy/ProxyMaterial.cuh"
 
 #include <string>
@@ -39,15 +40,14 @@ struct NistMaterial {
   NistElementPrimitive *fElement;
 };
 
-class NistMaterialManager 
+class NistMaterialManager : public ProxySingleton<NistMaterialManager>
 {
-public:
-
-  GEANT_HOST
-  static NistMaterialManager *Instance();
-
   GEANT_HOST
   NistMaterialManager();
+
+  friend class ProxySingleton<NistMaterialManager>;
+
+public:
 
   GEANT_HOST
   ~NistMaterialManager() {}
@@ -69,7 +69,6 @@ private:
   bool LoadData();
 
 private:
-  static NistMaterialManager *fInstance;
 
   int fNumberOfMaterials;
   NistMaterial* fMaterial;

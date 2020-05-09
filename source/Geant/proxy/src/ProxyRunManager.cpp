@@ -20,17 +20,6 @@
 namespace geantx {
 
 template <typename T>
-ProxyRunManager<T> *ProxyRunManager<T>::fInstance = 0;
-
-template <typename T>
-GEANT_HOST
-ProxyRunManager<T> *ProxyRunManager<T>::Instance()
-{
-  if (fInstance == 0) fInstance = new ProxyRunManager<T>();
-  return fInstance;
-}
-
-template <typename T>
 GEANT_HOST
 ProxyRunManager<T>::ProxyRunManager() 
 {

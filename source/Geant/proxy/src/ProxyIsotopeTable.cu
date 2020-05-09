@@ -9,8 +9,8 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file Geant/proxy/ProxyIsotopeTable.cu
- * @brief
+ * @file Geant/proxy/src/ProxyIsotopeTable.cu
+ * @brief the isotope table
  */
 //===----------------------------------------------------------------------===//
 //
@@ -18,15 +18,6 @@
 #include "Geant/proxy/ProxyIsotopeTable.cuh"
 
 namespace geantx {
-
-ProxyIsotopeTable *ProxyIsotopeTable::fInstance = 0;
-
-GEANT_HOST
-ProxyIsotopeTable *ProxyIsotopeTable::Instance()
-{
-  if (fInstance == 0) fInstance = new ProxyIsotopeTable();
-  return fInstance;
-}
 
 GEANT_HOST
 void ProxyIsotopeTable::Relocate(void* devPtr)

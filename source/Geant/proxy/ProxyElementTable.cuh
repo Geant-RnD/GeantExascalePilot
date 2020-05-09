@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 /**
  * @file Geant/proxy/ProxyElementTable.hpp
- * @brief 
+ * @brief the element table
  */
 //===----------------------------------------------------------------------===//
 
@@ -16,19 +16,20 @@
 
 #include "Geant/core/Config.hpp"
 #include "Geant/proxy/ProxyVector.cuh"
+#include "Geant/proxy/ProxySingleton.hpp"
 #include "Geant/proxy/ProxyMaterial.cuh"
 
 namespace geantx {
 
-class ProxyElementTable : public ProxyVector<ProxyElement*>
+class ProxyElementTable 
+  : public ProxyVector<ProxyElement*>, public ProxySingleton<ProxyElementTable>
 {
-
-public:
-  GEANT_HOST
-  static ProxyElementTable *Instance();
-
   GEANT_HOST
   ProxyElementTable() : ProxyVector() {}
+
+  friend class ProxySingleton<ProxyElementTable>;
+
+public:
 
   GEANT_HOST
   ~ProxyElementTable() {}
@@ -51,10 +52,6 @@ public:
 
   GEANT_HOST_DEVICE
   inline size_t MemorySize();
-
-
-private:
-  static ProxyElementTable *fInstance;
 
 };
 
@@ -80,7 +77,5 @@ size_t ProxyElementTable::MemorySize()
 
   return buffer;
 }
-
-
 
 } // namespace geantx

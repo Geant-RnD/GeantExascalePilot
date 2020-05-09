@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 /**
  * @file Geant/proxy/ProxyIsotopeTable.hpp
- * @brief 
+ * @brief the isotope table
  */
 //===----------------------------------------------------------------------===//
 
@@ -16,23 +16,24 @@
 
 #include "Geant/core/Config.hpp"
 #include "Geant/proxy/ProxyVector.cuh"
+#include "Geant/proxy/ProxySingleton.hpp"
 #include "Geant/proxy/ProxyIsotope.cuh"
 
 namespace geantx {
 
-class ProxyIsotopeTable : public ProxyVector<ProxyIsotope*>
+class ProxyIsotopeTable 
+  : public ProxyVector<ProxyIsotope*>, public ProxySingleton<ProxyIsotopeTable>
 {
+  GEANT_HOST
+  ProxyIsotopeTable() {}
+
+  friend class ProxySingleton<ProxyIsotopeTable>;
+
 public:
 
   using ProxyVector<ProxyIsotope*>::ProxyVector;
   using typename ProxyVector<ProxyIsotope*>::iterator;
   using typename ProxyVector<ProxyIsotope*>::const_iterator;
-
-  GEANT_HOST
-  static ProxyIsotopeTable *Instance();
-
-  GEANT_HOST
-  ProxyIsotopeTable() {}
 
   GEANT_HOST
   ~ProxyIsotopeTable() {}
@@ -52,9 +53,6 @@ public:
 
   GEANT_HOST_DEVICE
   inline size_t Size() { return size()*sizeof(ProxyIsotope) +  2*sizeof(size_t) + sizeof(bool); } 
-
-private:
-  static ProxyIsotopeTable *fInstance;
 
 };
 

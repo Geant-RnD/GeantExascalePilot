@@ -9,8 +9,8 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file Geant/proxy/ProxyMaterialTable.cu
- * @brief
+ * @file Geant/proxy/src/ProxyMaterialTable.cu
+ * @brief the material table 
  */
 //===----------------------------------------------------------------------===//
 //
@@ -18,15 +18,6 @@
 #include "Geant/proxy/ProxyMaterialTable.cuh"
 
 namespace geantx {
-
-ProxyMaterialTable *ProxyMaterialTable::fInstance = 0;
-
-GEANT_HOST
-ProxyMaterialTable *ProxyMaterialTable::Instance()
-{
-  if (fInstance == 0) fInstance = new ProxyMaterialTable();
-  return fInstance;
-}
 
 GEANT_HOST
 void ProxyMaterialTable::Relocate(void* devPtr)

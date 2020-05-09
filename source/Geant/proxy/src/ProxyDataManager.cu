@@ -9,8 +9,8 @@
 //===----------------------------------------------------------------------===//
 //
 /**
- * @file Geant/proxy/ProxyDataManager.cu
- * @brief
+ * @file Geant/proxy/src/ProxyDataManager.cu
+ * @brief the data manager for proxy physics
  */
 //===----------------------------------------------------------------------===//
 //
@@ -24,19 +24,10 @@
 
 namespace geantx {
 
-ProxyDataManager *ProxyDataManager::fInstance = 0;
-
-GEANT_HOST
-ProxyDataManager *ProxyDataManager::Instance()
-{
-  if (fInstance == 0) fInstance = new ProxyDataManager();
-  return fInstance;
-}
-
 GEANT_HOST
 ProxyDataManager::ProxyDataManager() 
 {
-  fSizeOfObject = sizeof(fInstance) + 3*sizeof(int);
+  fSizeOfObject = 3*sizeof(int);
 
   fNumPhysicsTables = ProxyPhysicsTableIndex::kNumberPhysicsTable;
   fPhysicsTables = new ProxyPhysicsTable * [fNumPhysicsTables];

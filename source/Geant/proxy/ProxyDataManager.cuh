@@ -16,19 +16,20 @@
 
 #include "Geant/core/Config.hpp"
 #include "Geant/proxy/ProxyConstants.hpp"
+#include "Geant/proxy/ProxySingleton.hpp"
 #include "Geant/proxy/ProxyPhysicsTable.cuh"
 #include "Geant/proxy/ProxyPhysicsTableIndex.hpp"
 
 namespace geantx {
 
-class ProxyDataManager {
-
+class ProxyDataManager : public ProxySingleton<ProxyDataManager>
+{
   GEANT_HOST
   ProxyDataManager();
 
+  friend class ProxySingleton<ProxyDataManager>;
+
 public:
-  GEANT_HOST
-  static ProxyDataManager *Instance();
 
   GEANT_HOST_DEVICE 
   ~ProxyDataManager();
@@ -49,7 +50,8 @@ public:
   ProxyPhysicsTable* GetTable(int index) { return fPhysicsTables[index]; }
 
   GEANT_HOST_DEVICE 
-  double GetCutValue(int index, int ipart) { return fCutsTable[data::nParticleForCuts*ipart + index]; }
+  double GetCutValue(int index, int ipart) 
+  { return fCutsTable[data::nParticleForCuts*ipart + index]; }
 
   GEANT_HOST_DEVICE 
   void Print();
@@ -58,7 +60,6 @@ public:
   void PrintCutsTable();
 
 private:
-  static ProxyDataManager *fInstance;
 
   int fSizeOfObject;
 

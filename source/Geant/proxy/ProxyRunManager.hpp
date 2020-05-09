@@ -15,6 +15,7 @@
 #pragma once
 
 #include "Geant/core/Config.hpp"
+#include "Geant/proxy/ProxySingleton.hpp"
 #include "Geant/proxy/ProxyEventServer.hpp"
 #include "Geant/proxy/ProxyEventGenerator.hpp"
 #include "Geant/proxy/ProxyDeviceManager.hpp"
@@ -24,21 +25,18 @@ namespace geantx {
 template <typename TGenerator> struct Generator_traits;
 
 template <class TGenerator>
-class ProxyRunManager 
+class ProxyRunManager : public ProxySingleton<ProxyRunManager<TGenerator> >
 {
   GEANT_HOST
   ProxyRunManager();
-
-  ProxyRunManager(const ProxyRunManager& obj) = delete;
-  ProxyRunManager& operator=(const ProxyRunManager& obj) = delete;
 
   using Generator_t = typename Generator_traits<TGenerator>::Generator_t;
   using EventManager_t = ProxyEventServer<Generator_t>;
   using DeviceManager_t = ProxyDeviceManager<Generator_t>;
 
+  friend class ProxySingleton<ProxyRunManager<TGenerator> >;
+
 public:
-  GEANT_HOST
-  static ProxyRunManager* Instance();
 
   GEANT_HOST
   ~ProxyRunManager();
@@ -61,7 +59,6 @@ public:
   //TODO: add detector/geometry construction 
 
 private:
-  static ProxyRunManager *fInstance;
 
   size_t fNumberOfEvents = 0;
   EventManager_t* fEventManager = nullptr;
