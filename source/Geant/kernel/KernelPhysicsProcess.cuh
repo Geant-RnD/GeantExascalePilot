@@ -19,11 +19,19 @@
 
 namespace geantx {
 
-void GPILGammaProcess(int nstate, TrackPhysicsState* state_d, 
+void StepGammaProcess(int nstate, TrackPhysicsState* state_d, 
                       ProxyDataManager* dm_d, int nblocks, int nthreads, 
                       cudaStream_t stream);
 
-void GPILElectronProcess(int nstate, TrackPhysicsState* state_d, 
+void StepElectronProcess(int nstate, TrackPhysicsState* state_d, 
+                         ProxyDataManager* dm_d, int nblocks, int nthreads, 
+                         cudaStream_t stream);
+
+void GPILGammaProcess(int nstate, TrackState** state_d, 
+                      ProxyDataManager* dm_d, int nblocks, int nthreads, 
+                      cudaStream_t stream);
+
+void GPILElectronProcess(int nstate, TrackState** state_d, 
                          ProxyDataManager* dm_d, int nblocks, int nthreads, 
                          cudaStream_t stream);
 

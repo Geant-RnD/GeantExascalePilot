@@ -50,10 +50,19 @@ public:
   void DeallocateTrackData();
 
   GEANT_HOST
+  void UploadTrackState();
+
+  GEANT_HOST
+  void DeallocateTrackState();
+
+  GEANT_HOST
   void DownloadTrackData();
 
   GEANT_HOST
   void DoStep();
+
+  GEANT_HOST
+  void DoGPIL();
 
   //for performance measurements
   void SetPerformanceFlag(bool flag) { fPerformance = flag; };
@@ -81,8 +90,10 @@ private:
   TrackPhysicsState* fPhotons_h;
   TrackPhysicsState* fElectrons_h;
 
-  EventManager_t* fEventManager = nullptr;
+  TrackState** fPhotonState_d;
+  TrackState** fElectronState_d;
 
+  EventManager_t* fEventManager = nullptr;
   ProxyDataManager* fDataManager_d = nullptr;
 
   //for validation

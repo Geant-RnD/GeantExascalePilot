@@ -151,6 +151,60 @@ void ProxyDeviceManager<T>::UploadTrackData()
 
 template <typename T>
 GEANT_HOST
+void ProxyDeviceManager<T>::UploadTrackState()
+{
+  if(fPerformance) StartTimer();
+
+  //photons
+  TrackStack* tracks = fEventManager->GetStackManager()->GetPhotonStack();
+  fNPhotons = tracks->size();
+
+  TrackState*  astate;
+  int stateSize = sizeof(TrackState);
+  int memSize = 0;
+
+  if(fNPhotons > 0) {
+    memSize = sizeof(TrackState*)*fNPhotons;
+    cudaMalloc((void**)&fPhotonState_d, memSize);
+    TrackState*  gamma_d[fNPhotons];
+
+    for(int i = 0 ; i < fNPhotons ;++i) {
+      cudaMalloc((void**)&gamma_d[i], stateSize);
+      // relocate - copy ptrs correctly if need
+      astate = tracks->Get(i);
+      cudaMemcpy(gamma_d[i], astate, stateSize, cudaMemcpyHostToDevice);
+    }
+    cudaMemcpy(fPhotonState_d, gamma_d, memSize, cudaMemcpyHostToDevice);
+  }
+
+  //electrons
+  tracks = fEventManager->GetStackManager()->GetElectronStack();
+  fNElectrons = tracks->size();
+
+  if(fNElectrons > 0) {
+    memSize = sizeof(TrackState*)*fNElectrons;
+    cudaMalloc((void**)&fElectronState_d, memSize);
+    TrackState*  electron_d[fNElectrons];
+
+    for(int i = 0 ; i < fNElectrons ;++i) {
+      cudaMalloc((void**)&electron_d[i], stateSize);
+      // relocate - copy ptrs correctly if need
+      astate = tracks->Get(i);
+      cudaMemcpy(electron_d[i], astate, stateSize, cudaMemcpyHostToDevice);
+    }
+    cudaMemcpy(fElectronState_d, electron_d, memSize, cudaMemcpyHostToDevice);
+  }
+
+  //TODO: pre-allocated memory for secondary TrackStates
+
+  if(fPerformance) {
+    float elapsedTimeH2D = StopTimer();
+    printf("UploadTrackData: elapsedTimeD2H = %f ms\n", elapsedTimeH2D);
+  }
+}
+
+template <typename T>
+GEANT_HOST
 void ProxyDeviceManager<T>::DeallocateTrackData() {
   cudaFree(fPhotons_d);
   cudaFree(fElectrons_d);
@@ -161,6 +215,13 @@ void ProxyDeviceManager<T>::DeallocateTrackData() {
   //validation
   cudaFree(fPhotons_o);
   cudaFree(fElectrons_o);
+}
+
+template <typename T>
+GEANT_HOST
+void ProxyDeviceManager<T>::DeallocateTrackState() {
+  if(fNPhotons > 0)   cudaFree(fPhotonState_d);
+  if(fNElectrons > 0) cudaFree(fElectronState_d);
 }
 
 template <typename T>
@@ -183,10 +244,10 @@ void ProxyDeviceManager<T>::DoStep()
 {
   if(fPerformance) StartTimer();
 
-  GPILElectronProcess(fNElectrons, fElectrons_d, fDataManager_d, 
+  StepElectronProcess(fNElectrons, fElectrons_d, fDataManager_d, 
                       fNBlocks, fNThreads, fStream);
  
-  GPILGammaProcess(fNPhotons, fPhotons_d, fDataManager_d, 
+  StepGammaProcess(fNPhotons, fPhotons_d, fDataManager_d, 
                    fNBlocks, fNThreads, fStream);
 
   //  cudaFree(fRandomStates);
@@ -194,6 +255,23 @@ void ProxyDeviceManager<T>::DoStep()
   if(fPerformance) {
     float elapsedTimeGPU = StopTimer();
     printf("DoStep: elapsedTimeGPU = %f ms\n", elapsedTimeGPU);
+  }
+}
+
+template <typename T>
+void ProxyDeviceManager<T>::DoGPIL()
+{
+  if(fPerformance) StartTimer();
+
+  GPILElectronProcess(fNElectrons, fElectronState_d, fDataManager_d, 
+                      fNBlocks, fNThreads, fStream);
+ 
+  GPILGammaProcess(fNPhotons, fPhotonState_d, fDataManager_d, 
+                   fNBlocks, fNThreads, fStream);
+
+  if(fPerformance) {
+    float elapsedTimeGPU = StopTimer();
+    printf("DoGPIL: elapsedTimeGPU = %f ms\n", elapsedTimeGPU);
   }
 }
 

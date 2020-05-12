@@ -46,7 +46,7 @@ namespace geantx
 // kernels
 
 __global__
-void gpil_gamma_process(int nstate, TrackPhysicsState* state_d, 
+void step_gamma_process(int nstate, TrackPhysicsState* state_d, 
                         ProxyDataManager *dm_d) 
 {
   unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
@@ -61,14 +61,13 @@ void gpil_gamma_process(int nstate, TrackPhysicsState* state_d,
     // a temporary test
     double lambda = proc.GetLambda(1,state_d[tid].fEkin);
     // TODO: add a generic photon process and get GPIL for this step 
-    // double step = proc.PostStepGPIL(state_d[tid]);
 
     tid += blockDim.x * gridDim.x;
   }
 }
 
 __global__
-void gpil_electron_process(int nstate, TrackPhysicsState* state_d, 
+void step_electron_process(int nstate, TrackPhysicsState* state_d, 
                            ProxyDataManager *dm_d) 
 {
   unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
@@ -82,7 +81,47 @@ void gpil_electron_process(int nstate, TrackPhysicsState* state_d,
   while (tid < nstate) {
     double lambda = proc.GetLambda(2,state_d[tid].fEkin);
     // TODO: add a generic electron process and get GPIL for this step 
-    // double step = proc.PostStepGPIL(state_d[tid]);
+    tid += blockDim.x * gridDim.x;
+  }
+}
+
+__global__
+void gpil_gamma_process(int nstate, TrackState** state_d, 
+                        ProxyDataManager *dm_d) 
+{
+  unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+  ProxyEmProcess<ProxyCompton> proc(tid);
+  ProxyKleinNishina model(tid);
+
+  proc.SetModel(&model);
+  proc.SetDataManager(dm_d);
+
+  while (tid < nstate) {
+    // a temporary test
+    // TODO: add a generic photon process and get GPIL for this step 
+    double step = proc.PostStepGPIL(state_d[tid]);
+
+    tid += blockDim.x * gridDim.x;
+  }
+}
+
+__global__
+void gpil_electron_process(int nstate, TrackState** state_d, 
+                           ProxyDataManager *dm_d) 
+{
+  unsigned int tid = threadIdx.x + blockIdx.x * blockDim.x;
+
+  ProxyEmProcess<ProxyIonization> proc(tid);
+  ProxyMollerScattering model(tid);
+
+  proc.SetModel(&model);
+  proc.SetDataManager(dm_d);
+
+  while (tid < nstate) {
+    // TODO: add a generic electron process and get GPIL for this step 
+    double step = proc.AlongStepGPIL(state_d[tid]);
+    printf("energy[%d] = %g step=%g\n",tid, state_d[tid]->fPhysicsState.fEkin,step);
     // ...
     tid += blockDim.x * gridDim.x;
   }
@@ -90,7 +129,24 @@ void gpil_electron_process(int nstate, TrackPhysicsState* state_d,
 
 // wrappers
 
-void GPILGammaProcess(int nstate, TrackPhysicsState* state_d, 
+void StepGammaProcess(int nstate, TrackPhysicsState* state_d, 
+                      ProxyDataManager* dm_d, int nblocks, int nthreads, 
+                      cudaStream_t stream)
+{
+  step_gamma_process<<<nblocks,nthreads,0,stream>>>(nstate, state_d, dm_d);
+  cudaThreadSynchronize();
+}
+
+
+void StepElectronProcess(int nstate, TrackPhysicsState* state_d, 
+                         ProxyDataManager* dm_d, int nblocks, int nthreads, 
+                         cudaStream_t stream)
+{
+  step_electron_process<<<nblocks,nthreads,0,stream>>>(nstate, state_d, dm_d);
+  cudaThreadSynchronize();
+}
+
+void GPILGammaProcess(int nstate, TrackState** state_d, 
                       ProxyDataManager* dm_d, int nblocks, int nthreads, 
                       cudaStream_t stream)
 {
@@ -99,7 +155,7 @@ void GPILGammaProcess(int nstate, TrackPhysicsState* state_d,
 }
 
 
-void GPILElectronProcess(int nstate, TrackPhysicsState* state_d, 
+void GPILElectronProcess(int nstate, TrackState** state_d, 
                          ProxyDataManager* dm_d, int nblocks, int nthreads, 
                          cudaStream_t stream)
 {

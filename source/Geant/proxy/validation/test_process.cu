@@ -31,16 +31,11 @@ int main(int argc, char* argv[]) {
   
   // test
   runMgr->GetEventManager()->GenerateEvents(50);
-
   runMgr->GetDeviceManager()->SetPerformanceFlag(true);
 
-  runMgr->GetDeviceManager()->UploadTrackData();
-
-  runMgr->GetDeviceManager()->DoStep();
-
-  runMgr->GetDeviceManager()->DownloadTrackData();
-
-  runMgr->GetDeviceManager()->DeallocateTrackData();
+  runMgr->GetDeviceManager()->UploadTrackState();
+  runMgr->GetDeviceManager()->DoGPIL();
+  runMgr->GetDeviceManager()->DeallocateTrackState();
 
   return 0;
 }
