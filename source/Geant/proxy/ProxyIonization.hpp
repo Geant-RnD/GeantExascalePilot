@@ -72,6 +72,7 @@ public:
   } 
 
   // specialization for the ionization process
+  GEANT_HOST_DEVICE
   double AlongStepGPIL(TrackState* _track);
 
   GEANT_HOST_DEVICE
@@ -98,11 +99,9 @@ public:
 
 };
 
+GEANT_HOST_DEVICE
 double ProxyIonization::AlongStepGPIL(TrackState* track)
 {
-  //  GEANT_THIS_TYPE_TESTING_MARKER("");
-
-  //  double stepLimit = std::numeric_limits<double>::max();
   double stepLimit = DBL_MAX;
 
   int index = track->fMaterialState.fMaterialId;
@@ -115,8 +114,7 @@ double ProxyIonization::AlongStepGPIL(TrackState* track)
   //production cuts index: electron = 1
   double cut = fDataManager->GetCutValue(index,1);
 
-  double finR = vecCore::math::Min(data::finalRange, cut);
-
+  double finR = (data::finalRange < cut) ? data::finalRange : cut;
   stepLimit = (range > finR) ? range*data::dRoverRange + finR*(1.0-data::dRoverRange)*(2.0*finR/range) : range;
 
   return stepLimit;

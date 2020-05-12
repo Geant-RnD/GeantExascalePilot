@@ -87,19 +87,24 @@ public:
   
   //mandatory methods
   GEANT_HOST_DEVICE
-  double GetLambda(int index, double energy) { return static_cast<TEmProcess *>(this)->GetLambda(index,energy); }
+  double GetLambda(int index, double energy) 
+  { return static_cast<TEmProcess *>(this)->GetLambda(index,energy); }
 
   // the proposed along step physical interaction length
-  double AlongStepGPIL(TrackState* _track);
+  GEANT_HOST_DEVICE
+  double AlongStepGPIL(TrackState* _track)
+  { return static_cast<TEmProcess *>(this)->AlongStepGPIL(_track); }
 
   // the proposed post step physical interaction length
   GEANT_HOST_DEVICE
   double PostStepGPIL(TrackState* _track);
 
   // DoIt for the along step
+  GEANT_HOST_DEVICE
   void AlongStepDoIt(TrackState* _track);
 
   // DoIt for the post step
+  GEANT_HOST_DEVICE
   int PostStepDoIt(TrackState* _track);
 
   // Aux
@@ -107,15 +112,7 @@ public:
 };
 
 template <typename TEmProcess>
-double ProxyEmProcess<TEmProcess>::AlongStepGPIL(TrackState* track)
-{
-  //  GEANT_THIS_TYPE_TESTING_MARKER("");
-
-  //the default stepLimit
-  return std::numeric_limits<double>::max();
-}
-
-template <typename TEmProcess>
+GEANT_HOST_DEVICE
 void ProxyEmProcess<TEmProcess>::AlongStepDoIt(TrackState* track)
 {
   //  GEANT_THIS_TYPE_TESTING_MARKER("");
@@ -154,6 +151,7 @@ double ProxyEmProcess<TEmProcess>::PostStepGPIL(TrackState* track)
 }
 
 template <typename TEmProcess>
+GEANT_HOST_DEVICE
 int ProxyEmProcess<TEmProcess>::PostStepDoIt(TrackState* track)
 {
   //  GEANT_THIS_TYPE_TESTING_MARKER("");
