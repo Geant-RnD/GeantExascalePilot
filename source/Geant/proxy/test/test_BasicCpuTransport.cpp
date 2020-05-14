@@ -482,6 +482,11 @@ OneStep(Track *track)
     /// Apply/do user actions
     /// ....
 
+    /// try to get a final track report
+    if (! IsAlive(*track)) {
+      std::cout<<"Last step for track "<< *track <<"\n";
+    }
+
     UpdateSwapPath(*track);
 
     /// Apply post step updates.
