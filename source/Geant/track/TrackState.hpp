@@ -257,7 +257,7 @@ bool ReachedPhysicsLength(TrackState &state)
     return state.fStatus == TrackStatus::Physics;
 }
 
-   /** @brief Function that updates the current volume the particle is in */
+  /** @brief Function that updates the current volume the particle is in */
   VECCORE_ATT_HOST_DEVICE
   GEANT_FORCE_INLINE
   void UpdateVolume(TrackGeometryState &state)
