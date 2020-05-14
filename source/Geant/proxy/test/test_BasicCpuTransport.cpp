@@ -425,7 +425,6 @@ OneStep(Track *track)
     geantx::Log(kInfo) << GEANT_HERE << "One step for: " << *track;
 
     intmax_t doit_idx   = -1;
-    double   proposedPhysLength = std::numeric_limits<double>::max();
     Funct_t  doit_apply = [=]() {
         geantx::Log(kInfo) << GEANT_HERE << "no process selected: " << *track;
     };
@@ -448,7 +447,9 @@ OneStep(Track *track)
     ///             exec AtRest
     ///          return
     /// With as much pre-computed as possible (eg has-at-rest-processes)
-    Apply<void>::unroll_indices<PostStepApply_t>(track, &doit_idx, &proposedPhysLength, &doit_apply);
+    double   postPstep = std::numeric_limits<double>::max();
+    Apply<void>::unroll_indices<PostStepApply_t>(track, &doit_idx, &postPstep, &doit_apply);
+
 
     ///
     /// Calculate all of the PIL lengths for all the AlongStep processes
@@ -460,9 +461,11 @@ OneStep(Track *track)
     ///          if alive && has-at-rest-processes
     ///             exec AtRest
     ///          return
-    Apply<void>::unroll_indices<AlongStepApply_t>(track, &doit_idx, &proposedPhysLength, &doit_apply);
+    double   alongPstep = std::numeric_limits<double>::max();
+    Apply<void>::unroll_indices<AlongStepApply_t>(track, &doit_idx, &alongPstep, &doit_apply);
 
-    track->fPhysicsState.fPstep = proposedPhysLength;
+
+    track->fPhysicsState.fPstep = vecCore::math::Min(alongPstep, postPstep);
 
     NavigationInterface::FindNextBoundary(*track);
 
@@ -481,8 +484,9 @@ OneStep(Track *track)
 
     /// Apply post step updates.
     //    ++track->fPhysicsState.fPstep;
-    track->fPhysicsState.fPstep = proposedPhysLength;
-    track->fStep = proposedPhysLength;
+    //track->fPhysicsState.fPstep = proposedPhysLength;
+
+    //track->fStep = vecCore::math::Min(postPstep, alongPstep);  // GL: commented out, as it was resetting step at this point
 }
 
 //--------------------------------------------------------------------------------------//
