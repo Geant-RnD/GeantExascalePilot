@@ -312,7 +312,8 @@ VECCORE_ATT_HOST_DEVICE
 GEANT_FORCE_INLINE
 bool ReachedBoundary(TrackState &track, PropagationHandler &h, TaskData *td)
 {
-    return (track.fGeometryState.fSafety < 1.E-10) && !h.IsSameLocation(track, td);
+    const bool reachedBoundary = (track.fGeometryState.fSafety < 1.E-10) && !h.IsSameLocation(track, td);
+    return reachedBoundary;
 }
 
 template <typename PropagationHandler>
@@ -320,14 +321,15 @@ VECCORE_ATT_HOST_DEVICE
 GEANT_FORCE_INLINE
 bool Propagate(TrackState &track, PropagationHandler &h, TaskData *td)
 {
-    if ( ! h.Propagate(track, td)) {
+    if ( ! h.Propagate(track, td)) { // updates:  fPstep -= step;  fStep += step;  fSnext -= step
       return false;
     }
     ++(track.fHistoryState.fNsteps);
-    while ( ! ReachedPhysicsLength(track) && !ReachedBoundary(track, h, td)) {
+    while ( ! ReachedPhysicsLength(track) && ! ReachedBoundary(track, h, td)) {
         NavigationInterface::FindNextBoundary(track);
-        if ( ! h.Propagate(track, td))
+	if ( ! h.Propagate(track, td)) {
            return false;
+	}
     }
 
     return true;
@@ -443,8 +445,8 @@ OneStep(Track *track)
     ///    For selected PostStep
     ///       PostStepDoIt
     ///      if stopped
-    ///          if alive && has-at-rest-processes
-    ///             exec AtRest
+    ///          if alive && has-post-step-processes
+    ///             exec PostStep
     ///          return
     /// With as much pre-computed as possible (eg has-at-rest-processes)
     double   postPstep = std::numeric_limits<double>::max();
@@ -458,8 +460,8 @@ OneStep(Track *track)
     ///    For each along process
     ///       AlongStepDoIt
     ///       if stopped
-    ///          if alive && has-at-rest-processes
-    ///             exec AtRest
+    ///          if alive && has-alongStep-processes
+    ///             exec AlongStep
     ///          return
     double   alongPstep = std::numeric_limits<double>::max();
     Apply<void>::unroll_indices<AlongStepApply_t>(track, &doit_idx, &alongPstep, &doit_apply);
