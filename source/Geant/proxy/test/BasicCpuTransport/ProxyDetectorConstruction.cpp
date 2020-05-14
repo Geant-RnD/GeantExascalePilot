@@ -39,10 +39,10 @@ ProxyDetectorConstruction::ProxyDetectorConstruction(geantx::RunManager *runmgr)
     : geantx::UserDetectorConstruction(runmgr)
 {
   fNumberOfAbsorbers      = 2;
-  fAbsorberThicknesses[0] = 2.3 * mm;
-  fAbsorberThicknesses[1] = 5.7 * mm;
+  fAbsorberThicknesses[0] = 10. * mm; //2.3 * mm;
+  fAbsorberThicknesses[1] = 10. * mm; //5.7 * mm;
   fNumberOfLayers         = 50;
-  fCaloSizeYZ             = 40. * cm;
+  fCaloSizeYZ             = 100. * cm; //40. * cm;
   //
   ComputeCalorimeter();
   //
