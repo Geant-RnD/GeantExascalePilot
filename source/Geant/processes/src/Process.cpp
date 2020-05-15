@@ -7,8 +7,8 @@
 // Copyright (C) 2019, Geant Exascale Pilot team,  All rights reserved.
 //===----------------------------------------------------------------------===//
 /**
- * @file Transportation.hpp
- * @brief Transportation process
+ * @file Geant/processes/src/Process.cpp
+ * @brief Memory pool for device and host allocations.
  */
 //===----------------------------------------------------------------------===//
 
