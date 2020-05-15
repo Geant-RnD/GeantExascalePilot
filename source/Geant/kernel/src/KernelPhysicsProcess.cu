@@ -36,7 +36,6 @@
 #include "Geant/proxy/src/ProxyEmProcess.cpp"
 #include "Geant/proxy/src/ProxyCompton.cpp"
 #include "Geant/proxy/src/ProxyEmModel.cpp"
-#include "Geant/proxy/src/ProxyKleinNishina.cpp"
 #include "Geant/proxy/src/ProxyPhysicsVector.cu"
 #include "Geant/proxy/src/ProxyPhysicsTable.cu"
 #endif
