@@ -33,7 +33,6 @@
 
 #ifndef ADDED_SUPPORT_FOR_SEPARABLE_COMPILATION
 #include "Geant/processes/src/Process.cpp"
-#include "Geant/proxy/src/ProxyEmProcess.cpp"
 #include "Geant/proxy/src/ProxyCompton.cpp"
 #include "Geant/proxy/src/ProxyEmModel.cpp"
 #include "Geant/proxy/src/ProxyPhysicsVector.cu"
