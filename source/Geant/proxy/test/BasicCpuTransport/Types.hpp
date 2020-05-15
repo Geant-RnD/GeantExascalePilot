@@ -109,19 +109,19 @@ struct PhysicsProcessCombinedPostStep<ParticleType, std::tuple<ProcessTypes...>>
 
 using CpuGammaPhysics =
     PhysicsProcessList<CpuGamma, ProxyCompton, ProxyConversion, ProxyPhotoElectric, ProxyScattering, 
-                       ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
+                       ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 using CpuElectronPhysics =
     PhysicsProcessList<CpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter, 
-                       ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
+                       ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 using GpuGammaPhysics =
     PhysicsProcessList<GpuGamma, ProxyCompton, ProxyConversion, ProxyPhotoElectric, ProxyScattering,
-                       ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
+                       ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 using GpuElectronPhysics =
     PhysicsProcessList<GpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter,
-                       ProxyTrackLimiter, ProxySecondaryGenerator, Transportation>;
+                       ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 //===----------------------------------------------------------------------===//
 //              A list of all particle + physics pairs
