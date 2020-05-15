@@ -232,7 +232,8 @@ GEANT_FORCE_INLINE
 void LinearStep(TrackState &state, double step)
 {
     state.fPhysicsState.fPstep -= step;
-    state.fStep += step;
+    state.fStep = step;
+    state.fTotalLength += step;
     state.fGeometryState.fSnext -= step;
     state.fPos.x() += step * state.fDir.x();
     state.fPos.y() += step * state.fDir.y();
