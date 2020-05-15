@@ -17,7 +17,6 @@ bool LinearPropagationHandler::Propagate(TrackState &track, TaskData *td)
   // Do straight propagation to physics process or boundary
   // if (track->GetSnext() < 1.E-8) td->fNsmall++;
   LinearStep(track, track.fGeometryState.fSnext);
-  track.fTotalLength += track.fStep;
 
   // Update total number of steps
   // td->fNsteps++;
