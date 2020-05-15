@@ -192,6 +192,7 @@ using vecMath::IntPow;
  */
 
 template <typename R>
+VECCORE_ATT_HOST_DEVICE
 inline void RotateToLabFrame(R &u, R &v, R &w, R u1, R u2, R u3)
 {
   R up                = u1 * u1 + u2 * u2;
