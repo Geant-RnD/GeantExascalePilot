@@ -48,10 +48,13 @@ public:
 
 public:
 
+  GEANT_HOST
   void Initialization();
 
+  GEANT_HOST
   void BuildAliasTable(bool atomicDependentModel = false) {}
 
+  GEANT_HOST
   double MacroscopicCrossSection(const TrackState *track) 
   {  
     double xsec = 0.0;
@@ -72,9 +75,10 @@ public:
     return xsec;
   }
 
+  GEANT_HOST_DEVICE
   int SampleSecondaries(TrackState *track) 
   {  
-    return static_cast<TEmModel *>(this) -> SampleSecondaries(track);
+    return static_cast<TEmModel *>(this)-> SampleSecondaries(track);
   }
 
   // accessor

@@ -29,20 +29,25 @@ namespace geantx {
 class ProxyKleinNishina : public ProxyEmModel<ProxyKleinNishina> {
 
 public:
+  GEANT_HOST
   ProxyKleinNishina() { fLowEnergyLimit = 100.0 * clhep::eV; }
 
   GEANT_HOST_DEVICE
   ProxyKleinNishina(int tid) 
-    : ProxyEmModel(tid) { fLowEnergyLimit = 100.0 * clhep::eV; }
+    : ProxyEmModel<ProxyKleinNishina>(tid) { fLowEnergyLimit = 100.0 * clhep::eV; }
 
+  GEANT_HOST
   ProxyKleinNishina(const ProxyKleinNishina &model) 
     : ProxyEmModel<ProxyKleinNishina>() { this->fRng = model.fRng; }
 
-  ~ProxyKleinNishina() = default;
+  GEANT_HOST_DEVICE
+  ~ProxyKleinNishina() {} 
 
   //mandatory methods
+  GEANT_HOST
   double CrossSectionPerAtom(double Z, double energy);
 
+  GEANT_HOST_DEVICE
   int SampleSecondaries(TrackState *track);
 
   //auxiliary methods
@@ -54,6 +59,7 @@ private:
 };
 
 // based on Geant4 processes/electromagnetic/standard/src/G4KleinNishinaModel.cc
+GEANT_HOST
 double ProxyKleinNishina::CrossSectionPerAtom(double Z, double gammaEnergy)
 {
   double xSection = 0.;
@@ -66,27 +72,28 @@ double ProxyKleinNishina::CrossSectionPerAtom(double Z, double gammaEnergy)
 
   double T0 = (Z < 1.5) ? 40.0 * clhep::keV : 15.0 * geantx::units::keV;
 
-  double X  = Math::Max(gammaEnergy, T0)/clhep::electron_mass_c2 ;
+  double X  = vecCore::math::Max(gammaEnergy, T0)/clhep::electron_mass_c2 ;
   double X2 = X*X;
 
-  xSection = p1 * Math::Log(1. + 2.*X)/X + (p2 + p3 * X + p4 * X2)/(1. + 20. * X + 230. * X2 + 440. * X2 * X);
+  xSection = p1 * vecCore::math::Log(1. + 2.*X)/X + (p2 + p3 * X + p4 * X2)/(1. + 20. * X + 230. * X2 + 440. * X2 * X);
 
   //  modification for low energy. (special case for Hydrogen)
   if (gammaEnergy < T0) {
     const double dT0 = clhep::keV;
     X  = (T0 + dT0)/clhep::electron_mass_c2;
     X2 = X*X;
-    double sigma = p1 * Math::Log(1. + 2.*X)/X + (p2 + p3 * X + p4 * X2)/(1. + 20. * X + 230. * X2 + 440. * X2 * X);
+    double sigma = p1 * vecCore::math::Log(1. + 2.*X)/X + (p2 + p3 * X + p4 * X2)/(1. + 20. * X + 230. * X2 + 440. * X2 * X);
     double c1 = -T0 * (sigma - xSection) / (xSection * dT0);
-    double c2 = (Z > 1.5) ? 0.375 - 0.0556 * Math::Log(Z) : 0.150;
-    double y = Math::Log(gammaEnergy / T0);
-    xSection *= Math::Exp(-y * (c1 + c2 * y));
+    double c2 = (Z > 1.5) ? 0.375 - 0.0556 * vecCore::math::Log(Z) : 0.150;
+    double y = vecCore::math::Log(gammaEnergy / T0);
+    xSection *= vecCore::math::Exp(-y * (c1 + c2 * y));
   }
   
   return Z*xSection*clhep::barn;
 }
 
 // based on Geant4 processes/electromagnetic/standard/src/G4KleinNishinaModel.cc
+GEANT_HOST_DEVICE
 int ProxyKleinNishina::SampleSecondaries(TrackState *track)
 {
   int nsecondaries = 0;
@@ -144,11 +151,11 @@ int ProxyKleinNishina::SampleSecondaries(TrackState *track)
   if(gammaEnergy > fLowEnergyLimit) {
     ThreeVector eDirection = gammaEnergy0*gammaDirection0 - gammaEnergy*gammaDirection;
     eDirection = eDirection.Unit();
-    TrackState* electron = new TrackState;
 
     //TODO: push this secondary to the global secondary container
-    electron->fPhysicsState.fEkin = eKinEnergy;
-    electron->fDir = eDirection;
+    TrackState electron;
+    electron.fPhysicsState.fEkin = eKinEnergy;
+    electron.fDir = eDirection;
     ++nsecondaries;
   }
   else {

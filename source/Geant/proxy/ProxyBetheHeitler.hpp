@@ -28,15 +28,30 @@ namespace geantx {
 class ProxyBetheHeitler : public ProxyEmModel<ProxyBetheHeitler> {
 
 public:
+
+  GEANT_HOST
   ProxyBetheHeitler() { fLowEnergyLimit = 2.0*clhep::electron_mass_c2;}
-  ProxyBetheHeitler(const ProxyBetheHeitler &model) : ProxyEmModel<ProxyBetheHeitler>() { this->fRng = model.fRng; }
-  ~ProxyBetheHeitler() = default;
+
+  GEANT_HOST_DEVICE
+  ProxyBetheHeitler(int tid) : ProxyEmModel<ProxyBetheHeitler>(tid) 
+  { fLowEnergyLimit = 2.0*clhep::electron_mass_c2;}
+
+  GEANT_HOST
+  ProxyBetheHeitler(const ProxyBetheHeitler &model) 
+    : ProxyEmModel<ProxyBetheHeitler>() { this->fRng = model.fRng; }
+
+  GEANT_HOST_DEVICE
+  ~ProxyBetheHeitler() {} 
 
   //mandatory methods for static polymorphism
+  GEANT_HOST_DEVICE
   int SampleSecondaries(TrackState *track);
 
   //auxiliary methods
+  GEANT_HOST_DEVICE
   double ScreenFunction1(double screenVariable) const;
+
+  GEANT_HOST_DEVICE
   double ScreenFunction2(double screenVariable) const;
 
 private:
@@ -46,6 +61,7 @@ private:
 };
 
 // based on Geant4 processes/electromagnetic/standard/src/G4BetheHeitlerModel.cc
+GEANT_HOST_DEVICE
 int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
 {
   int nsecondaries = 0;
@@ -124,6 +140,8 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
   double cosp = vecCore::math::Cos(phi);
   double sinp = vecCore::math::Sin(phi);
 
+  //TODO: create secondaries and push this electron/positron pair to the global secondary container
+
   //secondary electron 
   double cost = u * clhep::electron_mass_c2/ electTotEnergy; 
   double sint = vecCore::math::Sqrt((1. - cost)*(1. + cost));
@@ -132,12 +150,12 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
   double yhat = sint*sinp;
   double zhat = cost;
 
-  TrackState* electron = new TrackState;
+  TrackState electron;
   Math::RotateToLabFrame(xhat, yhat, zhat, track->fDir.x(), track->fDir.y(), track->fDir.z());
   ThreeVector electronDirection(xhat, yhat, zhat);
 
-  electron->fPhysicsState.fEkin = electTotEnergy - clhep::electron_mass_c2;
-  electron->fDir = electronDirection;
+  electron.fPhysicsState.fEkin = electTotEnergy - clhep::electron_mass_c2;
+  electron.fDir = electronDirection;
   ++nsecondaries;
 
   //secondary positron
@@ -148,15 +166,13 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
   yhat = -sint*sinp;
   zhat = cost;
 
-  TrackState* positron = new TrackState;
+  TrackState positron;
   Math::RotateToLabFrame(xhat, yhat, zhat, track->fDir.x(), track->fDir.y(), track->fDir.z());
   ThreeVector positronDirection(xhat, yhat, zhat);
 
-  positron->fPhysicsState.fEkin = positTotEnergy - clhep::electron_mass_c2;
-  positron->fDir = positronDirection;
+  positron.fPhysicsState.fEkin = positTotEnergy - clhep::electron_mass_c2;
+  positron.fDir = positronDirection;
   ++nsecondaries;
-
-  //TODO: push this electron/positron pair to the global secondary container
 
   //update primary gamma
   track->fPhysicsState.fEkin = 0.0;
@@ -165,6 +181,7 @@ int ProxyBetheHeitler::SampleSecondaries(TrackState *track)
   return nsecondaries;
 }
 
+GEANT_HOST_DEVICE
 double ProxyBetheHeitler::ScreenFunction1(double screenVariable) const
 {
   // compute the value of the screening function 3*PHI1 - PHI2
@@ -178,6 +195,7 @@ double ProxyBetheHeitler::ScreenFunction1(double screenVariable) const
   return screenVal;
 }
 
+GEANT_HOST_DEVICE
 double ProxyBetheHeitler::ScreenFunction2(double screenVariable) const
 {
   // compute the value of the screening function 1.5*PHI1 - 0.5*PHI2
@@ -190,6 +208,5 @@ double ProxyBetheHeitler::ScreenFunction2(double screenVariable) const
 
   return screenVal;
 }
-
 
 } // namespace geantx

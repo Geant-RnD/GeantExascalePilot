@@ -58,11 +58,19 @@ public:
 public:
   using this_type = ProxyPhotoElectric;
   
+  GEANT_HOST
   ProxyPhotoElectric(){ this->fProcessIndex = kProxyPhotoElectric; }
-  ~ProxyPhotoElectric() = default;
+
+  GEANT_HOST_DEVICE
+  ProxyPhotoElectric(int tid) : ProxyEmProcess<ProxyPhotoElectric>(tid) 
+  { this->fProcessIndex = kProxyPhotoElectric; }
+
+  GEANT_HOST_DEVICE
+  ~ProxyPhotoElectric() {};
   
   // mandatory methods for static polymorphism
 
+  GEANT_HOST_DEVICE
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambdaPrim_phot_gamma)->Value(index,energy);

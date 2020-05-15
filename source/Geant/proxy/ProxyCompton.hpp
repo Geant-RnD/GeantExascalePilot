@@ -58,8 +58,15 @@ public:
 public:
   using this_type = ProxyCompton;
   
+  GEANT_HOST
   ProxyCompton(){ this->fProcessIndex = kProxyCompton; }
-  ~ProxyCompton() = default;
+
+  GEANT_HOST_DEVICE
+  ProxyCompton(int tid) : ProxyEmProcess<ProxyCompton>(tid) 
+  { this->fProcessIndex = kProxyCompton; }
+
+  GEANT_HOST_DEVICE
+  ~ProxyCompton() {}
   
   // mandatory methods for static polymorphism
   GEANT_HOST_DEVICE

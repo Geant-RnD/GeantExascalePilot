@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "Geant/proxy/ProxyTypeDef.hpp"
 #include "Geant/proxy/ProxySystemOfUnits.hpp"
 
 namespace geantx {
@@ -1407,14 +1408,11 @@ constexpr int fIntervalLimit = 100;
 
 constexpr int fNumberOfIntervals = 980;
 
-constexpr double funitc[5] = {keV, cm *cm *keV / gram, cm *cm *keV *keV / gram, cm *cm *keV *keV *keV / gram,
-                              cm *cm *keV *keV *keV *keV / gram};
-
 // int    fCumulInterval[101]  = {0};
 
 // G4AtomicShells.hh + G4AtomicShells.cc
 
-constexpr int fNumberOfShells[101] = {
+CONSTTYPE int fNumberOfShells[101] = {
     0, // nonexisting zero element
 
     1, 1, 2, 2, 3, 3, 4, 4, 3, 4, //  1 - 10
@@ -1443,7 +1441,7 @@ constexpr int fNumberOfShells[101] = {
 // The total shell number is:
 // 1 + G4AtomicShells::TotalNumberOfShells(100) = 1 + 1539 = 1540
 
-constexpr int fIndexOfShells[101] = {
+CONSTTYPE int fIndexOfShells[101] = {
     0,    1,    2,    3,    5,    7,    10,   13,   17,   21,   24,   28,   33,   38,   44,   50,   56,
     62,   68,   75,   83,   91,   100,  109,  118,  127,  136,  145,  154,  164,  174,  184,  195,  206,
     217,  228,  239,  251,  264,  277,  291,  305,  319,  333,  347,  361,  375,  390,  405,  420,  436,
@@ -1451,7 +1449,7 @@ constexpr int fIndexOfShells[101] = {
     763,  782,  801,  821,  842,  863,  884,  905,  926,  947,  968,  989,  1011, 1033, 1056, 1079, 1102,
     1125, 1149, 1173, 1198, 1223, 1249, 1275, 1302, 1329, 1356, 1382, 1408, 1435, 1462, 1488, 1514};
 
-constexpr double fBindingEnergies[1540] = {
+CONSTTYPE double fBindingEnergies[1540] = {
     0.0, // Nonexisting zero element
 
     //  H  ---------------------------------------------------------
@@ -1801,6 +1799,9 @@ constexpr double fBindingEnergies[1540] = {
     143090.0, 27700.0, 26810.0, 20900.0, 7205.0, 6793.0, 5397.0, 4766.0, 4498.0, 1933.0, 1746.0, 1366.0, 1068.0, 1000.0,
     606.0, 587.0, 453.0, 375.0, 275.0, 160.0, 145.0, 69.0, 45.0, 29.0, 15.0, 7.0,
 };
+
+constexpr double funitc[5] = {keV, cm *cm *keV / gram, cm *cm *keV *keV / gram, cm *cm *keV *keV *keV / gram,
+                              cm *cm *keV *keV *keV *keV / gram};
 
 } // namespace sandia
 } // namespace geantx

@@ -58,11 +58,19 @@ public:
 public:
   using this_type = ProxyConversion;
   
+  GEANT_HOST
   ProxyConversion(){ this->fProcessIndex = kProxyConversion; }
-  ~ProxyConversion() = default;
+
+  GEANT_HOST_DEVICE
+  ProxyConversion(int tid) : ProxyEmProcess<ProxyConversion>(tid) 
+  { this->fProcessIndex = kProxyConversion; }
+
+  GEANT_HOST_DEVICE
+  ~ProxyConversion() {}
   
   // mandatory methods for static polymorphism
 
+  GEANT_HOST_DEVICE
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_conv_gamma)->Value(index,energy);

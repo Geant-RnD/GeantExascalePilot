@@ -20,6 +20,7 @@ namespace geantx {
 
 class ProxyRandom {
 public:
+
   ProxyRandom()
   {
     mrg32k3a = new MRG32k3a();
@@ -31,10 +32,13 @@ public:
     delete mrg32k3a;
   }
 
+  GEANT_HOST_DEVICE
   double uniform() { return mrg32k3a->Uniform(); }
 
+  GEANT_HOST_DEVICE
   double uniform(double a, double b) { return a + (b - a) * uniform(); }
 
+  GEANT_HOST_DEVICE
   void uniform_array(size_t n, double *array, const double min = 0., const double max = 1.)
   {
     for (size_t i = 0; i < n; ++i) {

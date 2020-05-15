@@ -58,16 +58,25 @@ public:
 public:
   using this_type = ProxyBremsstrahlung;
   
+  GEANT_HOST
   ProxyBremsstrahlung() { this->fProcessIndex = kProxyBremsstrahlung; }
-  ~ProxyBremsstrahlung() = default;
+
+  GEANT_HOST_DEVICE
+  ProxyBremsstrahlung(int tid) : ProxyEmProcess<ProxyBremsstrahlung>(tid)  
+  { this->fProcessIndex = kProxyBremsstrahlung; }
+
+  GEANT_HOST_DEVICE
+  ~ProxyBremsstrahlung() {}
 
   // mandatory methods for static polymorphism
+  GEANT_HOST_DEVICE
   double GetLambda(int index, double energy) 
   {
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kLambda_eBrem_eminus)->Value(index,energy);
   } 
 
   // auxiliary 
+  GEANT_HOST_DEVICE
   double GetDEDX(int index, double energy) 
   { 
     return fDataManager->GetTable(ProxyPhysicsTableIndex::kDEDX_eBrem_eminus)->Value(index,energy);

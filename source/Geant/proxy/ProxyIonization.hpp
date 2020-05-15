@@ -59,9 +59,15 @@ public:
 public:
   using this_type = ProxyIonization;
   
+  GEANT_HOST
   ProxyIonization() { this->fProcessIndex = kProxyIonization; }
 
-  ~ProxyIonization() = default;
+  GEANT_HOST_DEVICE
+  ProxyIonization(int tid) : ProxyEmProcess<ProxyIonization>(tid) 
+  { this->fProcessIndex = kProxyIonization; }
+
+  GEANT_HOST_DEVICE
+  ~ProxyIonization() {}
 
   // mandatory methods for static polymorphism
 

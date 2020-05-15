@@ -28,20 +28,25 @@ namespace geantx {
 class ProxyMollerScattering : public ProxyEmModel<ProxyMollerScattering> {
 
 public:
+  GEANT_HOST
   ProxyMollerScattering() { fLowEnergyLimit = 100.0 * clhep::eV; }
 
   GEANT_HOST_DEVICE
-  ProxyMollerScattering(int tid) : 
-   ProxyEmModel(tid) { fLowEnergyLimit = 100.0 * clhep::eV; }
+  ProxyMollerScattering(int tid) : ProxyEmModel(tid)
+  { fLowEnergyLimit = 100.0 * clhep::eV; }
 
+  GEANT_HOST
   ProxyMollerScattering(const ProxyMollerScattering &model) 
    : ProxyEmModel<ProxyMollerScattering>() { this->fRng = model.fRng; }
 
-  ~ProxyMollerScattering() = default;
+  GEANT_HOST_DEVICE
+  ~ProxyMollerScattering() {};
 
   //mandatory methods
+  GEANT_HOST_DEVICE
   double CrossSectionPerAtom(double Z, double kineticEnergy);
 
+  GEANT_HOST_DEVICE
   int SampleSecondaries(TrackState *track);
 
   //auxiliary methods
@@ -53,6 +58,7 @@ private:
 };
 
 // based on Geant4 processes/electromagnetic/standard/src/G4MollerBhabhaModel
+GEANT_HOST_DEVICE
 double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy)
 {
   double xsec = 0.0;
@@ -60,7 +66,7 @@ double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy
   //TODO: MaterialCuts by an argument
   const double cutEnergy = 10.0 * clhep::eV; // matcut->GetProductionCutsInEnergy()[1];
 
-  double tmax = Math::Min(fHighEnergyLimit, 0.5*kineticEnergy);
+  double tmax = vecCore::math::Min(fHighEnergyLimit, 0.5*kineticEnergy);
 
   if(cutEnergy > tmax) return xsec;
 
@@ -75,7 +81,7 @@ double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy
   double gg = (2.0*gam - 1.0)/gamma2;
   xsec = ((xmax - xmin)*(1.0 - gg + 1.0/(xmin*xmax)
 			  + 1.0/((1.0-xmin)*(1.0 - xmax)))
-	- gg*Math::Log( xmax*(1.0 - xmin)/(xmin*(1.0 - xmax)) ) ) / beta2;
+	  - gg*vecCore::math::Log( xmax*(1.0 - xmin)/(xmin*(1.0 - xmax)) ) ) / beta2;
   
   xsec *= clhep::twopi_mc2_rcl2/kineticEnergy;
   
@@ -83,6 +89,7 @@ double ProxyMollerScattering::CrossSectionPerAtom(double Z, double kineticEnergy
 }
 
 // based on Geant4 processes/electromagnetic/standard/src/G4MollerBhabhaModel
+GEANT_HOST_DEVICE
 int ProxyMollerScattering::SampleSecondaries(TrackState *track)
 {
   int nsecondaries = 0;
@@ -121,27 +128,26 @@ int ProxyMollerScattering::SampleSecondaries(TrackState *track)
   double deltaKinEnergy = x * kineticEnergy;
   
   //angle of the scatterred electron
-  double totalMomentum = Math::Sqrt(kineticEnergy  * (kineticEnergy + 2.0* clhep::electron_mass_c2));
-  double deltaMomentum = Math::Sqrt(deltaKinEnergy * (deltaKinEnergy + 2.0* clhep::electron_mass_c2));
+  double totalMomentum = vecCore::math::Sqrt(kineticEnergy  * (kineticEnergy + 2.0* clhep::electron_mass_c2));
+  double deltaMomentum = vecCore::math::Sqrt(deltaKinEnergy * (deltaKinEnergy + 2.0* clhep::electron_mass_c2));
   double cost =  deltaKinEnergy * (energy +  clhep::electron_mass_c2) / (deltaMomentum * totalMomentum);
   if(cost > 1.0) { cost = 1.0; }
-  double sint = Math::Sqrt((1.0 - cost)*(1. + cost));
+  double sint = vecCore::math::Sqrt((1.0 - cost)*(1. + cost));
 
   double phi = clhep::twopi * this->fRng->uniform();
 
-  double xhat = sint*Math::Cos(phi);
-  double yhat = sint*Math::Sin(phi);
+  double xhat = sint*vecCore::math::Cos(phi);
+  double yhat = sint*vecCore::math::Sin(phi);
   double zhat = cost;
   
   Math::RotateToLabFrame(xhat, yhat, zhat, track->fDir.x(), track->fDir.y(), track->fDir.z());
   ThreeVector deltaDirection(xhat, yhat, zhat);
   
-  //create a delta ray (electron)
-  TrackState* electron = new TrackState;
-  electron->fDir = deltaDirection;
-  electron->fPhysicsState.fEkin = deltaKinEnergy;
+  //TODO: create a delta ray (electron) and push it to the secondary container 
+  TrackState electron;
+  electron.fDir = deltaDirection;
+  electron.fPhysicsState.fEkin = deltaKinEnergy;
 
-  //TODO: push this secondary to the global secondary container
   ++nsecondaries;
 
   //update the primary

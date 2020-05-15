@@ -29,14 +29,25 @@ namespace geantx {
 class ProxySauterGavrila : public ProxyEmModel<ProxySauterGavrila> {
 
 public:
+  GEANT_HOST
   ProxySauterGavrila();
-  ProxySauterGavrila(const ProxySauterGavrila &model) : ProxyEmModel<ProxySauterGavrila>() { this->fRng = model.fRng; }
-  ~ProxySauterGavrila() = default;
+
+  GEANT_HOST_DEVICE
+  ProxySauterGavrila(int tid) : ProxyEmModel<ProxySauterGavrila>(tid) {}
+
+  GEANT_HOST
+  ProxySauterGavrila(const ProxySauterGavrila &model) 
+   : ProxyEmModel<ProxySauterGavrila>() { this->fRng = model.fRng; }
+
+  GEANT_HOST_DEVICE
+  ~ProxySauterGavrila() {}
 
   //mandatory methods for static polymorphism
+  GEANT_HOST_DEVICE
   int SampleSecondaries(TrackState *track);
 
   //auxiliary methods
+  GEANT_HOST_DEVICE
   double  GetPhotoElectronEnergy(int Z, double gammaEnergy) const;
 
 private:
@@ -45,6 +56,7 @@ private:
 
 };
 
+GEANT_HOST
 ProxySauterGavrila::ProxySauterGavrila() 
 { 
   fLowEnergyLimit = 1.0*geantx::clhep::eV; 
@@ -52,6 +64,7 @@ ProxySauterGavrila::ProxySauterGavrila()
 }
 
 // based on Geant4 processes/electromagnetic/standard/src/G4PEEffectFluoModel..cc
+GEANT_HOST_DEVICE
 int ProxySauterGavrila::SampleSecondaries(TrackState *track)
 {
   int nsecondaries = 0;
@@ -101,12 +114,12 @@ int ProxySauterGavrila::SampleSecondaries(TrackState *track)
   double zhat = cost;
 
   //photo electron 
-  TrackState* electron = new TrackState;
+  TrackState electron;
   Math::RotateToLabFrame(xhat, yhat, zhat, track->fDir.x(), track->fDir.y(), track->fDir.z());
   ThreeVector electronDirection(xhat, yhat, zhat);
 
-  electron->fPhysicsState.fEkin = electronEnergy;
-  electron->fDir = electronDirection;
+  electron.fPhysicsState.fEkin = electronEnergy;
+  electron.fDir = electronDirection;
   ++nsecondaries;
 
   //update primary gamma
@@ -116,6 +129,7 @@ int ProxySauterGavrila::SampleSecondaries(TrackState *track)
   return nsecondaries;
 }
 
+GEANT_HOST_DEVICE
 double ProxySauterGavrila::GetPhotoElectronEnergy(int Z, double energy) const
 {
   assert(Z > 0 && Z <= 100);
