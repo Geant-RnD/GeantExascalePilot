@@ -62,12 +62,10 @@ struct TrackHistoryState
 
 struct TrackGeometryState
 {
-    TrackGeometryState() {
-      int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
-      fPath     = geantx::VolumePath_t::MakeInstance(maxDepth);
-      fNextpath = geantx::VolumePath_t::MakeInstance(maxDepth);
-    }
+    GEANT_HOST_DEVICE
+    TrackGeometryState() {}
 
+    GEANT_HOST_DEVICE
     ~TrackGeometryState() {
       geantx::VolumePath_t::ReleaseInstance(fPath);
       geantx::VolumePath_t::ReleaseInstance(fNextpath);
@@ -77,6 +75,12 @@ struct TrackGeometryState
     TrackGeometryState(TrackGeometryState&&);
     TrackGeometryState& operator=(const TrackGeometryState&) = default;
     TrackGeometryState& operator=(TrackGeometryState&&) = default;
+
+    void inline Initialize() {
+      int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
+      fPath     = geantx::VolumePath_t::MakeInstance(maxDepth);
+      fNextpath = geantx::VolumePath_t::MakeInstance(maxDepth);
+    }
 
     // TODO: fVolume is a cached 'fPath->Top()->GetLogicalVolume()'
     Volume_t const* fVolume   = nullptr; /** Current volume the particle is in */
@@ -124,8 +128,12 @@ struct PhysicsProcessState
  */
 struct TrackPhysicsState
 {
+    GEANT_HOST_DEVICE
     TrackPhysicsState() {}
+
+    GEANT_HOST_DEVICE
     ~TrackPhysicsState() {}
+
     TrackPhysicsState(TrackPhysicsState&&) = default;
     TrackPhysicsState(const TrackPhysicsState&) = default;
     TrackPhysicsState& operator=(const TrackPhysicsState&) = default;
@@ -153,8 +161,12 @@ struct TrackPhysicsState
  */
 struct TrackState
 {
-    TrackState()                  = default;
-    ~TrackState()                 = default;
+    GEANT_HOST_DEVICE
+    TrackState() {}
+
+    GEANT_HOST_DEVICE
+    ~TrackState() {}
+
     TrackState(const TrackState&) = default;
     TrackState(TrackState&&)      = default;
     TrackState& operator=(const TrackState&) = default;
