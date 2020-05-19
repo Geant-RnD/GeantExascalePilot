@@ -76,6 +76,7 @@ struct TrackGeometryState
     TrackGeometryState& operator=(const TrackGeometryState&) = default;
     TrackGeometryState& operator=(TrackGeometryState&&) = default;
 
+    GEANT_HOST_DEVICE
     void inline Initialize() {
       int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
       fPath     = geantx::VolumePath_t::MakeInstance(maxDepth);

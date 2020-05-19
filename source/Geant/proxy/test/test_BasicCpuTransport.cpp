@@ -560,6 +560,7 @@ get_primary_particle(double Ekin)
     Track* _track = new Track;
 
     //TrackModifier<CpuElectron> trk(_track);
+    _track->fGeometryState.Initialize();
 
     //_track->fPhysicsState.fEkin  = Ekin;
     UpdateEkin(*_track, Ekin);
@@ -688,11 +689,11 @@ main(int argc, char** argv)
     primary.PushTrack<CpuElectron>(get_primary_particle(energy));
     primary.PushTrack<CpuElectron>(get_primary_particle(energy));
 
-    printf("* GpuElectrons\n");
-    primary.PushTrack<GpuElectron>(get_primary_particle(energy));
+    // printf("* GpuElectrons\n");
+    // primary.PushTrack<GpuElectron>(get_primary_particle(energy));
 
-    printf("* GpuGammas\n");
-    primary.PushTrack<GpuGamma>(get_primary_particle(energy));
+    // printf("* GpuGammas\n");
+    // primary.PushTrack<GpuGamma>(get_primary_particle(energy));
 
     //stepping
 

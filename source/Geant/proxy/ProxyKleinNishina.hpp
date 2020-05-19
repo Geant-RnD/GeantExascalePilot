@@ -153,9 +153,10 @@ int ProxyKleinNishina::SampleSecondaries(TrackState *track)
     eDirection = eDirection.Unit();
 
     //TODO: push this secondary to the global secondary container
-    TrackState electron;
-    electron.fPhysicsState.fEkin = eKinEnergy;
-    electron.fDir = eDirection;
+    //TrackState electron;
+    //electron.AllocateNavigationStates();
+    //electron.fPhysicsState.fEkin = eKinEnergy;
+    //electron.fDir = eDirection;
     ++nsecondaries;
   }
   else {
