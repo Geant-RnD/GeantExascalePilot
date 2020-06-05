@@ -12,7 +12,6 @@
 
 #ifdef VECGEOM_ROOT
 #include "VecGeom/management/RootGeoManager.h"
-#include "VecGeom/utilities/Visualizer.h"
 #endif
 
 #ifdef VECGEOM_GEANT4
@@ -162,41 +161,6 @@ int main(int argc, char *argv[])
 #ifdef VECGEOM_GEANT4
   auto g4geom = geometry + ".gdml";
   G4GeoManager::Instance().LoadG4Geometry(g4geom.c_str());
-#endif
-
-// Visualization
-#ifdef VECGEOM_ROOT
-  if (vis) { // note that visualization block returns, excluding the rest of benchmark
-    Visualizer visualizer;
-    const VPlacedVolume *visWorld = GeoManager::Instance().GetWorld();
-    visualizer.AddVolume(*visWorld);
-
-    Vector<Daughter> const *daughters = visWorld->GetLogicalVolume()->GetDaughtersp();
-    for (size_t i = 0; i < daughters->size(); ++i) {
-      VPlacedVolume const *daughter = (*daughters)[i];
-      Transformation3D const &trf1  = *(daughter->GetTransformation());
-      visualizer.AddVolume(*daughter, trf1);
-
-      Vector<Daughter> const* daughters2 = daughter->GetLogicalVolume()->GetDaughtersp();
-      for (int ii=0; ii < (int)daughters2->size(); ++ii) {
-	VPlacedVolume const* daughter2 = (*daughters2)[ii];
-	Transformation3D const& trf2 = *(daughter2->GetTransformation());
-	Transformation3D comb = trf1;
-	comb.MultiplyFromRight(trf2);
-	visualizer.AddVolume(*daughter2, comb);
-      }
-    }
-
-    std::vector<VPlacedVolume *> v1;
-    GeoManager::Instance().getAllPlacedVolumes(v1);
-    for (auto &plvol : v1) {
-      std::cerr << "placedVol=" << plvol << ", name=" << plvol->GetName() << ", world=" << visWorld << ", <"
-                << visWorld->GetName() << ", " << GeoManager::Instance().GetWorld() << ">\n";
-    }
-
-    // visualizer.Show();
-    return 0;
-  }
 #endif
 
   std::cout << "\n*** Validating VecGeom navigation...\n";
