@@ -209,6 +209,10 @@ struct TrackState
     TrackMaterialState fMaterialState;
     TrackGeometryState fGeometryState;
 
+    double P() const {
+      return fPhysicsState.fMomentum;
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const TrackState& t)
     {
         // the tuple<string> overload of tim::apply changes the definition of join

@@ -212,19 +212,19 @@ void FieldPropagationHandler::PropagateInVolume(TrackState &track, double crtste
 #if ENABLE_MORE_COMPLEX_FIELD
   if (useRungeKutta || !fieldConfig->IsFieldUniform()) {
     assert(fieldPropagator);
-    fieldPropagator->DoStep(Position, Direction, track.Charge(), track.P(), crtstep,
+    fieldPropagator->DoStep(Position, Direction, Charge(track), track.P(), crtstep,
                             PositionNew, DirectionNew);
     assert((PositionNew - Position).Mag() < crtstep + 1.e-4);
 #  ifdef DEBUG_FIELD
 // cross check
 #    ifndef CHECK_VS_BZ
     ConstFieldHelixStepper stepper(BfieldInitial * toKiloGauss);
-    stepper.DoStep<double>(Position, Direction, track.Charge(), track.P(), crtstep,
+    stepper.DoStep<double>(Position, Direction, Charge(track), track.P(), crtstep,
                            PositionNewCheck, DirectionNewCheck);
 #    else
     double Bz = BfieldInitial[2] * toKiloGauss;
     ConstBzFieldHelixStepper stepper_bz(Bz); //
-    stepper_bz.DoStep<ThreeVector, double, int>(Position, Direction, track.Charge(),
+    stepper_bz.DoStep<ThreeVector, double, int>(Position, Direction, Charge(track),
                                                 track.P(), crtstep, PositionNewCheck,
                                                 DirectionNewCheck);
 #    endif
