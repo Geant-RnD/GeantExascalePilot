@@ -321,7 +321,7 @@ VECCORE_ATT_HOST_DEVICE
 GEANT_FORCE_INLINE
 bool Propagate(TrackState &track, PropagationHandler &h, TaskData *td)
 {
-    if ( ! h.Propagate(track, td)) { // updates:  fPstep -= step;  fStep += step;  fSnext -= step
+    if ( ! h.Propagate(track, td) ) { // updates:  fPstep -= step;  fStep += step;  fSnext -= step
       return false;
     }
     ++(track.fHistoryState.fNsteps);

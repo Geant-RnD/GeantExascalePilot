@@ -99,16 +99,15 @@ struct TrackHistoryState
   }
 
     // TODO: fVolume is a cached 'fPath->Top()->GetLogicalVolume()'
-    Volume_t const* fVolume   = nullptr; /** Current volume the particle is in */
-    VolumePath_t*   fPath     = nullptr; /** Current volume state */
-    VolumePath_t*   fNextpath = nullptr; /** Next volume state */
-    double          fSnext    = 0;       /** Straight distance to next boundary */
-    double          fSafety   = 0;       /** Safe distance to any boundary */
-    bool            fIsOnBoundaryPreStp =
-        false;              /** Particle was on boundary at the pre-step point */
-    bool fBoundary = false; /** Starting from boundary */
-    bool fPending  = false; /** Track pending to be processed  (???) */
-};
+    Volume_t const* fVolume   = nullptr;          /** Current volume the particle is in */
+    VolumePath_t*   fPath     = nullptr;          /** Current volume state */
+    VolumePath_t*   fNextpath = nullptr;          /** Next volume state */
+    double          fSnext    = 0;                /** Straight distance to next boundary */
+    double          fSafety   = 0;                /** Safe distance to any boundary */
+    bool            fIsOnBoundaryPreStp = false;  /** Particle was on boundary at the pre-step point */
+    bool fBoundary = false;                       /** Starting from boundary */
+    bool fPending  = false;                       /** Track pending to be processed  (???) */
+  };
 
 struct TrackMaterialState
 {
