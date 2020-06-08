@@ -31,10 +31,10 @@ public:
 
    VECCORE_ATT_HOST_DEVICE
    static void GetFieldValue(const ThreeVector_t &pos, ThreeVector_t &magFld, double &bmag) {
-      constexpr double kTeslaToKiloGauss = 10.0;
-      //magFld = ThreeVector_t{kTeslaToKiloGauss,kTeslaToKiloGauss,kTeslaToKiloGauss};
-      magFld = ThreeVector_t{0.0, 0.0, kTeslaToKiloGauss};
-      bmag = 3; 
+     constexpr double _bmag          = 3 * units::tesla;
+     static const ThreeVector_t _bfield = ThreeVector_t{0.0, 0.0, _bmag};
+     bmag   = _bmag;
+     magFld = _bfield;
    }
 };
 
