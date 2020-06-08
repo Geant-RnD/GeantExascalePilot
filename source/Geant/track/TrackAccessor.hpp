@@ -45,7 +45,7 @@ public:
 
     ParticleId_t  Id() const { return this->State().fHistoryState.fParticle; }
     TrackStatus Status() const { return this->State().fStatus; }
-    bool          Alive() const { return this->Status() != TrackStatus::Killed; }
+    bool        Alive()  const { return this->Status() != TrackStatus::Killed && this->Status() != TrackStatus::ExitingSetup; }
 
     double Momentum() const { return this->State().fPhysicsState.fMomentum; }
     double KineticEnergy() const { return this->State().fPhysicsState.fEkin; }

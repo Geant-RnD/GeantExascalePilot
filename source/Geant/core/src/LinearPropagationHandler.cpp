@@ -82,8 +82,7 @@ bool LinearPropagationHandler::IsSameLocation(TrackState &track, TaskData *td) c
   bool same = NavigationInterface::IsSameLocation(track); // always updates track's fNextpath
   if (same) return true;
   if (track.fGeometryState.fNextpath->IsOutside())
-    // killing the track while ExitingSetup does not stop it
-    track.fStatus = TrackStatus::Killed;  // TrackStatus::ExitingSetup;
+    track.fStatus = TrackStatus::ExitingSetup;
   return false;
 }
 
