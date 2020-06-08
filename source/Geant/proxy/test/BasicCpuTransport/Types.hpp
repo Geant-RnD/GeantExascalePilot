@@ -108,20 +108,24 @@ struct PhysicsProcessCombinedPostStep<ParticleType, std::tuple<ProcessTypes...>>
 //===----------------------------------------------------------------------===//
 
 using CpuGammaPhysics =
-    PhysicsProcessList<CpuGamma, ProxyCompton, ProxyConversion, ProxyPhotoElectric, ProxyScattering, 
-                       ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
+  PhysicsProcessList<CpuGamma, ProxyTrackLimiter>;
+  // PhysicsProcessList<CpuGamma, ProxyCompton, ProxyConversion, ProxyPhotoElectric, //ProxyScattering, 
+  //                      ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 using CpuElectronPhysics =
-    PhysicsProcessList<CpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter, 
-                       ProxyTrackLimiter, ProxySecondaryGenerator>;
+  PhysicsProcessList<CpuElectron, ProxyTrackLimiter>;
+  // PhysicsProcessList<CpuElectron, ProxyIonization, ProxyBremsstrahlung, //ProxyScattering,
+  // 		     ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 using GpuGammaPhysics =
-    PhysicsProcessList<GpuGamma, ProxyCompton, ProxyConversion, ProxyPhotoElectric, ProxyScattering,
-                       ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
+  PhysicsProcessList<GpuGamma, ProxyTrackLimiter>;
+  // PhysicsProcessList<GpuGamma, ProxyCompton, ProxyConversion, ProxyPhotoElectric, //ProxyScattering,
+  //                      ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 using GpuElectronPhysics =
-    PhysicsProcessList<GpuElectron, ProxyIonization, ProxyBremsstrahlung, ProxyScattering, ProxyStepLimiter,
-                       ProxyTrackLimiter, ProxySecondaryGenerator>;
+  PhysicsProcessList<GpuElectron, ProxyTrackLimiter>;
+  // PhysicsProcessList<GpuElectron, ProxyIonization, ProxyBremsstrahlung, //ProxyScattering,
+  // 		     ProxyStepLimiter, ProxyTrackLimiter, ProxySecondaryGenerator>;
 
 //===----------------------------------------------------------------------===//
 //              A list of all particle + physics pairs
