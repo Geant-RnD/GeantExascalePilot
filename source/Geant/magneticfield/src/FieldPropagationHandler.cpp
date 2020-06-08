@@ -73,25 +73,14 @@ double Charge(const TrackState &track)
 // Curvature for general field
 VECCORE_ATT_HOST_DEVICE
 double FieldPropagationHandler::Curvature(const TrackState &track,
-                                          const ThreeVector_t &magFld_in,
-                                          double bmag) const
+					    const ThreeVector_t &Bfield,
+					    double bmag) const
 {
-  // using ThreeVector_t            = vecgeom::Vector3D<double>;
-  constexpr double tiny          = 1.E-30;
-  constexpr double inv_kilogauss = 1.0 / units::kilogauss;
-
-  bmag *= inv_kilogauss;
-  ThreeVector_t magFld{magFld_in * inv_kilogauss};
-  //  Calculate transverse momentum 'Pt' for field 'B'
-  //
-  ThreeVector_t Momentum(track.fDir);
-  ThreeVector_t PtransB; //  Transverse wrt direction of B
-  double ratioOverFld = 0.0;
-  if (bmag > 0) ratioOverFld = Momentum.Dot(magFld) / (bmag * bmag);
-  PtransB       = Momentum - ratioOverFld * magFld;
-  double Pt_mag = PtransB.Mag();
-
-  return fabs(kB2C * Charge(track) * bmag / (Pt_mag + tiny));
+  assert(bmag > 0.0);
+  const double& pmag = track.fPhysicsState.fMomentum;
+  double plong = pmag * track.fDir.Dot(Bfield) / bmag;
+  double pt    = sqrt(pmag * pmag - plong * plong);
+  return units::kCLight * bmag / pt; // if bmag and pt are positive, no need to call fabs()
 }
 
 //______________________________________________________________________________
