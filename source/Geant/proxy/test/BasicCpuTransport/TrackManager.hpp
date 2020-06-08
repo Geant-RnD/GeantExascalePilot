@@ -90,8 +90,7 @@ struct TrackManager
         GEANT_THIS_TYPE_TESTING_MARKER("");
         if(!_track) return nullptr;
 
-        if(_track->fStatus == TrackStatus::Killed)
-        {
+	if( _track->fStatus == TrackStatus::Killed || _track->fStatus == TrackStatus::ExitingSetup ) {
             delete _track;
             return nullptr;
         }
