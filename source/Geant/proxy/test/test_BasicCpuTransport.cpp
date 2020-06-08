@@ -677,15 +677,17 @@ main(int argc, char** argv)
     // prepare primary tracks - TODO: use a particle gun
     double energy = 10. * geantx::units::GeV;
 
-    printf("* CpuGammas\n");
+    // printf("* CpuGammas\n");
     primary.PushTrack<CpuGamma>(get_primary_particle(energy));
-    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
-    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
-    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
-    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
-    primary.PushTrack<CpuGamma>(get_primary_particle(energy));
+    // primary.PushTrack<CpuGamma>(get_primary_particle(energy));
 
     printf("* CpuElectrons\n");
+    primary.PushTrack<CpuElectron>(get_primary_particle(energy));
+    primary.PushTrack<CpuElectron>(get_primary_particle(energy));
+    primary.PushTrack<CpuElectron>(get_primary_particle(energy));
+    primary.PushTrack<CpuElectron>(get_primary_particle(energy));
+    primary.PushTrack<CpuElectron>(get_primary_particle(energy));
+    primary.PushTrack<CpuElectron>(get_primary_particle(energy));
     primary.PushTrack<CpuElectron>(get_primary_particle(energy));
     primary.PushTrack<CpuElectron>(get_primary_particle(energy));
 
