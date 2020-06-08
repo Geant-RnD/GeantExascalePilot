@@ -60,10 +60,12 @@ struct TrackHistoryState
     int          fGeneration = 0; /** Num of generations since creation (primary==0) */
 };
 
-struct TrackGeometryState
-{
+  struct TrackGeometryState
+  {
     GEANT_HOST_DEVICE
-    TrackGeometryState() {}
+    TrackGeometryState() {
+      this->Initialize();
+    }
 
     GEANT_HOST_DEVICE
     ~TrackGeometryState() {
@@ -76,11 +78,25 @@ struct TrackGeometryState
     TrackGeometryState& operator=(const TrackGeometryState&) = default;
     TrackGeometryState& operator=(TrackGeometryState&&) = default;
 
-    void inline Initialize() {
+    GEANT_HOST_DEVICE
+    GEANT_FORCE_INLINE
+    void Initialize() {
+#ifdef VECCORE_CUDA_DEVICE_COMPILATION
+      assert(vecgeom::globaldevicegeomdata::GetMaxDepth() > 0);
+      int maxDepth = vecgeom::globaldevicegeomdata::GetMaxDepth();
+#else
+//#ifndef VECCORE_CUDA
       int maxDepth = vecgeom::GeoManager::Instance().getMaxDepth();
+//#else
+//    // this is the case when we compile with nvcc for host side
+//    // (failed previously due to undefined symbol vecgeom::cuda::GeoManager::gCompactPlacedVolBuffer)
+//    assert(false && "reached unimplement code");
+//    return 0;
+//#endif
+#endif
       fPath     = geantx::VolumePath_t::MakeInstance(maxDepth);
       fNextpath = geantx::VolumePath_t::MakeInstance(maxDepth);
-    }
+  }
 
     // TODO: fVolume is a cached 'fPath->Top()->GetLogicalVolume()'
     Volume_t const* fVolume   = nullptr; /** Current volume the particle is in */

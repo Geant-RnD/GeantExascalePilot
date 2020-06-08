@@ -560,6 +560,7 @@ get_primary_particle(double Ekin)
     Track* _track = new Track;
 
     //TrackModifier<CpuElectron> trk(_track);
+    //_track->fGeometryState.Initialize();
 
     //_track->fPhysicsState.fEkin  = Ekin;
     UpdateEkin(*_track, Ekin);
